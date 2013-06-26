@@ -1,0 +1,250 @@
+package gui.forms.edit;
+
+import gui.forms.util.EditFormField;
+import gui.forms.util.FormDropdown;
+import gui.forms.util.FormLabel;
+import gui.popup.SuccessPopup;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+
+import util.EditFormPanel;
+import util.ErrorLabel;
+import util.Values;
+import util.soy.SoyButton;
+
+public class EditItemPanel extends EditFormPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<JTextField> fields = new ArrayList<JTextField>();
+	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
+	private SoyButton edit;
+
+	private int num = Values.productFormLabel.length;
+
+	private FormDropdown unit, category, condition;
+	private JCheckBox cbox1, cbox2;
+	private ErrorLabel error;
+
+	private int y1 = 45, y2 = 30, y3 = 60;
+
+	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock,
+			alertOnQuantity;
+
+	/*public EditItemPanel(Item item) {
+		super("View / Edit Stock");
+		this.item = item;
+		init();
+		addComponents();
+		fillValues();
+	}*/
+	
+	public EditItemPanel() {
+		super("View / Edit Stock");
+		init();
+		addComponents();
+		fillValues();
+	}
+
+	private void init() {
+		// TODO Auto-generated method stub
+
+		setLayout(null);
+
+		error = new ErrorLabel();
+
+		unit = new FormDropdown();
+		category = new FormDropdown();
+		condition = new FormDropdown();
+
+		cbox1 = new JCheckBox("For Sale?");
+		cbox2 = new JCheckBox("Allow Alert?");
+
+		/*try {
+			List<Unit> units = Manager.itemManager.getUnits();
+			List<Category> categories = Manager.itemManager.getCategories();
+			List<ItemCondition> conditions = Manager.itemManager
+					.getConditions();
+
+			unit = new FormDropdown(units.toArray());
+			category = new FormDropdown(categories.toArray());
+			condition = new FormDropdown(conditions.toArray());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+
+	}
+
+	private void addComponents() {
+		// TODO Auto-generated method stub
+
+		edit = new SoyButton("Edit");
+
+		int fieldsCtr = 0, labelsCtr = 0;
+
+		for (int i = 0, x = 90, y = 0; i < num; i++, y += y3) {
+
+			if (i != 3 && i != 4 && i != 8 && i != 9 && i != 11) {
+				fields.add(new EditFormField(100));
+				labels.add(new FormLabel(Values.productFormLabel[i]));
+
+				fields.get(fieldsCtr).setBounds(x, y1 + y, 170, 25);
+				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+
+				// labels.get(ctr).setFont(new Font("Harabara", Font.PLAIN,
+				// 16));
+				// labels.get(ctr).setForeground(Color.GRAY.darker());
+
+				// add(fields.get(fieldsCtr));
+				// add(labels.get(labelsCtr));
+
+				fieldsCtr++;
+				labelsCtr++;
+
+			/*	int total = unit.getItemCount();
+				while (total > 0) {
+					total--;
+					Unit u = (Unit) unit.getItemAt(total);
+					if (u.getId() == item.getUnit().getId()) {
+						unit.setSelectedIndex(total);
+						break;
+					}
+				}
+
+				total = category.getItemCount();
+				while (total > 0) {
+					total--;
+					Category c = (Category) category.getItemAt(total);
+					if (c.getId() == item.getCategory().getId()) {
+						category.setSelectedIndex(total);
+						break;
+					}
+				}
+
+				total = condition.getItemCount();
+				while (total > 0) {
+					total--;
+					ItemCondition ic = (ItemCondition) condition
+							.getItemAt(total);
+					if (ic.getId() == item.getCondition().getId()) {
+						condition.setSelectedIndex(total);
+						break;
+					}
+				}*/
+			}
+
+			if (i == 3)
+				cbox1.setBounds(x, y1 + y, 170, 25);
+			if (i == 11)
+				cbox2.setBounds(x, y1 + y, 170, 25);
+
+			if (i == 8) {
+				condition.setBounds(x, y1 + y, 170, 25);
+
+				labels.add(new FormLabel(Values.productFormLabel[i]));
+				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+
+				labelsCtr++;
+			}
+
+			if (i == 4) {
+				x += 230;
+				y = 0;
+
+				unit.setBounds(x, y1 + y, 170, 25);
+
+				labels.add(new FormLabel(Values.productFormLabel[i]));
+				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+
+				labelsCtr++;
+			}
+
+			if (i == 9) {
+				x += 230;
+				y = 0;
+				category.setBounds(x, y1 + y, 170, 25);
+
+				labels.add(new FormLabel(Values.productFormLabel[i]));
+				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+
+				labelsCtr++;
+			}
+
+			/*
+			 * if(i==4 || i == 9){ //x=0; //y+=70; y=0; x+=230; }
+			 */
+			// 3,4,8,9,11
+
+		}
+
+		edit.setBounds(370, 350, 80, 30);
+
+		error.setBounds(550, 320, 230, 25);
+
+		for (int i = 0; i < fields.size(); i++)
+			add(fields.get(i));
+
+		for (int i = 0; i < labels.size(); i++) {
+			add(labels.get(i));
+		}
+
+		edit.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+
+			}
+		});
+
+		add(edit);
+
+		add(cbox1);
+		add(cbox2);
+		add(condition);
+		add(category);
+		add(unit);
+
+		add(error);
+	}
+
+	private void fillValues() {
+
+	/*	fields.get(0).setText(item.getName());
+		fields.get(1).setText(item.getDescription());
+		fields.get(2).setText(item.getBarCode());
+		fields.get(3)
+				.setText(String.format("%.2f", item.getUnitSellingPrice()));
+		fields.get(4).setText(
+				String.format("%.2f", item.getUnitPurchasePrice()));
+		fields.get(5).setText(item.getUnitsOnStock() + "");
+		fields.get(6).setText(item.getLocation());
+		fields.get(7).setText(item.getAlertOnQuantity() + "");
+
+		cbox1.setSelected(item.isForSale());
+		cbox2.setSelected(item.isAllowAllert());*/
+
+	}
+
+	private void update() {
+		Values.editPanel.startAnimation();
+		new SuccessPopup("Edit").setVisible(true);
+		Values.centerPanel.changeTable(Values.PRODUCTS);
+		Values.topPanel.refreshStockCost();
+	}
+
+	private boolean isValidated() {
+		if (!name.equals("") && !unitSellingPrice.equals("")
+				&& !unitPurchasePrice.equals("") && !unitsOnStock.equals("")
+				&& !alertOnQuantity.equals(""))
+			return true;
+
+		return false;
+	}
+
+}
