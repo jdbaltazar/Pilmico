@@ -46,7 +46,7 @@ public class Values {
 	public static UnitList unitList;
 	public static CategoryList categoryList;
 	public static ConditionList conditionList;
-	public static ProductForm itemForm;
+	public static ProductForm productForm;
 	public static AccountForm accountForm;
 	public static EditStockPurchase editStockPurchase;
 	public static EditSalesOrder editSalesOrder;
@@ -74,7 +74,8 @@ public class Values {
 
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;
-	public static final int CATEGORY = 2;
+	
+	public static final int CATEGORY = 0;
 	public static final int ACCOUNT_TYPE = 3;
 	public static final int LOG_TYPE = 4;
 	public static final int NOTE_TYPE = 5;

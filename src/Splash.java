@@ -1,3 +1,4 @@
+
 import gui.MainFrame;
 import gui.popup.DBPassword;
 import gui.popup.ProductOnDisplayPopup;
@@ -18,6 +19,7 @@ import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+
 
 public class Splash extends JFrame implements PropertyChangeListener {
 
@@ -54,15 +56,18 @@ public class Splash extends JFrame implements PropertyChangeListener {
 			public void run() {
 				try {
 
-					// Splash frame = new Splash();
-					// frame.setVisible(true);
-
-					// Manager.getInstance();
+		//			Splash frame = new Splash();
+		//			frame.setVisible(true);
+					
+//					Manager.getInstance();
 					MainFrame mainFrame = new MainFrame();
 					mainFrame.showFrame();
-
-					// new DBPassword().setVisible(true);
-
+					
+					
+					
+//					new DBPassword().setVisible(true);
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -75,7 +80,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 	 */
 	public Splash() {
 		setIconImage(new ImageIcon("images/frameicon.png").getImage());
-
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(355, 240);
 		setLocationRelativeTo(null);

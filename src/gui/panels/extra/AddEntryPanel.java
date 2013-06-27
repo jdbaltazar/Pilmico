@@ -108,14 +108,14 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 	private void addComponents() {
 		accountForm.setBounds(225, 45, 300, 390);
-		productForm.setBounds(110, 50, 600, 390);
+		productForm.setBounds(102, 50, 600, 390);
 		supplierForm.setBounds(198, 80, 400, 320);
 //		stockPurchase.setBounds(180, 40, 450, 400);
 		
 		sales.setBounds(50, 55, 670, 370);
 		expensesForm.setBounds(100, 105, 600, 270);
 		
-		profileForm.setBounds(225, 45, 300, 390);
+		profileForm.setBounds(225, 45, 290, 390);
 		employeeForm.setBounds(165, 50, 450, 400);
 		
 		cashAdvanceForm.setBounds(225, 40, 300, 395);

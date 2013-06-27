@@ -15,12 +15,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.List;
 
+import util.DateFormatter;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyPanel;
-
-import common.entity.product.Product;
-import common.manager.Manager;
 
 public class CenterPanel extends SoyPanel {
 
@@ -54,12 +53,12 @@ public class CenterPanel extends SoyPanel {
 	private void init() {
 		setLayout(new BorderLayout());
 
-		// tablePanel = new TablePanel(data, columnNames, null);
+		//tablePanel = new TablePanel(data, columnNames, null);
 	}
 
 	private void addComponents() {
 		// leftPanel = new LeftPanel();
-		// tableUtilPanel = new TableUtilPanel(tablePanel, "STOCKS");
+		//tableUtilPanel = new TableUtilPanel(tablePanel, "STOCKS");
 		// add(searchPanel, BorderLayout.PAGE_END);
 		// add(new BottomPanel(), BorderLayout.PAGE_END);
 		/*
@@ -71,7 +70,7 @@ public class CenterPanel extends SoyPanel {
 		// add(leftPanel, BorderLayout.LINE_START);
 		// add(new TablePanel(data, columnNames), BorderLayout.CENTER);
 
-		add(new LoginPanel());
+//		add(new LoginPanel());
 		// menuPanel.setBounds(0, 0, Values.WIDTH, 400);
 
 		/*
@@ -80,18 +79,16 @@ public class CenterPanel extends SoyPanel {
 		 * fillItems();
 		 */
 
-		// changeTable(Values.HOME);
-		/*
-		 * add(new AddEntryPanel(), BorderLayout.PAGE_START); add(new EditPanel(),
-		 * BorderLayout.LINE_START); add(new MenuPanel(), BorderLayout.PAGE_END);
-		 * add(tableUtilPanel, BorderLayout.CENTER);
-		 */
-
+		changeTable(Values.HOME);
+		 /*add(new AddEntryPanel(), BorderLayout.PAGE_START); add(new EditPanel(),
+		 BorderLayout.LINE_START); add(new MenuPanel(), BorderLayout.PAGE_END);
+		 add(tableUtilPanel, BorderLayout.CENTER);*/
+		
 	}
 
 	public void changeTable(int val) {
 
-		// if(val != Values.HOME)
+		if(val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
 
 		switch (val) {
@@ -108,7 +105,7 @@ public class CenterPanel extends SoyPanel {
 			// add(tableUtilPanel, BorderLayout.PAGE_END);
 			fillProducts();
 			break;
-
+			
 		case Values.PULLOUT:
 			// add(tableUtilPanel, BorderLayout.PAGE_END);
 			fillPullout();
@@ -117,11 +114,11 @@ public class CenterPanel extends SoyPanel {
 		case Values.ACCOUNT_RECEIVABLES:
 			fillAR();
 			break;
-
+			
 		case Values.AR_PAYMENTS:
 			fillAR_Payments();
 			break;
-
+			
 		case Values.DELIVERY:
 			fillDelivery();
 			break;
@@ -129,47 +126,49 @@ public class CenterPanel extends SoyPanel {
 		case Values.SUPPLIERS:
 			fillSuppliers();
 			break;
-
+			
 		case Values.CASH_ADVANCE:
 			fillCashAdvance();
 			break;
-
+			
 		case Values.CA_PAYMENTS:
 			fillCAPayments();
 			break;
-
+			
 		case Values.PROFILES:
 			fillProfiles();
 			break;
-
+			
 		case Values.EMPLOYEES:
 			fillEmployees();
 			break;
-
+			
 		case Values.ACCOUNTS:
 			fillAccounts();
 			break;
-
+		
 		case Values.SALES:
 			fillSales();
 			break;
-
+			
 		case Values.EXPENSES:
 			fillExpenses();
 			break;
-
+			
 		case Values.LOGS:
 			fillLogs();
 			break;
-		/*
-		 * case Values.SALES_ORDER: fillSalesOrder(); break;
-		 * 
-		 * 
-		 * case Values.PURCHASE: fillStockPurchase(); break;
-		 */
+		/*case Values.SALES_ORDER:
+			fillSalesOrder();
+			break;
+
+
+		case Values.PURCHASE:
+			fillStockPurchase();
+			break;*/
 
 		default:
-			// fillLogs();
+//			fillLogs();
 			fillNULLForm();
 			break;
 
@@ -180,10 +179,11 @@ public class CenterPanel extends SoyPanel {
 		revalidate();
 		updateUI();
 	}
-
-	private void fillNULLForm() {
+	
+	
+	private void fillNULLForm(){
 		try {
-			String[] headers = { "N / A" };
+			String[] headers = { "N / A"};
 			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), "NOT APPLICABLE"), BorderLayout.CENTER);
@@ -192,12 +192,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
-	private void fillExpenses() {
+	
+	private void fillExpenses(){
 		try {
-			String[] headers = { "ID", "Date", "Expense Type", "Issued by" };
-			String[][] entries = { { "1", "June 20, 2013", "Type A", "John David S. Baltazar" }, { "2", "June 18, 2013", "Type B", "Juan dela Cruz" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Date", "Expense Type", "Issued by"};
+			String[][] entries = {{"1", "June 20, 2013", "Type A", "John David S. Baltazar"}, {"2", "June 18, 2013", "Type B", "Juan dela Cruz"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.EXPENSES), BorderLayout.CENTER);
 
@@ -205,12 +205,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
-	private void fillSales() {
+	
+	private void fillSales(){
 		try {
-			String[] headers = { "ID", "Date", "Cashier", "Remarks" };
-			String[][] entries = { { "1", "June 20, 2013", "John David S. Baltazar", "More" }, { "2", "June 18, 2013", "Juan dela Cruz", "" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Date", "Cashier", "Remarks"};
+			String[][] entries = {{"1", "June 20, 2013", "John David S. Baltazar", "More"}, {"2", "June 18, 2013", "Juan dela Cruz", ""}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.SALES), BorderLayout.CENTER);
 
@@ -218,12 +218,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
-	private void fillAR_Payments() {
+	
+	private void fillAR_Payments(){
 		try {
-			String[] headers = { "ID", "Date", "Issued By", "Amount" };
-			String[][] entries = { { "1", "June 20, 2012", "John David S. Baltazar", "2500" }, { "2", "January 18, 2012", "Juan dela Cruz", "5000" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Date", "Issued By", "Amount"};
+			String[][] entries = {{"1", "June 20, 2012", "John David S. Baltazar", "2500"}, {"2", "January 18, 2012",  "Juan dela Cruz", "5000"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.AR_PAYMENTS), BorderLayout.CENTER);
 
@@ -231,13 +231,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
-	private void fillAR() {
+	
+	private void fillAR(){
 		try {
-			String[] headers = { "ID", "Date", "Issued By", "Receiver", "Balance" };
-			String[][] entries = { { "1", "June 20, 2013", "John David S. Baltazar", "Juan dela Cruz", "500" },
-					{ "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar", "5000" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Date", "Issued By", "Receiver", "Balance"};
+			String[][] entries = {{"1", "June 20, 2013", "John David S. Baltazar", "Juan dela Cruz", "500"}, {"2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar", "5000"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.ACCOUNT_RECEIVABLES), BorderLayout.CENTER);
 
@@ -245,13 +244,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
-	private void fillPullout() {
+	
+	private void fillPullout(){
 		try {
-			String[] headers = { "ID", "Date", "Issued By", "Product", "Remarks" };
-			String[][] entries = { { "1", "May 20, 2013", "John David S. Baltazar", "Hog Feeds", "expired" },
-					{ "2", "April 18, 2013", "Juan dela Cruz", "Chicken Feeds", "" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Date", "Issued By", "Product", "Remarks"};
+			String[][] entries = {{"1", "May 20, 2013", "John David S. Baltazar", "Hog Feeds", "expired"}, {"2", "April 18, 2013", "Juan dela Cruz", "Chicken Feeds", ""}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.PULLOUT), BorderLayout.CENTER);
 
@@ -259,13 +257,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void fillCashAdvance() {
 		try {
 			String[] headers = { "ID", "Date", "Issued by", "Issued For", "Amount" };
-			String[][] entries = { { "1", "June 20, 2013", "John David S. Baltazar", "Juan dela Cruz", "500" },
-					{ "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar", "5000" } };
-			// String[][] entries = new String[1][headers.length];
+			String[][] entries = {{"1", "June 20, 2013", "John David S. Baltazar", "Juan dela Cruz", "500"}, {"2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar", "5000"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.CASH_ADVANCE), BorderLayout.CENTER);
 
@@ -273,12 +270,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void fillCAPayments() {
 		try {
 			String[] headers = { "ID", "Date", "Issued by", "Amount" };
-			String[][] entries = { { "1", "June 20, 2011", "John David S. Baltazar", "500" }, { "2", "December 18, 2010", "Juan dela Cruz", "5000" } };
-			// String[][] entries = new String[1][headers.length];
+			String[][] entries = {{"1", "June 20, 2011", "John David S. Baltazar", "500"}, {"2", "December 18, 2010", "Juan dela Cruz", "5000"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.CA_PAYMENTS), BorderLayout.CENTER);
 
@@ -292,8 +289,8 @@ public class CenterPanel extends SoyPanel {
 		try {
 
 			String[] headers = { "Puchase No", "Date", "Supplier" };
-			String[][] entries = { { "1", "June 20, 2013", "Universal Feeds Corp." }, { "2", "June 18, 2013", "Rubina Foods Inc." } };
-			// String[][] entries = new String[1][headers.length];
+			String[][] entries = {{"1", "June 20, 2013", "Universal Feeds Corp."}, {"2", "June 18, 2013", "Rubina Foods Inc."}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), "STOCK PURCHASE"), BorderLayout.CENTER);
 
@@ -302,12 +299,12 @@ public class CenterPanel extends SoyPanel {
 		}
 
 	}
-
+	
 	private void fillDelivery() {
 		try {
-			String[] headers = { "ID", "Date", "Received by", "Remarks" };
-			String[][] entries = { { "1", "April 18, 2013", "John David S. Baltazar", "" }, { "2", "May 11, 2012", "John David S. Baltazar", "Hoax" } };
-			// String[][] entries = new String[5][headers.length];
+			String[] headers = { "ID", "Date", "Received by", "Remarks"};
+			String[][] entries = {{"1", "April 18, 2013", "John David S. Baltazar", ""}, {"2", "May 11, 2012", "John David S. Baltazar", "Hoax"}};
+//			String[][] entries = new String[5][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DELIVERY), BorderLayout.CENTER);
 		} catch (Exception e) {
@@ -318,10 +315,9 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillSuppliers() {
 		try {
-			String[] headers = { "ID", "Name", "Address", "Contact No.", "Contact Person" };
-			// String[][] entries = new String[5][headers.length];
-			String[][] entries = { { "1", "Rubina Hog Feeds Inc.", "Marikina City", "", "" },
-					{ "2", "Universal Feeds Corp.", "Tacloban City", "325-5689", "Pugad Baboy" } };
+			String[] headers = { "ID", "Name", "Address", "Contact No.","Contact Person" };
+//			String[][] entries = new String[5][headers.length];
+			String[][] entries = {{"1", "Rubina Hog Feeds Inc.", "Marikina City", "", ""}, {"2", "Universal Feeds Corp.", "Tacloban City", "325-5689", "Pugad Baboy"}};
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.SUPPLIERS), BorderLayout.CENTER);
 		} catch (Exception e) {
@@ -334,8 +330,8 @@ public class CenterPanel extends SoyPanel {
 		try {
 
 			String[] headers = { "Sales No.", "Date", "Cashier" };
-			String[][] entries = { { "1", "June 8, 2013", "Juan dela Cruz" }, { "2", "May 27, 2013", "Juan dela Cruz" } };
-			// String[][] entries = new String[1][headers.length];
+			String[][] entries = {{"1", "June 8, 2013", "Juan dela Cruz"}, {"2", "May 27, 2013", "Juan dela Cruz"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), "SALES ORDER"), BorderLayout.CENTER);
 
@@ -343,12 +339,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void fillProfiles() {
 		try {
-			String[] headers = { "ID", "Name ", "First Name", "Middle Name", "Contact No." };
-			String[][] entries = { { "1", "Baltazar", "John David", "S", "09161429583" }, { "2", "dela Cruz", "Juan", "B", "09161234567" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Last Name", "First Name", "Middle Name", "Contact No." };
+			String[][] entries = {{"1", "Baltazar", "John David", "S", "09161429583"}, {"2", "dela Cruz", "Juan", "B", "09161234567"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.PROFILES), BorderLayout.CENTER);
 
@@ -360,8 +356,8 @@ public class CenterPanel extends SoyPanel {
 	private void fillEmployees() {
 		try {
 			String[] headers = { "ID", "Name", "Designation", "Status", "Remarks" };
-			// String[][] entries = new String[1][headers.length];
-			String[][] entries = { { "1", "John David Baltazar", "Janitor", "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk", "Terminated", "" } };
+//			String[][] entries = new String[1][headers.length];
+			String[][] entries = {{"1", "John David Baltazar", "Janitor", "Active", ""}, {"2", "Juan dela Cruz", "Sales Clerk", "Terminated", ""}};
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.EMPLOYEES), BorderLayout.CENTER);
 
@@ -369,6 +365,7 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
+
 
 	private void fillAccounts() {
 		try {
@@ -384,43 +381,15 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillProducts() {
 
-		// try {
-		// String[] headers = { "Item No.", "Name", "Quantity (kg)",
-		// "Quantity (sack)", "Display (kg)", "Display (sack)"};
-		// // String[][] entries = new String[1][headers.length];
-		//
-		// String[][] entries = {{"1", "Hog Feeds", "25", "5", "15", "5"}, {"2",
-		// "Chicken Feeds", "30", "10", "5", "3"}};
-		//
-		// add(new TableUtilPanel(new TablePanel(entries, headers, null),
-		// Tables.PRODUCTS), BorderLayout.CENTER);
-		//
-		//
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 		try {
-
-			List<Product> products = Manager.productManager.getProducts();
-			String[] headers = { "ID", "Name", "Sack(s)", "Price/Sack", "Kilo(s)", "Price/Kilo", "Category" };
-			String[][] entries = new String[products.size()][headers.length];
-
-			int i = 0;
-			for (Product p : products) {
-				entries[i][0] = p.getId() + "";
-				entries[i][1] = p.getName();
-				entries[i][2] = p.getQuantityInSack() + "";
-				entries[i][3] = String.format("%.2f", p.getPricePerSack());
-				entries[i][4] = p.getQuantityInKilo() + "";
-				entries[i][5] = String.format("%.2f", p.getPricePerKilo());
-				entries[i][6] = p.getCategory().getName();
-				i++;
-			}
+			String[] headers = { "Item No.", "Name", "Quantity (kg)", "Quantity (sack)", "Display (kg)", "Display (sack)"};
+//			String[][] entries = new String[1][headers.length];
+			
+			String[][] entries = {{"1", "Hog Feeds", "25", "5", "15", "5"}, {"2", "Chicken Feeds", "30", "10", "5", "3"}};
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.PRODUCTS), BorderLayout.CENTER);
-
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -432,14 +401,14 @@ public class CenterPanel extends SoyPanel {
 
 		try {
 			String[] headers = { "Date", "Description" };
-			String[][] entries = { { "June 21, 2013", "dummy_acct logged in" } };
-			// String[][] entries = new String[1][headers.length];
+			String[][] entries = {{"June 21, 2013", "dummy_acct logged in"}};
+//			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), "LOGS"), BorderLayout.CENTER);
-
+			
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMinWidth(200);
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMaxWidth(200);
-
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

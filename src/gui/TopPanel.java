@@ -63,7 +63,7 @@ public class TopPanel extends SoyPanel {
 		store_info = new SBButton("header_2.png", "header_2.png", "");
 
 		try {
-			totalSales = new JLabel("P 1100.00" );
+			totalSales = new JLabel("P 24560.50" );
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

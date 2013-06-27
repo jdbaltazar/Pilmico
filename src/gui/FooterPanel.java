@@ -56,7 +56,7 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 		welcome.setForeground(new Color(128,0,128));
 		welcome.setFont(new Font("TimeBurner", Font.ITALIC, 12));
 
-		acct = new JLabel("manager" + "!");
+		acct = new JLabel("dummy_acct" + "!");
 		// acct.setBounds(75, 80, 150, 20);
 		acct.setBounds(100, 3, 150, 20);
 		acct.setForeground(new Color(128,0,128));

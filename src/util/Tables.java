@@ -21,18 +21,18 @@ public class Tables {
 	public static String EXPENSES = "EXPENSES";
 	public static String SALES = "SALES";
 
-	public static String SUPER_FORM = "SUPER FORM";
+	public static String INVENTORY_SHEET = "INVENTORY SHEET";
 
 	public static String LOGS = "LOGS";
 
 	public static String[] productFormLabel = { "Name*", "Description",
-			"Available?*", "Display (in kilo)*",
-			"Display (in sack)*", "Quantity (in kg)*",
-			"Quantity (in sack)*", "Category*", "Allow Alert?*",
+			"Available?*","kilos per sack", "Quantity (in sack)*",
+			"Quantity (in kg)*", "Display (in sack)*",
+			"Display (in kg)*", "Category*", "Alert using sack?*",
 			"Alert on Quantity*" };
 
 	public static String[] profileFormLabel = { "Last Name*", "First Name*",
-		"Middle Name", "Address", "Contact Number" };
+		"Middle Name", "Address", "Contact Number", "Customer" };
 	
 	public static String[] accountFormLabel = { "Employee*", "Account Type*",
 			"Username*", "Password*" };
@@ -45,4 +45,29 @@ public class Tables {
 	
 	public static String[] cashAdvanceFormLabel = {"Date*", "Issued By*", "Issued For*", "Amount*", "Remarks", "Paid*"};
 
+	
+/*	import java.awt.*;
+
+	public class GetMouse
+	{
+		public static void main(String[] args)
+		{
+			while (true)
+			{
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				int x = (int) b.getX();
+				int y = (int) b.getY();
+				System.out.println(x + ":" + y);
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+	}*/
 }

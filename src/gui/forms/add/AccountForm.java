@@ -13,7 +13,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import util.DropdownLabel;
 import util.ErrorLabel;
+import util.SBButton;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
@@ -31,8 +33,12 @@ public class AccountForm extends SimplePanel {
 	private JComboBox employeeCombo;
 	private JTextField employeesField;
 	private DefaultComboBoxModel model;
+	
+	private int initY = 70;
 
 	private ErrorLabel error;
+	private DropdownLabel employee, acctT;
+	private SBButton fwd;
 	private String username, password, firstName, lastName, address;
 
 	private final int num = Tables.accountFormLabel.length;
@@ -46,10 +52,15 @@ public class AccountForm extends SimplePanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
+		fwd = new SBButton("forward.png", "forward.png", "Add new category");
+		
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
 		error = new ErrorLabel();
+		
+		employee = new DropdownLabel("Employee*");
+		acctT = new DropdownLabel("Account Type*");
 
 		acctType = new FormDropdown();
 
@@ -78,17 +89,22 @@ public class AccountForm extends SimplePanel {
 			if (i != 0 && i!=1) {
 				fields.add(new FormField(Tables.accountFormLabel[i], 100,
 						Color.white, Color.gray));
-				fields.get(ctr).setBounds(x1, 70 + y, 200, 25);
+				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
 				add(fields.get(ctr));
 
 				ctr++;
 			}
 
-			if (i == 0)
-				employeeCombo.setBounds(x1, 70 + y, 200, 25);
+			if (i == 0){
+				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
+				employee.setBounds(x1, initY + y - 7, 100, 11);
+				employeeCombo.setBounds(x1, initY + y + 5, 200, 20);
+			}
 			
-			if (i == 1)
-				acctType.setBounds(x1, 70 + y, 200, 25);
+			if (i == 1){
+				acctT.setBounds(x1, initY + y - 7, 100, 11);
+				acctType.setBounds(x1, initY + y + 5, 200, 20);
+			}
 			
 		}
 
@@ -109,6 +125,10 @@ public class AccountForm extends SimplePanel {
 
 			}
 		});
+		
+		add(fwd);
+		add(employee);
+		add(acctT);
 
 		add(clear);
 		add(save);
