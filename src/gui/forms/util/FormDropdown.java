@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -21,6 +22,7 @@ public class FormDropdown extends JComboBox {
 
 	public FormDropdown() {
 
+		//setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 		// setFont(new Font("Tahoma", Font.BOLD, 22));
 		init();
 	}
@@ -77,7 +79,7 @@ public class FormDropdown extends JComboBox {
 		});
 	}
 
-	static class ColorArrowUI extends BasicComboBoxUI {
+	public static class ColorArrowUI extends BasicComboBoxUI {
 
 		public static ComboBoxUI createUI(JComponent c) {
 			return new ColorArrowUI();

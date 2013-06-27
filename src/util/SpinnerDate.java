@@ -31,6 +31,7 @@ public class SpinnerDate extends JSpinner{
 			JFormattedTextField tf = defEditor.getTextField();
 			if (tf != null) {
 				tf.setForeground(new Color(25, 117, 117));
+				//tf.setForeground(Color.black);
 				tf.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}

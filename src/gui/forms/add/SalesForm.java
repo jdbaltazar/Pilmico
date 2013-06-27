@@ -1,6 +1,7 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
 
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,8 +28,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import util.ErrorLabel;
+import util.FormCheckbox;
+import util.MainFormField;
+import util.MainFormLabel;
 import util.SBButton;
 import util.SimplePanel;
 import util.SpinnerDate;
@@ -41,27 +47,34 @@ public class SalesForm extends SimplePanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel itemsPanel, row, p;
+	private JPanel productsPanel, row, p;
 	private JScrollPane productsPane;
-	private JComboBox itemCombo, accountCombo;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 125, UPPER_Y = 63, ITEMS_PANE_Y = 150;
+	private JComboBox itemCombo, customerCombo;
+	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 86, UPPER_Y = 63, ITEMS_PANE_Y = 111; //125
 	private Object[] array = {};
-	private JTextField itemComboField, accountComboField;
+	private JTextField itemComboField, customerComboField;
 	private JScrollBar sb;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private JTextField quantity;
 	private JButton deleteRow, addRow;
-	private JLabel issuedByLabel, issuedOnLabel;
+	private JLabel issuedByLabel;
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
 	private SpinnerDate date, issueDate;
 	private ImageIcon icon;
 	private SoyButton save;
-	private FormField issuedAt, rc_no, receipt_no, remarks;
+	private JLabel cashier;
+	private MainFormField issuedAt, rc_no, receipt_no, remarks;
+	private MainFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
+	
 	private DefaultComboBoxModel model;
+	private FormCheckbox showRequired;
+	private JPanel panel;
+	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
 	private String msg = "";
+	private SBButton fwd, fwd2;
 
 	public SalesForm() {
 		// TODO Auto-generated constructor stub
@@ -72,31 +85,42 @@ public class SalesForm extends SimplePanel {
 	};
 
 	private void init() {
+		
+		fwd = new SBButton("forward.png", "forward.png", "Add new customer");
+		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
+		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
+		
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setOpaque(false);
+		
+		scrollPane = new JScrollPane();
+		
+		showRequired = new FormCheckbox("Show required fields only");
 
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
 		issueDate = new SpinnerDate("MMM dd, yyyy hh:mm a");
 		
-		issuedAt = new FormField("Issued at", 100, Color.white, Color.GRAY);
-		rc_no = new FormField("RC_No", 100, Color.white, Color.GRAY);
-		receipt_no = new FormField("Receipt Number", 100, Color.white, Color.GRAY);
-		remarks = new FormField("Remarks", 100, Color.white, Color.GRAY);
-
-		model = new DefaultComboBoxModel(array);
-		accountCombo = new JComboBox(model);
-		accountCombo.setEditable(true);
-		accountCombo.setSelectedIndex(-1);
-		accountComboField = (JTextField) accountCombo.getEditor().getEditorComponent();
-		accountComboField.setText("");
-		accountComboField.addKeyListener(new ComboKeyHandler(accountCombo));
-
-		itemsPanel = new JPanel();
-		itemsPanel.setLayout(null);
-		itemsPanel.setOpaque(false);
-
-		issuedByLabel = new JLabel("Issued by:");
-		issuedOnLabel = new JLabel("Issued On:");
+		issuedaTLabel = new MainFormLabel("Issued at:");
+		issuedOnLabel = new MainFormLabel("Issued on:");
+		rcnumLabel = new MainFormLabel("RC_No:");
+		receiptLabel = new MainFormLabel("Receipt No.:");
+		dateLabel = new MainFormLabel("Date:");
+		
+		cashierLabel = new MainFormLabel("Cashier:");
+		customerLabel = new MainFormLabel("Customer:");
+		
+		cashier = new JLabel("Juan dela Cruz");
+		cashier.setOpaque(false);
+		cashier.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		cashier.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
+		
+		issuedAt = new MainFormField(200);
+		rc_no = new MainFormField(20);
+		receipt_no = new MainFormField(30);
+		remarks = new MainFormField(200);
 		
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
@@ -105,97 +129,197 @@ public class SalesForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		date.setBounds(510, 12, 150, 20);
+		model = new DefaultComboBoxModel(array);
+		customerCombo = new JComboBox(model);
+		customerCombo.setEditable(true);
+		customerCombo.setSelectedIndex(-1);
+		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
+		customerComboField.setText("");
+		customerComboField.setOpaque(false);
+		customerComboField.setBorder(BorderFactory.createEmptyBorder());
+		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
+		
+		customerCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		customerCombo.setUI(ColorArrowUI.createUI(this));
+		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		customerCombo.setOpaque(false);
+		
+		productsPanel = new JPanel();
+		productsPanel.setLayout(null);
+		productsPanel.setOpaque(false);
+		
+		productsPane = new JScrollPane(productsPanel);
 
-		accountCombo.setBounds(125, UPPER_Y+30, 160, 20);
-		accountCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-
-		productsPane = new JScrollPane(itemsPanel);
-
-		productsPane.setBounds(53, ITEMS_PANE_Y, ROW_WIDTH, 150);
+		
 		productsPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		productsPane.setOpaque(false);
 		productsPane.getViewport().setOpaque(false);
 		
-		rc_no.setBounds(53, UPPER_Y, 75, 22);
-		receipt_no.setBounds(135, UPPER_Y, 150, 22);
-
-		issuedByLabel.setBounds(53, UPPER_Y+30, 80, 20);
 		
-		issuedOnLabel.setBounds(380, UPPER_Y, 80, 20);
+		showRequired.setBounds(500, 12, 160, 20);
 		
-		issuedAt.setBounds(380, UPPER_Y+30, 230, 22);
+		dateLabel.setBounds(15, 12, 40, 20);
+		date.setBounds(60, 10, 150, 20);
 		
-		issueDate.setBounds(465, UPPER_Y, 150, 20);
+		cashierLabel.setBounds(260, 12, 60, 20);
+		cashier.setBounds(330, 10, 200, 20);
 		
-		remarks.setBounds(430, UPPER_Y+245, 200, 22);
+		rcnumLabel.setBounds(15, 35, 50, 20);
+		rc_no.setBounds(65, 32, 70, 20);
 		
-		issuedByLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
-		issuedOnLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
+		receiptLabel.setBounds(145, 35, 100, 20);
+		receipt_no.setBounds(235, 32, 140, 20);
+		
+		issuedOnLabel.setBounds(385, 35, 70, 20);
+		issueDate.setBounds(460, 32, 150, 20);
+		
+		customerLabel.setBounds(15, 58, 70, 20);
+		customerCombo.setBounds(85, 56, 220, 20);
+		fwd.setBounds(308, 58, 16, 16);
+		
+		issuedaTLabel.setBounds(335, 58, 70, 20);
+		issuedAt.setBounds(410, 56, 200, 20);
+		
+		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
+		
+		quantityKGLabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
+		quantitySACKlabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
+		priceKG.setBounds(184, LABEL_Y, 77, LABEL_HEIGHT);
+		priceSACK.setBounds(261, LABEL_Y, 85, LABEL_HEIGHT);
+		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
+		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
+		
+		fwd2.setBounds(482, LABEL_Y+5, 16, 16);
+		
+		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 150);
 
-		quantityKGLabel.setBounds(51, LABEL_Y, 77, LABEL_HEIGHT);
-		quantitySACKlabel.setBounds(128, LABEL_Y, 77, LABEL_HEIGHT);
-		priceKG.setBounds(205, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(282, LABEL_Y, 85, LABEL_HEIGHT);
+//		issuedByLabel = new JLabel("Issued by:");
+		
+		
+		//date.setBounds(510, 12, 150, 20);
 
-		productLabel.setBounds(367, LABEL_Y, 207, LABEL_HEIGHT);
+//		customerCombo.setBounds(125, UPPER_Y+30, 160, 20);
 
-		deleteLabel.setBounds(574, LABEL_Y, 42, LABEL_HEIGHT);
+		
+		
+		//rc_no.setBounds(53, UPPER_Y, 75, 22);
+		//receipt_no.setBounds(135, UPPER_Y, 150, 22);
 
-		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		addRow.setBounds(20, 95, 24, 24);
+//		issuedByLabel.setBounds(53, UPPER_Y+30, 80, 20);
+		
+//		issuedOnLabel.setBounds(380, UPPER_Y, 80, 20);
+		
+//		issuedAt.setBounds(380, UPPER_Y+30, 230, 22);
+		
+//		issueDate.setBounds(465, UPPER_Y, 150, 20);
+		
+//		remarks.setBounds(430, UPPER_Y+245, 200, 22);
+		
+//		issuedByLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
+//		issuedOnLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
+
+
 
 		addRow.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(itemsPanel.getComponentCount() * ROW_HEIGHT, itemsPanel.getComponentCount() + "", 1, Values.ADD));
-				itemsPanel.add(rowPanel.get(rowPanel.size() - 1));
+				rowPanel.add(new RowPanel(productsPanel.getComponentCount() * ROW_HEIGHT, productsPanel.getComponentCount() + "", 1, Values.ADD));
+				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 
-				itemsPanel.setPreferredSize(new Dimension(330, itemsPanel.getComponentCount() * ROW_HEIGHT));
-				itemsPanel.updateUI();
-				itemsPanel.revalidate();
+				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
+				productsPanel.updateUI();
+				productsPanel.revalidate();
 
-				Rectangle rect = new Rectangle(0, (int) itemsPanel.getPreferredSize().getHeight(), 10, 10);
-				itemsPanel.scrollRectToVisible(rect);
+				Rectangle rect = new Rectangle(0, (int) productsPanel.getPreferredSize().getHeight(), 10, 10);
+				productsPanel.scrollRectToVisible(rect);
 			}
 		});
 
-		add(date);
-		
-		add(issuedByLabel);
-		add(accountCombo);
-		
-		add(issuedAt);
+		add(showRequired);
 		
 		
-		add(receipt_no);
-		add(rc_no);
-		add(remarks);
+		panel.add(dateLabel);
+		panel.add(date);
 		
-		add(issuedOnLabel);
-		add(issueDate);
+		panel.add(cashierLabel);
+		panel.add(cashier);
 		
-		add(quantityKGLabel);
-		add(quantitySACKlabel);
-		add(priceKG);
-		add(priceSACK);
-		add(productLabel);
-		add(deleteLabel);
+		panel.add(rcnumLabel);
+		panel.add(rc_no);
 		
-		add(productsPane);
-//		add(addRow);
+		panel.add(receiptLabel);
+		panel.add(receipt_no);
+		
+		panel.add(issuedOnLabel);
+		panel.add(issueDate);
+		
+		panel.add(customerLabel);
+		panel.add(customerCombo);
+		panel.add(fwd);
+		
+		panel.add(issuedaTLabel);
+		panel.add(issuedAt);
+		
+		panel.add(fwd2);
+		panel.add(quantityKGLabel);
+		panel.add(quantitySACKlabel);
+		panel.add(priceKG);
+		panel.add(priceSACK);
+		panel.add(productLabel);
+		panel.add(deleteLabel);
+		
+		panel.add(addRow);
+		
+		panel.add(productsPane);
+		
+		/*
+		panel.add(receipt_no);
+		
+		panel.add(issuedByLabel);
+		panel.add(accountCombo);
+		
+		panel.add(issuedAt);
+		
+		
+		panel.add(rc_no);
+		panel.add(remarks);
+		
+		panel.add(issuedOnLabel);
+		panel.add(issueDate);
+		
+		panel.add(quantityKGLabel);
+		panel.add(quantitySACKlabel);
+		panel.add(priceKG);
+		panel.add(priceSACK);
+		panel.add(productLabel);
+		panel.add(deleteLabel);
+		
+		panel.add(productsPane);*/
+		
+//		panel.setBounds(20, 50, 150, 250);
+		
+		//panel.setPreferredSize(new Dimension(150, 250));
+		
+		scrollPane.setViewportView(panel);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		
+		scrollPane.setBounds(20, 45, 630, 310);
+		
+		add(scrollPane);
 	}
 
 	public void removeRow(int rowNum) {
 		System.out.println("pressed row button: " + rowNum);
 
-		itemsPanel.remove(rowNum);
-		itemsPanel.updateUI();
-		itemsPanel.revalidate();
+		productsPanel.remove(rowNum);
+		productsPanel.updateUI();
+		productsPanel.revalidate();
 
-		itemsPanel.setPreferredSize(new Dimension(330, itemsPanel.getComponentCount() * ROW_HEIGHT));
+		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
 	}
@@ -222,7 +346,7 @@ public class SalesForm extends SimplePanel {
 
 		error = new ErrorLabel();
 
-		save.setBounds(200, 315, 80, 30);
+		save.setBounds(275, 275, 80, 30);
 
 		error.setBounds(305, 340, 200, 30);
 
@@ -314,14 +438,14 @@ public class SalesForm extends SimplePanel {
 			}
 		});
 
-		add(save);
+		panel.add(save);
 		add(error);
 
 	}
 
 	private boolean isValidated() {
 
-		if (accountCombo.getModel().getSelectedItem() == null) {
+		if (customerCombo.getModel().getSelectedItem() == null) {
 
 			msg = "Select an account";
 
@@ -329,7 +453,7 @@ public class SalesForm extends SimplePanel {
 
 		}
 
-		if (itemsPanel.getComponentCount() == 0) {
+		if (productsPanel.getComponentCount() == 0) {
 
 			msg = "Put at least one item";
 
@@ -341,13 +465,13 @@ public class SalesForm extends SimplePanel {
 	}
 
 	private void clearForm() {
-		itemsPanel.removeAll();
+		productsPanel.removeAll();
 		rowPanel.clear();
 		refreshDate();
 
 		error.setText("");
 
-		accountCombo.setSelectedIndex(-1);
+		customerCombo.setSelectedIndex(-1);
 	}
 
 	public void refreshDate() {
@@ -359,12 +483,12 @@ public class SalesForm extends SimplePanel {
 		try {
 			//model = new DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
 
-			accountCombo.setModel(model);
+			customerCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		accountCombo.setSelectedIndex(-1);
+		customerCombo.setSelectedIndex(-1);
 	}
 }

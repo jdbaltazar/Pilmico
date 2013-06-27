@@ -23,11 +23,14 @@ public class TableHeaderLabel extends JLabel{
 	}
 	
 	private void init(){
-		setBorder(BorderFactory.createRaisedBevelBorder());
-		setFont(new Font("Harabara", Font.PLAIN, 16));
+//		setBorder(BorderFactory.createRaisedBevelBorder());
+		setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, Color.white));
+		setFont(new Font("Harabara", Font.PLAIN, 15));
 		setHorizontalAlignment(JLabel.CENTER);
 		setForeground(Color.white);
-		setBackground(new Color(119, 136, 153));
+		//setBackground(new Color(119, 136, 153));
+		//setBackground(Color.decode("#1E90FF"));
+		setBackground(Color.decode("#6495ED"));
 		setOpaque(true);
 		
 	}
