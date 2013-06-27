@@ -62,27 +62,28 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		String dbUserName = "root";
-		String dbPassword = "123456";
-		String dbName = "pilmico";
-		String path = "D://backup2.sql";
+		// String dbUserName = "root";
+		// String dbPassword = "123456";
+		// String dbName = "pilmico";
+		// String path = "D://backup2.sql";
+		//
+		// String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword +
+		// " --add-drop-database -B " + dbName + " -r " + path;
+		// Process runtimeProcess;
+		// try {
+		// System.out.println(executeCmd);// this out put works in mysql shell
+		// runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+		// int processComplete = runtimeProcess.waitFor();
+		//
+		// if (processComplete == 0) {
+		// System.out.println("Backup created successfully");
+		// } else {
+		// System.out.println("Could not create the backup");
+		// }
+		// } catch (Exception ex) {
+		// ex.printStackTrace();
+		// }
 
-		String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
-		Process runtimeProcess;
-		try {
-			System.out.println(executeCmd);// this out put works in mysql shell
-			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
-			int processComplete = runtimeProcess.waitFor();
-
-			if (processComplete == 0) {
-				System.out.println("Backup created successfully");
-			} else {
-				System.out.println("Could not create the backup");
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
 		// public static boolean restoreDB(String dbName, String dbUserName,
 		// String dbPassword, String source) {
 		//
@@ -191,6 +192,17 @@ public class Test {
 		// EmployeeManager emp = new EmployeePersistor();
 		//
 		// emp.addEmployee(e);
+
+		try {
+			List<Product> products = Manager.getInstance().productManager.getProducts();
+
+			for (Product p : products) {
+				System.out.println(p);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// } catch (Exception e) {
 		// // TODO Auto-generated catch block

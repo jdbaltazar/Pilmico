@@ -8,11 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.DailyExpensesDetail;
+import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
-import common.entity.expense.Expense;
-import common.entity.expense.ExpenseDetail;
-import common.entity.expense.ExpenseType;
 import common.entity.log.Log;
 import common.entity.log.LogType;
 import common.entity.note.Note;

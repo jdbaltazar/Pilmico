@@ -1,4 +1,4 @@
-package common.entity.expense;
+package common.entity.dailyexpenses;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class ExpenseType {
+public class DailyExpensesType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,11 +17,11 @@ public class ExpenseType {
 	@Column
 	private String name;
 
-	public ExpenseType() {
+	public DailyExpensesType() {
 		super();
 	}
 
-	public ExpenseType(String name) {
+	public DailyExpensesType(String name) {
 		super();
 		this.name = name;
 	}

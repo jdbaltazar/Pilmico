@@ -1,4 +1,4 @@
-package common.entity.expense;
+package common.entity.dailyexpenses;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ExpenseDetail {
+public class DailyExpensesDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,23 +18,24 @@ public class ExpenseDetail {
 	private int id;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "daily_expenses_id")
+	private DailyExpenses dailyExpenses;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "expense_id")
 	private Expense expense;
 
 	@Column
-	private String description;
-
-	@Column
 	private double amount;
 
-	public ExpenseDetail() {
+	public DailyExpensesDetail() {
 		super();
 	}
 
-	public ExpenseDetail(Expense expense, String description, double amount) {
+	public DailyExpensesDetail(DailyExpenses dailyExpenses, Expense expense, double amount) {
 		super();
+		this.dailyExpenses = dailyExpenses;
 		this.expense = expense;
-		this.description = description;
 		this.amount = amount;
 	}
 
@@ -46,20 +47,20 @@ public class ExpenseDetail {
 		this.id = id;
 	}
 
+	public DailyExpenses getDailyExpenses() {
+		return dailyExpenses;
+	}
+
+	public void setDailyExpenses(DailyExpenses dailyExpenses) {
+		this.dailyExpenses = dailyExpenses;
+	}
+
 	public Expense getExpense() {
 		return expense;
 	}
 
 	public void setExpense(Expense expense) {
 		this.expense = expense;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public double getAmount() {
