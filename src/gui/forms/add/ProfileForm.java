@@ -10,16 +10,18 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import util.ErrorLabel;
+import util.FormCheckbox;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ProfileForm extends SimplePanel{
+public class ProfileForm extends SimplePanel {
 	/**
 	 * 
 	 */
@@ -34,13 +36,15 @@ public class ProfileForm extends SimplePanel{
 	private ErrorLabel error;
 	private String username, password, firstName, lastName, address;
 
+	private JCheckBox cbox;
+
 	private final int num = Tables.profileFormLabel.length;
 
 	public ProfileForm() {
 		super("Add Profile");
 		addComponents();
 
-	//	Values.accountForm = this;
+		// Values.accountForm = this;
 	}
 
 	private void addComponents() {
@@ -50,14 +54,20 @@ public class ProfileForm extends SimplePanel{
 
 		error = new ErrorLabel();
 
+		cbox = new FormCheckbox("Customer");
 
 		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 50; i < num; i++, y += 52) {
+		for (int i = 0, y = 0, x1 = 48; i < num; i++, y += 43) {
 
+			if (i == (num - 1)) {
+				cbox.setBounds(x1, 55 + y, 200, 25);
+				add(cbox);
+			} else {
 				fields.add(new FormField(Tables.profileFormLabel[i], 100,
 						Color.white, Color.gray));
 				fields.get(i).setBounds(x1, 55 + y, 200, 25);
 				add(fields.get(i));
+			}
 
 		}
 
