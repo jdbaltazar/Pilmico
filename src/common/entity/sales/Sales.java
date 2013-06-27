@@ -27,40 +27,98 @@ public class Sales {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "Date")
+	@Column(name = "date")
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "account_id")
-	private Account account;
+	@JoinColumn(name = "customer_id")
+	private Account customer;
+
+	@Column(name = "rc_no")
+	private String rcNo;
+
+	@Column(name = "issued_at")
+	private String issuedAt;
+
+	@Column(name = "issued_on")
+	@Temporal(TemporalType.DATE)
+	private Date issuedOn;
+
+	@Column(name = "receipt_no")
+	private String receiptNo;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "cashier")
+	private Account cashier;
 
 	@Column
 	private boolean valid;
 
 	@Column
-	private String remark;
+	private String remarks;
 
-	@OneToMany(mappedBy = "sales", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Column
+	private boolean accounted;
+
+	@OneToMany(mappedBy = "sales", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<SalesDetail> salesDetails = new HashSet<SalesDetail>();
 
 	public Sales() {
 		super();
 	}
 
-	public Sales(Date date, Account account, boolean valid) {
+	public Sales(Date date, Account customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier, boolean valid,
+			String remarks, boolean accounted, Set<SalesDetail> salesDetails) {
 		super();
 		this.date = date;
-		this.account = account;
+		this.customer = customer;
+		this.rcNo = rcNo;
+		this.issuedAt = issuedAt;
+		this.issuedOn = issuedOn;
+		this.receiptNo = receiptNo;
+		this.cashier = cashier;
 		this.valid = valid;
+		this.remarks = remarks;
+		this.accounted = accounted;
+		this.salesDetails = salesDetails;
 	}
 
-	public Sales(Date date, Account account, boolean valid, String remark) {
+	public Sales(Date date, Account customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier, boolean valid,
+			String remarks, boolean accounted) {
 		super();
 		this.date = date;
-		this.account = account;
+		this.customer = customer;
+		this.rcNo = rcNo;
+		this.issuedAt = issuedAt;
+		this.issuedOn = issuedOn;
+		this.receiptNo = receiptNo;
+		this.cashier = cashier;
 		this.valid = valid;
-		this.remark = remark;
+		this.remarks = remarks;
+		this.accounted = accounted;
+	}
+
+	public Sales(int id, Date date, Account customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.customer = customer;
+		this.rcNo = rcNo;
+		this.issuedAt = issuedAt;
+		this.issuedOn = issuedOn;
+		this.receiptNo = receiptNo;
+		this.cashier = cashier;
+		this.valid = true;
+		this.accounted = false;
+	}
+
+	public Sales(Date date, Account cashier, boolean valid, boolean accounted) {
+		super();
+		this.date = date;
+		this.cashier = cashier;
+		this.valid = valid;
+		this.accounted = accounted;
 	}
 
 	public int getId() {
@@ -79,14 +137,6 @@ public class Sales {
 		this.date = date;
 	}
 
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
 	public boolean isValid() {
 		return valid;
 	}
@@ -95,16 +145,72 @@ public class Sales {
 		this.valid = valid;
 	}
 
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
 	public Set<SalesDetail> getSalesDetails() {
 		return salesDetails;
+	}
+
+	public Account getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Account customer) {
+		this.customer = customer;
+	}
+
+	public String getRcNo() {
+		return rcNo;
+	}
+
+	public void setRcNo(String rcNo) {
+		this.rcNo = rcNo;
+	}
+
+	public String getIssuedAt() {
+		return issuedAt;
+	}
+
+	public void setIssuedAt(String issuedAt) {
+		this.issuedAt = issuedAt;
+	}
+
+	public Date getIssuedOn() {
+		return issuedOn;
+	}
+
+	public void setIssuedOn(Date issuedOn) {
+		this.issuedOn = issuedOn;
+	}
+
+	public String getReceiptNo() {
+		return receiptNo;
+	}
+
+	public void setReceiptNo(String receiptNo) {
+		this.receiptNo = receiptNo;
+	}
+
+	public Account getCashier() {
+		return cashier;
+	}
+
+	public void setCashier(Account cashier) {
+		this.cashier = cashier;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public boolean isAccounted() {
+		return accounted;
+	}
+
+	public void setAccounted(boolean accounted) {
+		this.accounted = accounted;
 	}
 
 	public void setSalesDetails(Set<SalesDetail> salesDetails) {

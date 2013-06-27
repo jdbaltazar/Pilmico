@@ -21,7 +21,7 @@ import common.entity.profile.Account;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
 
-@Entity(name = "Delivery")
+@Entity
 public class Delivery {
 
 	@Id
@@ -41,6 +41,15 @@ public class Delivery {
 	@JoinColumn(name = "store")
 	private Store store;
 
+	@Column(name = "delivery_no")
+	private String deliveryNo;
+
+	@Column(name = "po_no")
+	private String poNo;
+
+	@Column
+	private String terms;
+
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "received_by")
 	private Account receivedBy;
@@ -51,6 +60,9 @@ public class Delivery {
 	@Column
 	private String remarks;
 
+	@Column
+	private boolean accounted;
+
 	@OneToMany(mappedBy = "delivery", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<DeliveryDetail> deliveryDetails = new HashSet<DeliveryDetail>();
 
@@ -58,23 +70,57 @@ public class Delivery {
 		super();
 	}
 
-	public Delivery(Date date, Store store, Account receivedBy, boolean valid) {
-		super();
-		this.date = date;
-		this.store = store;
-		this.receivedBy = receivedBy;
-		this.valid = valid;
-	}
-
-	public Delivery(Date date, Supplier supplier, Store store, Account receivedBy, boolean valid, String remarks, Set<DeliveryDetail> deliveryDetails) {
+	public Delivery(Date date, Supplier supplier, Store store, String deliveryNo, String poNo, String terms, Account receivedBy, boolean valid,
+			String remarks, boolean accounted, Set<DeliveryDetail> deliveryDetails) {
 		super();
 		this.date = date;
 		this.supplier = supplier;
 		this.store = store;
+		this.deliveryNo = deliveryNo;
+		this.poNo = poNo;
+		this.terms = terms;
 		this.receivedBy = receivedBy;
 		this.valid = valid;
 		this.remarks = remarks;
+		this.accounted = accounted;
 		this.deliveryDetails = deliveryDetails;
+	}
+
+	public Delivery(Date date, Supplier supplier, Store store, String deliveryNo, String poNo, String terms, Account receivedBy, boolean valid,
+			String remarks, boolean accounted) {
+		super();
+		this.date = date;
+		this.supplier = supplier;
+		this.store = store;
+		this.deliveryNo = deliveryNo;
+		this.poNo = poNo;
+		this.terms = terms;
+		this.receivedBy = receivedBy;
+		this.valid = valid;
+		this.remarks = remarks;
+		this.accounted = accounted;
+	}
+
+	public Delivery(Date date, Supplier supplier, Store store, String deliveryNo, String poNo, String terms, Account receivedBy) {
+		super();
+		this.date = date;
+		this.supplier = supplier;
+		this.store = store;
+		this.deliveryNo = deliveryNo;
+		this.poNo = poNo;
+		this.terms = terms;
+		this.receivedBy = receivedBy;
+		this.valid = true;
+		this.accounted = false;
+	}
+
+	public Delivery(Date date, Store store, Account receivedBy, boolean valid, boolean accounted) {
+		super();
+		this.date = date;
+		this.store = store;
+		this.receivedBy = receivedBy;
+		this.valid = valid;
+		this.accounted = accounted;
 	}
 
 	public int getId() {
@@ -131,6 +177,38 @@ public class Delivery {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getDeliveryNo() {
+		return deliveryNo;
+	}
+
+	public void setDeliveryNo(String deliveryNo) {
+		this.deliveryNo = deliveryNo;
+	}
+
+	public String getPoNo() {
+		return poNo;
+	}
+
+	public void setPoNo(String poNo) {
+		this.poNo = poNo;
+	}
+
+	public String getTerms() {
+		return terms;
+	}
+
+	public void setTerms(String terms) {
+		this.terms = terms;
+	}
+
+	public boolean isAccounted() {
+		return accounted;
+	}
+
+	public void setAccounted(boolean accounted) {
+		this.accounted = accounted;
 	}
 
 	public Set<DeliveryDetail> getDeliveryDetails() {

@@ -42,7 +42,7 @@ public class Employee {
 	@Column
 	private String remarks;
 
-	@Column(name = "ending_date")
+	@Column(name = "termination_date")
 	@Temporal(TemporalType.DATE)
 	private Date terminationDate;
 

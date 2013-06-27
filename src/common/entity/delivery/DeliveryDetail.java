@@ -24,29 +24,33 @@ public class DeliveryDetail {
 	private Delivery delivery;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "item_id")
-	private Product item;
+	@JoinColumn(name = "product_id")
+	private Product product;
 
-	@Column
-	private double quantity;
+	@Column(name = "price_per_kilo")
+	private double pricePerKilo;
+
+	@Column(name = "price_per_sack")
+	private double pricePerSack;
+
+	@Column(name = "quantity_per_kilo")
+	private double quantityPerKilo;
+
+	@Column(name = "quantity_per_sack")
+	private double quantityPerSack;
 
 	public DeliveryDetail() {
 		super();
 	}
 
-	public DeliveryDetail(Delivery delivery, Product item, double quantity) {
+	public DeliveryDetail(Delivery delivery, Product product, double pricePerKilo, double pricePerSack, double quantityPerKilo, double quantityPerSack) {
 		super();
 		this.delivery = delivery;
-		this.item = item;
-		this.quantity = quantity;
-	}
-
-	public Delivery getDelivery() {
-		return delivery;
-	}
-
-	public void setDelivery(Delivery delivery) {
-		this.delivery = delivery;
+		this.product = product;
+		this.pricePerKilo = pricePerKilo;
+		this.pricePerSack = pricePerSack;
+		this.quantityPerKilo = quantityPerKilo;
+		this.quantityPerSack = quantityPerSack;
 	}
 
 	public int getId() {
@@ -57,20 +61,56 @@ public class DeliveryDetail {
 		this.id = id;
 	}
 
-	public Product getItem() {
-		return item;
+	public Delivery getDelivery() {
+		return delivery;
 	}
 
-	public void setItem(Product item) {
-		this.item = item;
+	public void setDelivery(Delivery delivery) {
+		this.delivery = delivery;
 	}
 
-	public double getQuantity() {
-		return quantity;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public double getPricePerKilo() {
+		return pricePerKilo;
+	}
+
+	public void setPricePerKilo(double pricePerKilo) {
+		this.pricePerKilo = pricePerKilo;
+	}
+
+	public double getPricePerSack() {
+		return pricePerSack;
+	}
+
+	public void setPricePerSack(double pricePerSack) {
+		this.pricePerSack = pricePerSack;
+	}
+
+	public double getQuantityPerKilo() {
+		return quantityPerKilo;
+	}
+
+	public void setQuantityPerKilo(double quantityPerKilo) {
+		this.quantityPerKilo = quantityPerKilo;
+	}
+
+	public double getQuantityPerSack() {
+		return quantityPerSack;
+	}
+
+	public void setQuantityPerSack(double quantityPerSack) {
+		this.quantityPerSack = quantityPerSack;
+	}
+
+	public String toString() {
+		return id + "";
 	}
 
 }

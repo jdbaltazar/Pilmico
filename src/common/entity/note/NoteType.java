@@ -9,11 +9,6 @@ import javax.persistence.Id;
 @Entity(name = "NoteType")
 public class NoteType {
 
-	public static final String VERY_IMPORTANT = "Very Important";
-	public static final String IMPORTANT = "Important";
-	public static final String REMINDER = "Reminder";
-	public static final String OTHERS = "Others";
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

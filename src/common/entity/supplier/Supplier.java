@@ -1,10 +1,15 @@
 package common.entity.supplier;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import common.entity.profile.Person;
 
 @Entity
 public class Supplier {
@@ -26,8 +31,9 @@ public class Supplier {
 	@Column(name = "contact_no")
 	private String contactNo;
 
-	@Column(name = "contact_person")
-	private String contactPerson;
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "contact_person")
+	private Person contactPerson;
 
 	@Column(name = "remarks")
 	private String remarks;
@@ -41,7 +47,7 @@ public class Supplier {
 		this.name = name;
 	}
 
-	public Supplier(String name, String address, String tin, String contactNo, String contactPerson, String remarks) {
+	public Supplier(String name, String address, String tin, String contactNo, Person contactPerson, String remarks) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -49,6 +55,12 @@ public class Supplier {
 		this.contactNo = contactNo;
 		this.contactPerson = contactPerson;
 		this.remarks = remarks;
+	}
+
+	public Supplier(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
 	}
 
 	public int getId() {
@@ -91,11 +103,11 @@ public class Supplier {
 		this.contactNo = contactNo;
 	}
 
-	public String getContactPerson() {
+	public Person getContactPerson() {
 		return contactPerson;
 	}
 
-	public void setContactPerson(String contactPerson) {
+	public void setContactPerson(Person contactPerson) {
 		this.contactPerson = contactPerson;
 	}
 
