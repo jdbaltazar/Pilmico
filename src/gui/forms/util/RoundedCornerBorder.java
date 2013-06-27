@@ -17,7 +17,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.border.AbstractBorder;
 
-class RoundedCornerBorder extends AbstractBorder {
+public class RoundedCornerBorder extends AbstractBorder {
 	private Color bkcolor = null, bkcolor2 = Color.GRAY;
 	
 	public RoundedCornerBorder(Color bkcolor, Color bkcolor2){
