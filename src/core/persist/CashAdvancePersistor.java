@@ -2,7 +2,7 @@ package core.persist;
 
 import java.util.List;
 
-import common.entity.cashadvance.CashAdvance;
+import common.entity.salary.CashAdvance;
 import common.manager.CashAdvanceManager;
 
 public class CashAdvancePersistor extends Persistor implements CashAdvanceManager {

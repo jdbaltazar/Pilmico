@@ -7,10 +7,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import common.entity.cashadvance.CashAdvance;
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.DailyExpensesType;
+import common.entity.dailyexpenses.Expense;
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
 import common.entity.log.Log;
@@ -23,8 +26,11 @@ import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 import common.entity.profile.Employee;
+import common.entity.profile.EmploymentStatus;
+import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
+import common.entity.salary.CashAdvance;
 import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
@@ -42,7 +48,7 @@ public class HibernateUtil {
 		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
 		// mysql account credectials
-		if (!tryToBuildSessionFactory("root", ""))
+		if (!tryToBuildSessionFactory("root", "123456"))
 			throw new RuntimeException("connection unsuccessful");
 	}
 
@@ -64,34 +70,38 @@ public class HibernateUtil {
 			Configuration conf = new Configuration();
 			conf.setProperties(p);
 
-			// entities
-			
+			conf.addAnnotatedClass(LogType.class);
+			conf.addAnnotatedClass(Log.class);
+
+			conf.addAnnotatedClass(Person.class);
+			conf.addAnnotatedClass(EmploymentStatus.class);
+			conf.addAnnotatedClass(Employee.class);
+			conf.addAnnotatedClass(AccountType.class);
+			conf.addAnnotatedClass(Account.class);
+
+			conf.addAnnotatedClass(NoteType.class);
+			conf.addAnnotatedClass(Note.class);
+
 			conf.addAnnotatedClass(Product.class);
 			conf.addAnnotatedClass(Price.class);
 			conf.addAnnotatedClass(Category.class);
-			
-			
-			// conf.addAnnotatedClass(LogType.class);
-			// conf.addAnnotatedClass(Log.class);
-			// conf.addAnnotatedClass(AccountType.class);
-			// conf.addAnnotatedClass(Account.class);
-			// conf.addAnnotatedClass(Employee.class);
-			// conf.addAnnotatedClass(Supplier.class);
-			// conf.addAnnotatedClass(Store.class);
-			// conf.addAnnotatedClass(NoteType.class);
-			// conf.addAnnotatedClass(Note.class);
-			//
-			// conf.addAnnotatedClass(DeliveryDetail.class);
-			// conf.addAnnotatedClass(Delivery.class);
-			// conf.addAnnotatedClass(Sales.class);
-			// conf.addAnnotatedClass(SalesDetail.class);
-			// conf.addAnnotatedClass(ExpenseType.class);
-			// conf.addAnnotatedClass(Expense.class);
-			// conf.addAnnotatedClass(ExpenseDetail.class);
-			// conf.addAnnotatedClass(ExpenseType.class);
-			// conf.addAnnotatedClass(CashAdvance.class);
-			// conf.addAnnotatedClass(PullOut.class);
-			// conf.addAnnotatedClass(PullOutDetail.class);
+
+			conf.addAnnotatedClass(Store.class);
+			conf.addAnnotatedClass(Supplier.class);
+
+			conf.addAnnotatedClass(DeliveryDetail.class);
+			conf.addAnnotatedClass(Delivery.class);
+			conf.addAnnotatedClass(SalesDetail.class);
+			conf.addAnnotatedClass(Sales.class);
+			conf.addAnnotatedClass(Expense.class);
+			conf.addAnnotatedClass(Person.class);
+			conf.addAnnotatedClass(DailyExpensesType.class);
+			conf.addAnnotatedClass(DailyExpensesDetail.class);
+			conf.addAnnotatedClass(DailyExpenses.class);
+
+			conf.addAnnotatedClass(ARPayment.class);
+			conf.addAnnotatedClass(AccountReceivableDetail.class);
+			conf.addAnnotatedClass(AccountReceivable.class);
 
 			sessionFactory = conf.buildSessionFactory();
 

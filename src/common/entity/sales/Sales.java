@@ -223,16 +223,15 @@ public class Sales {
 	}
 
 	public void removeSalesDetail(SalesDetail salesDetail) {
-		for (SalesDetail sal : salesDetails) {
-			if (sal.equals(salesDetail))
-				salesDetails.remove(sal);
-		}
+		removeSalesDetail(salesDetail.getId());
 	}
 
 	public void removeSalesDetail(int salesDetailId) {
 		for (SalesDetail sal : salesDetails) {
-			if (sal.getId() == salesDetailId)
+			if (sal.getId() == salesDetailId) {
 				salesDetails.remove(sal);
+				break;
+			}
 		}
 	}
 

@@ -32,7 +32,7 @@ public class Employee {
 	@JoinColumn(name = "status_id")
 	private EmploymentStatus status;
 
-	@Column(name = "termination_date")
+	@Column(name = "starting_date")
 	@Temporal(TemporalType.DATE)
 	private Date startingDate;
 

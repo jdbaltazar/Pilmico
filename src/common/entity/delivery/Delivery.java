@@ -225,16 +225,15 @@ public class Delivery {
 	}
 
 	public void removeDeliveryDetail(DeliveryDetail deliveryDetail) {
-		for (DeliveryDetail d : deliveryDetails) {
-			if (d.equals(deliveryDetail))
-				deliveryDetails.remove(d);
-		}
+		removeDeliveryDetail(deliveryDetail.getId());
 	}
 
 	public void removeDeliveryDetail(int deliveryDetailId) {
 		for (DeliveryDetail deliveryDetail : deliveryDetails) {
-			if (deliveryDetail.getId() == deliveryDetailId)
+			if (deliveryDetail.getId() == deliveryDetailId) {
 				deliveryDetails.remove(deliveryDetail);
+				break;
+			}
 		}
 	}
 

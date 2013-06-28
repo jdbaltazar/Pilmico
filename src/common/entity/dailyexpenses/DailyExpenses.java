@@ -167,30 +167,21 @@ public class DailyExpenses {
 		this.dailyExpenseDetails = dailyExpenseDetails;
 	}
 
-	public Set<DailyExpensesDetail> getExpenseDetails() {
-		return dailyExpenseDetails;
-	}
-
-	public void setExpenseDetails(Set<DailyExpensesDetail> expenseDetails) {
-		this.dailyExpenseDetails = expenseDetails;
-	}
-
-	public void addExpenseDetail(DailyExpensesDetail expenseDetail) {
+	public void addDailyExpenseDetail(DailyExpensesDetail expenseDetail) {
 		expenseDetail.setDailyExpenses(this);
 		dailyExpenseDetails.add(expenseDetail);
 	}
 
-	public void removeExpenseDetail(DailyExpensesDetail expenseDetail) {
-		for (DailyExpensesDetail d : dailyExpenseDetails) {
-			if (d.equals(expenseDetail))
-				dailyExpenseDetails.remove(d);
-		}
+	public void removeDailyExpenseDetail(DailyExpensesDetail expenseDetail) {
+		removeDailyExpenseDetail(expenseDetail.getId());
 	}
 
-	public void removeExpenseDetail(int expenseDetailId) {
+	public void removeDailyExpenseDetail(int expenseDetailId) {
 		for (DailyExpensesDetail expenseDetail : dailyExpenseDetails) {
-			if (expenseDetail.getId() == expenseDetailId)
+			if (expenseDetail.getId() == expenseDetailId) {
 				dailyExpenseDetails.remove(expenseDetail);
+				break;
+			}
 		}
 	}
 

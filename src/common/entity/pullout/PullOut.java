@@ -31,36 +31,51 @@ public class PullOut {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "issued_by")
+	private Account issuedBy;
+
 	@Column
 	private boolean valid;
 
 	@Column
 	private String remarks;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "issued_by")
-	private Account issuedBy;
+	@Column
+	private boolean accounted;
 
-	@OneToMany(mappedBy = "pullOut", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pullOut", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PullOutDetail> pullOutDetails = new HashSet<PullOutDetail>();
 
 	public PullOut() {
 		super();
 	}
 
-	public PullOut(Date date, boolean valid, Account issuedBy) {
+	public PullOut(Date date, Account issuedBy, boolean valid, String remarks, boolean accounted, Set<PullOutDetail> pullOutDetails) {
 		super();
 		this.date = date;
-		this.valid = valid;
 		this.issuedBy = issuedBy;
-	}
-
-	public PullOut(Date date, boolean valid, String remarks, Account issuedBy) {
-		super();
-		this.date = date;
 		this.valid = valid;
 		this.remarks = remarks;
+		this.accounted = accounted;
+		this.pullOutDetails = pullOutDetails;
+	}
+
+	public PullOut(Date date, Account issuedBy, boolean valid, String remarks, boolean accounted) {
+		super();
+		this.date = date;
 		this.issuedBy = issuedBy;
+		this.valid = valid;
+		this.remarks = remarks;
+		this.accounted = accounted;
+	}
+
+	public PullOut(Date date, Account issuedBy) {
+		super();
+		this.date = date;
+		this.issuedBy = issuedBy;
+		this.valid = true;
+		this.accounted = false;
 	}
 
 	public int getId() {
@@ -103,6 +118,14 @@ public class PullOut {
 		this.issuedBy = issuedBy;
 	}
 
+	public boolean isAccounted() {
+		return accounted;
+	}
+
+	public void setAccounted(boolean accounted) {
+		this.accounted = accounted;
+	}
+
 	public Set<PullOutDetail> getPullOutDetails() {
 		return pullOutDetails;
 	}
@@ -117,12 +140,7 @@ public class PullOut {
 	}
 
 	public void removePullOutDetail(PullOutDetail pullOutDetail) {
-		for (PullOutDetail pod : pullOutDetails) {
-			if (pod.getId() == pullOutDetail.getId()) {
-				pullOutDetails.remove(pod);
-				break;
-			}
-		}
+		removePullOutDetail(pullOutDetail.getId());
 	}
 
 	public void removePullOutDetail(int pullOutDetailId) {

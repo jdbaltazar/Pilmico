@@ -1,4 +1,4 @@
-package common.entity.pullout;
+package common.entity.accountreceivable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import common.entity.product.Product;
 
 @Entity
-public class PullOutDetail {
+public class AccountReceivableDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,8 +20,8 @@ public class PullOutDetail {
 	private int id;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "pullout_id")
-	private PullOut pullOut;
+	@JoinColumn(name = "account_receivable_id")
+	private AccountReceivable accountReceivable;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "product_id")
@@ -39,13 +39,14 @@ public class PullOutDetail {
 	@Column(name = "quantity_per_sack")
 	private double quantityPerSack;
 
-	public PullOutDetail() {
+	public AccountReceivableDetail() {
 		super();
 	}
 
-	public PullOutDetail(PullOut pullOut, Product product, double pricePerKilo, double pricePerSack, double quantityPerKilo, double quantityPerSack) {
+	public AccountReceivableDetail(AccountReceivable accountReceivable, Product product, double pricePerKilo, double pricePerSack,
+			double quantityPerKilo, double quantityPerSack) {
 		super();
-		this.pullOut = pullOut;
+		this.accountReceivable = accountReceivable;
 		this.product = product;
 		this.pricePerKilo = pricePerKilo;
 		this.pricePerSack = pricePerSack;
@@ -61,12 +62,12 @@ public class PullOutDetail {
 		this.id = id;
 	}
 
-	public PullOut getPullOut() {
-		return pullOut;
+	public AccountReceivable getAccountReceivable() {
+		return accountReceivable;
 	}
 
-	public void setPullOut(PullOut pullOut) {
-		this.pullOut = pullOut;
+	public void setAccountReceivable(AccountReceivable accountReceivable) {
+		this.accountReceivable = accountReceivable;
 	}
 
 	public Product getProduct() {
@@ -107,6 +108,10 @@ public class PullOutDetail {
 
 	public void setQuantityPerSack(double quantityPerSack) {
 		this.quantityPerSack = quantityPerSack;
+	}
+
+	public String toString() {
+		return id + "";
 	}
 
 }

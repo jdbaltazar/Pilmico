@@ -2,7 +2,7 @@ package common.manager;
 
 import java.util.List;
 
-import common.entity.cashadvance.CashAdvance;
+import common.entity.salary.CashAdvance;
 
 public interface CashAdvanceManager {
 
