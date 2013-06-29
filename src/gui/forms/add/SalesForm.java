@@ -50,7 +50,7 @@ public class SalesForm extends SimplePanel {
 	private JPanel productsPanel, row, p;
 	private JScrollPane productsPane;
 	private JComboBox itemCombo, customerCombo;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 86, UPPER_Y = 63, ITEMS_PANE_Y = 111; //125
+	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 91, UPPER_Y = 63, ITEMS_PANE_Y = 116; //125
 	private Object[] array = {};
 	private JTextField itemComboField, customerComboField;
 	private JScrollBar sb;
@@ -82,6 +82,7 @@ public class SalesForm extends SimplePanel {
 		init();
 		addComponents();
 
+		Values.salesForm = this;
 	};
 
 	private void init() {
@@ -114,7 +115,7 @@ public class SalesForm extends SimplePanel {
 		
 		cashier = new JLabel("Juan dela Cruz");
 		cashier.setOpaque(false);
-		cashier.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		cashier.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		cashier.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		
 		issuedAt = new MainFormField(200);
@@ -183,16 +184,16 @@ public class SalesForm extends SimplePanel {
 		
 		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
 		
-		quantityKGLabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
-		quantitySACKlabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
-		priceKG.setBounds(184, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(261, LABEL_Y, 85, LABEL_HEIGHT);
+		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
+		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
+		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
+		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
 		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
 		
 		fwd2.setBounds(482, LABEL_Y+5, 16, 16);
 		
-		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 150);
+		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
 //		issuedByLabel = new JLabel("Issued by:");
 		
@@ -307,7 +308,7 @@ public class SalesForm extends SimplePanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		
-		scrollPane.setBounds(20, 45, 630, 310);
+		scrollPane.setBounds(20, 42, 630, 310);
 		
 		add(scrollPane);
 	}

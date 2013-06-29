@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.util.regex.Pattern;
 
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -35,12 +36,17 @@ public class NumericTextField extends JTextField {
 	private void init() {
 		// TODO Auto-generated method stub
 		
-		if(c!=null)
+		if(c!=null){
 			setBorder(new RoundedCornerBorder(c, c2));
-		else
+			setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		}
+		else{
 			setBorder(new RoundedCornerBorder());
+			setHorizontalAlignment(SwingConstants.CENTER);
+			setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
-		setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		}
+		
 	}
 
 

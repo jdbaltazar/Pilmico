@@ -14,7 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import util.JNumericField;
 import util.SBButton;
+import util.Tables;
 import util.Values;
 
 public class RowPanel extends JPanel {
@@ -23,9 +25,10 @@ public class RowPanel extends JPanel {
 	private String command = "";
 
 	private JComboBox itemCombo;
-	private int ROW_WIDTH = 350, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
+	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
 	private JTextField itemComboField;
-	private NumericTextField quantity;
+	private NumericTextField quantitySack, quantityKG;
+	private JNumericField priceSack, priceKG;
 
 	private JButton deleteRow, addRow;
 	private JPanel row;
@@ -62,9 +65,13 @@ public class RowPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		row = new JPanel();
+		deleteRow = new SBButton("cancel.png", "cancel.png", "Remove");
 		//if(mode == Values.EDIT)
 			//row.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1,Color.LIGHT_GRAY));
-		row.setBackground(new Color(245, 245, 220));
+
+//		row.setBackground(new Color(245, 245, 220));
+		row.setBackground(Color.decode("#FFFFE6"));
+		
 		 //row.setBorder(BorderFactory.createEtchedBorder());
 
 		row.setLayout(null);
@@ -90,12 +97,16 @@ public class RowPanel extends JPanel {
 		itemComboField.setText("");
 		itemComboField.addKeyListener(new ComboKeyHandler(itemCombo));
 
-		quantity = new NumericTextField("", 6, null, null);
-		quantity.setText(quant + "");
-		quantity.setHorizontalAlignment(SwingConstants.CENTER);
-		quantity.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
-
-		deleteRow = new SBButton("cancel.png", "cancel.png", "Remove");
+		quantitySack = new NumericTextField("", 10, null, null);
+		quantityKG = new NumericTextField("", 10, null, null);
+		priceSack = new JNumericField(10,JNumericField.DECIMAL,true);
+		priceKG = new JNumericField(10,JNumericField.DECIMAL,true);
+		
+		priceSack.setPrecision(2);
+		priceKG.setPrecision(2);
+		
+//		quantitySack.setText(quant + "");
+		
 
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
@@ -104,40 +115,46 @@ public class RowPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-				/*switch(mode){
+				switch(mode){
 				
 				case Values.ADD:
-					if (Values.tableUtilPanel.getLabel().contains("SALES ORDER"))
-						Values.salesOrderForm.removeRow(Integer.parseInt(e.getActionCommand()));
-					else
-						Values.stockPurchasePanel.removeRow(Integer.parseInt(e.getActionCommand()));
+					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES))
+						Values.salesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+					/*else
+						Values.stockPurchasePanel.removeRow(Integer.parseInt(e.getActionCommand()));*/
 					break;
 					
 				case Values.EDIT:
-					if (Values.tableUtilPanel.getLabel().contains("SALES ORDER"))
+					/*if (Values.tableUtilPanel.getLabel().contains("SALES ORDER"))
 						Values.editSalesOrder.removeRow(Integer.parseInt(e.getActionCommand()));
 					else
-						Values.editStockPurchase.removeRow(Integer.parseInt(e.getActionCommand()));
+						Values.editStockPurchase.removeRow(Integer.parseInt(e.getActionCommand()));*/
 					break;
 					
 				default:
 					break;
-				}*/
+				}
 				
 			}
 		});
 
-		quantity.setBounds(10, 7, 52, 20);
+		quantitySack.setBounds(10, 7, 52, 20);
+		quantityKG.setBounds(87, 7, 52, 20);
+		priceSack.setBounds(167, 7, 57, 20);
+		priceKG.setBounds(249, 7, 57, 20);
 		
 		if(mode == Values.ADD)
-			itemCombo.setBounds(85, 7, 190, 20);
+			itemCombo.setBounds(323, 7, 190, 20);
 		else
 			itemCombo.setBounds(87, 7, 235, 20);
 		
-		deleteRow.setBounds(300, 7, 16, 16);
+		deleteRow.setBounds(533, 9, 16, 16);
 
 		
-		row.add(quantity);
+		row.add(quantitySack);
+		row.add(quantityKG);
+		row.add(priceSack);
+		row.add(priceKG);
 		row.add(itemCombo);
 		
 		if(mode!=Values.EDIT)
@@ -175,7 +192,7 @@ public class RowPanel extends JPanel {
 	}
 
 	public int getQuantity() {
-		return Integer.parseInt(quantity.getText());
+		return Integer.parseInt(quantitySack.getText());
 	}
 
 	public JButton getDeleteRow() {

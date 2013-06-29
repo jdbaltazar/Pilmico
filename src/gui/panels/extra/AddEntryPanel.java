@@ -112,7 +112,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		supplierForm.setBounds(198, 80, 400, 320);
 //		stockPurchase.setBounds(180, 40, 450, 400);
 		
-		sales.setBounds(50, 55, 670, 370);
+		sales.setBounds(70, 55, 670, 370);
 		expensesForm.setBounds(100, 105, 600, 270);
 		
 		profileForm.setBounds(225, 45, 290, 390);
