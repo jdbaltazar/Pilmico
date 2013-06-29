@@ -6,6 +6,7 @@ import gui.MainFrame;
 import gui.TopPanel;
 import gui.forms.add.AccountForm;
 import gui.forms.add.ProductForm;
+import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
 import gui.forms.edit.EditSalesOrder;
@@ -38,7 +39,7 @@ public class Values {
 	public static AddEntryPanel addEntryPanel;
 	public static TableUtilPanel tableUtilPanel;
 	public static StockPurchasePanel stockPurchasePanel;
-	public static SalesOrderForm salesOrderForm;
+	public static SalesForm salesForm;
 	public static NotesPopup notesPopup;
 	public static MenuPanel menuPanel;
 	public static AccountTypeList accountTypeList;

@@ -147,10 +147,10 @@ public class MenuPanel extends JPanel implements ActionListener {
 			Values.centerPanel.changeTable(Values.PROFILES);
 
 		if (e.getSource().equals(options.get(8))) {
-			Values.addEntryPanel.startAnimation();
+			/*Values.addEntryPanel.startAnimation();
 			Values.addEntryPanel.showUtilityPanels();
 
-			setVisible(false);
+			setVisible(false);*/
 		}
 
 		if (e.getSource().equals(options.get(9)))

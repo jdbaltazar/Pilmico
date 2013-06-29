@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.text.*;
 
 public class JNumericField extends JTextField {
@@ -31,21 +32,21 @@ public class JNumericField extends JTextField {
     private String allowedChars = null;
     private boolean allowNegative = false;
     private int precision = 0;
-    private String label;
+    private String label="";
 
     protected PlainDocument numberFieldFilter;
 
     public JNumericField(String label) {
-    	this(2, DECIMAL);
+    	this(2, DECIMAL, false);
     	
     	this.label = label;
     }
 
     public JNumericField(int iMaxLen) {
-        this(iMaxLen, NUMERIC);
+        this(iMaxLen, NUMERIC, false);
     }
 
-    public JNumericField(int iMaxLen, int iFormat) {
+    public JNumericField(int iMaxLen, int iFormat, boolean noBackground) {
         setAllowNegative(false);
         setMaxLength(iMaxLen);
         setFormat(iFormat);
@@ -53,14 +54,20 @@ public class JNumericField extends JTextField {
         numberFieldFilter = new JNumberFieldFilter();
         super.setDocument(numberFieldFilter);
         
-        init();
+        init(noBackground);
     }
 
-    private void init() {
+    private void init(boolean noBackground) {
 		// TODO Auto-generated method stub
-    	
-    	setBorder(new RoundedCornerBorder(Color.white, Color.gray));
-    	setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+    	if(noBackground){
+    		setBorder(new RoundedCornerBorder());
+    		setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+    		setHorizontalAlignment(SwingConstants.CENTER);
+    	}
+    	else{
+    		setBorder(new RoundedCornerBorder(Color.white, Color.gray));
+    		setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+    	}
 	}
 
 	public void setMaxLength(int maxLen) {

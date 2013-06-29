@@ -13,6 +13,7 @@ public class DropdownLabel extends JLabel{
 		setOpaque(false);
 		setFont(new Font("Lucida Grande", Font.ITALIC, 10));
 		setForeground(Color.LIGHT_GRAY);
+//		setBackground(Color.decode("#DDEBDD"));
 	}
 
 }
