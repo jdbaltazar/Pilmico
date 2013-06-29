@@ -30,7 +30,11 @@ import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
+import common.entity.salary.CADeduction;
 import common.entity.salary.CashAdvance;
+import common.entity.salary.Fee;
+import common.entity.salary.FeeDeduction;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
@@ -102,6 +106,15 @@ public class HibernateUtil {
 			conf.addAnnotatedClass(ARPayment.class);
 			conf.addAnnotatedClass(AccountReceivableDetail.class);
 			conf.addAnnotatedClass(AccountReceivable.class);
+
+			conf.addAnnotatedClass(PullOutDetail.class);
+			conf.addAnnotatedClass(PullOut.class);
+
+			conf.addAnnotatedClass(Fee.class);
+			conf.addAnnotatedClass(FeeDeduction.class);
+			conf.addAnnotatedClass(CADeduction.class);
+			conf.addAnnotatedClass(CashAdvance.class);
+			conf.addAnnotatedClass(SalaryRelease.class);
 
 			sessionFactory = conf.buildSessionFactory();
 

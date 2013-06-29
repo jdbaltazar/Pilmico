@@ -39,6 +39,9 @@ public class PullOutDetail {
 	@Column(name = "quantity_per_sack")
 	private double quantityPerSack;
 
+	@Column
+	private String reason;
+
 	public PullOutDetail() {
 		super();
 	}
@@ -51,6 +54,18 @@ public class PullOutDetail {
 		this.pricePerSack = pricePerSack;
 		this.quantityPerKilo = quantityPerKilo;
 		this.quantityPerSack = quantityPerSack;
+	}
+
+	public PullOutDetail(PullOut pullOut, Product product, double pricePerKilo, double pricePerSack, double quantityPerKilo, double quantityPerSack,
+			String reason) {
+		super();
+		this.pullOut = pullOut;
+		this.product = product;
+		this.pricePerKilo = pricePerKilo;
+		this.pricePerSack = pricePerSack;
+		this.quantityPerKilo = quantityPerKilo;
+		this.quantityPerSack = quantityPerSack;
+		this.reason = reason;
 	}
 
 	public int getId() {
@@ -107,6 +122,14 @@ public class PullOutDetail {
 
 	public void setQuantityPerSack(double quantityPerSack) {
 		this.quantityPerSack = quantityPerSack;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }
