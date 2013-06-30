@@ -152,6 +152,14 @@ public class PullOut {
 		}
 	}
 
+	public double getPulloutAmount() {
+		double amount = 0;
+		for (PullOutDetail pud : pullOutDetails) {
+			amount += ((pud.getPricePerSack() * pud.getQuantityPerSack()) + (pud.getPricePerKilo() * pud.getPricePerKilo()));
+		}
+		return amount;
+	}
+
 	public String toString() {
 		return "" + id;
 	}

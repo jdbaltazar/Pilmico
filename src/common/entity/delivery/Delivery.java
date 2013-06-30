@@ -237,6 +237,15 @@ public class Delivery {
 		}
 	}
 
+	public double getDeliveryAmount() {
+		double amount = 0;
+		for (DeliveryDetail dd : deliveryDetails) {
+			amount += ((dd.getPricePerSack() * dd.getQuantityPerSack()) + (dd.getPricePerKilo() * dd.getQuantityPerKilo()));
+		}
+		return amount;
+
+	}
+
 	public String toString() {
 		return "" + id;
 	}

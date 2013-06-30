@@ -38,7 +38,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-
 @SuppressWarnings("serial")
 public class SBTable extends JTable implements MouseListener {
 
@@ -53,16 +52,15 @@ public class SBTable extends JTable implements MouseListener {
 		// TODO Auto-generated constructor stub
 
 		this.objects = objects;
-//		gradientTableHeader.setColumnModel(this.getColumnModel());
-//		setTableHeader(gradientTableHeader);
+		// gradientTableHeader.setColumnModel(this.getColumnModel());
+		// setTableHeader(gradientTableHeader);
 
 		getTableHeader().setDefaultRenderer(new MyCellRenderer());
 
 		model = new MyTableModel(data, header);
-		
+
 		setModel(model);
-		
-		
+
 		getTableHeader().setReorderingAllowed(false);
 		setFocusable(false);
 		setShowGrid(false);
@@ -75,13 +73,13 @@ public class SBTable extends JTable implements MouseListener {
 
 		// setButtonGroup();
 
-	/*	getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent e) {
-						// System.out.println(getSelectedRow()+"sbtable");
-
-					}
-				});*/
+		/*
+		 * getSelectionModel().addListSelectionListener( new
+		 * ListSelectionListener() { public void valueChanged(ListSelectionEvent
+		 * e) { // System.out.println(getSelectedRow()+"sbtable");
+		 * 
+		 * } });
+		 */
 
 		// addMouseListener(new MouseAdapter() {
 		// public void mouseClicked(MouseEvent e) {
@@ -104,7 +102,7 @@ public class SBTable extends JTable implements MouseListener {
 		// });
 
 		addMouseListener(this);
-		
+
 		setDefaultRenderer(Object.class, renderer);
 
 	}
@@ -113,7 +111,6 @@ public class SBTable extends JTable implements MouseListener {
 		return objects;
 	}
 
-	
 	public TableRowSorter<MyTableModel> getSorter() {
 		return sorter;
 	}
@@ -123,17 +120,17 @@ public class SBTable extends JTable implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if (arg0.getClickCount() == 2
-				&& !Values.tableUtilPanel.getLabel().equals(Tables.LOGS)) {
+		if (arg0.getClickCount() == 2 && !Values.tableUtilPanel.getLabel().equals(Tables.LOGS)) {
 
-			/*if (!(Manager.loggedInAccount != null && !Manager.loggedInAccount.getAccountType().getName()
-					.equals(AccountType.manager)
-					&& Values.tableUtilPanel.getLabel().equals("ACCOUNTS"))){	*/
+			/*
+			 * if (!(Manager.loggedInAccount != null &&
+			 * !Manager.loggedInAccount.getAccountType().getName()
+			 * .equals(AccountType.manager) &&
+			 * Values.tableUtilPanel.getLabel().equals("ACCOUNTS"))){
+			 */
 			JTable target = (JTable) arg0.getSource();
 			int row = target.getSelectedRow();
 			row = target.convertRowIndexToModel(row);
-			
-			
 
 			// do some action
 
@@ -141,26 +138,27 @@ public class SBTable extends JTable implements MouseListener {
 			// new EditItemPopup().setVisible(true);
 			Values.editPanel.setHide(false);
 			Values.editPanel.startAnimation();
-//			Values.editPanel.showComponent(objects.get(row));
-			Values.editPanel.showComponent(null);
-//			}
+			// Values.editPanel.showComponent(objects.get(row));
+			Values.editPanel.showComponent(objects.get(row));
+			// }
 		}
-		if (arg0.getClickCount() == 1 && (Values.tableUtilPanel.getLabel().equals(Tables.LOGS))){
-				JTable target = (JTable) arg0.getSource();
-				int row = target.getSelectedRow();
-				int column = target.getSelectedColumn();
-				
-				//setToolTipText(getValueAt(convertRowIndexToModel(row), column).toString());
-				
-				JOptionPane.showMessageDialog(null, getValueAt(convertRowIndexToModel(row), 1).toString());
-			
+		if (arg0.getClickCount() == 1 && (Values.tableUtilPanel.getLabel().equals(Tables.LOGS))) {
+			JTable target = (JTable) arg0.getSource();
+			int row = target.getSelectedRow();
+			int column = target.getSelectedColumn();
+
+			// setToolTipText(getValueAt(convertRowIndexToModel(row),
+			// column).toString());
+
+			JOptionPane.showMessageDialog(null, getValueAt(convertRowIndexToModel(row), 1).toString());
+
 		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

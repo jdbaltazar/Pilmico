@@ -30,6 +30,10 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
+import common.entity.profile.Employee;
+import common.entity.sales.Sales;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.FormCheckbox;
 import util.MainFormField;
@@ -50,7 +54,7 @@ public class SalesForm extends SimplePanel {
 	private JPanel productsPanel, row, p;
 	private JScrollPane productsPane;
 	private JComboBox itemCombo, customerCombo;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 91, UPPER_Y = 63, ITEMS_PANE_Y = 116; //125
+	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 91, UPPER_Y = 63, ITEMS_PANE_Y = 116; // 125
 	private Object[] array = {};
 	private JTextField itemComboField, customerComboField;
 	private JScrollBar sb;
@@ -66,7 +70,7 @@ public class SalesForm extends SimplePanel {
 	private JLabel cashier;
 	private MainFormField issuedAt, rc_no, receipt_no, remarks;
 	private MainFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
-	
+
 	private DefaultComboBoxModel model;
 	private FormCheckbox showRequired;
 	private JPanel panel;
@@ -86,43 +90,46 @@ public class SalesForm extends SimplePanel {
 	};
 
 	private void init() {
-		
+
 		fwd = new SBButton("forward.png", "forward.png", "Add new customer");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		
+
 		scrollPane = new JScrollPane();
-		
+
 		showRequired = new FormCheckbox("Show required fields only");
 
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
 		issueDate = new SpinnerDate("MMM dd, yyyy hh:mm a");
-		
+
 		issuedaTLabel = new MainFormLabel("Issued at:");
 		issuedOnLabel = new MainFormLabel("Issued on:");
 		rcnumLabel = new MainFormLabel("RC_No:");
 		receiptLabel = new MainFormLabel("Receipt No.:");
 		dateLabel = new MainFormLabel("Date:");
-		
+
 		cashierLabel = new MainFormLabel("Cashier:");
 		customerLabel = new MainFormLabel("Customer:");
-		
-		cashier = new JLabel("Juan dela Cruz");
+
+		String c = "";
+		if (Manager.loggedInAccount != null)
+			c = Manager.loggedInAccount.getEmployee().getFirstPlusLastName();
+		cashier = new JLabel(c);
 		cashier.setOpaque(false);
 		cashier.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		cashier.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		
+
 		issuedAt = new MainFormField(200);
 		rc_no = new MainFormField(20);
 		receipt_no = new MainFormField(30);
 		remarks = new MainFormField(200);
-		
+
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
@@ -139,88 +146,81 @@ public class SalesForm extends SimplePanel {
 		customerComboField.setOpaque(false);
 		customerComboField.setBorder(BorderFactory.createEmptyBorder());
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
-		
+
 		customerCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		customerCombo.setUI(ColorArrowUI.createUI(this));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
-		
+
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
 		productsPanel.setOpaque(false);
-		
+
 		productsPane = new JScrollPane(productsPanel);
 
-		
 		productsPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		productsPane.setOpaque(false);
 		productsPane.getViewport().setOpaque(false);
-		
-		
+
 		showRequired.setBounds(500, 12, 160, 20);
-		
+
 		dateLabel.setBounds(15, 12, 40, 20);
 		date.setBounds(60, 10, 150, 20);
-		
+
 		cashierLabel.setBounds(260, 12, 60, 20);
 		cashier.setBounds(330, 10, 200, 20);
-		
+
 		rcnumLabel.setBounds(15, 35, 50, 20);
 		rc_no.setBounds(65, 32, 70, 20);
-		
+
 		receiptLabel.setBounds(145, 35, 100, 20);
 		receipt_no.setBounds(235, 32, 140, 20);
-		
+
 		issuedOnLabel.setBounds(385, 35, 70, 20);
 		issueDate.setBounds(460, 32, 150, 20);
-		
+
 		customerLabel.setBounds(15, 58, 70, 20);
 		customerCombo.setBounds(85, 56, 220, 20);
 		fwd.setBounds(308, 58, 16, 16);
-		
+
 		issuedaTLabel.setBounds(335, 58, 70, 20);
 		issuedAt.setBounds(410, 56, 200, 20);
-		
+
 		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
-		
+
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
 		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
 		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
 		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
-		
-		fwd2.setBounds(482, LABEL_Y+5, 16, 16);
-		
+
+		fwd2.setBounds(482, LABEL_Y + 5, 16, 16);
+
 		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
-//		issuedByLabel = new JLabel("Issued by:");
-		
-		
-		//date.setBounds(510, 12, 150, 20);
+		// issuedByLabel = new JLabel("Issued by:");
 
-//		customerCombo.setBounds(125, UPPER_Y+30, 160, 20);
+		// date.setBounds(510, 12, 150, 20);
 
-		
-		
-		//rc_no.setBounds(53, UPPER_Y, 75, 22);
-		//receipt_no.setBounds(135, UPPER_Y, 150, 22);
+		// customerCombo.setBounds(125, UPPER_Y+30, 160, 20);
 
-//		issuedByLabel.setBounds(53, UPPER_Y+30, 80, 20);
-		
-//		issuedOnLabel.setBounds(380, UPPER_Y, 80, 20);
-		
-//		issuedAt.setBounds(380, UPPER_Y+30, 230, 22);
-		
-//		issueDate.setBounds(465, UPPER_Y, 150, 20);
-		
-//		remarks.setBounds(430, UPPER_Y+245, 200, 22);
-		
-//		issuedByLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
-//		issuedOnLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
+		// rc_no.setBounds(53, UPPER_Y, 75, 22);
+		// receipt_no.setBounds(135, UPPER_Y, 150, 22);
 
+		// issuedByLabel.setBounds(53, UPPER_Y+30, 80, 20);
 
+		// issuedOnLabel.setBounds(380, UPPER_Y, 80, 20);
+
+		// issuedAt.setBounds(380, UPPER_Y+30, 230, 22);
+
+		// issueDate.setBounds(465, UPPER_Y, 150, 20);
+
+		// remarks.setBounds(430, UPPER_Y+245, 200, 22);
+
+		// issuedByLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
+		// issuedOnLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
 
 		addRow.addActionListener(new ActionListener() {
 
@@ -239,30 +239,29 @@ public class SalesForm extends SimplePanel {
 		});
 
 		add(showRequired);
-		
-		
+
 		panel.add(dateLabel);
 		panel.add(date);
-		
+
 		panel.add(cashierLabel);
 		panel.add(cashier);
-		
+
 		panel.add(rcnumLabel);
 		panel.add(rc_no);
-		
+
 		panel.add(receiptLabel);
 		panel.add(receipt_no);
-		
+
 		panel.add(issuedOnLabel);
 		panel.add(issueDate);
-		
+
 		panel.add(customerLabel);
 		panel.add(customerCombo);
 		panel.add(fwd);
-		
+
 		panel.add(issuedaTLabel);
 		panel.add(issuedAt);
-		
+
 		panel.add(fwd2);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
@@ -270,46 +269,41 @@ public class SalesForm extends SimplePanel {
 		panel.add(priceSACK);
 		panel.add(productLabel);
 		panel.add(deleteLabel);
-		
+
 		panel.add(addRow);
-		
+
 		panel.add(productsPane);
-		
+
 		/*
-		panel.add(receipt_no);
-		
-		panel.add(issuedByLabel);
-		panel.add(accountCombo);
-		
-		panel.add(issuedAt);
-		
-		
-		panel.add(rc_no);
-		panel.add(remarks);
-		
-		panel.add(issuedOnLabel);
-		panel.add(issueDate);
-		
-		panel.add(quantityKGLabel);
-		panel.add(quantitySACKlabel);
-		panel.add(priceKG);
-		panel.add(priceSACK);
-		panel.add(productLabel);
-		panel.add(deleteLabel);
-		
-		panel.add(productsPane);*/
-		
-//		panel.setBounds(20, 50, 150, 250);
-		
-		//panel.setPreferredSize(new Dimension(150, 250));
-		
+		 * panel.add(receipt_no);
+		 * 
+		 * panel.add(issuedByLabel); panel.add(accountCombo);
+		 * 
+		 * panel.add(issuedAt);
+		 * 
+		 * 
+		 * panel.add(rc_no); panel.add(remarks);
+		 * 
+		 * panel.add(issuedOnLabel); panel.add(issueDate);
+		 * 
+		 * panel.add(quantityKGLabel); panel.add(quantitySACKlabel);
+		 * panel.add(priceKG); panel.add(priceSACK); panel.add(productLabel);
+		 * panel.add(deleteLabel);
+		 * 
+		 * panel.add(productsPane);
+		 */
+
+		// panel.setBounds(20, 50, 150, 250);
+
+		// panel.setPreferredSize(new Dimension(150, 250));
+
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(20, 42, 630, 310);
-		
+
 		add(scrollPane);
 	}
 
@@ -321,7 +315,6 @@ public class SalesForm extends SimplePanel {
 		productsPanel.revalidate();
 
 		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-
 		updateList(rowNum);
 	}
 
@@ -354,88 +347,70 @@ public class SalesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				/*if (isValidated()) {
-					try {
-						Date d = ((SpinnerDateModel) date.getModel()).getDate();
-						Account acc = (Account) accountCombo.getSelectedItem();
-						SalesOrder so = new SalesOrder(d, acc);
+				// Sales s = new Sales(date, customer, rcNo, issuedAt, issuedOn,
+				// receiptNo, cashier, valid, remarks, accounted)
 
-						boolean valid = true;
-
-						// error-trapping here
-						int i = 0;
-						for (RowPanel sor : rowPanel) {
-							i++;
-							Item item = (Item) sor.getSelectedItem();
-							if (sor.getQuantity() > item.getUnitsOnStock()) {
-								Toolkit.getDefaultToolkit().beep();
-								
-								JOptionPane.showMessageDialog(null,
-										"Error in row " + i + ": only " + item.getUnitsOnStock() +" "+ item.getUnit().getName() + " of item \n"
-												+ item.getName() + " left. Purchase new stocks\nor update quantity of item",
-									    "System Error",
-									    JOptionPane.ERROR_MESSAGE);
-								
-								valid = false;
-							}
-						}
-
-						if (valid) {
-
-							for (RowPanel sor : rowPanel) {
-								so.addSalesOrderDetail(new SalesOrderDetail(so, sor.getQuantity(), (Item) sor.getSelectedItem()));
-							}
-
-							Manager.salesOrderManager.addSalesOrder(so);
-
-							// update quantity of items
-							Set<SalesOrderDetail> sods = so.getSalesOrderDetails();
-							for (SalesOrderDetail sod : sods) {
-								Item item = sod.getItem();
-								item.setUnitsOnStock(item.getUnitsOnStock() - sod.getQuantity());
-								Manager.itemManager.updateItem(item);
-							}
-
-							Account ac = Manager.loggedInAccount;
-							String str = ac.getAccountType() + " " + ac.getFirstAndLAstName() + " added sales order no " + so.getId() + " for account "
-									+ so.getAccount().getId() + ": " + so.getAccount().getFirstAndLAstName() + " with " + so.getSalesOrderDetails().size()
-									+ " lines.";
-
-							String str2 = "";
-							Set<SalesOrderDetail> ds = so.getSalesOrderDetails();
-							if (ds.size() > 0) {
-								str2 = " Quantity of item(s): ";
-								int total = ds.size();
-								for (SalesOrderDetail sod : ds) {
-									total--;
-									str2 = str2 + sod.getItem().getId();
-									if (total > 0) {
-										str2 = str2 + ", ";
-									} else {
-										str2 = str2 + " updated";
-									}
-								}
-
-							}
-							str = str + str2;
-							Log log = new Log(str);
-							Manager.logManager.addLog(log);
-
-							new SuccessPopup("Add").setVisible(true);
-							clearForm();
-							Values.centerPanel.changeTable(Values.SALES_ORDER);
-							Values.topPanel.refreshStockCost();
-							
-						} else {
-							System.out.println("Cannot add sales order! ");
-						}
-
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else
-					error.setText(msg);*/
+				/*
+				 * if (isValidated()) { try { Date d = ((SpinnerDateModel)
+				 * date.getModel()).getDate(); Account acc = (Account)
+				 * accountCombo.getSelectedItem(); SalesOrder so = new SalesOrder(d,
+				 * acc);
+				 * 
+				 * boolean valid = true;
+				 * 
+				 * // error-trapping here int i = 0; for (RowPanel sor : rowPanel) {
+				 * i++; Item item = (Item) sor.getSelectedItem(); if
+				 * (sor.getQuantity() > item.getUnitsOnStock()) {
+				 * Toolkit.getDefaultToolkit().beep();
+				 * 
+				 * JOptionPane.showMessageDialog(null, "Error in row " + i +
+				 * ": only " + item.getUnitsOnStock() +" "+ item.getUnit().getName()
+				 * + " of item \n" + item.getName() +
+				 * " left. Purchase new stocks\nor update quantity of item",
+				 * "System Error", JOptionPane.ERROR_MESSAGE);
+				 * 
+				 * valid = false; } }
+				 * 
+				 * if (valid) {
+				 * 
+				 * for (RowPanel sor : rowPanel) { so.addSalesOrderDetail(new
+				 * SalesOrderDetail(so, sor.getQuantity(), (Item)
+				 * sor.getSelectedItem())); }
+				 * 
+				 * Manager.salesOrderManager.addSalesOrder(so);
+				 * 
+				 * // update quantity of items Set<SalesOrderDetail> sods =
+				 * so.getSalesOrderDetails(); for (SalesOrderDetail sod : sods) {
+				 * Item item = sod.getItem();
+				 * item.setUnitsOnStock(item.getUnitsOnStock() - sod.getQuantity());
+				 * Manager.itemManager.updateItem(item); }
+				 * 
+				 * Account ac = Manager.loggedInAccount; String str =
+				 * ac.getAccountType() + " " + ac.getFirstAndLAstName() +
+				 * " added sales order no " + so.getId() + " for account " +
+				 * so.getAccount().getId() + ": " +
+				 * so.getAccount().getFirstAndLAstName() + " with " +
+				 * so.getSalesOrderDetails().size() + " lines.";
+				 * 
+				 * String str2 = ""; Set<SalesOrderDetail> ds =
+				 * so.getSalesOrderDetails(); if (ds.size() > 0) { str2 =
+				 * " Quantity of item(s): "; int total = ds.size(); for
+				 * (SalesOrderDetail sod : ds) { total--; str2 = str2 +
+				 * sod.getItem().getId(); if (total > 0) { str2 = str2 + ", "; }
+				 * else { str2 = str2 + " updated"; } }
+				 * 
+				 * } str = str + str2; Log log = new Log(str);
+				 * Manager.logManager.addLog(log);
+				 * 
+				 * new SuccessPopup("Add").setVisible(true); clearForm();
+				 * Values.centerPanel.changeTable(Values.SALES_ORDER);
+				 * Values.topPanel.refreshStockCost();
+				 * 
+				 * } else { System.out.println("Cannot add sales order! "); }
+				 * 
+				 * } catch (Exception e1) { // TODO Auto-generated catch block
+				 * e1.printStackTrace(); } } else error.setText(msg);
+				 */
 			}
 		});
 
@@ -482,7 +457,8 @@ public class SalesForm extends SimplePanel {
 	public void refreshAccount() {
 
 		try {
-			//model = new DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
+			// model = new
+			// DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
 
 			customerCombo.setModel(model);
 		} catch (Exception e) {

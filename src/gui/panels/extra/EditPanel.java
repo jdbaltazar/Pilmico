@@ -17,6 +17,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import common.entity.product.Product;
+
 import util.Tables;
 import util.Values;
 import util.soy.SoyPanel;
@@ -59,8 +61,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// gradient = new GradientPaint(0, 0, new Color(169,169,169),0,
 		// getHeight(), new Color(40,40,40));
@@ -105,7 +106,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 				showPanel();
 			else
 				hidePanel();
-		} else{
+		} else {
 			hidePanel();
 		}
 	}
@@ -113,7 +114,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 	private void hidePanel() {
 		if (currWidth <= minWidth)
 			isRunning = false;
-		
+
 		while (isRunning) {
 			currWidth--;
 			setPrefSize(currWidth, getHeight());
@@ -141,8 +142,8 @@ public class EditPanel extends SoyPanel implements Runnable {
 	public void showComponent(Object o) {
 
 		if (Values.tableUtilPanel.getLabel().equals(Tables.PRODUCTS)) {
-//			add(new EditItemPanel((Item) o), BorderLayout.CENTER);
-			add(new EditProductPanel(), BorderLayout.CENTER);
+			// add(new EditItemPanel((Item) o), BorderLayout.CENTER);
+			add(new EditProductPanel((Product) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNTS)) {
@@ -154,11 +155,11 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals("STOCK PURCHASE")) {
-			//add(new EditStockPurchase(), BorderLayout.CENTER);
+			// add(new EditStockPurchase(), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals("SALES ORDER")) {
-			//add(new EditSalesOrder(), BorderLayout.CENTER);
+			// add(new EditSalesOrder(), BorderLayout.CENTER);
 		}
 
 	}

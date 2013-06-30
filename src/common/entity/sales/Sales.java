@@ -235,6 +235,15 @@ public class Sales {
 		}
 	}
 
+	public double getSalesAmount() {
+		double total = 0;
+		for (SalesDetail sd : salesDetails) {
+			total += ((sd.getPricePerSack() * sd.getQuantityPerSack()) + (sd.getPricePerKilo() * sd.getQuantityPerKilo()));
+		}
+		return total;
+
+	}
+
 	public String toString() {
 		return "" + id;
 	}
