@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
+import common.entity.product.Product;
+
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.Tables;
@@ -36,16 +38,18 @@ public class EditProductPanel extends EditFormPanel {
 
 	private int y1 = 55, y2 = 40, y3 = 72;
 
-	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock,
-			alertOnQuantity;
+	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
+
+	private Product product;
 
 	/*
 	 * public EditItemPanel(Item item) { super("View / Edit Stock"); this.item =
 	 * item; init(); addComponents(); fillValues(); }
 	 */
 
-	public EditProductPanel() {
+	public EditProductPanel(Product product) {
 		super("View / Edit Product");
+		this.product = product;
 		init();
 		addComponents();
 		fillValues();
@@ -66,10 +70,9 @@ public class EditProductPanel extends EditFormPanel {
 		cbox2 = new JCheckBox("Allow Alert?*");
 
 		/*
-		 * try { List<Unit> units = Manager.itemManager.getUnits();
-		 * List<Category> categories = Manager.itemManager.getCategories();
-		 * List<ItemCondition> conditions = Manager.itemManager
-		 * .getConditions();
+		 * try { List<Unit> units = Manager.itemManager.getUnits(); List<Category>
+		 * categories = Manager.itemManager.getCategories(); List<ItemCondition>
+		 * conditions = Manager.itemManager .getConditions();
 		 * 
 		 * unit = new FormDropdown(units.toArray()); category = new
 		 * FormDropdown(categories.toArray()); condition = new
@@ -81,10 +84,8 @@ public class EditProductPanel extends EditFormPanel {
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
 
 		edit = new SoyButton("Edit");
-
 		int fieldsCtr = 0, labelsCtr = 0;
 
 		for (int i = 0, x = 90, y = 0; i < num; i++, y += y3) {
@@ -163,20 +164,26 @@ public class EditProductPanel extends EditFormPanel {
 
 	private void fillValues() {
 
-		/*
-		 * fields.get(0).setText(item.getName());
-		 * fields.get(1).setText(item.getDescription());
-		 * fields.get(2).setText(item.getBarCode()); fields.get(3)
-		 * .setText(String.format("%.2f", item.getUnitSellingPrice()));
-		 * fields.get(4).setText( String.format("%.2f",
-		 * item.getUnitPurchasePrice()));
-		 * fields.get(5).setText(item.getUnitsOnStock() + "");
-		 * fields.get(6).setText(item.getLocation());
-		 * fields.get(7).setText(item.getAlertOnQuantity() + "");
-		 * 
-		 * cbox1.setSelected(item.isForSale());
-		 * cbox2.setSelected(item.isAllowAllert());
-		 */
+		fields.get(0).setText(product.getName());
+		fields.get(1).setText(product.getDescription());
+		fields.get(2).setText(product.getKilosPerSack() + "");
+		fields.get(3).setText(product.getQuantityInSack() + "");
+		fields.get(4).setText(product.getQuantityInKilo() + "");
+		fields.get(5).setText(product.getDisplayInSack() + "");
+		fields.get(6).setText(product.getDisplayInKilo() + "");
+		fields.get(7).setText("h");
+		// fields.get(1).setText(item.getDescription());
+		// fields.get(2).setText(item.getBarCode());
+		// fields.get(3).setText(String.format("%.2f",
+		// item.getUnitSellingPrice()));
+		// fields.get(4).setText(String.format("%.2f",
+		// item.getUnitPurchasePrice()));
+		// fields.get(5).setText(item.getUnitsOnStock() + "");
+		// fields.get(6).setText(item.getLocation());
+		// fields.get(7).setText(item.getAlertOnQuantity() + "");
+		//
+		// cbox1.setSelected(item.isForSale());
+		// cbox2.setSelected(item.isAllowAllert());
 
 	}
 
@@ -188,8 +195,7 @@ public class EditProductPanel extends EditFormPanel {
 	}
 
 	private boolean isValidated() {
-		if (!name.equals("") && !unitSellingPrice.equals("")
-				&& !unitPurchasePrice.equals("") && !unitsOnStock.equals("")
+		if (!name.equals("") && !unitSellingPrice.equals("") && !unitPurchasePrice.equals("") && !unitsOnStock.equals("")
 				&& !alertOnQuantity.equals(""))
 			return true;
 

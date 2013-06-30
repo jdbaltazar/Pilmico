@@ -81,6 +81,10 @@ public class Person {
 		return lastName;
 	}
 
+	public String getFirstPlusLastName() {
+		return firstName + " " + lastName;
+	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}

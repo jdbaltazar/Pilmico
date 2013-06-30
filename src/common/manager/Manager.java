@@ -3,9 +3,14 @@ package common.manager;
 import common.entity.profile.Account;
 
 import core.persist.AccountPersistor;
+import core.persist.AccountReceivablePersistor;
+import core.persist.CashAdvancePersistor;
+import core.persist.DailyExpensePersistor;
+import core.persist.DeliveryPersistor;
 import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
 import core.persist.NotePersistor;
+import core.persist.PullOutPersistor;
 import core.persist.SalesPersistor;
 import core.persist.StorePersistor;
 import core.persist.SupplierPersistor;
@@ -16,13 +21,23 @@ public class Manager {
 
 	public static AccountManager accountManager = new AccountPersistor();
 
-	public static ProductManager productManager = new ProductPersistor();
+	public static AccountReceivableManager accountReceivableManager = new AccountReceivablePersistor();
+
+	public static CashAdvanceManager cashAdvanceManager = new CashAdvancePersistor();
+
+	public static DailyExpensesManager dailyExpenseManager = new DailyExpensePersistor();
+
+	public static DeliveryManager deliveryManager = new DeliveryPersistor();
 
 	public static LogManager logManager = new LogPersistor();
 
 	public static NoteManager noteManager = new NotePersistor();
 
-	public static SalesManager salesOrderManager = new SalesPersistor();
+	public static ProductManager productManager = new ProductPersistor();
+
+	public static PullOutManager pullOutManager = new PullOutPersistor();
+
+	public static SalesManager salesManager = new SalesPersistor();
 
 	public static StoreManager storeManager = new StorePersistor();
 

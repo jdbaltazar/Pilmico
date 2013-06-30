@@ -4,38 +4,38 @@ import java.util.List;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesType;
-import common.manager.ExpenseManager;
+import common.manager.DailyExpensesManager;
 
-public class ExpensePersistor extends Persistor implements ExpenseManager {
+public class DailyExpensePersistor extends Persistor implements DailyExpensesManager {
 
 	@Override
-	public void addExpense(DailyExpenses expense) throws Exception {
+	public void addDailyExpenses(DailyExpenses expense) throws Exception {
 		add(expense);
 	}
 
 	@Override
-	public DailyExpenses getExpense(int id) throws Exception {
+	public DailyExpenses getDailyExpense(int id) throws Exception {
 		return (DailyExpenses) get(DailyExpenses.class, id);
 	}
 
 	@Override
-	public List<DailyExpenses> getExpenses() throws Exception {
+	public List<DailyExpenses> getDailyExpenses() throws Exception {
 		return getAll(DailyExpenses.class);
 	}
 
 	@Override
-	public void updateExpense(DailyExpenses expense) throws Exception {
+	public void updateDailyExpenses(DailyExpenses expense) throws Exception {
 		update(expense);
 	}
 
 	@Override
-	public void deleteExpense(DailyExpenses expense) throws Exception {
+	public void deleteDailyExpenses(DailyExpenses expense) throws Exception {
 		remove(expense);
 	}
 
 	@Override
-	public void deleteExpense(int id) throws Exception {
-		remove(getExpense(id));
+	public void deleteDailyExpenses(int id) throws Exception {
+		remove(getDailyExpense(id));
 	}
 
 	@Override

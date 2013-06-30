@@ -96,6 +96,10 @@ public class Employee {
 		return person.getLastName();
 	}
 
+	public String getFirstPlusLastName() {
+		return person.getFirstName() + " " + person.getLastName();
+	}
+
 	public String getAddress() {
 		return person.getAddress();
 	}

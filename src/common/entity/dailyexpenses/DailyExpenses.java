@@ -32,7 +32,7 @@ public class DailyExpenses {
 	private Date date;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "daily_expense_type")
+	@JoinColumn(name = "daily_expenses_type")
 	private DailyExpensesType dailyExpensesType;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)

@@ -18,7 +18,7 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 	}
 
 	@Override
-	public List<Delivery> getDeliverys() throws Exception {
+	public List<Delivery> getDeliveries() throws Exception {
 		return getAll(Delivery.class);
 	}
 

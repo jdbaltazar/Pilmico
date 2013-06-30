@@ -17,5 +17,8 @@
 	<classpathentry kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/sun.misc.BASE64Decoder.jar"/>
+	<classpathentry kind="lib" path="lib/gral-core-0.9.jar"/>
+	<classpathentry kind="lib" path="lib/gral-examples-0.9.jar"/>
+	<classpathentry kind="lib" path="lib/VectorGraphics2D-0.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
