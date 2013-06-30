@@ -64,7 +64,7 @@ public class Values {
 	public static final int DELIVERY = 4;
 	public static final int SUPPLIERS = 5;
 	public static final int CASH_ADVANCE = 6;
-	public static final int CA_PAYMENTS = 7;
+	public static final int SALARY = 7;
 	public static final int PROFILES = 8;
 	public static final int EMPLOYEES = 9;
 	public static final int ACCOUNTS = 10;

@@ -9,7 +9,7 @@ public class Tables {
 	public static String AR_PAYMENTS = "AR PAYMENTS";
 
 	public static String CASH_ADVANCE = "CASH ADVANCE";
-	public static String CA_PAYMENTS = "CA PAYMENTS";
+	public static String SALARY = "SALARY";
 	
 	public static String PROFILES = "PROFILES";
 	public static String ACCOUNTS = "ACCOUNTS";
@@ -43,7 +43,7 @@ public class Tables {
 	public static String[] supplierFormLabel = { "Name*", "Address", "TIN",
 			"Contact No.", "Contact Person", "Remarks" };
 	
-	public static String[] cashAdvanceFormLabel = {"Date*", "Issued By*", "Issued For*", "Amount*", "Remarks", "Paid*"};
+	public static String[] cashAdvanceFormLabel = {"Date*", "Issued By*", "Issued For*", "Amount*", "Balance*"};
 
 	
 /*	import java.awt.*;

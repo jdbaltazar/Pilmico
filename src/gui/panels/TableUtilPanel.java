@@ -42,7 +42,7 @@ public class TableUtilPanel extends SoyPanel {
 	private JLabel tableLabel;
 	private String[] links = { Tables.PRODUCTS, Tables.PULLOUT,
 			Tables.ACCOUNT_RECEIVABLES, Tables.AR_PAYMENTS, Tables.DELIVERY,
-			Tables.SUPPLIERS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS,
+			Tables.SUPPLIERS, Tables.CASH_ADVANCE, Tables.SALARY,
 			Tables.PROFILES, Tables.EMPLOYEES, Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
 
@@ -194,16 +194,16 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(labels.get(Values.SUPPLIERS));
 		}
 		
-		else if (label.equals(Tables.CASH_ADVANCE) || label.equals(Tables.CA_PAYMENTS)) {
+		else if (label.equals(Tables.CASH_ADVANCE) || label.equals(Tables.SALARY)) {
 
 			JLabel l = new JLabel("->");
 			l.setBounds(184, 11, 20, 20);
 			labels.get(Values.CASH_ADVANCE).setBounds(40, 11, 143, 20);
-			labels.get(Values.CA_PAYMENTS).setBounds(203, 11, 132, 20);
+			labels.get(Values.SALARY).setBounds(203, 11, 68, 20);
 			
 			searchPanel.add(labels.get(Values.CASH_ADVANCE));
 			searchPanel.add(l);
-			searchPanel.add(labels.get(Values.CA_PAYMENTS));
+			searchPanel.add(labels.get(Values.SALARY));
 		}
 		
 		else if (label.equals(Tables.PROFILES) || label.equals(Tables.EMPLOYEES) || label.equals(Tables.ACCOUNTS)) {

@@ -1,11 +1,13 @@
 package gui.panels.extra;
 
 import gui.forms.add.AccountForm;
+import gui.forms.add.AccountReceivablesForm;
 import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.ProductForm;
 import gui.forms.add.ProfileForm;
+import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
@@ -59,6 +61,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private ProfileForm profileForm;
 	private EmployeeForm employeeForm;
 	private ExpensesForm expensesForm;
+	private SalaryReleaseForm salary;
+	private AccountReceivablesForm accountReceivables;
 	
 	private JCheckBox checkBox;
 
@@ -97,6 +101,9 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		sales = new SalesForm();
 		
 		cashAdvanceForm = new CashAdvanceForm();
+		salary = new SalaryReleaseForm();
+		
+		accountReceivables = new AccountReceivablesForm();
 		
 		checkBox = new JCheckBox("Close after saving");
 		checkBox.setOpaque(false);
@@ -118,7 +125,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		profileForm.setBounds(225, 45, 290, 390);
 		employeeForm.setBounds(165, 50, 450, 400);
 		
-		cashAdvanceForm.setBounds(225, 40, 300, 395);
+//		cashAdvanceForm.setBounds(225, 40, 300, 395);
+		cashAdvanceForm.setBounds(230, 60, 300, 345);
+		salary.setBounds(86, 65, 638, 360);
+		
+		accountReceivables.setBounds(70, 55, 670, 365);
 
 		accountTypeList.setBounds(150, 50, 200, 160);
 		// logTypeList.setBounds(300, 50, 200, 160);
@@ -140,6 +151,9 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		add(expensesForm);
 		
 		add(cashAdvanceForm);
+		add(salary);
+		
+		add(accountReceivables);
 		
 		add(profileForm);
 		add(employeeForm);
@@ -254,6 +268,14 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
 			cashAdvanceForm.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
+			salary.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
+			accountReceivables.setVisible(true);
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {

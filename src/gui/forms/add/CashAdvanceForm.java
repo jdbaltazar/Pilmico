@@ -17,12 +17,17 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
+import util.DropdownLabel;
 import util.ErrorLabel;
+import util.FormCheckbox;
+import util.JNumericField;
+import util.SBButton;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
@@ -34,15 +39,15 @@ public class CashAdvanceForm extends SimplePanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
-	private ArrayList<FormField> fields = new ArrayList<FormField>();
+	private ArrayList<JNumericField> fields = new ArrayList<JNumericField>();
 	private SoyButton clear, save;
-	private FormDropdown issuedBy, issuedFor;
-	private JComboBox employeeCombo;
-	private JTextField employeesField;
+	private FormDropdown issuedFor;
 	private DefaultComboBoxModel model;
 	private JSpinner date;
-	private JCheckBox paid;
-	private int initY = 50;
+	private JLabel issuedBy;
+	private int initY = 60;
+	private DropdownLabel dateLabel,issuedByLabel, issuedForLabel;
+	private SBButton fwd;
 
 	private ErrorLabel error;
 	private String username, password, firstName, lastName, address;
@@ -59,12 +64,21 @@ public class CashAdvanceForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
+		
+		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
 
 		error = new ErrorLabel();
 		
-		paid = new JCheckBox("Paid");
-
+		dateLabel = new DropdownLabel("Date");
+		issuedByLabel = new DropdownLabel("Issued by");
+		issuedForLabel = new DropdownLabel("Issued for");
+		
 		//issuedBy = new FormDropdown();
+		issuedBy = new JLabel("Juan dela Cruz");
+		issuedBy.setOpaque(false);
+		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
+		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
+		issuedBy.setHorizontalAlignment(JLabel.CENTER);
 		
 		date = new JSpinner(new SpinnerDateModel());
 		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date,
@@ -86,9 +100,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 		try {
 			model = new DefaultComboBoxModel();
-			issuedBy = new FormDropdown();
 			issuedFor = new FormDropdown();
-			issuedBy.setModel(model);
 			issuedFor.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
@@ -106,34 +118,36 @@ public class CashAdvanceForm extends SimplePanel {
 		employeesField.addKeyListener(new ComboKeyHandler(employeeCombo));
 */
 		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 50; i < num; i++, y += 45) {
+		for (int i = 0, y = 0, x1 = 51; i < num - 1; i++, y += 55) {
 
 			if (i == 3 || i==4) {
 				
-				fields.add(new FormField(Tables.cashAdvanceFormLabel[i], 100,
-						Color.white, Color.gray));
+				fields.add(new JNumericField(Tables.cashAdvanceFormLabel[i]));
+				fields.get(ctr).setMaxLength(10);
 				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
 				add(fields.get(ctr));
 
 				ctr++;
 			}
 
-			if (i == 0)
-				date.setBounds(x1, initY + y, 200, 25);
+			if (i == 0){
+				dateLabel.setBounds(x1, initY + y - 7, 200, 11);
+				date.setBounds(x1, initY + y + 5, 200, 20);
+			}
+			if (i == 1){
+				issuedByLabel.setBounds(x1, initY + y - 7, 200, 11);
+				issuedBy.setBounds(x1, initY + y + 5, 200, 20);
+			}
 			
-			if (i == 1)
-				issuedBy.setBounds(x1, initY + y, 200, 25);
-			
-			if (i == 2)
-				issuedFor.setBounds(x1, initY + y, 200, 25);
-			
-			if (i == 5)
-				paid.setBounds(x1, initY + y, 100, 25);
-			
+			if (i == 2){
+				fwd.setBounds(x1 + 55, initY + y - 11, 16, 16);
+				issuedForLabel.setBounds(x1, initY + y - 7, 200, 11);
+				issuedFor.setBounds(x1, initY + y + 5, 200, 20);
+			}
 		}
 
-		clear.setBounds(167, 340, 80, 30);
-		save.setBounds(58, 340, 80, 30);
+		clear.setBounds(167, 290, 80, 30);
+		save.setBounds(58, 290, 80, 30);
 
 		error.setBounds(160, 290, 230, 25);
 
@@ -154,9 +168,13 @@ public class CashAdvanceForm extends SimplePanel {
 		add(save);
 		
 		add(issuedBy);
-		add(paid);
 		add(issuedFor);
 		add(date);
+		
+		add(fwd);
+		add(dateLabel);
+		add(issuedByLabel);
+		add(issuedForLabel);
 
 		add(error);
 
@@ -182,8 +200,8 @@ public class CashAdvanceForm extends SimplePanel {
 	public void refreshDropdown() {
 		try {
 			model = new DefaultComboBoxModel();
-			issuedBy = new FormDropdown();
-			issuedBy.setModel(model);
+//			issuedBy = new FormDropdown();
+//			issuedBy.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
