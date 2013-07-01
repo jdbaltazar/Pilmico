@@ -29,8 +29,8 @@ public class MenuPanel extends JPanel implements ActionListener {
 			"superform2.png", "person2.png", "extras2.png", "log2.png" };
 	
 	private String[] hover = { "Products", "Sales", "Expenses",
-			"Account Receivables", "Delivery", "Cash Advance", "Super Form",
-			"Profiles", "Extras", "Logs" };
+			"Account Receivables", "Delivery", "Cash Advance", "Inventory Sheet",
+			"Profiles", "Settings", "Logs" };
 	
 	private final int menuOptions = btn.length;
 
@@ -141,7 +141,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 			Values.centerPanel.changeTable(Values.CASH_ADVANCE);
 
 		if (e.getSource().equals(options.get(6)))
-			Values.centerPanel.changeTable(Values.SUPER_FORM);
+			Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 
 		if (e.getSource().equals(options.get(7)))
 			Values.centerPanel.changeTable(Values.PROFILES);

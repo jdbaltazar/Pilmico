@@ -70,7 +70,7 @@ public class Values {
 	public static final int ACCOUNTS = 10;
 	public static final int EXPENSES = 11;
 	public static final int SALES = 12;
-	public static final int SUPER_FORM = 13;
+	public static final int INVENTORY_SHEET = 13;
 	public static final int LOGS = 14;
 
 	public static final int UNITS = 0;

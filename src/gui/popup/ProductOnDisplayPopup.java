@@ -1,6 +1,7 @@
 package gui.popup;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,6 +56,7 @@ public class ProductOnDisplayPopup extends JDialog{
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+		setBackground(new Color(0,0,0,0));
 
 	}
 
@@ -101,13 +103,14 @@ public class ProductOnDisplayPopup extends JDialog{
 		onDisplayPanel.setOpaque(false);
 		
 			panel = new SimplePanel("Update Products On Display");
+			panel.setOpaque(false);
 
 			productsPane = new JScrollPane(onDisplayPanel);
 			productsPane.setOpaque(false);
 			productsPane.getViewport().setOpaque(false);
 //			productsPane.setBorder(BorderFactory.createEmptyBorder());
 
-			productsPane.setBounds(24, PRODUCTS_PANE_Y, ROW_WIDTH, 120);
+			productsPane.setBounds(24, PRODUCTS_PANE_Y, ROW_WIDTH-1, 120);
 
 		panel.add(productsPane);
 		panel.add(quantityKGLabel);

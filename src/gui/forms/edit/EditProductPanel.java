@@ -67,7 +67,7 @@ public class EditProductPanel extends EditFormPanel {
 		condition = new FormDropdown();
 
 		cbox1 = new JCheckBox("Available?*");
-		cbox2 = new JCheckBox("Allow Alert?*");
+		cbox2 = new JCheckBox("Alert using sack?*");
 
 		/*
 		 * try { List<Unit> units = Manager.itemManager.getUnits(); List<Category>
@@ -90,17 +90,17 @@ public class EditProductPanel extends EditFormPanel {
 
 		for (int i = 0, x = 90, y = 0; i < num; i++, y += y3) {
 
-			if (i == 3) {
+			if (i == 4) {
 				x += 230;
 				y = 0;
 			}
 
-			if (i == 7) {
+			if (i == 8) {
 				x += 230;
 				y = 0;
 			}
 
-			if (i != 2 && i != 8 && i != 7) {
+			if (i != 2 && i != 8 && i != 9) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Tables.productFormLabel[i]));
 
@@ -114,10 +114,10 @@ public class EditProductPanel extends EditFormPanel {
 
 			if (i == 2)
 				cbox1.setBounds(x, y1 + y, 170, 25);
-			if (i == 8)
+			if (i == 9)
 				cbox2.setBounds(x, y1 + y, 170, 25);
 
-			if (i == 7) {
+			if (i == 8) {
 
 				category.setBounds(x, y1 + y, 170, 25);
 
@@ -171,7 +171,7 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(4).setText(product.getQuantityInKilo() + "");
 		fields.get(5).setText(product.getDisplayInSack() + "");
 		fields.get(6).setText(product.getDisplayInKilo() + "");
-		fields.get(7).setText("h");
+		fields.get(7).setText("0");
 		// fields.get(1).setText(item.getDescription());
 		// fields.get(2).setText(item.getBarCode());
 		// fields.get(3).setText(String.format("%.2f",

@@ -67,6 +67,7 @@ public class AddNotePopup extends JDialog {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+		setBackground(new Color(0,0,0,0));
 
 	}
 
@@ -127,6 +128,7 @@ public class AddNotePopup extends JDialog {
 		save = new SoyButton("Save");
 
 		panel = new SimplePanel("Add Note");
+		panel.setOpaque(false);
 
 		date.setBounds(40, 55, 200, 25);
 		noteType.setBounds(40, 100, 200, 25);

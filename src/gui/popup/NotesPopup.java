@@ -1,6 +1,7 @@
 package gui.popup;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,6 +50,7 @@ public class NotesPopup extends JDialog {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+		setBackground(new Color(0,0,0,0));
 
 	}
 
@@ -75,6 +77,7 @@ public class NotesPopup extends JDialog {
 			panel = new SimplePanel("View / Remove Notes");
 		else*/
 			panel = new SimplePanel("View Notes");
+			panel.setOpaque(false);
 		/*
 		 * // panel.setPreferredSize(new Dimension(400, 700)); edit = new
 		 * SoyButton("Edit"); cancel = new SoyButton("Cancel");
