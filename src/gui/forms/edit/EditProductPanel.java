@@ -36,7 +36,7 @@ public class EditProductPanel extends EditFormPanel {
 	private JCheckBox cbox1, cbox2;
 	private ErrorLabel error;
 
-	private int y1 = 55, y2 = 40, y3 = 72;
+	private int y1 = 50, y2 = 35, y3 = 62;
 
 	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
 
@@ -95,12 +95,12 @@ public class EditProductPanel extends EditFormPanel {
 				y = 0;
 			}
 
-			if (i == 8) {
+			if (i == 9) {
 				x += 230;
 				y = 0;
 			}
 
-			if (i != 2 && i != 8 && i != 9) {
+			if (i != 2 && i != 10 && i != 11) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Tables.productFormLabel[i]));
 
@@ -114,10 +114,10 @@ public class EditProductPanel extends EditFormPanel {
 
 			if (i == 2)
 				cbox1.setBounds(x, y1 + y, 170, 25);
-			if (i == 9)
+			if (i == 11)
 				cbox2.setBounds(x, y1 + y, 170, 25);
 
-			if (i == 8) {
+			if (i == 10) {
 
 				category.setBounds(x, y1 + y, 170, 25);
 
@@ -171,7 +171,9 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(4).setText(product.getQuantityInKilo() + "");
 		fields.get(5).setText(product.getDisplayInSack() + "");
 		fields.get(6).setText(product.getDisplayInKilo() + "");
-		fields.get(7).setText("0");
+		fields.get(7).setText(product.getPricePerSack()+"");
+		fields.get(8).setText(product.getPricePerKilo()+"");
+		fields.get(fields.size()-1).setText(product.getAlertOnQuantity()+"");
 		// fields.get(1).setText(item.getDescription());
 		// fields.get(2).setText(item.getBarCode());
 		// fields.get(3).setText(String.format("%.2f",

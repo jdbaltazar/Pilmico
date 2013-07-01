@@ -39,7 +39,7 @@ public class ProductForm extends SimplePanel {
 	private JNumericField numField;
 	private ErrorLabel error;
 	private NumericTextField quantityKG;
-	private int initY = 65;
+	private int initY = 56;
 	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
 	private DropdownLabel dLabel;
 	private SBButton fwd;
@@ -102,14 +102,14 @@ public class ProductForm extends SimplePanel {
 
 		int ctr = 0, ctr2 = 0;
 
-		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 63) {
+		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 54) {
 			
 			if(i==4){
 				x1 = 215;
 				y = 0;
 			}
 			
-			if(i==8){
+			if(i==9){
 				x1 = 410;
 				y = 0;
 			}
@@ -123,7 +123,7 @@ public class ProductForm extends SimplePanel {
 				ctr++;
 			}
 
-			if(i>=3 && i<=7 || i == 10){
+			if(i>=3 && i<=9 || i == num-1){
 				numfields.add(new JNumericField(Tables.productFormLabel[i]));
 				numfields.get(ctr2).setMaxLength(10);
 				numfields.get(ctr2).setBounds(x1, initY + y, 170, 25);
@@ -134,7 +134,7 @@ public class ProductForm extends SimplePanel {
 			
 			if (i == 2)
 				cbox1.setBounds(x1, initY + y, 170, 25);
-			if (i == 9)
+			if (i == 11)
 				cbox2.setBounds(x1, initY + y, 170, 25);
 
 //			if (i == 3) 
@@ -146,7 +146,7 @@ public class ProductForm extends SimplePanel {
 /*			if (i == 8)
 				condition.setBounds(x1, 60 + y, 170, 25);
 */
-			if (i == 8) {
+			if (i == 10) {
 				fwd.setBounds(x1 + 55, initY + y - 11, 16, 16);
 				dLabel.setBounds(x1, initY + y - 7, 100, 11);
 				category.setBounds(x1, initY + y + 5, 170, 20);

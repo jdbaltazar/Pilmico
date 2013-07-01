@@ -28,7 +28,7 @@ public class Tables {
 	public static String[] productFormLabel = { "Name*", "Description",
 			"Available?*","kilos per sack", "Quantity (in sack)*",
 			"Quantity (in kg)*", "Display (in sack)*",
-			"Display (in kg)*", "Category*", "Alert using: *",
+			"Display (in kg)*", "Price (per sack)*", "Price (per kg)*", "Category*", "Alert using: *",
 			"Alert on Quantity*" };
 
 	public static String[] profileFormLabel = { "Last Name*", "First Name*",
