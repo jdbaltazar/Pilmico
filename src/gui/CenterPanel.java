@@ -64,43 +64,15 @@ public class CenterPanel extends SoyPanel {
 
 	private void init() {
 		setLayout(new BorderLayout());
-
-		// tablePanel = new TablePanel(data, columnNames, null);
 	}
 
 	private void addComponents() {
-		// leftPanel = new LeftPanel();
-		// tableUtilPanel = new TableUtilPanel(tablePanel, "STOCKS");
-		// add(searchPanel, BorderLayout.PAGE_END);
-		// add(new BottomPanel(), BorderLayout.PAGE_END);
-		/*
-		 * Values.searchPanel = searchPanel;
-		 * 
-		 * bookPanel = new BookPanel(); logPanel = new LogPanel(); homePanel = new
-		 * HomePanel();
-		 */
-		// add(leftPanel, BorderLayout.LINE_START);
-		// add(new TablePanel(data, columnNames), BorderLayout.CENTER);
 
 		add(new LoginPanel());
-		// menuPanel.setBounds(0, 0, Values.WIDTH, 400);
 
-		/*
-		 * add(new AddEntryPanel(), BorderLayout.PAGE_START); add(new EditPanel(),
-		 * BorderLayout.LINE_START); add(new MenuPanel(), BorderLayout.PAGE_END);
-		 * fillItems();
-		 */
 
-		// changeTable(Values.HOME);
-		/*
-		 * <<<<<<< HEAD add(new AddEntryPanel(), BorderLayout.PAGE_START); add(new
-		 * EditPanel(), BorderLayout.LINE_START); add(new MenuPanel(),
-		 * BorderLayout.PAGE_END); add(tableUtilPanel, BorderLayout.CENTER);
-		 * ======= add(new AddEntryPanel(), BorderLayout.PAGE_START); add(new
-		 * EditPanel(), BorderLayout.LINE_START); add(new MenuPanel(),
-		 * BorderLayout.PAGE_END); add(tableUtilPanel, BorderLayout.CENTER);
-		 * >>>>>>> refs/remotes/origin/master
-		 */
+		changeTable(Values.HOME);
+
 
 	}
 

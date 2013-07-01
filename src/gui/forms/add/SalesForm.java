@@ -54,7 +54,7 @@ public class SalesForm extends SimplePanel {
 	private JPanel productsPanel, row, p;
 	private JScrollPane productsPane;
 	private JComboBox itemCombo, customerCombo;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 91, UPPER_Y = 63, ITEMS_PANE_Y = 116; // 125
+	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
 	private Object[] array = {};
 	private JTextField itemComboField, customerComboField;
 	private JScrollBar sb;
@@ -78,7 +78,7 @@ public class SalesForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg = "";
-	private SBButton fwd, fwd2;
+	private SBButton customerFwd, productFwd;
 
 	public SalesForm() {
 		// TODO Auto-generated constructor stub
@@ -91,8 +91,8 @@ public class SalesForm extends SimplePanel {
 
 	private void init() {
 
-		fwd = new SBButton("forward.png", "forward.png", "Add new customer");
-		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
+		customerFwd = new SBButton("forward.png", "forward.png", "Add new customer");
+		productFwd = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
 
 		panel = new JPanel();
@@ -164,6 +164,22 @@ public class SalesForm extends SimplePanel {
 		productsPane.getViewport().setOpaque(false);
 
 		showRequired.setBounds(500, 12, 160, 20);
+		showRequired.setSelected(true);
+		showRequired.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				if(showRequired.isSelected()){
+					showUnrequired(false);
+					setupTable(50, false);
+				}
+				else{
+					showUnrequired(true);
+					setupTable(91, true);
+				}
+			}
+		});
 
 		dateLabel.setBounds(15, 12, 40, 20);
 		date.setBounds(60, 10, 150, 20);
@@ -182,24 +198,12 @@ public class SalesForm extends SimplePanel {
 
 		customerLabel.setBounds(15, 58, 70, 20);
 		customerCombo.setBounds(85, 56, 220, 20);
-		fwd.setBounds(308, 58, 16, 16);
+		customerFwd.setBounds(308, 58, 16, 16);
 
 		issuedaTLabel.setBounds(335, 58, 70, 20);
 		issuedAt.setBounds(410, 56, 200, 20);
 
-		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
-
-		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
-		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
-		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
-		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
-		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
-
-		fwd2.setBounds(482, LABEL_Y + 5, 16, 16);
-
-		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
-
+		setupTable(50, false);
 		// issuedByLabel = new JLabel("Issued by:");
 
 		// date.setBounds(510, 12, 150, 20);
@@ -238,6 +242,8 @@ public class SalesForm extends SimplePanel {
 			}
 		});
 
+		showUnrequired(false);
+		
 		add(showRequired);
 
 		panel.add(dateLabel);
@@ -257,12 +263,12 @@ public class SalesForm extends SimplePanel {
 
 		panel.add(customerLabel);
 		panel.add(customerCombo);
-		panel.add(fwd);
+		panel.add(customerFwd);
 
 		panel.add(issuedaTLabel);
 		panel.add(issuedAt);
 
-		panel.add(fwd2);
+		panel.add(productFwd);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
 		panel.add(priceKG);
@@ -305,6 +311,49 @@ public class SalesForm extends SimplePanel {
 		scrollPane.setBounds(20, 42, 630, 310);
 
 		add(scrollPane);
+	}
+	
+	private void setupTable(int y, boolean shownFields){
+		LABEL_Y = y;
+		
+		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
+
+		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
+		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
+		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
+		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
+		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
+		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
+
+		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
+		
+		
+		if(shownFields){
+			productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
+		}
+		else{
+			productsPane.setBounds(31, 75, ROW_WIDTH, 175);
+		}
+		
+	}
+	
+	private void showUnrequired(boolean show){
+		customerLabel.setVisible(show);
+		customerCombo.setVisible(show);
+		
+		rcnumLabel.setVisible(show);
+		rc_no.setVisible(show);
+		
+		issuedaTLabel.setVisible(show);
+		issuedAt.setVisible(show);
+		
+		issuedOnLabel.setVisible(show);
+		issueDate.setVisible(show);
+		
+		receiptLabel.setVisible(show);
+		receipt_no.setVisible(show);
+		
+		customerFwd.setVisible(show);
 	}
 
 	public void removeRow(int rowNum) {
