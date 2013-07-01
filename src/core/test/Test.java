@@ -1,8 +1,12 @@
 package core.test;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.util.Date;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 
 import common.entity.log.Log;
 import common.entity.log.LogType;
@@ -36,6 +40,7 @@ import core.persist.NotePersistor;
 import core.persist.SalesPersistor;
 import core.persist.StorePersistor;
 import core.persist.SupplierPersistor;
+import core.security.SecurityTool;
 
 public class Test {
 
@@ -61,6 +66,24 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
+
+		String pass = "password";
+		try {
+			String encrypted = SecurityTool.getInstance().getEncryptStringValue(pass);
+
+			System.out.println("Encrypted: " + encrypted);
+
+			System.out.println("Decrypted: " + SecurityTool.getInstance().decrypt(encrypted.getBytes()));
+		} catch (InvalidKeyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (BadPaddingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalBlockSizeException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		// String dbUserName = "root";
 		// String dbPassword = "123456";
@@ -193,16 +216,17 @@ public class Test {
 		//
 		// emp.addEmployee(e);
 
-		try {
-			List<Product> products = Manager.getInstance().productManager.getProducts();
-
-			for (Product p : products) {
-				System.out.println(p);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// try {
+		// List<Product> products =
+		// Manager.getInstance().productManager.getProducts();
+		//
+		// for (Product p : products) {
+		// System.out.println(p);
+		// }
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		// } catch (Exception e) {
 		// // TODO Auto-generated catch block
