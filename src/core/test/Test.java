@@ -67,7 +67,7 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		String pass = "password";
+		String pass = "1234567890qwertyuiop";
 		try {
 			String encrypted = SecurityTool.getInstance().getEncryptStringValue(pass);
 
