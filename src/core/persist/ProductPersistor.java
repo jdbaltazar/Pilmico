@@ -29,8 +29,29 @@ public class ProductPersistor extends Persistor implements ProductManager {
 	}
 
 	@Override
-	public List<Category> listCategories() throws Exception {
-		return getAll(Category.class);
+	public void addCategory(Category category) throws Exception {
+		add(category);
+	}
+
+	// @Override
+	// public List<Category> getCategories() throws Exception {
+	// return getAll(Category.class);
+	// }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Category> getCategories() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Category.class);
+		List<Category> categories = new ArrayList<Category>();
+		try {
+			categories = criteria.addOrder(Order.asc("name")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return categories;
 	}
 
 	@Override
@@ -73,21 +94,22 @@ public class ProductPersistor extends Persistor implements ProductManager {
 		remove(getProduct(id));
 	}
 
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	public List<Product> searchProducts(String name) throws Exception {
-//		Session session = HibernateUtil.startSession();
-//		Criteria criteria = session.createCriteria(Product.class);
-//		List<Product> products = new ArrayList<Product>();
-//		try {
-//			products = criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE)).addOrder(Order.asc("name")).list();
-//		} catch (HibernateException ex) {
-//			ex.printStackTrace();
-//		} finally {
-//			session.close();
-//		}
-//		return products;
-//	}
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// public List<Product> searchProducts(String name) throws Exception {
+	// Session session = HibernateUtil.startSession();
+	// Criteria criteria = session.createCriteria(Product.class);
+	// List<Product> products = new ArrayList<Product>();
+	// try {
+	// products = criteria.add(Restrictions.like("name", name,
+	// MatchMode.ANYWHERE)).addOrder(Order.asc("name")).list();
+	// } catch (HibernateException ex) {
+	// ex.printStackTrace();
+	// } finally {
+	// session.close();
+	// }
+	// return products;
+	// }
 
 	@Override
 	public double computeTotalCostOfProducts() throws Exception {

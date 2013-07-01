@@ -8,11 +8,16 @@ import gui.popup.SuccessPopup;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
+import common.entity.product.Category;
+import common.entity.product.Price;
 import common.entity.product.Product;
+import common.manager.Manager;
 
 import util.EditFormPanel;
 import util.ErrorLabel;
@@ -148,8 +153,49 @@ public class EditProductPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				product.setName(fields.get(0).getText());
+				product.setDescription(fields.get(1).getText());
+				product.setKilosPerSack(Double.parseDouble(fields.get(2).getText()));
+				product.setQuantityInSack(Double.parseDouble(fields.get(3).getText()));
+				product.setQuantityInKilo(Double.parseDouble(fields.get(4).getText()));
+				product.setDisplayInSack(Double.parseDouble(fields.get(5).getText()));
+				product.setDisplayInKilo(Double.parseDouble(fields.get(6).getText()));
+
+				double pricePerSack = Double.parseDouble(fields.get(7).getText());
+				double pricePerKilo = Double.parseDouble(fields.get(8).getText());
+
+				// check if price is the same with old
+				if (pricePerSack != product.getPricePerSack() || pricePerKilo != product.getPricePerKilo()) {
+					product.addPrice(new Price(product, new Date(), pricePerSack, pricePerKilo));
+				}
+
+				product.setAlertOnQuantity(Double.parseDouble(fields.get(fields.size() - 1).getText()));
+				product.setAvailable(cbox1.isSelected());
+				product.setAlertUsingSack(cbox2.isSelected());
+				product.setCategory((Category) category.getSelectedItem());
+
+				try {
+					Manager.productManager.updateProduct(product);
+					
+					System.out.println("Edit successful!!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
+
+		try {
+			List<Category> cats = Manager.productManager.getCategories();
+
+			for (Category cat : cats) {
+				category.addItem(cat);
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		add(edit);
 
@@ -171,9 +217,22 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(4).setText(product.getQuantityInKilo() + "");
 		fields.get(5).setText(product.getDisplayInSack() + "");
 		fields.get(6).setText(product.getDisplayInKilo() + "");
-		fields.get(7).setText(product.getPricePerSack()+"");
-		fields.get(8).setText(product.getPricePerKilo()+"");
-		fields.get(fields.size()-1).setText(product.getAlertOnQuantity()+"");
+		fields.get(7).setText(product.getPricePerSack() + "");
+		fields.get(8).setText(product.getPricePerKilo() + "");
+		fields.get(fields.size() - 1).setText(product.getAlertOnQuantity() + "");
+
+		cbox1.setSelected(product.isAvailable());
+		cbox2.setSelected(product.alertUsingSack());
+
+		int total = category.getItemCount();
+		while (total > 0) {
+			total--;
+			Category c = (Category) category.getItemAt(total);
+			if (c.getId() == product.getCategory().getId()) {
+				category.setSelectedIndex(total);
+				break;
+			}
+		}
 		// fields.get(1).setText(item.getDescription());
 		// fields.get(2).setText(item.getBarCode());
 		// fields.get(3).setText(String.format("%.2f",
