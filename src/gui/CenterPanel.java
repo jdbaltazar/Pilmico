@@ -87,7 +87,7 @@ public class CenterPanel extends SoyPanel {
 		// add(leftPanel, BorderLayout.LINE_START);
 		// add(new TablePanel(data, columnNames), BorderLayout.CENTER);
 
-		 add(new LoginPanel());
+//		 add(new LoginPanel());
 		// menuPanel.setBounds(0, 0, Values.WIDTH, 400);
 
 		/*
@@ -96,7 +96,7 @@ public class CenterPanel extends SoyPanel {
 		 * BorderLayout.PAGE_END); fillItems();
 		 */
 
-//		changeTable(Values.HOME);
+		changeTable(Values.HOME);
 		/*
 <<<<<<< HEAD
 		 * add(new AddEntryPanel(), BorderLayout.PAGE_START); add(new
@@ -113,7 +113,7 @@ public class CenterPanel extends SoyPanel {
 
 	public void changeTable(int val) {
 
-//		if (val != Values.HOME)
+		if (val != Values.HOME)
 			remove(getComponent(getComponentCount() - 1));
 
 		switch (val) {

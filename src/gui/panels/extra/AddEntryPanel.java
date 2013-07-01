@@ -3,10 +3,12 @@ package gui.panels.extra;
 import gui.forms.add.AccountForm;
 import gui.forms.add.AccountReceivablesForm;
 import gui.forms.add.CashAdvanceForm;
+import gui.forms.add.DeliveryForm;
 import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.ProductForm;
 import gui.forms.add.ProfileForm;
+import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
@@ -63,6 +65,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private ExpensesForm expensesForm;
 	private SalaryReleaseForm salary;
 	private AccountReceivablesForm accountReceivables;
+	private DeliveryForm delivery;
+	private PulloutForm pullout;
 	
 	private JCheckBox checkBox;
 
@@ -82,7 +86,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		addListener();
 
 		accountForm = new AccountForm();
+		
 		productForm = new ProductForm();
+		pullout = new PulloutForm();
+		
+		delivery = new DeliveryForm();
 		supplierForm = new SupplierForm();
 		
 		profileForm = new ProfileForm();
@@ -115,7 +123,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 	private void addComponents() {
 		accountForm.setBounds(225, 45, 300, 390);
+		
 		productForm.setBounds(102, 50, 600, 390);
+		pullout.setBounds(70, 76, 670, 330);
+		
+		delivery.setBounds(70, 55, 670, 370);
 		supplierForm.setBounds(198, 80, 400, 320);
 //		stockPurchase.setBounds(180, 40, 450, 400);
 		
@@ -143,9 +155,12 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		checkBox.setBounds(660, 5, 200, 20);
 
 		add(accountForm);
+		
 		add(productForm);
+		add(pullout);
+		
+		add(delivery);
 		add(supplierForm);
-		add(stockPurchase);
 		
 		add(sales);
 		add(expensesForm);
@@ -254,6 +269,10 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			productForm.setVisible(true);
 		}
 		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUT)) {
+			pullout.setVisible(true);
+		}
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PROFILES)) {
 			profileForm.setVisible(true);
 		}
@@ -276,6 +295,10 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			accountReceivables.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERY)) {
+			delivery.setVisible(true);
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {
