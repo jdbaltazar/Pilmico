@@ -39,20 +39,10 @@ public class Price {
 		super();
 	}
 
-	public Price(int id, Product product, Date dateUpdated, double pricePerSack, double pricePerKilo) {
+	public Price(Product product, Date dateUpdated, double pricePerSack, double pricePerKilo) {
 		super();
-		this.id = id;
 		this.product = product;
 		this.dateUpdated = dateUpdated;
-		this.pricePerSack = pricePerSack;
-		this.pricePerKilo = pricePerKilo;
-	}
-
-	public Price(int id, Product product, double pricePerSack, double pricePerKilo) {
-		super();
-		this.id = id;
-		this.product = product;
-		this.dateUpdated = new Date();
 		this.pricePerSack = pricePerSack;
 		this.pricePerKilo = pricePerKilo;
 	}

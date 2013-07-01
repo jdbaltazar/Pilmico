@@ -1,5 +1,6 @@
 package common.entity.product;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,11 +67,11 @@ public class Product {
 		super();
 	}
 
-	public Product(String name, Price price, double kilosPerSack, boolean available, double quantityInSack, double quantityInKilo,
+	public Product(String name, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available, double quantityInSack, double quantityInKilo,
 			double displayInSack, double displayInKilo, Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
 		super();
 		this.name = name;
-		prices.add(price);
+		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
 		this.kilosPerSack = kilosPerSack;
 		this.available = available;
 		this.quantityInSack = quantityInSack;
@@ -83,12 +84,12 @@ public class Product {
 		this.alertOnQuantity = alertOnQuantity;
 	}
 
-	public Product(String name, String description, Price price, double kilosPerSack, boolean available, double quantityInSack, double quantityInKilo,
+	public Product(String name, String description, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available, double quantityInSack, double quantityInKilo,
 			double displayInSack, double displayInKilo, Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.prices.add(price);
+		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
 		this.kilosPerSack = kilosPerSack;
 		this.available = available;
 		this.quantityInSack = quantityInSack;
