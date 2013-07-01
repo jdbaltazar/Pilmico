@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import common.entity.profile.Account;
+import common.entity.sales.SalesDetail;
 
 @Entity
 public class DailyExpenses {
@@ -183,6 +184,15 @@ public class DailyExpenses {
 				break;
 			}
 		}
+	}
+
+	public double getDailyExpensesAmount() {
+		double total = 0;
+		for (DailyExpensesDetail ded : dailyExpenseDetails) {
+			total += ded.getAmount();
+		}
+		return total;
+
 	}
 
 }

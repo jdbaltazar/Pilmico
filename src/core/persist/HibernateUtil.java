@@ -52,7 +52,7 @@ public class HibernateUtil {
 		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
 		// mysql account credectials
-		if (!tryToBuildSessionFactory("root", ""))
+		if (!tryToBuildSessionFactory("root", "123456"))
 			throw new RuntimeException("connection unsuccessful");
 	}
 

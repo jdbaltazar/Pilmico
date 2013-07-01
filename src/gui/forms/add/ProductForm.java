@@ -151,7 +151,8 @@ public class ProductForm extends SimplePanel {
 				dLabel.setBounds(x1, initY + y - 7, 100, 11);
 				category.setBounds(x1, initY + y + 5, 170, 20);
 				
-				category.addItem("Neil");
+				category.addItem("HOGS");
+				category.addItem("SALTO");
 			}
 		}
 
