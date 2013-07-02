@@ -42,20 +42,27 @@ public class InventorySheet {
 	@JoinColumn(name = "issued_by")
 	private Account issuedBy;
 
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<InventorySheetDetail> inventorySheetDetails = new HashSet<InventorySheetDetail>();
-
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Delivery> deliveries = new HashSet<Delivery>();
-
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<PullOut> pullouts = new HashSet<PullOut>();
-
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Sales> sales = new HashSet<Sales>();
-
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<AccountReceivable> accountReceivables = new HashSet<AccountReceivable>();
+	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// private Set<InventorySheetDetail> inventorySheetDetails = new
+	// HashSet<InventorySheetDetail>();
+	//
+	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// private Set<Delivery> deliveries = new HashSet<Delivery>();
+	//
+	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// private Set<PullOut> pullouts = new HashSet<PullOut>();
+	//
+	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// private Set<Sales> sales = new HashSet<Sales>();
+	//
+	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// private Set<AccountReceivable> accountReceivables = new
+	// HashSet<AccountReceivable>();
 
 	
 }
