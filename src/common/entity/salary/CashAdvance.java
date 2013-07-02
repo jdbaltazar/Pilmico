@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
 
@@ -55,18 +56,19 @@ public class CashAdvance {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "cashAdvance", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CADeduction> caDeductions = new HashSet<CADeduction>();
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
 
 	public CashAdvance() {
 		super();
 	}
 
 	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, String remarks,
-			boolean accounted, Set<CADeduction> caDeductions) {
+			Set<CADeduction> caDeductions) {
 		super();
 		this.date = date;
 		this.paid = paid;
@@ -76,7 +78,6 @@ public class CashAdvance {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.caDeductions = caDeductions;
 	}
 
@@ -91,7 +92,6 @@ public class CashAdvance {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
 	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, boolean accounted) {
@@ -103,7 +103,6 @@ public class CashAdvance {
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
-		this.accounted = accounted;
 	}
 
 	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy) {
@@ -115,7 +114,6 @@ public class CashAdvance {
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = true;
-		this.accounted = false;
 	}
 
 	public int getId() {
@@ -190,20 +188,24 @@ public class CashAdvance {
 		this.remarks = remarks;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public Set<CADeduction> getCaDeductions() {
 		return caDeductions;
 	}
 
 	public void setCaDeductions(Set<CADeduction> caDeductions) {
 		this.caDeductions = caDeductions;
+	}
+
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
+	}
+
+	public String toString() {
+		return "" + id;
 	}
 
 }
