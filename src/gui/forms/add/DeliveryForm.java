@@ -62,7 +62,7 @@ public class DeliveryForm extends SimplePanel {
 	private SoyButton save;
 	private JLabel receivedBy;
 	private MainFormField terms, po_no, delivery_no;
-	private MainFormLabel termsLabel, ponumLabel, deleiveryNumLabel, dateLabel, receivedByLabel, supplierLabel;
+	private MainFormLabel termsLabel, ponumLabel, deliveryNumLabel, dateLabel, receivedByLabel, supplierLabel;
 
 	private DefaultComboBoxModel model;
 	private FormCheckbox showRequired;
@@ -78,7 +78,8 @@ public class DeliveryForm extends SimplePanel {
 		super("Add Delivery Form");
 		init();
 		addComponents();
-
+		
+		Values.deliveryForm = this;
 	};
 
 	private void init() {
@@ -101,7 +102,7 @@ public class DeliveryForm extends SimplePanel {
 
 		termsLabel = new MainFormLabel("Terms:");
 		ponumLabel = new MainFormLabel("PO_No:");
-		deleiveryNumLabel = new MainFormLabel("Delivery No.:");
+		deliveryNumLabel = new MainFormLabel("Delivery No.:");
 		dateLabel = new MainFormLabel("Date:");
 
 		receivedByLabel = new MainFormLabel("Received by:");
@@ -171,17 +172,17 @@ public class DeliveryForm extends SimplePanel {
 			}
 		});
 
-		dateLabel.setBounds(15, 12, 40, 20);
-		date.setBounds(60, 10, 150, 20);
+		dateLabel.setBounds(43, 12, 40, 20);  //15
+		date.setBounds(88, 10, 150, 20);
 
-		receivedByLabel.setBounds(260, 12, 85, 20);
-		receivedBy.setBounds(345, 10, 200, 20);
+		receivedByLabel.setBounds(293, 12, 85, 20);//260
+		receivedBy.setBounds(378, 10, 200, 20);
 
-		ponumLabel.setBounds(15, 35, 50, 20);
-		po_no.setBounds(65, 32, 70, 20);
+		ponumLabel.setBounds(36, 35, 50, 20);
+		po_no.setBounds(86, 32, 70, 20);
 
-		deleiveryNumLabel.setBounds(145, 35, 100, 20);
-		delivery_no.setBounds(245, 32, 140, 20);
+		deliveryNumLabel.setBounds(286, 35, 100, 20); //260
+		delivery_no.setBounds(386, 32, 140, 20);
 
 		supplierLabel.setBounds(15, 58, 70, 20);
 		supplierCombo.setBounds(85, 56, 220, 20);
@@ -196,9 +197,10 @@ public class DeliveryForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(productsPanel.getComponentCount() * ROW_HEIGHT, productsPanel.getComponentCount() + "", 1, Values.ADD));
+				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
 				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-
+				alternateRows();
+				
 				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 				productsPanel.updateUI();
 				productsPanel.revalidate();
@@ -221,7 +223,7 @@ public class DeliveryForm extends SimplePanel {
 		panel.add(ponumLabel);
 		panel.add(po_no);
 
-		panel.add(deleiveryNumLabel);
+		panel.add(deliveryNumLabel);
 		panel.add(delivery_no);
 
 //		panel.add(issuedOnLabel);
@@ -254,6 +256,15 @@ public class DeliveryForm extends SimplePanel {
 		scrollPane.setBounds(20, 42, 630, 310);
 
 		add(scrollPane);
+	}
+	
+	private void alternateRows(){
+		
+		for(int i = 0; i < rowPanel.size(); i ++)
+			if(i%2 == 0)
+				rowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+				rowPanel.get(i).getRow().setBackground(Values.row2);
 	}
 	
 	private void setupTable(int y, boolean shownFields){
@@ -290,21 +301,21 @@ public class DeliveryForm extends SimplePanel {
 		termsLabel.setVisible(show);
 		terms.setVisible(show);
 		
-		deleiveryNumLabel.setVisible(show);
+		deliveryNumLabel.setVisible(show);
 		delivery_no.setVisible(show);
 		
 		supplierFwd.setVisible(show);
 	}
 
 	public void removeRow(int rowNum) {
-		System.out.println("pressed row button: " + rowNum);
-
 		productsPanel.remove(rowNum);
 		productsPanel.updateUI();
 		productsPanel.revalidate();
 
 		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 		updateList(rowNum);
+		
+		alternateRows();
 	}
 
 	private void updateList(int removedRow) {
@@ -319,8 +330,6 @@ public class DeliveryForm extends SimplePanel {
 		}
 
 		rowPanel.remove(removedRow);
-
-		System.out.println("rowpanel2 size: " + rowPanel.size());
 	}
 
 	private void addComponents() {

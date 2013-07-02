@@ -22,21 +22,23 @@ import util.Values;
 public class RowPanel extends JPanel {
 
 	private int y;
-	private String command = "";
+	private String command = "none";
 
-	private JComboBox itemCombo;
+	private JComboBox productsCombo, feesCombo, expensesCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
-	private JTextField itemComboField;
-	private NumericTextField quantitySack, quantityKG;
-	private JNumericField priceSack, priceKG;
+	private JTextField productsComboField, expensesComboField, feesComboField;
+	private JNumericField priceSack, priceKG, quantitySack, quantityKG, amountOfExpense;
 
 	private JButton deleteRow, addRow;
 	private JPanel row;
+	
+	private RowJLabel date, amount;
 
-	private int quant;
-	//private Item item;
+	private Object object;
 	private String[] stocks;
 	private int mode;
+	private String label="";
+	private JPanel srcPanel = new JPanel();
 
 	/*public RowPanel(int y, String command, Item item, int quant, int mode) {
 		this.y = y;
@@ -47,34 +49,52 @@ public class RowPanel extends JPanel {
 		init();
 	}*/
 	
-	public RowPanel(int y, String command, int quant, int mode) {
+	public RowPanel(JPanel srcPanel, String label) {
+		this.srcPanel = srcPanel;
+		this.label = label;
+		
+		init();
+	}	
+	
+	public RowPanel(Object object, JPanel srcPanel, int mode) {
+		this.srcPanel = srcPanel;
+		this.object = object;
+		this.mode = mode;
+		init();
+	}
+	
+	public RowPanel(int y, String command, int mode) {
 		this.y = y;
 		this.command = command;
-	//	this.item = item;
-		this.quant = quant;
+		this.mode = mode;
+		init();
+	}
+	
+	public RowPanel(JPanel srcPanel, int mode) {
+		this.srcPanel = srcPanel;
 		this.mode = mode;
 		init();
 	}
 
 	private void init() {
 		// TODO Auto-generated method stub
+		command = srcPanel.getComponentCount() + "";
+		y = srcPanel.getComponentCount() * ROW_HEIGHT;
 		
-		if(mode == Values.EDIT)
-			ROW_WIDTH = 335;
-
 		setLayout(new BorderLayout());
 
 		row = new JPanel();
+		row.setLayout(null);
+		row.setBackground(Color.decode("#FFFFE6"));
+		
 		deleteRow = new SBButton("cancel.png", "cancel.png", "Remove");
 		//if(mode == Values.EDIT)
 			//row.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1,Color.LIGHT_GRAY));
 
 //		row.setBackground(new Color(245, 245, 220));
-		row.setBackground(Color.decode("#FFFFE6"));
 		
 		 //row.setBorder(BorderFactory.createEtchedBorder());
 
-		row.setLayout(null);
 
 		try {
 	//		List<Item> items = Manager.itemManager.getItems();
@@ -86,28 +106,130 @@ public class RowPanel extends JPanel {
 			// for (int i = 0; i < items.size(); i++) {
 			// stocks[i] = items.get(i).getName();
 			// }
-			itemCombo = new JComboBox();
+			productsCombo = new JComboBox();
+			feesCombo = new JComboBox();
+			expensesCombo = new JComboBox();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		itemCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		itemCombo.setEditable(true);
-		itemComboField = (JTextField) itemCombo.getEditor().getEditorComponent();
-		itemComboField.setText("");
-		itemComboField.addKeyListener(new ComboKeyHandler(itemCombo));
+		productsCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		productsCombo.setEditable(true);
+		productsComboField = (JTextField) productsCombo.getEditor().getEditorComponent();
+		productsComboField.setText("");
+		productsComboField.addKeyListener(new ComboKeyHandler(productsCombo));
+		
+		feesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		feesCombo.setEditable(true);
+		feesComboField = (JTextField) feesCombo.getEditor().getEditorComponent();
+		feesComboField.setText("");
+		feesComboField.addKeyListener(new ComboKeyHandler(feesCombo));
+		
+		expensesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		expensesCombo.setEditable(true);
+		expensesComboField = (JTextField) expensesCombo.getEditor().getEditorComponent();
+		expensesComboField.setText("");
+		expensesComboField.addKeyListener(new ComboKeyHandler(expensesCombo));
 
-		quantitySack = new NumericTextField("", 10, null, null);
-		quantityKG = new NumericTextField("", 10, null, null);
+		quantitySack = new JNumericField(10,JNumericField.DECIMAL,true);
+		quantityKG = new JNumericField(10,JNumericField.DECIMAL,true);
 		priceSack = new JNumericField(10,JNumericField.DECIMAL,true);
 		priceKG = new JNumericField(10,JNumericField.DECIMAL,true);
 		
+		amountOfExpense = new JNumericField(10,JNumericField.DECIMAL,true);
+		
+		amountOfExpense.setPrecision(2);
+		quantitySack.setPrecision(2);
+		quantityKG.setPrecision(2);
 		priceSack.setPrecision(2);
 		priceKG.setPrecision(2);
 		
 //		quantitySack.setText(quant + "");
 		
 
+		
+
+		// itemsPanel.setPreferredSize(new Dimension(330,
+		// itemsPanel.getComponentCount()
+		// * ROW_HEIGHT));
+//		Values.tableUtilPanel.getLabel();
+		
+		if(mode == Values.EDIT)
+			ROW_WIDTH = 335;
+		
+		if(label.equals("CADeductions")){
+			addCADeductionsRow();
+		}
+		else if(label.equals(Tables.EXPENSES))
+			addExpensesRow();
+		else if(label.equals(Tables.SALARY))
+			addFeesRow();
+		else
+			addProductRow();
+		
+		setBounds(0, y, ROW_WIDTH, ROW_HEIGHT);
+
+	}
+	
+	private void addCADeductionsRow(){
+		ROW_WIDTH = 270;
+		
+		date = new RowJLabel("Jul 02, 2013 06:32 PM");
+		amount = new RowJLabel("P "+"2500");
+		
+		date.setBounds(10,7,150,20);
+		amount.setBounds(177,7,60,20);
+		
+		row.add(date);
+		row.add(amount);
+		
+		add(row);
+	}
+	
+	private void addFeesRow(){
+		deleteRow.setActionCommand(command);
+		deleteRow.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Values.salaryReleaseForm.removeRow(Integer.parseInt(e.getActionCommand()));
+			}
+		});
+
+		feesCombo.setBounds(21, 7, 160, 20);
+		deleteRow.setBounds(210, 9, 16, 16);
+		
+		row.add(feesCombo);
+		row.add(deleteRow);
+		
+		add(row);
+	}
+	
+	private void addExpensesRow(){
+		deleteRow.setActionCommand(command);
+		deleteRow.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Values.expensesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+			}
+		});
+
+		amountOfExpense.setBounds(10, 7, 52, 20);
+		expensesCombo.setBounds(87, 7, 145, 20);
+		deleteRow.setBounds(257, 9, 16, 16);
+		
+		row.add(amountOfExpense);
+		row.add(expensesCombo);
+		row.add(deleteRow);
+		
+		add(row);
+	}
+	
+	private void addProductRow() {
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
 
@@ -120,6 +242,15 @@ public class RowPanel extends JPanel {
 				case Values.ADD:
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES))
 						Values.salesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+					
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES))
+						Values.accountReceivablesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+					
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUT))
+						Values.pulloutForm.removeRow(Integer.parseInt(e.getActionCommand()));
+					
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERY))
+						Values.deliveryForm.removeRow(Integer.parseInt(e.getActionCommand()));
 					/*else
 						Values.stockPurchasePanel.removeRow(Integer.parseInt(e.getActionCommand()));*/
 					break;
@@ -144,9 +275,9 @@ public class RowPanel extends JPanel {
 		priceKG.setBounds(249, 7, 57, 20);
 		
 		if(mode == Values.ADD)
-			itemCombo.setBounds(323, 7, 190, 20);
+			productsCombo.setBounds(323, 7, 190, 20);
 		else
-			itemCombo.setBounds(87, 7, 235, 20);
+			productsCombo.setBounds(87, 7, 235, 20);
 		
 		deleteRow.setBounds(533, 9, 16, 16);
 
@@ -155,44 +286,24 @@ public class RowPanel extends JPanel {
 		row.add(quantityKG);
 		row.add(priceSack);
 		row.add(priceKG);
-		row.add(itemCombo);
+		row.add(productsCombo);
 		
 		if(mode!=Values.EDIT)
 			row.add(deleteRow);
 
-		itemCombo.setSelectedIndex(-1);
+		productsCombo.setSelectedIndex(-1);
 
 		boolean found = false;
-		/*if (item != null) {
-			int total = itemCombo.getItemCount();
-			while (total > 0) {
-				total--;
-				Item i = (Item) itemCombo.getItemAt(total);
-				System.out.println("item compared to another w/ id: " + i.getId());
-				if (item.getId() == i.getId()) {
-					itemCombo.setSelectedIndex(total);
-					// itemComboField.setText(item.getName());
-					System.out.println("found. cbox set to: " + total);
-					total = 0;
-					found = true;
-				}
-
-			}
-			if (!found)
-				System.out.println("item not found!");
-		}*/
-
 		add(row);
-		setBounds(0, y, ROW_WIDTH, ROW_HEIGHT);
-
-		// itemsPanel.setPreferredSize(new Dimension(330,
-		// itemsPanel.getComponentCount()
-		// * ROW_HEIGHT));
-
 	}
+
 
 	public int getQuantity() {
 		return Integer.parseInt(quantitySack.getText());
+	}
+	
+	public JPanel getRow(){
+		return row;
 	}
 
 	public JButton getDeleteRow() {
@@ -220,7 +331,7 @@ public class RowPanel extends JPanel {
 	}
 
 	public Object getSelectedItem() {
-		return itemCombo.getSelectedItem();
+		return productsCombo.getSelectedItem();
 	}
 
 }

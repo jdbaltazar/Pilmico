@@ -6,6 +6,7 @@ import gui.forms.util.RowPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -31,6 +32,8 @@ import util.SBButton;
 import util.SimplePanel;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
+import util.Tables;
+import util.Values;
 import util.soy.SoyButton;
 
 public class SalaryReleaseForm extends SimplePanel{
@@ -47,7 +50,8 @@ public class SalaryReleaseForm extends SimplePanel{
 	private Object[] array = {};
 	private JScrollBar sb;
 
-	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
+	private ArrayList<RowPanel> feesRowPanel = new ArrayList<RowPanel>();
+	private ArrayList<RowPanel> caRowPanel = new ArrayList<RowPanel>();
 	private JTextField quantity;
 	private JButton deleteRow, addRow;
 	private TableHeaderLabel dateHeaderLabel, amountLabel, deleteLabel, feesLabel;
@@ -71,6 +75,8 @@ public class SalaryReleaseForm extends SimplePanel{
 		super("Add Salary Form");
 		init();
 		addComponents();
+		
+		Values.salaryReleaseForm = this;
 	}
 	
 	private void init() {
@@ -124,6 +130,8 @@ public class SalaryReleaseForm extends SimplePanel{
 		cashAdvancesPanel.setLayout(null);
 		cashAdvancesPanel.setOpaque(false);
 		
+		addCADeduction();
+		
 		cashAdvancesPane = new JScrollPane(cashAdvancesPanel);
 		cashAdvancesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		cashAdvancesPane.setOpaque(false);
@@ -164,32 +172,23 @@ public class SalaryReleaseForm extends SimplePanel{
 		feesLabel.setBounds(340, 110, 200, 25);
 		deleteLabel.setBounds(540, 110, 42, 25);
 		feesPane.setBounds(341, 134, 257, 150);
-//		issuedBy.setBounds(330, 10, 200, 20);
-		
-		
 				
 		fwd.setBounds(308, 58, 16, 16);
 		
-//		amountLabel.setBounds(95, LABEL_Y, 170, LABEL_HEIGHT);
-		
-//		cashAdvancesPane.setBounds(19, ITEMS_PANE_Y, ROW_WIDTH, 140);
-//		fwd2.setBounds(482, LABEL_Y+5, 16, 16);
-		
-		
-
 		addRow.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/*rowPanel.add(new RowPanel(expensesPanel.getComponentCount() * ROW_HEIGHT, expensesPanel.getComponentCount() + "", 1, Values.ADD));
-				expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
+				feesRowPanel.add(new RowPanel(feesPanel, Tables.SALARY));
+				feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
+				alternateRows(true);
+				
+				feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
+				feesPanel.updateUI();
+				feesPanel.revalidate();
 
-				expensesPanel.setPreferredSize(new Dimension(330, expensesPanel.getComponentCount() * ROW_HEIGHT));
-				expensesPanel.updateUI();
-				expensesPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) expensesPanel.getPreferredSize().getHeight(), 10, 10);
-				expensesPanel.scrollRectToVisible(rect);*/
+				Rectangle rect = new Rectangle(0, (int) feesPanel.getPreferredSize().getHeight(), 10, 10);
+				feesPanel.scrollRectToVisible(rect);
 			}
 		});
 		
@@ -217,15 +216,6 @@ public class SalaryReleaseForm extends SimplePanel{
 		panel.add(feesLabel);
 		panel.add(deleteLabel);
 		panel.add(feesPane);
-		/*panel.add(addRow);
-		
-		panel.add(dateHeaderLabel);
-		panel.add(amountLabel);
-		panel.add(deleteLabel);
-		
-		panel.add(cashAdvancesPane);
-		
-		*/
 		
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
@@ -236,33 +226,61 @@ public class SalaryReleaseForm extends SimplePanel{
 		
 		add(scrollPane);
 	}
+	
+	private void addCADeduction(){
+		caRowPanel.add(new RowPanel(cashAdvancesPanel, "CADeductions"));
+		cashAdvancesPanel.add(caRowPanel.get(caRowPanel.size() - 1));
+		alternateRows(false);
 
-	public void removeRow(int rowNum) {
-		System.out.println("pressed row button: " + rowNum);
-
-		cashAdvancesPanel.remove(rowNum);
+		cashAdvancesPanel.setPreferredSize(new Dimension(237, cashAdvancesPanel.getComponentCount() * ROW_HEIGHT));
 		cashAdvancesPanel.updateUI();
 		cashAdvancesPanel.revalidate();
 
-		cashAdvancesPanel.setPreferredSize(new Dimension(330, cashAdvancesPanel.getComponentCount() * ROW_HEIGHT));
+		Rectangle rect = new Rectangle(0, (int) cashAdvancesPanel.getPreferredSize().getHeight(), 10, 10);
+		cashAdvancesPanel.scrollRectToVisible(rect);
+	}
+	
+	private void alternateRows(boolean isForFees){
+		
+		if(isForFees){
+		for(int i = 0; i < feesRowPanel.size(); i ++)
+			if(i%2 == 0)
+				feesRowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+				feesRowPanel.get(i).getRow().setBackground(Values.row2);
+		}
+		else
+			for(int i = 0; i < caRowPanel.size(); i ++)
+				if(i%2 == 0)
+					caRowPanel.get(i).getRow().setBackground(Values.row1);
+				else
+					caRowPanel.get(i).getRow().setBackground(Values.row2);
+	}
+
+	public void removeRow(int rowNum) {
+		feesPanel.remove(rowNum);
+		feesPanel.updateUI();
+		feesPanel.revalidate();
+
+		feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
+		
+		alternateRows(true);
 	}
 
 	private void updateList(int removedRow) {
 
-		for (int i = removedRow + 1; i < rowPanel.size(); i++) {
-			rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
-			rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
+		for (int i = removedRow + 1; i < feesRowPanel.size(); i++) {
+			feesRowPanel.get(i).setBounds(0, feesRowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
+			feesRowPanel.get(i).setY(feesRowPanel.get(i).getY() - ROW_HEIGHT);
 			// System.out.println("command: "+rowPanel2.get(i).getCommand());
-			rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
-			rowPanel.get(i).updateUI();
-			rowPanel.get(i).revalidate();
+			feesRowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
+			feesRowPanel.get(i).updateUI();
+			feesRowPanel.get(i).revalidate();
 		}
 
-		rowPanel.remove(removedRow);
-
-		System.out.println("rowpanel2 size: " + rowPanel.size());
+		feesRowPanel.remove(removedRow);
 	}
 
 	private void addComponents() {
@@ -301,7 +319,7 @@ public class SalaryReleaseForm extends SimplePanel{
 
 	private void clearForm() {
 		cashAdvancesPanel.removeAll();
-		rowPanel.clear();
+		feesRowPanel.clear();
 		refreshDate();
 
 		error.setText("");

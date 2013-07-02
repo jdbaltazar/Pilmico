@@ -5,7 +5,12 @@ import gui.FooterPanel;
 import gui.MainFrame;
 import gui.TopPanel;
 import gui.forms.add.AccountForm;
+import gui.forms.add.AccountReceivablesForm;
+import gui.forms.add.DeliveryForm;
+import gui.forms.add.ExpensesForm;
 import gui.forms.add.ProductForm;
+import gui.forms.add.PulloutForm;
+import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
@@ -51,6 +56,11 @@ public class Values {
 	public static AccountForm accountForm;
 	public static EditStockPurchase editStockPurchase;
 	public static EditSalesOrder editSalesOrder;
+	public static PulloutForm pulloutForm;
+	public static AccountReceivablesForm accountReceivablesForm;
+	public static DeliveryForm deliveryForm;
+	public static ExpensesForm expensesForm;
+	public static SalaryReleaseForm salaryReleaseForm;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
@@ -94,6 +104,9 @@ public class Values {
 
 	public static Color gradient1 = new Color(245, 245, 253);
 	public static Color gradient2 = new Color(230, 230, 250);
+	
+	public static Color row1 = Color.decode("#F5FFF5");
+	public static Color row2 = Color.decode("#E6FFE6");
 
 	public static String[] productFormLabel = { "Name*", "Description",
 			"For Sale?*", "Unit*", "Selling Price (per kilo)*",

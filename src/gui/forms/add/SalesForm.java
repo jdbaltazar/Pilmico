@@ -124,6 +124,7 @@ public class SalesForm extends SimplePanel {
 		cashier.setOpaque(false);
 		cashier.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		cashier.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
+		cashier.setHorizontalAlignment(JLabel.CENTER);
 
 		issuedAt = new MainFormField(200);
 		rc_no = new MainFormField(20);
@@ -230,8 +231,9 @@ public class SalesForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(productsPanel.getComponentCount() * ROW_HEIGHT, productsPanel.getComponentCount() + "", 1, Values.ADD));
+				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
 				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+				alternateRows();
 
 				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 				productsPanel.updateUI();
@@ -313,6 +315,17 @@ public class SalesForm extends SimplePanel {
 		add(scrollPane);
 	}
 	
+	private void alternateRows(){
+		
+		for(int i = 0; i < rowPanel.size(); i ++)
+			if(i%2 == 0)
+//				rowPanel.get(i).getRow().setBackground(Color.decode("#E6FFFF"));#EBE0FF,F5F0FF
+				rowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+//				rowPanel.get(i).getRow().setBackground(Color.decode("#CCFFFF"));	#E0E0FF,#FFFFCC
+				rowPanel.get(i).getRow().setBackground(Values.row2);
+	}
+	
 	private void setupTable(int y, boolean shownFields){
 		LABEL_Y = y;
 		
@@ -365,6 +378,8 @@ public class SalesForm extends SimplePanel {
 
 		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 		updateList(rowNum);
+		
+		alternateRows();
 	}
 
 	private void updateList(int removedRow) {
