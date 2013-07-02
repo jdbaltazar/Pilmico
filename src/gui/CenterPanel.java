@@ -68,7 +68,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		add(new LoginPanel());
+//		add(new LoginPanel());
 
 		// changeTable(Values.HOME);
 
@@ -76,17 +76,22 @@ public class CenterPanel extends SoyPanel {
 
 	public void changeTable(int val) {
 
-		// if (val != Values.HOME)
+		 if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
+//			 remove(getComponent(0));
 
+//		 System.out.println("component count: "+getComponentCount());
+		 
 		switch (val) {
 
 		case Values.HOME:
 			// add(tableUtilPanel, BorderLayout.PAGE_END);
+			
 			add(new AddEntryPanel(), BorderLayout.PAGE_START);
 			add(new EditPanel(), BorderLayout.LINE_START);
 			add(new MenuPanel(), BorderLayout.PAGE_END);
 			fillProducts();
+			
 			break;
 
 		case Values.PRODUCTS:

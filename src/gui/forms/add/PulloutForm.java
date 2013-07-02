@@ -78,7 +78,7 @@ public class PulloutForm extends SimplePanel {
 		init();
 		addComponents();
 
-		// Values.salesForm = this;
+		Values.pulloutForm = this;
 	};
 
 	private void init() {
@@ -151,8 +151,9 @@ public class PulloutForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(productsPanel.getComponentCount() * ROW_HEIGHT, productsPanel.getComponentCount() + "", 1, Values.ADD));
+				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
 				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+				alternateRows();
 
 				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 				productsPanel.updateUI();
@@ -193,9 +194,16 @@ public class PulloutForm extends SimplePanel {
 		add(scrollPane);
 	}
 
-	public void removeRow(int rowNum) {
-		System.out.println("pressed row button: " + rowNum);
+	private void alternateRows() {
 
+		for (int i = 0; i < rowPanel.size(); i++)
+			if (i % 2 == 0)
+				rowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+				rowPanel.get(i).getRow().setBackground(Values.row2);
+	}
+
+	public void removeRow(int rowNum) {
 		productsPanel.remove(rowNum);
 		productsPanel.updateUI();
 		productsPanel.revalidate();
@@ -203,6 +211,8 @@ public class PulloutForm extends SimplePanel {
 		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
+
+		alternateRows();
 	}
 
 	private void updateList(int removedRow) {
@@ -217,8 +227,6 @@ public class PulloutForm extends SimplePanel {
 		}
 
 		rowPanel.remove(removedRow);
-
-		System.out.println("rowpanel2 size: " + rowPanel.size());
 	}
 
 	private void addComponents() {
@@ -244,7 +252,7 @@ public class PulloutForm extends SimplePanel {
 				}
 				try {
 					Manager.pullOutManager.addPullOut(pullOut);
-					
+
 					System.out.println("pullout saved!");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

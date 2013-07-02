@@ -43,6 +43,7 @@ import util.SBButton;
 import util.SimplePanel;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
+import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -84,6 +85,7 @@ public class ExpensesForm extends SimplePanel {
 		init();
 		addComponents();
 
+		Values.expensesForm = this;
 	};
 
 	private void init() {
@@ -158,20 +160,17 @@ public class ExpensesForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				 * rowPanel.add(new RowPanel(expensesPanel.getComponentCount() *
-				 * ROW_HEIGHT, expensesPanel.getComponentCount() + "", 1,
-				 * Values.ADD)); expensesPanel.add(rowPanel.get(rowPanel.size() -
-				 * 1));
-				 * 
-				 * expensesPanel.setPreferredSize(new Dimension(330,
-				 * expensesPanel.getComponentCount() * ROW_HEIGHT));
-				 * expensesPanel.updateUI(); expensesPanel.revalidate();
-				 * 
-				 * Rectangle rect = new Rectangle(0, (int)
-				 * expensesPanel.getPreferredSize().getHeight(), 10, 10);
-				 * expensesPanel.scrollRectToVisible(rect);
-				 */
+
+				rowPanel.add(new RowPanel(expensesPanel, Tables.EXPENSES));
+				expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
+				alternateRows();
+
+				expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20, expensesPanel.getComponentCount() * ROW_HEIGHT));
+				expensesPanel.updateUI();
+				expensesPanel.revalidate();
+
+				Rectangle rect = new Rectangle(0, (int) expensesPanel.getPreferredSize().getHeight(), 10, 10);
+				expensesPanel.scrollRectToVisible(rect);
 			}
 		});
 
@@ -212,16 +211,25 @@ public class ExpensesForm extends SimplePanel {
 		add(scrollPane);
 	}
 
-	public void removeRow(int rowNum) {
-		System.out.println("pressed row button: " + rowNum);
+	private void alternateRows() {
 
+		for (int i = 0; i < rowPanel.size(); i++)
+			if (i % 2 == 0)
+				rowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+				rowPanel.get(i).getRow().setBackground(Values.row2);
+	}
+
+	public void removeRow(int rowNum) {
 		expensesPanel.remove(rowNum);
 		expensesPanel.updateUI();
 		expensesPanel.revalidate();
 
-		expensesPanel.setPreferredSize(new Dimension(330, expensesPanel.getComponentCount() * ROW_HEIGHT));
+		expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20, expensesPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
+
+		alternateRows();
 	}
 
 	private void updateList(int removedRow) {
@@ -236,8 +244,6 @@ public class ExpensesForm extends SimplePanel {
 		}
 
 		rowPanel.remove(removedRow);
-
-		System.out.println("rowpanel2 size: " + rowPanel.size());
 	}
 
 	private void addComponents() {
