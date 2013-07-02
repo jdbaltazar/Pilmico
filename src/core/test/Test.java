@@ -23,7 +23,7 @@ import common.entity.sales.SalesDetail;
 import common.entity.supplier.Supplier;
 import common.manager.AccountManager;
 import common.manager.CashAdvanceManager;
-import common.manager.EmployeeManager;
+import common.manager.EmployeePersonManager;
 import common.manager.ProductManager;
 import common.manager.LogManager;
 import common.manager.Manager;
@@ -33,7 +33,7 @@ import common.manager.StoreManager;
 import common.manager.SupplierManager;
 import core.persist.AccountPersistor;
 import core.persist.CashAdvancePersistor;
-import core.persist.EmployeePersistor;
+import core.persist.EmployeePersonPersistor;
 import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
 import core.persist.NotePersistor;
@@ -67,9 +67,9 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		String pass = "1234567890qwertyuiop";
+		String pass = "paasword";
 		try {
-			String encrypted = SecurityTool.getInstance().getEncryptStringValue(pass);
+			String encrypted = "@ðÞNx£õê‚0]Ž¥KÅÉ"; //SecurityTool.getInstance().getEncryptStringValue(pass);
 
 			System.out.println("Encrypted: " + encrypted);
 

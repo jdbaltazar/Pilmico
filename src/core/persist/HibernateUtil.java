@@ -16,6 +16,14 @@ import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
+import common.entity.deposit.Bank;
+import common.entity.deposit.BankAccount;
+import common.entity.deposit.Deposit;
+import common.entity.inventorysheet.Breakdown;
+import common.entity.inventorysheet.BreakdownLine;
+import common.entity.inventorysheet.Denomination;
+import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetDetail;
 import common.entity.log.Log;
 import common.entity.log.LogType;
 import common.entity.note.Note;
@@ -115,6 +123,17 @@ public class HibernateUtil {
 			conf.addAnnotatedClass(CADeduction.class);
 			conf.addAnnotatedClass(CashAdvance.class);
 			conf.addAnnotatedClass(SalaryRelease.class);
+
+			conf.addAnnotatedClass(Bank.class);
+			conf.addAnnotatedClass(BankAccount.class);
+			conf.addAnnotatedClass(Deposit.class);
+
+			conf.addAnnotatedClass(Denomination.class);
+			conf.addAnnotatedClass(BreakdownLine.class);
+			conf.addAnnotatedClass(Breakdown.class);
+
+			conf.addAnnotatedClass(InventorySheetDetail.class);
+			conf.addAnnotatedClass(InventorySheet.class);
 
 			sessionFactory = conf.buildSessionFactory();
 

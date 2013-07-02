@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -20,6 +21,9 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
 
+import common.entity.profile.Account;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.Values;
 import util.soy.SoyButton;
@@ -29,7 +33,7 @@ import util.soy.SoyPanel;
 public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 	/**
-	 * 
+	 
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
@@ -65,7 +69,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		usernameLabel = new FormLabel("Username");
 		usernameLabel.setSize(20);
 		usernameLabel.setBounds(600, 110, 100, 30);
-		usernameLabel.setForeground(new Color(32,178,170));
+		usernameLabel.setForeground(new Color(32, 178, 170));
 
 		userName = new SoyField(1);
 		userName.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
@@ -75,11 +79,11 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		passwordLabel = new FormLabel("Password");
 		passwordLabel.setSize(20);
 		passwordLabel.setBounds(600, 185, 150, 30);
-		passwordLabel.setForeground(new Color(32,178,170));
+		passwordLabel.setForeground(new Color(32, 178, 170));
 
 		password = new JPasswordField();
 		password.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -88,7 +92,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		});
 
 		password.setBounds(605, 215, 150, 25);
-		//password.setBorder(BorderFactory.createEmptyBorder());
+		// password.setBorder(BorderFactory.createEmptyBorder());
 
 		login = new SoyButton("Log in");
 		login.addMouseListener(this);
@@ -105,6 +109,9 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 		add(error);
 
+		userName.setText("manager");
+		password.setText("pilmico");
+
 	}
 
 	@Override
@@ -117,11 +124,10 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		// //g2.setColor(Color.WHITE);
 		// g2.fill(getBounds());
 
-//		gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0,
-//				getHeight(), new Color(5, 5, 5));
-		
-		gradient = new GradientPaint(0, 0, Values.gradient1, 0,
-				getHeight(), Values.gradient2);
+		// gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0,
+		// getHeight(), new Color(5, 5, 5));
+
+		gradient = new GradientPaint(0, 0, Values.gradient1, 0, getHeight(), Values.gradient2);
 		g2.setPaint(gradient);
 		g2.fill(g.getClipBounds());
 
@@ -144,8 +150,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		while (true) {
 
 			try {
-				image = (BufferedImage) ImageIO.read(new File("slideshow/" + i
-						+ ".jpg"));
+				image = (BufferedImage) ImageIO.read(new File("slideshow/" + i + ".jpg"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -165,9 +170,9 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 	private void validateAccount() {
 		String errorComment;
-		/*try {
-			errorComment = (Manager.getInstance().login(userName.getText(),
-					password.getPassword()));
+
+		try {
+			errorComment = (Manager.getInstance().login(userName.getText(), password.getPassword()));
 
 			if (!errorComment.equals("true")) {
 				if (errorComment.equals("accNF")) {
@@ -187,22 +192,27 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 				Values.footerPanel.showMenuButtons(true);
 				Values.centerPanel.changeTable(Values.HOME);
 
-				Manager.logManager.addLog(new Log(Manager.logManager
-						.getLogType(LogType.SYSTEM), acc.getUsername() + ": "
-						+ acc.getFirstName() + " " + acc.getLastName()
-						+ " logged in"));
+				// Manager.logManager.addLog(new
+				// Log(Manager.logManager.getLogType(LogType.SYSTEM),
+				// acc.getUsername() + ": " + acc.getFirstName() + " "
+				// + acc.getLastName() + " logged in"));
+
+				// Values.topPanel.showMenuButtons(true);
+				// Values.footerPanel.showMenuButtons(true);
+				// Values.centerPanel.changeTable(Values.HOME);
+
+				// new ProductOnDisplayPopup().setVisible(true);
 			}
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) { // TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		
-		Values.topPanel.showMenuButtons(true);
-		Values.footerPanel.showMenuButtons(true);
-		Values.centerPanel.changeTable(Values.HOME);
-		
-		new ProductOnDisplayPopup().setVisible(true);
+		}
+
+		// Values.topPanel.showMenuButtons(true);
+		// Values.footerPanel.showMenuButtons(true);
+		// Values.centerPanel.changeTable(Values.HOME);
+		//
+		// new ProductOnDisplayPopup().setVisible(true);
 	}
 
 	@Override

@@ -17,8 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
-import common.entity.sales.SalesDetail;
 
 @Entity
 public class DailyExpenses {
@@ -46,17 +46,18 @@ public class DailyExpenses {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "expense", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DailyExpensesDetail> dailyExpenseDetails = new HashSet<DailyExpensesDetail>();
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
 
 	public DailyExpenses() {
 		super();
 	}
 
-	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account, boolean valid, String remarks, boolean accounted,
+	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account, boolean valid, String remarks,
 			Set<DailyExpensesDetail> dailyExpenseDetails) {
 		super();
 		this.date = date;
@@ -64,27 +65,24 @@ public class DailyExpenses {
 		this.account = account;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.dailyExpenseDetails = dailyExpenseDetails;
 	}
 
-	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account, boolean valid, String remarks, boolean accounted) {
+	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.dailyExpensesType = dailyExpensesType;
 		this.account = account;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
-	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account, boolean valid, boolean accounted) {
+	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account, boolean valid) {
 		super();
 		this.date = date;
 		this.dailyExpensesType = dailyExpensesType;
 		this.account = account;
 		this.valid = valid;
-		this.accounted = accounted;
 	}
 
 	public DailyExpenses(Date date, DailyExpensesType dailyExpensesType, Account account) {
@@ -93,7 +91,6 @@ public class DailyExpenses {
 		this.dailyExpensesType = dailyExpensesType;
 		this.account = account;
 		this.valid = true;
-		this.accounted = false;
 	}
 
 	public int getId() {
@@ -152,14 +149,6 @@ public class DailyExpenses {
 		this.dailyExpensesType = dailyExpensesType;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public Set<DailyExpensesDetail> getDailyExpenseDetails() {
 		return dailyExpenseDetails;
 	}
@@ -192,7 +181,18 @@ public class DailyExpenses {
 			total += ded.getAmount();
 		}
 		return total;
+	}
 
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
+	}
+
+	public String toString() {
+		return id + "";
 	}
 
 }

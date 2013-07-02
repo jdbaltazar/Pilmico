@@ -70,9 +70,7 @@ public class CenterPanel extends SoyPanel {
 
 		add(new LoginPanel());
 
-
-		changeTable(Values.HOME);
-
+		// changeTable(Values.HOME);
 
 	}
 
@@ -211,7 +209,7 @@ public class CenterPanel extends SoyPanel {
 			// "John David S. Baltazar", "More" }, { "2", "June 18, 2013",
 			// "Juan dela Cruz", "" } };
 
-			List<Sales> sales = Manager.salesManager.getSaless();
+			List<Sales> sales = Manager.salesManager.getSales();
 			String[][] entries = new String[sales.size()][headers.length];
 
 			int i = 0;

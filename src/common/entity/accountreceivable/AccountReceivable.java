@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
 import common.entity.profile.Person;
 
@@ -49,20 +50,21 @@ public class AccountReceivable {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "accountReceivable", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<AccountReceivableDetail> accountReceivableDetails = new HashSet<AccountReceivableDetail>();
 
 	@OneToMany(mappedBy = "accountReceivable", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ARPayment> arPayments = new HashSet<ARPayment>();
 
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
+
 	public AccountReceivable() {
 		super();
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks, boolean accounted,
+	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks,
 			Set<AccountReceivableDetail> accountReceivableDetails, Set<ARPayment> arPayments) {
 		super();
 		this.date = date;
@@ -71,12 +73,11 @@ public class AccountReceivable {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.accountReceivableDetails = accountReceivableDetails;
 		this.arPayments = arPayments;
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks, boolean accounted) {
+	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.customer = customer;
@@ -84,7 +85,6 @@ public class AccountReceivable {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
 	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, boolean accounted) {
@@ -94,7 +94,6 @@ public class AccountReceivable {
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
-		this.accounted = accounted;
 	}
 
 	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy) {
@@ -104,7 +103,6 @@ public class AccountReceivable {
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = true;
-		this.accounted = false;
 	}
 
 	public int getId() {
@@ -163,14 +161,6 @@ public class AccountReceivable {
 		this.remarks = remarks;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public Set<AccountReceivableDetail> getAccountReceivableDetails() {
 		return accountReceivableDetails;
 	}
@@ -219,6 +209,14 @@ public class AccountReceivable {
 				break;
 			}
 		}
+	}
+
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
 	}
 
 	public String toString() {

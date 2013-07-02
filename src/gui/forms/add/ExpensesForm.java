@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -30,6 +31,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+
+import common.entity.dailyexpenses.DailyExpensesType;
+import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -65,7 +69,7 @@ public class ExpensesForm extends SimplePanel {
 	private JLabel issuedBy;
 	private FormDropdown type;
 	private MainFormLabel issuedByLabel, typeLabel, dateLabel;
-	
+
 	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -83,73 +87,70 @@ public class ExpensesForm extends SimplePanel {
 	};
 
 	private void init() {
-		
+
 		fwd = new SBButton("forward.png", "forward.png", "Add new customer");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		
+
 		scrollPane = new JScrollPane();
-		
+
 		type = new FormDropdown();
-		
+
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
 		issueDate = new SpinnerDate("MMM dd, yyyy hh:mm a");
-		
+
 		issuedByLabel = new MainFormLabel("Issued by:");
 		typeLabel = new MainFormLabel("Type:");
 		dateLabel = new MainFormLabel("Date:");
-		
-		issuedBy = new JLabel("Juan dela Cruz");
+
+		issuedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		
+
 		amountLabel = new TableHeaderLabel("Amount");
 		expenseLabel = new TableHeaderLabel("Expenses");
 		deleteLabel = new TableHeaderLabel(icon);
 
 		model = new DefaultComboBoxModel(array);
-		
+
 		expensesPanel = new JPanel();
 		expensesPanel.setLayout(null);
 		expensesPanel.setOpaque(false);
-		
+
 		expensesPane = new JScrollPane(expensesPanel);
 
-		
 		expensesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		expensesPane.setOpaque(false);
 		expensesPane.getViewport().setOpaque(false);
-		
-		
+
 		issuedBy.setBounds(330, 10, 200, 20);
-		
-		
+
 		issueDate.setBounds(460, 32, 150, 20);
-		
+
 		fwd.setBounds(308, 58, 16, 16);
-				
+
 		addRow.setBounds(0, LABEL_Y + 5, 16, 16);
-		
+
 		amountLabel.setBounds(18, LABEL_Y, 77, LABEL_HEIGHT);
 		expenseLabel.setBounds(95, LABEL_Y, 170, LABEL_HEIGHT);
 		deleteLabel.setBounds(265, LABEL_Y, 42, LABEL_HEIGHT);
-		
+
 		expensesPane.setBounds(19, ITEMS_PANE_Y, ROW_WIDTH, 140);
-//		fwd2.setBounds(482, LABEL_Y+5, 16, 16);
+		// fwd2.setBounds(482, LABEL_Y+5, 16, 16);
 		typeLabel.setBounds(350, LABEL_Y + 5, 40, 20);
 		type.setBounds(395, LABEL_Y + 5, 150, 20);
-		
+
 		dateLabel.setBounds(350, LABEL_Y + 40, 40, 20);
 		date.setBounds(395, LABEL_Y + 40, 150, 20);
-		
+
 		issuedByLabel.setBounds(350, LABEL_Y + 75, 70, 20);
 		issuedBy.setBounds(430, LABEL_Y + 75, 150, 20);
 
@@ -157,42 +158,57 @@ public class ExpensesForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/*rowPanel.add(new RowPanel(expensesPanel.getComponentCount() * ROW_HEIGHT, expensesPanel.getComponentCount() + "", 1, Values.ADD));
-				expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
-
-				expensesPanel.setPreferredSize(new Dimension(330, expensesPanel.getComponentCount() * ROW_HEIGHT));
-				expensesPanel.updateUI();
-				expensesPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) expensesPanel.getPreferredSize().getHeight(), 10, 10);
-				expensesPanel.scrollRectToVisible(rect);*/
+				/*
+				 * rowPanel.add(new RowPanel(expensesPanel.getComponentCount() *
+				 * ROW_HEIGHT, expensesPanel.getComponentCount() + "", 1,
+				 * Values.ADD)); expensesPanel.add(rowPanel.get(rowPanel.size() -
+				 * 1));
+				 * 
+				 * expensesPanel.setPreferredSize(new Dimension(330,
+				 * expensesPanel.getComponentCount() * ROW_HEIGHT));
+				 * expensesPanel.updateUI(); expensesPanel.revalidate();
+				 * 
+				 * Rectangle rect = new Rectangle(0, (int)
+				 * expensesPanel.getPreferredSize().getHeight(), 10, 10);
+				 * expensesPanel.scrollRectToVisible(rect);
+				 */
 			}
 		});
-		
+
+		try {
+			List<DailyExpensesType> detypes = Manager.dailyExpenseManager.getExpenseTypes();
+			for (DailyExpensesType det : detypes) {
+				type.addItem(det);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		panel.add(addRow);
-		
+
 		panel.add(amountLabel);
 		panel.add(expenseLabel);
 		panel.add(deleteLabel);
-		
+
 		panel.add(expensesPane);
-		
+
 		panel.add(typeLabel);
 		panel.add(type);
 
 		panel.add(dateLabel);
 		panel.add(date);
-		
+
 		panel.add(issuedByLabel);
 		panel.add(issuedBy);
-		
+
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(20, 59, 630, 310);
-		
+
 		add(scrollPane);
 	}
 
@@ -237,88 +253,67 @@ public class ExpensesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				/*if (isValidated()) {
-					try {
-						Date d = ((SpinnerDateModel) date.getModel()).getDate();
-						Account acc = (Account) accountCombo.getSelectedItem();
-						SalesOrder so = new SalesOrder(d, acc);
-
-						boolean valid = true;
-
-						// error-trapping here
-						int i = 0;
-						for (RowPanel sor : rowPanel) {
-							i++;
-							Item item = (Item) sor.getSelectedItem();
-							if (sor.getQuantity() > item.getUnitsOnStock()) {
-								Toolkit.getDefaultToolkit().beep();
-								
-								JOptionPane.showMessageDialog(null,
-										"Error in row " + i + ": only " + item.getUnitsOnStock() +" "+ item.getUnit().getName() + " of item \n"
-												+ item.getName() + " left. Purchase new stocks\nor update quantity of item",
-									    "System Error",
-									    JOptionPane.ERROR_MESSAGE);
-								
-								valid = false;
-							}
-						}
-
-						if (valid) {
-
-							for (RowPanel sor : rowPanel) {
-								so.addSalesOrderDetail(new SalesOrderDetail(so, sor.getQuantity(), (Item) sor.getSelectedItem()));
-							}
-
-							Manager.salesOrderManager.addSalesOrder(so);
-
-							// update quantity of items
-							Set<SalesOrderDetail> sods = so.getSalesOrderDetails();
-							for (SalesOrderDetail sod : sods) {
-								Item item = sod.getItem();
-								item.setUnitsOnStock(item.getUnitsOnStock() - sod.getQuantity());
-								Manager.itemManager.updateItem(item);
-							}
-
-							Account ac = Manager.loggedInAccount;
-							String str = ac.getAccountType() + " " + ac.getFirstAndLAstName() + " added sales order no " + so.getId() + " for account "
-									+ so.getAccount().getId() + ": " + so.getAccount().getFirstAndLAstName() + " with " + so.getSalesOrderDetails().size()
-									+ " lines.";
-
-							String str2 = "";
-							Set<SalesOrderDetail> ds = so.getSalesOrderDetails();
-							if (ds.size() > 0) {
-								str2 = " Quantity of item(s): ";
-								int total = ds.size();
-								for (SalesOrderDetail sod : ds) {
-									total--;
-									str2 = str2 + sod.getItem().getId();
-									if (total > 0) {
-										str2 = str2 + ", ";
-									} else {
-										str2 = str2 + " updated";
-									}
-								}
-
-							}
-							str = str + str2;
-							Log log = new Log(str);
-							Manager.logManager.addLog(log);
-
-							new SuccessPopup("Add").setVisible(true);
-							clearForm();
-							Values.centerPanel.changeTable(Values.SALES_ORDER);
-							Values.topPanel.refreshStockCost();
-							
-						} else {
-							System.out.println("Cannot add sales order! ");
-						}
-
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else
-					error.setText(msg);*/
+				/*
+				 * if (isValidated()) { try { Date d = ((SpinnerDateModel)
+				 * date.getModel()).getDate(); Account acc = (Account)
+				 * accountCombo.getSelectedItem(); SalesOrder so = new SalesOrder(d,
+				 * acc);
+				 * 
+				 * boolean valid = true;
+				 * 
+				 * // error-trapping here int i = 0; for (RowPanel sor : rowPanel) {
+				 * i++; Item item = (Item) sor.getSelectedItem(); if
+				 * (sor.getQuantity() > item.getUnitsOnStock()) {
+				 * Toolkit.getDefaultToolkit().beep();
+				 * 
+				 * JOptionPane.showMessageDialog(null, "Error in row " + i +
+				 * ": only " + item.getUnitsOnStock() +" "+ item.getUnit().getName()
+				 * + " of item \n" + item.getName() +
+				 * " left. Purchase new stocks\nor update quantity of item",
+				 * "System Error", JOptionPane.ERROR_MESSAGE);
+				 * 
+				 * valid = false; } }
+				 * 
+				 * if (valid) {
+				 * 
+				 * for (RowPanel sor : rowPanel) { so.addSalesOrderDetail(new
+				 * SalesOrderDetail(so, sor.getQuantity(), (Item)
+				 * sor.getSelectedItem())); }
+				 * 
+				 * Manager.salesOrderManager.addSalesOrder(so);
+				 * 
+				 * // update quantity of items Set<SalesOrderDetail> sods =
+				 * so.getSalesOrderDetails(); for (SalesOrderDetail sod : sods) {
+				 * Item item = sod.getItem();
+				 * item.setUnitsOnStock(item.getUnitsOnStock() - sod.getQuantity());
+				 * Manager.itemManager.updateItem(item); }
+				 * 
+				 * Account ac = Manager.loggedInAccount; String str =
+				 * ac.getAccountType() + " " + ac.getFirstAndLAstName() +
+				 * " added sales order no " + so.getId() + " for account " +
+				 * so.getAccount().getId() + ": " +
+				 * so.getAccount().getFirstAndLAstName() + " with " +
+				 * so.getSalesOrderDetails().size() + " lines.";
+				 * 
+				 * String str2 = ""; Set<SalesOrderDetail> ds =
+				 * so.getSalesOrderDetails(); if (ds.size() > 0) { str2 =
+				 * " Quantity of item(s): "; int total = ds.size(); for
+				 * (SalesOrderDetail sod : ds) { total--; str2 = str2 +
+				 * sod.getItem().getId(); if (total > 0) { str2 = str2 + ", "; }
+				 * else { str2 = str2 + " updated"; } }
+				 * 
+				 * } str = str + str2; Log log = new Log(str);
+				 * Manager.logManager.addLog(log);
+				 * 
+				 * new SuccessPopup("Add").setVisible(true); clearForm();
+				 * Values.centerPanel.changeTable(Values.SALES_ORDER);
+				 * Values.topPanel.refreshStockCost();
+				 * 
+				 * } else { System.out.println("Cannot add sales order! "); }
+				 * 
+				 * } catch (Exception e1) { // TODO Auto-generated catch block
+				 * e1.printStackTrace(); } } else error.setText(msg);
+				 */
 			}
 		});
 

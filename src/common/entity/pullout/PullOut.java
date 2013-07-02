@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
 
 @Entity
@@ -41,33 +42,32 @@ public class PullOut {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "pullOut", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PullOutDetail> pullOutDetails = new HashSet<PullOutDetail>();
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
 
 	public PullOut() {
 		super();
 	}
 
-	public PullOut(Date date, Account issuedBy, boolean valid, String remarks, boolean accounted, Set<PullOutDetail> pullOutDetails) {
+	public PullOut(Date date, Account issuedBy, boolean valid, String remarks, Set<PullOutDetail> pullOutDetails) {
 		super();
 		this.date = date;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.pullOutDetails = pullOutDetails;
 	}
 
-	public PullOut(Date date, Account issuedBy, boolean valid, String remarks, boolean accounted) {
+	public PullOut(Date date, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
 	public PullOut(Date date, Account issuedBy) {
@@ -75,7 +75,6 @@ public class PullOut {
 		this.date = date;
 		this.issuedBy = issuedBy;
 		this.valid = true;
-		this.accounted = false;
 	}
 
 	public int getId() {
@@ -118,14 +117,6 @@ public class PullOut {
 		this.issuedBy = issuedBy;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public Set<PullOutDetail> getPullOutDetails() {
 		return pullOutDetails;
 	}
@@ -155,12 +146,20 @@ public class PullOut {
 	public double getPulloutAmount() {
 		double amount = 0;
 		for (PullOutDetail pud : pullOutDetails) {
-			amount += ((pud.getPricePerSack() * pud.getQuantityPerSack()) + (pud.getPricePerKilo() * pud.getPricePerKilo()));
+			amount += ((pud.getPricePerSack() * pud.getQuantityInSack()) + (pud.getPricePerKilo() * pud.getQuantityInKilo()));
 		}
 		return amount;
 	}
 
 	public String toString() {
 		return "" + id;
+	}
+
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
 	}
 }

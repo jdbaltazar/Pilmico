@@ -26,6 +26,12 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
+
+import common.entity.product.Product;
+import common.entity.pullout.PullOut;
+import common.entity.pullout.PullOutDetail;
+import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.MainFormField;
@@ -37,8 +43,8 @@ import util.TableHeaderLabel;
 import util.Values;
 import util.soy.SoyButton;
 
-public class PulloutForm extends SimplePanel{
-	
+public class PulloutForm extends SimplePanel {
+
 	/**
 	 * 
 	 */
@@ -57,7 +63,7 @@ public class PulloutForm extends SimplePanel{
 	private SoyButton save;
 	private JLabel issuedBy;
 	private MainFormLabel issuedByLabel, dateLabel;
-	
+
 	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -72,34 +78,34 @@ public class PulloutForm extends SimplePanel{
 		init();
 		addComponents();
 
-//		Values.salesForm = this;
+		// Values.salesForm = this;
 	};
 
 	private void init() {
-		
+
 		fwdCustomer = new SBButton("forward.png", "forward.png", "Add new customer");
 		fwdProduct = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		
+
 		scrollPane = new JScrollPane();
-		
+
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
-		
+
 		issuedByLabel = new MainFormLabel("Issued by:");
 		dateLabel = new MainFormLabel("Date:");
-		
-		issuedBy = new JLabel("Juan dela Cruz");
+
+		issuedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		issuedBy.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
@@ -108,41 +114,38 @@ public class PulloutForm extends SimplePanel{
 		deleteLabel = new TableHeaderLabel(icon);
 
 		model = new DefaultComboBoxModel(array);
-		
+
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
 		productsPanel.setOpaque(false);
-		
+
 		productsPane = new JScrollPane(productsPanel);
 
-		
 		productsPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		productsPane.setOpaque(false);
 		productsPane.getViewport().setOpaque(false);
-		
-		
-		dateLabel.setBounds(40, 50, 40, 20);//15x,12y
+
+		dateLabel.setBounds(40, 50, 40, 20);// 15x,12y
 		date.setBounds(85, 50, 150, 20);
-		
+
 		issuedByLabel.setBounds(300, 50, 70, 20);
 		issuedBy.setBounds(375, 50, 180, 20);
-		
+
 		fwdCustomer.setBounds(318, 82, 16, 16);
-		
+
 		addRow.setBounds(32, LABEL_Y + 5, 16, 16);
-		
+
 		quantitySACKlabel.setBounds(50, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(127, LABEL_Y, 77, LABEL_HEIGHT);
 		priceSACK.setBounds(204, LABEL_Y, 85, LABEL_HEIGHT);
 		priceKG.setBounds(289, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(366, LABEL_Y, 207, LABEL_HEIGHT);
 		deleteLabel.setBounds(573, LABEL_Y, 42, LABEL_HEIGHT);
-		//136
-		fwdProduct.setBounds(502, LABEL_Y+5, 16, 16);
-		
-		productsPane.setBounds(51, ITEMS_PANE_Y, ROW_WIDTH, 140);
+		// 136
+		fwdProduct.setBounds(502, LABEL_Y + 5, 16, 16);
 
+		productsPane.setBounds(51, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
 		addRow.addActionListener(new ActionListener() {
 
@@ -160,15 +163,14 @@ public class PulloutForm extends SimplePanel{
 			}
 		});
 
-		
 		panel.add(dateLabel);
 		panel.add(date);
-		
+
 		panel.add(issuedByLabel);
 		panel.add(issuedBy);
-		
+
 		panel.add(addRow);
-		
+
 		panel.add(fwdProduct);
 		panel.add(quantitySACKlabel);
 		panel.add(quantityKGLabel);
@@ -176,18 +178,18 @@ public class PulloutForm extends SimplePanel{
 		panel.add(priceSACK);
 		panel.add(productLabel);
 		panel.add(deleteLabel);
-		
+
 		panel.add(productsPane);
-		
+
 		panel.add(fwdCustomer);
-		
+
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(0, 5, 670, 330);
-		
+
 		add(scrollPane);
 	}
 
@@ -231,6 +233,23 @@ public class PulloutForm extends SimplePanel{
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				PullOut pullOut = new PullOut(d, Manager.loggedInAccount);
+
+				for (RowPanel rp : rowPanel) {
+					Product product = (Product) rp.getSelectedItem();
+					pullOut.addPullOutDetail(new PullOutDetail(pullOut, product, product.getPricePerKilo(), product.getPricePerSack(), rp
+							.getQuantityInKilo(), rp.getQuantityInSack()));
+				}
+				try {
+					Manager.pullOutManager.addPullOut(pullOut);
+					
+					System.out.println("pullout saved!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});

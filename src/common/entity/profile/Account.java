@@ -102,6 +102,14 @@ public class Account {
 
 	}
 
+	public String getAccountTypePlusName() {
+		String s = accountType.getName();
+		if (!accountType.getName().equalsIgnoreCase(AccountType.systemAdmin)) {
+			s = s + employee.getFirstPlusLastName();
+		}
+		return s;
+	}
+
 	public String toString() {
 		return username;
 	}

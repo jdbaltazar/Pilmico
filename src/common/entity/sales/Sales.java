@@ -17,7 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
+import common.entity.profile.Person;
 
 @Entity(name = "Sales")
 public class Sales {
@@ -33,7 +35,7 @@ public class Sales {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "customer_id")
-	private Account customer;
+	private Person customer;
 
 	@Column(name = "rc_no")
 	private String rcNo;
@@ -58,18 +60,19 @@ public class Sales {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "sales", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<SalesDetail> salesDetails = new HashSet<SalesDetail>();
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
 
 	public Sales() {
 		super();
 	}
 
-	public Sales(Date date, Account customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier, boolean valid,
-			String remarks, boolean accounted, Set<SalesDetail> salesDetails) {
+	public Sales(Date date, Person customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier, boolean valid,
+			String remarks, Set<SalesDetail> salesDetails) {
 		super();
 		this.date = date;
 		this.customer = customer;
@@ -80,12 +83,11 @@ public class Sales {
 		this.cashier = cashier;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.salesDetails = salesDetails;
 	}
 
-	public Sales(Date date, Account customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier, boolean valid,
-			String remarks, boolean accounted) {
+	public Sales(Date date, Person customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier, boolean valid,
+			String remarks) {
 		super();
 		this.date = date;
 		this.customer = customer;
@@ -96,12 +98,10 @@ public class Sales {
 		this.cashier = cashier;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
-	public Sales(int id, Date date, Account customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier) {
+	public Sales(Date date, Person customer, String rcNo, String issuedAt, Date issuedOn, String receiptNo, Account cashier) {
 		super();
-		this.id = id;
 		this.date = date;
 		this.customer = customer;
 		this.rcNo = rcNo;
@@ -110,15 +110,13 @@ public class Sales {
 		this.receiptNo = receiptNo;
 		this.cashier = cashier;
 		this.valid = true;
-		this.accounted = false;
 	}
 
-	public Sales(Date date, Account cashier, boolean valid, boolean accounted) {
+	public Sales(Date date, Account cashier, boolean valid) {
 		super();
 		this.date = date;
 		this.cashier = cashier;
 		this.valid = valid;
-		this.accounted = accounted;
 	}
 
 	public int getId() {
@@ -149,11 +147,11 @@ public class Sales {
 		return salesDetails;
 	}
 
-	public Account getCustomer() {
+	public Person getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Account customer) {
+	public void setCustomer(Person customer) {
 		this.customer = customer;
 	}
 
@@ -205,14 +203,6 @@ public class Sales {
 		this.remarks = remarks;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public void setSalesDetails(Set<SalesDetail> salesDetails) {
 		this.salesDetails = salesDetails;
 	}
@@ -238,10 +228,18 @@ public class Sales {
 	public double getSalesAmount() {
 		double total = 0;
 		for (SalesDetail sd : salesDetails) {
-			total += ((sd.getPricePerSack() * sd.getQuantityPerSack()) + (sd.getPricePerKilo() * sd.getQuantityPerKilo()));
+			total += ((sd.getPricePerSack() * sd.getQuantityInSack()) + (sd.getPricePerKilo() * sd.getQuantityInKilo()));
 		}
 		return total;
 
+	}
+
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
 	}
 
 	public String toString() {

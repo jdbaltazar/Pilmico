@@ -10,7 +10,7 @@ public interface SalesManager {
 
 	public Sales getSales(int id) throws Exception;
 
-	public List<Sales> getSaless() throws Exception;
+	public List<Sales> getSales() throws Exception;
 
 	public void updateSales(Sales sales) throws Exception;
 

@@ -33,24 +33,24 @@ public class SalesDetail {
 	@Column(name = "price_per_sack")
 	private double pricePerSack;
 
-	@Column(name = "quantity_per_kilo")
-	private double quantityPerKilo;
+	@Column(name = "quantity_in_kilo")
+	private double quantityInKilo;
 
-	@Column(name = "quantity_per_sack")
-	private double quantityPerSack;
+	@Column(name = "quantity_in_sack")
+	private double quantityInSack;
 
 	public SalesDetail() {
 		super();
 	}
 
-	public SalesDetail(Sales sales, Product product, double pricePerKilo, double pricePerSack, double quantityPerKilo, double quantityPerSack) {
+	public SalesDetail(Sales sales, Product product, double pricePerKilo, double pricePerSack, double quantityInKilo, double quantityInSack) {
 		super();
 		this.sales = sales;
 		this.product = product;
 		this.pricePerKilo = pricePerKilo;
 		this.pricePerSack = pricePerSack;
-		this.quantityPerKilo = quantityPerKilo;
-		this.quantityPerSack = quantityPerSack;
+		this.quantityInKilo = quantityInKilo;
+		this.quantityInSack = quantityInSack;
 	}
 
 	public int getId() {
@@ -93,20 +93,20 @@ public class SalesDetail {
 		this.pricePerSack = pricePerSack;
 	}
 
-	public double getQuantityPerKilo() {
-		return quantityPerKilo;
+	public double getQuantityInKilo() {
+		return quantityInKilo;
 	}
 
-	public void setQuantityPerKilo(double quantityPerKilo) {
-		this.quantityPerKilo = quantityPerKilo;
+	public void setQuantityInKilo(double quantityInKilo) {
+		this.quantityInKilo = quantityInKilo;
 	}
 
-	public double getQuantityPerSack() {
-		return quantityPerSack;
+	public double getQuantityInSack() {
+		return quantityInSack;
 	}
 
-	public void setQuantityPerSack(double quantityPerSack) {
-		this.quantityPerSack = quantityPerSack;
+	public void setQuantityInSack(double quantityInSack) {
+		this.quantityInSack = quantityInSack;
 	}
 
 	public String toString() {

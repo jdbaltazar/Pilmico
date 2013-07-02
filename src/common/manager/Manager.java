@@ -7,6 +7,7 @@ import core.persist.AccountReceivablePersistor;
 import core.persist.CashAdvancePersistor;
 import core.persist.DailyExpensePersistor;
 import core.persist.DeliveryPersistor;
+import core.persist.EmployeePersonPersistor;
 import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
 import core.persist.NotePersistor;
@@ -28,6 +29,8 @@ public class Manager {
 	public static DailyExpensesManager dailyExpenseManager = new DailyExpensePersistor();
 
 	public static DeliveryManager deliveryManager = new DeliveryPersistor();
+
+	public static EmployeePersonManager employeePersonManager = new EmployeePersonPersistor();
 
 	public static LogManager logManager = new LogPersistor();
 
@@ -62,6 +65,7 @@ public class Manager {
 
 		try {
 			Account acc = accountManager.getAccount(username);
+
 			if (acc != null) {
 				if (acc.comparePassword(input)) {
 					loggedInAccount = acc;

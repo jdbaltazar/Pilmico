@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
 
@@ -49,20 +50,21 @@ public class SalaryRelease {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "salaryRelease", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<FeeDeduction> feeDeductions = new HashSet<FeeDeduction>();
 
 	@OneToMany(mappedBy = "salaryRelease", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CADeduction> caDeductions = new HashSet<CADeduction>();
 
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
+
 	public SalaryRelease() {
 		super();
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks, boolean accounted,
+	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks,
 			Set<FeeDeduction> feeDeductions, Set<CADeduction> caDeductions) {
 		super();
 		this.date = date;
@@ -71,12 +73,11 @@ public class SalaryRelease {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.feeDeductions = feeDeductions;
 		this.caDeductions = caDeductions;
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks, boolean accounted) {
+	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
@@ -84,17 +85,15 @@ public class SalaryRelease {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, boolean accounted) {
+	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
 		this.amount = amount;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
-		this.accounted = accounted;
 	}
 
 	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy) {
@@ -104,7 +103,6 @@ public class SalaryRelease {
 		this.amount = amount;
 		this.issuedBy = issuedBy;
 		this.valid = true;
-		this.accounted = false;
 	}
 
 	public int getId() {
@@ -163,14 +161,6 @@ public class SalaryRelease {
 		this.remarks = remarks;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public Set<FeeDeduction> getFeeDeductions() {
 		return feeDeductions;
 	}
@@ -221,6 +211,18 @@ public class SalaryRelease {
 				break;
 			}
 		}
+	}
+
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
+	}
+
+	public String toString() {
+		return id + "";
 	}
 
 }

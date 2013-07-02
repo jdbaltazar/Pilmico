@@ -1,4 +1,4 @@
-package common.entity.accountreceivable;
+package common.entity.deposit;
 
 import java.util.Date;
 
@@ -15,30 +15,30 @@ import javax.persistence.TemporalType;
 
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
-import common.entity.profile.Person;
+import common.entity.profile.Employee;
 
 @Entity
-public class ARPayment {
+public class Deposit {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private int id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "account_receivable_id")
-	private AccountReceivable accountReceivable;
-
-	@Column(name = "date")
+	@Column
 	@Temporal(TemporalType.DATE)
 	private Date date;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "bank_account_id")
+	private BankAccount bankAccount;
 
 	@Column
 	private double amount;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "customer_representative")
-	private Person representative;
+	@JoinColumn(name = "depositor")
+	private Employee depositor;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "issued_by")
@@ -54,38 +54,29 @@ public class ARPayment {
 	@JoinColumn(name = "is_id")
 	private InventorySheet inventorySheet;
 
-	public ARPayment() {
+	public Deposit() {
 		super();
 	}
 
-	public ARPayment(AccountReceivable accountReceivable, Date date, double amount, Person representative, Account issuedBy, boolean valid,
-			String remarks) {
+	public Deposit(Date date, BankAccount bankAccount, double amount, Employee depositor, Account issuedBy, boolean valid, String remarks) {
 		super();
-		this.accountReceivable = accountReceivable;
 		this.date = date;
+		this.bankAccount = bankAccount;
 		this.amount = amount;
-		this.representative = representative;
+		this.depositor = depositor;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
 	}
 
-	public ARPayment(AccountReceivable accountReceivable, Date date, double amount, Account issuedBy, boolean valid) {
+	public Deposit(Date date, BankAccount bankAccount, double amount, Employee depositor, Account issuedBy, boolean valid) {
 		super();
-		this.accountReceivable = accountReceivable;
 		this.date = date;
+		this.bankAccount = bankAccount;
 		this.amount = amount;
+		this.depositor = depositor;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
-	}
-
-	public ARPayment(AccountReceivable accountReceivable, Date date, double amount, Account issuedBy) {
-		super();
-		this.accountReceivable = accountReceivable;
-		this.date = date;
-		this.amount = amount;
-		this.issuedBy = issuedBy;
-		this.valid = true;
 	}
 
 	public int getId() {
@@ -96,20 +87,20 @@ public class ARPayment {
 		this.id = id;
 	}
 
-	public AccountReceivable getAccountReceivable() {
-		return accountReceivable;
-	}
-
-	public void setAccountReceivable(AccountReceivable accountReceivable) {
-		this.accountReceivable = accountReceivable;
-	}
-
 	public Date getDate() {
 		return date;
 	}
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public BankAccount getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 
 	public double getAmount() {
@@ -120,12 +111,12 @@ public class ARPayment {
 		this.amount = amount;
 	}
 
-	public Person getRepresentative() {
-		return representative;
+	public Employee getDepositor() {
+		return depositor;
 	}
 
-	public void setRepresentative(Person representative) {
-		this.representative = representative;
+	public void setDepositor(Employee depositor) {
+		this.depositor = depositor;
 	}
 
 	public Account getIssuedBy() {
@@ -158,6 +149,10 @@ public class ARPayment {
 
 	public void setInventorySheet(InventorySheet inventorySheet) {
 		this.inventorySheet = inventorySheet;
+	}
+
+	public String toString() {
+		return id + "";
 	}
 
 }

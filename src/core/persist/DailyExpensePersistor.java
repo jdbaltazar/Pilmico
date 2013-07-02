@@ -1,9 +1,16 @@
 package core.persist;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesType;
+import common.entity.sales.Sales;
 import common.manager.DailyExpensesManager;
 
 public class DailyExpensePersistor extends Persistor implements DailyExpensesManager {
@@ -18,9 +25,25 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		return (DailyExpenses) get(DailyExpenses.class, id);
 	}
 
+	// @Override
+	// public List<DailyExpenses> getDailyExpenses() throws Exception {
+	// return getAll(DailyExpenses.class);
+	// }
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DailyExpenses> getDailyExpenses() throws Exception {
-		return getAll(DailyExpenses.class);
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
+		try {
+			expense = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return expense;
 	}
 
 	@Override

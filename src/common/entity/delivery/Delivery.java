@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
@@ -60,18 +61,19 @@ public class Delivery {
 	@Column
 	private String remarks;
 
-	@Column
-	private boolean accounted;
-
 	@OneToMany(mappedBy = "delivery", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<DeliveryDetail> deliveryDetails = new HashSet<DeliveryDetail>();
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "is_id")
+	private InventorySheet inventorySheet;
 
 	public Delivery() {
 		super();
 	}
 
 	public Delivery(Date date, Supplier supplier, Store store, String deliveryNo, String poNo, String terms, Account receivedBy, boolean valid,
-			String remarks, boolean accounted, Set<DeliveryDetail> deliveryDetails) {
+			String remarks, Set<DeliveryDetail> deliveryDetails) {
 		super();
 		this.date = date;
 		this.supplier = supplier;
@@ -82,12 +84,11 @@ public class Delivery {
 		this.receivedBy = receivedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 		this.deliveryDetails = deliveryDetails;
 	}
 
 	public Delivery(Date date, Supplier supplier, Store store, String deliveryNo, String poNo, String terms, Account receivedBy, boolean valid,
-			String remarks, boolean accounted) {
+			String remarks) {
 		super();
 		this.date = date;
 		this.supplier = supplier;
@@ -98,7 +99,6 @@ public class Delivery {
 		this.receivedBy = receivedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accounted = accounted;
 	}
 
 	public Delivery(Date date, Supplier supplier, Store store, String deliveryNo, String poNo, String terms, Account receivedBy) {
@@ -111,16 +111,14 @@ public class Delivery {
 		this.terms = terms;
 		this.receivedBy = receivedBy;
 		this.valid = true;
-		this.accounted = false;
 	}
 
-	public Delivery(Date date, Store store, Account receivedBy, boolean valid, boolean accounted) {
+	public Delivery(Date date, Store store, Account receivedBy, boolean valid) {
 		super();
 		this.date = date;
 		this.store = store;
 		this.receivedBy = receivedBy;
 		this.valid = valid;
-		this.accounted = accounted;
 	}
 
 	public int getId() {
@@ -203,14 +201,6 @@ public class Delivery {
 		this.terms = terms;
 	}
 
-	public boolean isAccounted() {
-		return accounted;
-	}
-
-	public void setAccounted(boolean accounted) {
-		this.accounted = accounted;
-	}
-
 	public Set<DeliveryDetail> getDeliveryDetails() {
 		return deliveryDetails;
 	}
@@ -240,10 +230,18 @@ public class Delivery {
 	public double getDeliveryAmount() {
 		double amount = 0;
 		for (DeliveryDetail dd : deliveryDetails) {
-			amount += ((dd.getPricePerSack() * dd.getQuantityPerSack()) + (dd.getPricePerKilo() * dd.getQuantityPerKilo()));
+			amount += ((dd.getPricePerSack() * dd.getQuantityInSack()) + (dd.getPricePerKilo() * dd.getQuantityInKilo()));
 		}
 		return amount;
 
+	}
+
+	public InventorySheet getInventorySheet() {
+		return inventorySheet;
+	}
+
+	public void setInventorySheet(InventorySheet inventorySheet) {
+		this.inventorySheet = inventorySheet;
 	}
 
 	public String toString() {

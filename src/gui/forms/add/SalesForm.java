@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -28,10 +29,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
+import common.entity.product.Product;
+import common.entity.profile.Account;
 import common.entity.profile.Employee;
+import common.entity.profile.Person;
 import common.entity.sales.Sales;
+import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.ErrorLabel;
@@ -166,15 +172,14 @@ public class SalesForm extends SimplePanel {
 		showRequired.setBounds(500, 12, 160, 20);
 		showRequired.setSelected(true);
 		showRequired.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if(showRequired.isSelected()){
+				if (showRequired.isSelected()) {
 					showUnrequired(false);
 					setupTable(50, false);
-				}
-				else{
+				} else {
 					showUnrequired(true);
 					setupTable(91, true);
 				}
@@ -243,7 +248,17 @@ public class SalesForm extends SimplePanel {
 		});
 
 		showUnrequired(false);
-		
+
+		try {
+			List<Person> customrs = Manager.employeePersonManager.getCustomersOnly();
+			for (Person p : customrs) {
+				customerCombo.addItem(p);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		add(showRequired);
 
 		panel.add(dateLabel);
@@ -312,10 +327,10 @@ public class SalesForm extends SimplePanel {
 
 		add(scrollPane);
 	}
-	
-	private void setupTable(int y, boolean shownFields){
+
+	private void setupTable(int y, boolean shownFields) {
 		LABEL_Y = y;
-		
+
 		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
 
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
@@ -326,33 +341,31 @@ public class SalesForm extends SimplePanel {
 		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
 
 		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
-		
-		
-		if(shownFields){
+
+		if (shownFields) {
 			productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
-		}
-		else{
+		} else {
 			productsPane.setBounds(31, 75, ROW_WIDTH, 175);
 		}
-		
+
 	}
-	
-	private void showUnrequired(boolean show){
+
+	private void showUnrequired(boolean show) {
 		customerLabel.setVisible(show);
 		customerCombo.setVisible(show);
-		
+
 		rcnumLabel.setVisible(show);
 		rc_no.setVisible(show);
-		
+
 		issuedaTLabel.setVisible(show);
 		issuedAt.setVisible(show);
-		
+
 		issuedOnLabel.setVisible(show);
 		issueDate.setVisible(show);
-		
+
 		receiptLabel.setVisible(show);
 		receipt_no.setVisible(show);
-		
+
 		customerFwd.setVisible(show);
 	}
 
@@ -395,6 +408,32 @@ public class SalesForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				Date d2 = ((SpinnerDateModel) issueDate.getModel()).getDate();
+				Person p = null;
+				if (customerCombo.getSelectedItem() != null) {
+					p = (Person) customerCombo.getSelectedItem();
+				}
+				Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), d2, receipt_no.getText(), Manager.loggedInAccount);
+
+				for (RowPanel rp : rowPanel) {
+					Product product = (Product) rp.getSelectedItem();
+					s.addSalesDetail(new SalesDetail(s, product, product.getPricePerKilo(), product.getPricePerSack(), rp.getQuantityInKilo(), rp
+							.getQuantityInSack()));
+				}
+
+				try {
+					Manager.salesManager.addSales(s);
+
+					System.out.println("sales saved!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				// Sales s = new Sales(d, customer, rcNo, issuedAt, issuedOn,
+				// receiptNo, cashier, valid, remarks, accounted);
 
 				// Sales s = new Sales(date, customer, rcNo, issuedAt, issuedOn,
 				// receiptNo, cashier, valid, remarks, accounted)

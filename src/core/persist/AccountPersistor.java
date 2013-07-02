@@ -13,7 +13,6 @@ import org.hibernate.criterion.Restrictions;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 import common.manager.AccountManager;
-import core.security.Blowfish;
 
 public class AccountPersistor extends Persistor implements AccountManager {
 
@@ -44,15 +43,15 @@ public class AccountPersistor extends Persistor implements AccountManager {
 
 	@Override
 	public void addAccount(Account acc) throws Exception {
-		acc.setPassword(Blowfish.encrypt(acc.getPassword()));
+//		acc.setPassword(Blowfish.encrypt(acc.getPassword()));
 		add(acc);
 	}
 
 	@Override
 	public Account getAccount(int id) throws Exception {
 		Account acc = (Account) get(Account.class, id);
-		if (acc != null)
-			acc.setPassword(Blowfish.decrypt(acc.getPassword()));
+		// if (acc != null)
+		// acc.setPassword(Blowfish.decrypt(acc.getPassword()));
 		return acc;
 	}
 
@@ -64,9 +63,9 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		List<Account> accounts = new ArrayList<Account>();
 		try {
 			accounts = criteria.add(Restrictions.ne("id", new Integer(1))).addOrder(Order.asc("username")).list();
-			for (Account acc : accounts) {
-				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
-			}
+//			for (Account acc : accounts) {
+//				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
+//			}
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -77,7 +76,7 @@ public class AccountPersistor extends Persistor implements AccountManager {
 
 	@Override
 	public void updateAccount(Account acc) throws Exception {
-		acc.setPassword(Blowfish.encrypt(acc.getPassword()));
+//		acc.setPassword(Blowfish.encrypt(acc.getPassword()));
 		update(acc);
 	}
 
@@ -104,9 +103,9 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		List<Account> accounts = new ArrayList<Account>();
 		try {
 			accounts = criteria.add(Restrictions.like("username", username, MatchMode.START)).addOrder(Order.asc("username")).list();
-			for (Account acc : accounts) {
-				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
-			}
+//			for (Account acc : accounts) {
+//				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
+//			}
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -124,9 +123,9 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		Account account = null;
 		try {
 			accounts = criteria.add(Restrictions.like("username", username, MatchMode.EXACT)).list();
-			for (Account acc : accounts) {
-				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
-			}
+			// for (Account acc : accounts) {
+			// acc.setPassword(Blowfish.decrypt(acc.getPassword()));
+			// }
 			if (accounts.size() == 1) {
 				account = accounts.get(0);
 			}

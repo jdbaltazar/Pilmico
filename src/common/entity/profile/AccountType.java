@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity(name = "AccountType")
 public class AccountType {
 
-	public static final String systemAdmin = "System Administrator";
+	public static final String systemAdmin = "System Admin";
 	public static final String manager = "Manager";
 	public static final String employee = "Employee";
 

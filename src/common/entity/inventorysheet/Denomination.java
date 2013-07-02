@@ -1,4 +1,4 @@
-package common.entity.profile;
+package common.entity.inventorysheet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,8 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "EmploymentStatus")
-public class EmploymentStatus {
+@Entity
+public class Denomination {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,15 +15,15 @@ public class EmploymentStatus {
 	private int id;
 
 	@Column
-	private String status;
+	private double denomination;
 
-	public EmploymentStatus() {
+	public Denomination() {
 		super();
 	}
 
-	public EmploymentStatus(String status) {
+	public Denomination(double denomination) {
 		super();
-		this.status = status;
+		this.denomination = denomination;
 	}
 
 	public int getId() {
@@ -34,16 +34,15 @@ public class EmploymentStatus {
 		this.id = id;
 	}
 
-	public String getStatus() {
-		return status;
+	public double getDenomination() {
+		return denomination;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setDenomination(double denomination) {
+		this.denomination = denomination;
 	}
 
 	public String toString() {
-		return status;
+		return denomination + "";
 	}
-
 }

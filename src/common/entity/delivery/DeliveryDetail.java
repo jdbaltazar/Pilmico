@@ -33,23 +33,23 @@ public class DeliveryDetail {
 	@Column(name = "price_per_sack")
 	private double pricePerSack;
 
-	@Column(name = "quantity_per_kilo")
-	private double quantityPerKilo;
+	@Column(name = "quantity_in_kilo")
+	private double quantityInKilo;
 
-	@Column(name = "quantity_per_sack")
+	@Column(name = "quantity_in_sack")
 	private double quantityPerSack;
 
 	public DeliveryDetail() {
 		super();
 	}
 
-	public DeliveryDetail(Delivery delivery, Product product, double pricePerKilo, double pricePerSack, double quantityPerKilo, double quantityPerSack) {
+	public DeliveryDetail(Delivery delivery, Product product, double pricePerKilo, double pricePerSack, double quantityInKilo, double quantityPerSack) {
 		super();
 		this.delivery = delivery;
 		this.product = product;
 		this.pricePerKilo = pricePerKilo;
 		this.pricePerSack = pricePerSack;
-		this.quantityPerKilo = quantityPerKilo;
+		this.quantityInKilo = quantityInKilo;
 		this.quantityPerSack = quantityPerSack;
 	}
 
@@ -93,19 +93,19 @@ public class DeliveryDetail {
 		this.pricePerSack = pricePerSack;
 	}
 
-	public double getQuantityPerKilo() {
-		return quantityPerKilo;
+	public double getQuantityInKilo() {
+		return quantityInKilo;
 	}
 
-	public void setQuantityPerKilo(double quantityPerKilo) {
-		this.quantityPerKilo = quantityPerKilo;
+	public void setQuantityInKilo(double quantityInKilo) {
+		this.quantityInKilo = quantityInKilo;
 	}
 
-	public double getQuantityPerSack() {
+	public double getQuantityInSack() {
 		return quantityPerSack;
 	}
 
-	public void setQuantityPerSack(double quantityPerSack) {
+	public void setQuantityInSack(double quantityPerSack) {
 		this.quantityPerSack = quantityPerSack;
 	}
 
