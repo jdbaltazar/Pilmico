@@ -76,9 +76,9 @@ public class CenterPanel extends SoyPanel {
 
 	public void changeTable(int val) {
 
-		if (val != Values.HOME)
+//		if (val != Values.HOME)
 			remove(getComponent(getComponentCount() - 1));
-		remove(getComponent(0));
+//		remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
 
