@@ -35,14 +35,11 @@ public class Notes extends SoyPanel {
 	private JTextArea desc;
 	private BufferedImage image;
 
+	/*
+	 * public Notes(int y, String command, Note n) { this.y = y; this.command =
+	 * command; this.n = n; init(); }
+	 */
 
-	/*public Notes(int y, String command, Note n) {
-		this.y = y;
-		this.command = command;
-		this.n = n;
-		init();
-	}*/
-	
 	public Notes(int y, String command) {
 		this.y = y;
 		this.command = command;
@@ -52,22 +49,17 @@ public class Notes extends SoyPanel {
 	private void init() {
 		// TODO Auto-generated method stub
 
-		/*try {
-			if (n.getNoteType().getName().equals("Important"))
-				image = (BufferedImage) ImageIO.read(new File(
-						"images/notes_purple.png"));
-			else if (n.getNoteType().getName().equals("Very Important"))
-				image = (BufferedImage) ImageIO.read(new File(
-						"images/notes_pink.png"));
-			else if (n.getNoteType().getName().equals("Reminder"))
-				image = (BufferedImage) ImageIO.read(new File(
-						"images/notes_yellow.png"));
-			else
-				image = (BufferedImage) ImageIO.read(new File(
-						"images/notes_green.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { if (n.getNoteType().getName().equals("Important")) image =
+		 * (BufferedImage) ImageIO.read(new File( "images/notes_purple.png"));
+		 * else if (n.getNoteType().getName().equals("Very Important")) image =
+		 * (BufferedImage) ImageIO.read(new File( "images/notes_pink.png")); else
+		 * if (n.getNoteType().getName().equals("Reminder")) image =
+		 * (BufferedImage) ImageIO.read(new File( "images/notes_yellow.png"));
+		 * else image = (BufferedImage) ImageIO.read(new File(
+		 * "images/notes_green.png")); } catch (IOException e) {
+		 * e.printStackTrace(); }
+		 */
 
 		setLayout(new BorderLayout());
 		setOpaque(false);
@@ -114,7 +106,7 @@ public class Notes extends SoyPanel {
 		descPane.setBorder(BorderFactory.createEmptyBorder());
 
 		note.add(remove);
-		
+
 		note.add(date);
 		note.add(tag);
 		note.add(descPane);
@@ -124,8 +116,8 @@ public class Notes extends SoyPanel {
 		 * rowPanel.setBackground(Color.YELLOW);
 		 * rowPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		 * 
-		 * // rowPanel.setBounds(0, (notesPanel.getComponentCount() *
-		 * ROW_HEIGHT), // ROW_WIDTH, ROW_HEIGHT);
+		 * // rowPanel.setBounds(0, (notesPanel.getComponentCount() * ROW_HEIGHT),
+		 * // ROW_WIDTH, ROW_HEIGHT);
 		 * 
 		 * rowPanel.add(note);
 		 */
@@ -156,10 +148,8 @@ public class Notes extends SoyPanel {
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
 		g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 

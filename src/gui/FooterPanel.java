@@ -14,11 +14,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import common.entity.note.Note;
+import common.manager.Manager;
 
 import util.SBButton;
 import util.TimeLabel;
@@ -53,30 +57,29 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 		welcome = new JLabel("Welcome, ");
 		// welcome.setBounds(10, 80, 60, 20);
 		welcome.setBounds(40, 3, 60, 20);
-		welcome.setForeground(new Color(128,0,128));
+		welcome.setForeground(new Color(128, 0, 128));
 		welcome.setFont(new Font("TimeBurner", Font.ITALIC, 12));
 
 		acct = new JLabel("dummy_acct" + "!");
 		// acct.setBounds(75, 80, 150, 20);
 		acct.setBounds(100, 3, 150, 20);
-		acct.setForeground(new Color(128,0,128));
+		acct.setForeground(new Color(128, 0, 128));
 		acct.setFont(new Font("TimeBurner", Font.ITALIC, 12));
 
 		copyright = new JLabel("© All Rights Reserved 2013");
 		copyright.setFont(new Font("Calibri", 0, 14));
-		copyright.setForeground(new Color(0,0,77));
+		copyright.setForeground(new Color(0, 0, 77));
 
 		newLabel = new JLabel(":: NEW ::");
 		newLabel.setForeground(Color.GREEN);
 
 		try {
-			notesLabel = new JLabel("View Notes ("
-				 + "0)");
+			notesLabel = new JLabel("View Notes (" + "0)");
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		notesLabel.setForeground(new Color(0,0,100));
+		notesLabel.setForeground(new Color(0, 0, 100));
 		notesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		notesLabel.addMouseListener(new MouseAdapter() {
 
@@ -87,8 +90,7 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 			public void mouseEntered(MouseEvent e) {
 				original = e.getComponent().getFont();
 				Map attributes = original.getAttributes();
-				attributes.put(TextAttribute.UNDERLINE,
-						TextAttribute.UNDERLINE_ON);
+				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 				e.getComponent().setFont(original.deriveFont(attributes));
 			}
 
@@ -103,6 +105,8 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 				new NotesPopup().setVisible(true);
 			}
 		});
+		
+		updateNotes();
 
 		info = new SBButton("storeinfo1.png", "storeinfo2.png", "Store Info");
 		addNote = new SBButton("add_note.png", "add_note.png", "Add Note");
@@ -117,10 +121,10 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 	}
 
 	private void addComponents() {
-		//logout.setBounds(730, 8, 25, 25);
+		// logout.setBounds(730, 8, 25, 25);
 		log.setBounds(680, 8, 25, 25);
 
-//		info.setBounds(10, 4, 16, 16);
+		// info.setBounds(10, 4, 16, 16);
 		logout.setBounds(10, 4, 16, 16);
 		newLabel.setBounds(370, 4, 50, 16);
 		notesLabel.setBounds(665, 4, 100, 16);
@@ -142,11 +146,10 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 
-//		gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0,
-//				getHeight(), new Color(5, 5, 5));
-		
-		gradient = new GradientPaint(0, 0, Values.gradient1, 0,
-				getHeight(), Values.gradient2);
+		// gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0,
+		// getHeight(), new Color(5, 5, 5));
+
+		gradient = new GradientPaint(0, 0, Values.gradient1, 0, getHeight(), Values.gradient2);
 		g2.setPaint(gradient);
 		g2.fill(g.getClipBounds());
 
@@ -164,8 +167,8 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 
 	public void addButtons() {
 		// add(log);
-		 add(logout);
-		//add(info);
+		add(logout);
+		// add(info);
 		// add(newLabel);
 		add(notesLabel);
 
@@ -225,12 +228,14 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 	}
 
 	public void updateNotes() {
+
+		int size = 0;
 		try {
-			notesLabel.setText("View Notes ("+ ")");
+			size = Manager.noteManager.getNotes().size();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		notesLabel.setText("View Notes (" + size + ")");
 	}
 
 	public void setNotesLabel(String notes, String tags) {

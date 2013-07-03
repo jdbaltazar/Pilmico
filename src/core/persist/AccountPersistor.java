@@ -26,9 +26,25 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		return (AccountType) get(AccountType.class, id);
 	}
 
+	// @Override
+	// public List<AccountType> getAccountTypes() throws Exception {
+	// return getAll(AccountType.class);
+	// }
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<AccountType> getAccountTypes() throws Exception {
-		return getAll(AccountType.class);
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountType.class);
+		List<AccountType> accountTypes = new ArrayList<AccountType>();
+		try {
+			accountTypes = criteria.add(Restrictions.ne("id", new Integer(1))).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountTypes;
 	}
 
 	@Override
@@ -43,7 +59,7 @@ public class AccountPersistor extends Persistor implements AccountManager {
 
 	@Override
 	public void addAccount(Account acc) throws Exception {
-//		acc.setPassword(Blowfish.encrypt(acc.getPassword()));
+		// acc.setPassword(Blowfish.encrypt(acc.getPassword()));
 		add(acc);
 	}
 
@@ -63,9 +79,9 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		List<Account> accounts = new ArrayList<Account>();
 		try {
 			accounts = criteria.add(Restrictions.ne("id", new Integer(1))).addOrder(Order.asc("username")).list();
-//			for (Account acc : accounts) {
-//				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
-//			}
+			// for (Account acc : accounts) {
+			// acc.setPassword(Blowfish.decrypt(acc.getPassword()));
+			// }
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -76,7 +92,7 @@ public class AccountPersistor extends Persistor implements AccountManager {
 
 	@Override
 	public void updateAccount(Account acc) throws Exception {
-//		acc.setPassword(Blowfish.encrypt(acc.getPassword()));
+		// acc.setPassword(Blowfish.encrypt(acc.getPassword()));
 		update(acc);
 	}
 
@@ -103,9 +119,9 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		List<Account> accounts = new ArrayList<Account>();
 		try {
 			accounts = criteria.add(Restrictions.like("username", username, MatchMode.START)).addOrder(Order.asc("username")).list();
-//			for (Account acc : accounts) {
-//				acc.setPassword(Blowfish.decrypt(acc.getPassword()));
-//			}
+			// for (Account acc : accounts) {
+			// acc.setPassword(Blowfish.decrypt(acc.getPassword()));
+			// }
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

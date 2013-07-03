@@ -26,6 +26,8 @@ import common.entity.accountreceivable.AccountReceivable;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.product.Product;
+import common.entity.profile.Account;
+import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.salary.CashAdvance;
@@ -436,11 +438,22 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillProfiles() {
 		try {
-			String[] headers = { "ID", "Last Name", "First Name", "Middle Name", "Contact No." };
-			String[][] entries = { { "1", "Baltazar", "John David", "S", "09161429583" }, { "2", "dela Cruz", "Juan", "B", "09161234567" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Name", "Address", "Contact No." };
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.PROFILES), BorderLayout.CENTER);
+			List<Person> customers = Manager.employeePersonManager.getCustomersOnly();
+
+			// String[][] entries = { { "1", "Baltazar", "John David", "S",
+			// "09161429583" }, { "2", "dela Cruz", "Juan", "B", "09161234567" } };
+			String[][] entries = new String[customers.size()][headers.length];
+			int i = 0;
+			for (Person p : customers) {
+				entries[i][0] = p.getId() + "";
+				entries[i][1] = p.getFirstPlusLastName();
+				entries[i][2] = p.getAddress();
+				entries[i][3] = p.getContactNo();
+				i++;
+			}
+			add(new TableUtilPanel(new TablePanel(entries, headers, customers), Tables.PROFILES), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -449,11 +462,24 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillEmployees() {
 		try {
-			String[] headers = { "ID", "Name", "Designation", "Status", "Remarks" };
-			// String[][] entries = new String[1][headers.length];
-			String[][] entries = { { "1", "John David Baltazar", "Janitor", "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk", "Terminated", "" } };
+			String[] headers = { "ID", "Designation", "Name", "Contact No", "Salary", "Status" };
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.EMPLOYEES), BorderLayout.CENTER);
+			List<Employee> employees = Manager.employeePersonManager.getEmployees();
+			String[][] entries = new String[employees.size()][headers.length];
+			// String[][] entries = { { "1", "John David Baltazar", "Janitor",
+			// "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk",
+			// "Terminated", "" } };
+			int i = 0;
+			for (Employee e : employees) {
+				entries[i][0] = e.getId() + "";
+				entries[i][1] = e.getDesignation();
+				entries[i][2] = e.getFirstPlusLastName();
+				entries[i][3] = e.getContactNo();
+				entries[i][4] = e.getSalary() + "";
+				entries[i][5] = e.getStatus().getStatus();
+				i++;
+			}
+			add(new TableUtilPanel(new TablePanel(entries, headers, employees), Tables.EMPLOYEES), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -462,9 +488,19 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillAccounts() {
 		try {
-			String[] headers = { "Account No", "Username", "Account Type", "Name", "Contact No" };
-			String[][] entries = new String[1][headers.length];
-
+			String[] headers = { "ID", "Username", "Account Type", "Designation", "Name", "Status" };
+			List<Account> accounts = Manager.accountManager.getAccounts();
+			String[][] entries = new String[accounts.size()][headers.length];
+			int i = 0;
+			for (Account a : accounts) {
+				entries[i][0] = a.getId() + "";
+				entries[i][1] = a.getUsername();
+				entries[i][2] = a.getAccountType().getName();
+				entries[i][3] = a.getEmployee().getDesignation();
+				entries[i][4] = a.getEmployee().getFirstPlusLastName();
+				entries[i][5] = a.getEmployee().getStatus().getStatus();
+				i++;
+			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.ACCOUNTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {

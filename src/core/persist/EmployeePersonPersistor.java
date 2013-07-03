@@ -32,6 +32,18 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	}
 
 	@Override
+	public List<Employee> getEmployeesWithoutAccounts() throws Exception {
+		List<Employee> all = getAll(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		for (Employee e : all) {
+			if (e.getAccount() == null) {
+				employees.add(e);
+			}
+		}
+		return employees;
+	}
+
+	@Override
 	public void updateEmployee(Employee employee) throws Exception {
 		update(employee);
 	}
