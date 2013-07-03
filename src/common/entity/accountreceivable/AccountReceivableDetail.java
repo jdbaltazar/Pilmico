@@ -33,25 +33,25 @@ public class AccountReceivableDetail {
 	@Column(name = "price_per_sack")
 	private double pricePerSack;
 
-	@Column(name = "quantity_per_kilo")
-	private double quantityPerKilo;
+	@Column(name = "quantity_in_kilo")
+	private double quantityInKilo;
 
-	@Column(name = "quantity_per_sack")
-	private double quantityPerSack;
+	@Column(name = "quantity_in_sack")
+	private double quantityInSack;
 
 	public AccountReceivableDetail() {
 		super();
 	}
 
 	public AccountReceivableDetail(AccountReceivable accountReceivable, Product product, double pricePerKilo, double pricePerSack,
-			double quantityPerKilo, double quantityPerSack) {
+			double quantityInKilo, double quantityInSack) {
 		super();
 		this.accountReceivable = accountReceivable;
 		this.product = product;
 		this.pricePerKilo = pricePerKilo;
 		this.pricePerSack = pricePerSack;
-		this.quantityPerKilo = quantityPerKilo;
-		this.quantityPerSack = quantityPerSack;
+		this.quantityInKilo = quantityInKilo;
+		this.quantityInSack = quantityInSack;
 	}
 
 	public int getId() {
@@ -95,19 +95,19 @@ public class AccountReceivableDetail {
 	}
 
 	public double getQuantityPerKilo() {
-		return quantityPerKilo;
+		return quantityInKilo;
 	}
 
-	public void setQuantityPerKilo(double quantityPerKilo) {
-		this.quantityPerKilo = quantityPerKilo;
+	public void setQuantityPerKilo(double quantityInKilo) {
+		this.quantityInKilo = quantityInKilo;
 	}
 
 	public double getQuantityPerSack() {
-		return quantityPerSack;
+		return quantityInSack;
 	}
 
-	public void setQuantityPerSack(double quantityPerSack) {
-		this.quantityPerSack = quantityPerSack;
+	public void setQuantityPerSack(double quantityInSack) {
+		this.quantityInSack = quantityInSack;
 	}
 
 	public String toString() {

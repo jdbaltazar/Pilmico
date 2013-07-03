@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +27,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
 
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -38,6 +40,11 @@ import util.TableHeaderLabel;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.delivery.Delivery;
+import common.entity.delivery.DeliveryDetail;
+import common.entity.product.Product;
+import common.entity.store.Store;
+import common.entity.supplier.Supplier;
 import common.manager.Manager;
 
 public class DeliveryForm extends SimplePanel {
@@ -78,7 +85,7 @@ public class DeliveryForm extends SimplePanel {
 		super("Add Delivery Form");
 		init();
 		addComponents();
-		
+
 		Values.deliveryForm = this;
 	};
 
@@ -108,15 +115,12 @@ public class DeliveryForm extends SimplePanel {
 		receivedByLabel = new MainFormLabel("Received by:");
 		supplierLabel = new MainFormLabel("Supplier:");
 
-		String c = "";
-		if (Manager.loggedInAccount != null)
-			c = Manager.loggedInAccount.getEmployee().getFirstPlusLastName();
-		receivedBy = new JLabel("dummy_acct");
+		receivedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
 		receivedBy.setOpaque(false);
 		receivedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		receivedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		receivedBy.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		terms = new MainFormField(200);
 		po_no = new MainFormField(20);
 		delivery_no = new MainFormField(30);
@@ -157,31 +161,30 @@ public class DeliveryForm extends SimplePanel {
 		showRequired.setBounds(500, 12, 160, 20);
 		showRequired.setSelected(true);
 		showRequired.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if(showRequired.isSelected()){
+				if (showRequired.isSelected()) {
 					showUnrequired(false);
 					setupTable(50, false);
-				}
-				else{
+				} else {
 					showUnrequired(true);
 					setupTable(91, true);
 				}
 			}
 		});
 
-		dateLabel.setBounds(43, 12, 40, 20);  //15
+		dateLabel.setBounds(43, 12, 40, 20); // 15
 		date.setBounds(88, 10, 150, 20);
 
-		receivedByLabel.setBounds(293, 12, 85, 20);//260
+		receivedByLabel.setBounds(293, 12, 85, 20);// 260
 		receivedBy.setBounds(378, 10, 200, 20);
 
 		ponumLabel.setBounds(36, 35, 50, 20);
 		po_no.setBounds(86, 32, 70, 20);
 
-		deliveryNumLabel.setBounds(286, 35, 100, 20); //260
+		deliveryNumLabel.setBounds(286, 35, 100, 20); // 260
 		delivery_no.setBounds(386, 32, 140, 20);
 
 		supplierLabel.setBounds(15, 58, 70, 20);
@@ -200,7 +203,7 @@ public class DeliveryForm extends SimplePanel {
 				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
 				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 				alternateRows();
-				
+
 				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 				productsPanel.updateUI();
 				productsPanel.revalidate();
@@ -211,8 +214,20 @@ public class DeliveryForm extends SimplePanel {
 		});
 
 		showUnrequired(false);
-		
+
 		add(showRequired);
+
+		List<Supplier> suppliers = new ArrayList<Supplier>();
+		try {
+			suppliers = Manager.supplierManager.getSuppliers();
+			for (Supplier s : suppliers) {
+				supplierCombo.addItem(s);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		supplierCombo.setSelectedIndex(-1);
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -226,8 +241,8 @@ public class DeliveryForm extends SimplePanel {
 		panel.add(deliveryNumLabel);
 		panel.add(delivery_no);
 
-//		panel.add(issuedOnLabel);
-//		panel.add(issueDate);
+		// panel.add(issuedOnLabel);
+		// panel.add(issueDate);
 
 		panel.add(supplierLabel);
 		panel.add(supplierCombo);
@@ -257,19 +272,19 @@ public class DeliveryForm extends SimplePanel {
 
 		add(scrollPane);
 	}
-	
-	private void alternateRows(){
-		
-		for(int i = 0; i < rowPanel.size(); i ++)
-			if(i%2 == 0)
+
+	private void alternateRows() {
+
+		for (int i = 0; i < rowPanel.size(); i++)
+			if (i % 2 == 0)
 				rowPanel.get(i).getRow().setBackground(Values.row1);
 			else
 				rowPanel.get(i).getRow().setBackground(Values.row2);
 	}
-	
-	private void setupTable(int y, boolean shownFields){
+
+	private void setupTable(int y, boolean shownFields) {
 		LABEL_Y = y;
-		
+
 		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
 
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
@@ -280,30 +295,28 @@ public class DeliveryForm extends SimplePanel {
 		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
 
 		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
-		
-		
-		if(shownFields){
+
+		if (shownFields) {
 			productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
-		}
-		else{
+		} else {
 			productsPane.setBounds(31, 75, ROW_WIDTH, 175);
 		}
-		
+
 	}
-	
-	private void showUnrequired(boolean show){
+
+	private void showUnrequired(boolean show) {
 		supplierLabel.setVisible(show);
 		supplierCombo.setVisible(show);
-		
+
 		ponumLabel.setVisible(show);
 		po_no.setVisible(show);
-		
+
 		termsLabel.setVisible(show);
 		terms.setVisible(show);
-		
+
 		deliveryNumLabel.setVisible(show);
 		delivery_no.setVisible(show);
-		
+
 		supplierFwd.setVisible(show);
 	}
 
@@ -314,7 +327,7 @@ public class DeliveryForm extends SimplePanel {
 
 		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 		updateList(rowNum);
-		
+
 		alternateRows();
 	}
 
@@ -344,6 +357,29 @@ public class DeliveryForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				try {
+					Date d = ((SpinnerDateModel) date.getModel()).getDate();
+					Supplier supplier = (Supplier) supplierCombo.getSelectedItem();
+					Store store;
+					store = Manager.storeManager.getStore();
+					Delivery delivery = new Delivery(d, supplier, store, delivery_no.getText(), po_no.getText(), terms.getText(), Manager.loggedInAccount);
+
+					for (RowPanel rp : rowPanel) {
+						Product p = rp.getSelectedProduct();
+						System.out.println("qty in kilo: " + rp.getQuantityInKilo());
+						System.out.println("qty in sack: " + rp.getQuantityInSack());
+						delivery.addDeliveryDetail(new DeliveryDetail(delivery, p, p.getPricePerKilo(), p.getPricePerSack(), rp.getQuantityInKilo(), rp
+								.getQuantityInSack()));
+					}
+
+					Manager.deliveryManager.addDelivery(delivery);
+					System.out.println("delivery saved");
+
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});

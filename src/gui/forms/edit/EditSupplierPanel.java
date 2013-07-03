@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import javax.swing.JTextField;
 
+import common.entity.supplier.Supplier;
+
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.Values;
@@ -32,17 +34,19 @@ public class EditSupplierPanel extends EditFormPanel {
 
 	private int y1 = 70, y2 = 55, y3 = 85;
 
-	/*public EditSupplierPanel(Supplier supplier) {
+	private Supplier supplier;
+
+	/*
+	 * public EditSupplierPanel(Supplier supplier) {
+	 * super("View / Edit Supplier"); this.supplier = supplier; init();
+	 * addComponents(); }
+	 */
+	public EditSupplierPanel(Supplier supplier) {
 		super("View / Edit Supplier");
 		this.supplier = supplier;
 		init();
 		addComponents();
-	}
-*/
-	public EditSupplierPanel() {
-		super("View / Edit Supplier");
-		init();
-		addComponents();
+		fillValues();
 	}
 
 	private void init() {
@@ -81,20 +85,21 @@ public class EditSupplierPanel extends EditFormPanel {
 
 		error.setBounds(550, 300, 230, 25);
 
-		/*fields.get(0).setText(supplier.getName());
-		fields.get(1).setText(supplier.getDescription());
-		fields.get(2).setText(supplier.getAddress());
-		fields.get(3).setText(supplier.getTin());
-		fields.get(4).setText(supplier.getLandlineNo());
-		fields.get(5).setText(supplier.getMobileNo());
-		fields.get(6).setText(supplier.getEmail());
-		fields.get(7).setText(supplier.getContactPerson());
-		fields.get(8).setText(supplier.getNotes());*/
+		/*
+		 * fields.get(0).setText(supplier.getName());
+		 * fields.get(1).setText(supplier.getDescription());
+		 * fields.get(2).setText(supplier.getAddress());
+		 * fields.get(3).setText(supplier.getTin());
+		 * fields.get(4).setText(supplier.getLandlineNo());
+		 * fields.get(5).setText(supplier.getMobileNo());
+		 * fields.get(6).setText(supplier.getEmail());
+		 * fields.get(7).setText(supplier.getContactPerson());
+		 * fields.get(8).setText(supplier.getNotes());
+		 */
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				
 			}
 		});
 
@@ -103,9 +108,18 @@ public class EditSupplierPanel extends EditFormPanel {
 		add(error);
 	}
 
+	private void fillValues() {
+		fields.get(0).setText(supplier.getName());
+		fields.get(1).setText(supplier.getAddress());
+		fields.get(2).setText(supplier.getTin());
+		fields.get(3).setText(supplier.getContactNo());
+		fields.get(4).setText(supplier.getContactPerson().getFirstPlusLastName());
+		fields.get(5).setText(supplier.getRemarks());
+	}
+
 	private void update() {
 		Values.editPanel.startAnimation();
-	//	Values.stockPurchasePanel.refreshSupplier();
+		// Values.stockPurchasePanel.refreshSupplier();
 		new SuccessPopup("Edit").setVisible(true);
 		Values.centerPanel.changeTable(Values.DELIVERY);
 	}

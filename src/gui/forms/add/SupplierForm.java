@@ -8,6 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import common.entity.profile.Person;
+import common.entity.supplier.Supplier;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.SimplePanel;
 import util.Values;
@@ -65,6 +69,25 @@ public class SupplierForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				System.out.println("name: " + fields.get(0).getText());
+				System.out.println("address: " + fields.get(1).getText());
+				System.out.println("tin: " + fields.get(2).getText());
+				System.out.println("contactNo: " + fields.get(3).getText());
+				System.out.println("contactPerson: " + fields.get(4).getText());
+				System.out.println("remarks: " + fields.get(5).getText());
+
+				Person person = null;
+				Supplier s = new Supplier(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText(), fields.get(3).getText(), person,
+						fields.get(5).getText());
+
+				try {
+					Manager.supplierManager.addSupplier(s);
+					System.out.println("supplier added!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});

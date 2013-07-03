@@ -30,9 +30,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
+import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.DailyExpensesType;
+import common.entity.dailyexpenses.Expense;
+import common.entity.product.Product;
+import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.ErrorLabel;
@@ -258,6 +264,23 @@ public class ExpensesForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				DailyExpenses de = new DailyExpenses(d, (DailyExpensesType) (type.getSelectedItem()), Manager.loggedInAccount);
+
+				for (RowPanel rp : rowPanel) {
+					Expense expense = rp.getSelectedExpense();
+					de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense, rp.getExpenseAmount()));
+				}
+				
+				try {
+					Manager.dailyExpenseManager.addDailyExpenses(de);
+					
+					System.out.println("daily expenses saved");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 				/*
 				 * if (isValidated()) { try { Date d = ((SpinnerDateModel)

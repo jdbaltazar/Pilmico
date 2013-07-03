@@ -10,10 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity(name = "Employment")
+@Entity
+@Table(name = "Employment")
 public class Employee {
 
 	@Id
@@ -157,7 +159,7 @@ public class Employee {
 	}
 
 	public String toString() {
-		return designation + person.toString();
+		return designation + " " + person.toString();
 	}
 
 }

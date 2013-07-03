@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -22,6 +23,10 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
+
+import common.entity.profile.Employee;
+import common.entity.salary.CashAdvance;
+import common.manager.Manager;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
@@ -46,7 +51,7 @@ public class CashAdvanceForm extends SimplePanel {
 	private JSpinner date;
 	private JLabel issuedBy;
 	private int initY = 60;
-	private DropdownLabel dateLabel,issuedByLabel, issuedForLabel;
+	private DropdownLabel dateLabel, issuedByLabel, issuedForLabel;
 	private SBButton fwd;
 
 	private ErrorLabel error;
@@ -64,25 +69,24 @@ public class CashAdvanceForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
-		
+
 		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
 
 		error = new ErrorLabel();
-		
+
 		dateLabel = new DropdownLabel("Date");
 		issuedByLabel = new DropdownLabel("Issued by");
 		issuedForLabel = new DropdownLabel("Issued for");
-		
-		//issuedBy = new FormDropdown();
-		issuedBy = new JLabel("Juan dela Cruz");
+
+		// issuedBy = new FormDropdown();
+		issuedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		issuedBy.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		date = new JSpinner(new SpinnerDateModel());
-		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date,
-				"MMMM dd, yyyy hh:mm:ss a");
+		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
 		date.setEditor(timeEditor2);
 		date.setValue(new Date());
 		date.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
@@ -106,22 +110,22 @@ public class CashAdvanceForm extends SimplePanel {
 			e2.printStackTrace();
 		}
 
-		/*model = new DefaultComboBoxModel();
-		employeeCombo = new JComboBox(model);
-
-		employeeCombo.setSelectedIndex(-1);
-
-		employeeCombo.setEditable(true);
-		employeesField = (JTextField) employeeCombo.getEditor()
-				.getEditorComponent();
-		employeesField.setText("");
-		employeesField.addKeyListener(new ComboKeyHandler(employeeCombo));
-*/
+		/*
+		 * model = new DefaultComboBoxModel(); employeeCombo = new
+		 * JComboBox(model);
+		 * 
+		 * employeeCombo.setSelectedIndex(-1);
+		 * 
+		 * employeeCombo.setEditable(true); employeesField = (JTextField)
+		 * employeeCombo.getEditor() .getEditorComponent();
+		 * employeesField.setText(""); employeesField.addKeyListener(new
+		 * ComboKeyHandler(employeeCombo));
+		 */
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 51; i < num - 1; i++, y += 55) {
 
-			if (i == 3 || i==4) {
-				
+			if (i == 3 || i == 4) {
+
 				fields.add(new JNumericField(Tables.cashAdvanceFormLabel[i]));
 				fields.get(ctr).setMaxLength(10);
 				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
@@ -130,16 +134,16 @@ public class CashAdvanceForm extends SimplePanel {
 				ctr++;
 			}
 
-			if (i == 0){
+			if (i == 0) {
 				dateLabel.setBounds(x1, initY + y - 7, 200, 11);
 				date.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			if (i == 1){
+			if (i == 1) {
 				issuedByLabel.setBounds(x1, initY + y - 7, 200, 11);
 				issuedBy.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			
-			if (i == 2){
+
+			if (i == 2) {
 				fwd.setBounds(x1 + 55, initY + y - 11, 16, 16);
 				issuedForLabel.setBounds(x1, initY + y - 7, 200, 11);
 				issuedFor.setBounds(x1, initY + y + 5, 200, 20);
@@ -161,16 +165,40 @@ public class CashAdvanceForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				Employee emp = (Employee) issuedFor.getSelectedItem();
+				CashAdvance cashAdvance = new CashAdvance(d, false, Double.parseDouble(fields.get(0).getText()), emp, Double.parseDouble(fields.get(0)
+						.getText()), Manager.loggedInAccount);
+
+				try {
+					Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
+					
+					System.out.println("ca saved!!!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = Manager.employeePersonManager.getEmployees();
+			for (Employee emp : employees) {
+				issuedFor.addItem(emp);
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
 		add(clear);
 		add(save);
-		
+
 		add(issuedBy);
 		add(issuedFor);
 		add(date);
-		
+
 		add(fwd);
 		add(dateLabel);
 		add(issuedByLabel);
@@ -189,9 +217,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("")
-				&& !firstName.equals("") && !lastName.equals("")
-				&& !address.equals(""))
+		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
 			return true;
 
 		return false;
@@ -200,8 +226,8 @@ public class CashAdvanceForm extends SimplePanel {
 	public void refreshDropdown() {
 		try {
 			model = new DefaultComboBoxModel();
-//			issuedBy = new FormDropdown();
-//			issuedBy.setModel(model);
+			// issuedBy = new FormDropdown();
+			// issuedBy.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}

@@ -26,6 +26,7 @@ import common.entity.accountreceivable.AccountReceivable;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.product.Product;
+import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.salary.CashAdvance;
 import common.entity.sales.Sales;
@@ -76,9 +77,9 @@ public class CenterPanel extends SoyPanel {
 
 	public void changeTable(int val) {
 
-//		if (val != Values.HOME)
-			remove(getComponent(getComponentCount() - 1));
-//		remove(getComponent(0));
+		// if (val != Values.HOME)
+		remove(getComponent(getComponentCount() - 1));
+		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
 
@@ -379,9 +380,9 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Delivery d : deliveries) {
 				entries[i][0] = d.getId() + "";
-				entries[i][0] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(d.getDate());
-				entries[i][0] = d.getDeliveryAmount() + "";
-				entries[i][0] = d.getReceivedBy().getEmployee().getFirstPlusLastName();
+				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(d.getDate());
+				entries[i][2] = d.getDeliveryAmount() + "";
+				entries[i][3] = d.getReceivedBy().getEmployee().getFirstPlusLastName();
 				i++;
 			}
 
@@ -403,7 +404,8 @@ public class CenterPanel extends SoyPanel {
 				entries[i][1] = s.getName();
 				entries[i][2] = s.getAddress();
 				entries[i][3] = s.getContactNo();
-				entries[i][4] = s.getContactPerson().getFirstPlusLastName();
+				Person p = s.getContactPerson();
+				entries[i][4] = p != null ? p.getFirstPlusLastName() : "";
 				i++;
 			}
 			// String[][] entries = { { "1", "Rubina Hog Feeds Inc.",
