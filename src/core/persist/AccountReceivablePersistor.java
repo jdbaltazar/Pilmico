@@ -1,6 +1,12 @@
 package core.persist;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -20,9 +26,25 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		return (AccountReceivable) get(AccountReceivable.class, id);
 	}
 
+	// @Override
+	// public List<AccountReceivable> getAccountReceivables() throws Exception {
+	// return getAll(AccountReceivable.class);
+	// }
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<AccountReceivable> getAccountReceivables() throws Exception {
-		return getAll(AccountReceivable.class);
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			accountReceivables = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
 	}
 
 	@Override
@@ -52,9 +74,25 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		return (ARPayment) get(ARPayment.class, id);
 	}
 
+	// @Override
+	// public List<ARPayment> getARPayments() throws Exception {
+	// return getAll(ARPayment.class);
+	// }
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ARPayment> getARPayments() throws Exception {
-		return getAll(ARPayment.class);
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			arPayments = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
 	}
 
 	@Override

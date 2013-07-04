@@ -23,6 +23,7 @@ import util.soy.SoyPanel;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.product.Product;
@@ -30,7 +31,6 @@ import common.entity.profile.Account;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
-import common.entity.salary.CashAdvance;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
@@ -355,22 +355,6 @@ public class CenterPanel extends SoyPanel {
 		}
 	}
 
-	private void fillStockPurchase() {
-
-		try {
-
-			String[] headers = { "Puchase No", "Date", "Supplier" };
-			String[][] entries = { { "1", "June 20, 2013", "Universal Feeds Corp." }, { "2", "June 18, 2013", "Rubina Foods Inc." } };
-			// String[][] entries = new String[1][headers.length];
-
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), "STOCK PURCHASE"), BorderLayout.CENTER);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	private void fillDelivery() {
 		try {
 			String[] headers = { "ID", "Date", "Amount", "Received by" };
@@ -472,7 +456,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Employee e : employees) {
 				entries[i][0] = e.getId() + "";
-				entries[i][1] = e.getDesignation();
+				entries[i][1] = e.getDesignation().getName();
 				entries[i][2] = e.getFirstPlusLastName();
 				entries[i][3] = e.getContactNo();
 				entries[i][4] = e.getSalary() + "";
@@ -496,7 +480,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][0] = a.getId() + "";
 				entries[i][1] = a.getUsername();
 				entries[i][2] = a.getAccountType().getName();
-				entries[i][3] = a.getEmployee().getDesignation();
+				entries[i][3] = a.getEmployee().getDesignation().getName();
 				entries[i][4] = a.getEmployee().getFirstPlusLastName();
 				entries[i][5] = a.getEmployee().getStatus().getStatus();
 				i++;

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
+import common.entity.cashadvance.CashAdvance;
 import common.entity.log.Log;
 import common.entity.log.LogType;
 import common.entity.note.Note;
@@ -17,7 +18,6 @@ import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 import common.entity.profile.Employee;
-import common.entity.salary.CashAdvance;
 import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.supplier.Supplier;

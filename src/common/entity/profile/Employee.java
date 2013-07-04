@@ -29,8 +29,9 @@ public class Employee {
 	@JoinColumn(name = "person_id")
 	private Person person;
 
-	@Column(name = "designation")
-	private String designation;
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "designation_id")
+	private Designation designation;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "status_id")
@@ -57,7 +58,8 @@ public class Employee {
 		super();
 	}
 
-	public Employee(Person person, String designation, EmploymentStatus status, Date startingDate, double salary, String remarks, Date terminationDate) {
+	public Employee(Person person, Designation designation, EmploymentStatus status, Date startingDate, double salary, String remarks,
+			Date terminationDate) {
 		super();
 		this.person = person;
 		this.designation = designation;
@@ -68,7 +70,7 @@ public class Employee {
 		this.terminationDate = terminationDate;
 	}
 
-	public Employee(Person person, String designation, EmploymentStatus status) {
+	public Employee(Person person, Designation designation, EmploymentStatus status) {
 		super();
 		this.person = person;
 		this.designation = designation;
@@ -115,11 +117,11 @@ public class Employee {
 		return person.getContactNo();
 	}
 
-	public String getDesignation() {
+	public Designation getDesignation() {
 		return designation;
 	}
 
-	public void setDesignation(String designation) {
+	public void setDesignation(Designation designation) {
 		this.designation = designation;
 	}
 

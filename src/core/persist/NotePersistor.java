@@ -1,7 +1,14 @@
 package core.persist;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+
+import common.entity.delivery.Delivery;
 import common.entity.note.Note;
 import common.entity.note.NoteType;
 import common.manager.NoteManager;
@@ -18,9 +25,25 @@ public class NotePersistor extends Persistor implements NoteManager {
 		return (Note) get(Note.class, id);
 	}
 
+	// @Override
+	// public List<Note> getNotes() throws Exception {
+	// return getAll(Note.class);
+	// }
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Note> getNotes() throws Exception {
-		return getAll(Note.class);
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Note.class);
+		List<Note> notes = new ArrayList<Note>();
+		try {
+			notes = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return notes;
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import org.hibernate.cfg.Configuration;
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.DailyExpensesType;
@@ -33,13 +35,12 @@ import common.entity.product.Price;
 import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
+import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
-import common.entity.salary.CADeduction;
-import common.entity.salary.CashAdvance;
 import common.entity.salary.Fee;
 import common.entity.salary.FeeDeduction;
 import common.entity.salary.SalaryRelease;
@@ -85,6 +86,7 @@ public class HibernateUtil {
 			conf.addAnnotatedClass(LogType.class);
 			conf.addAnnotatedClass(Log.class);
 
+			conf.addAnnotatedClass(Designation.class);
 			conf.addAnnotatedClass(Person.class);
 			conf.addAnnotatedClass(EmploymentStatus.class);
 			conf.addAnnotatedClass(Employee.class);
@@ -120,7 +122,7 @@ public class HibernateUtil {
 
 			conf.addAnnotatedClass(Fee.class);
 			conf.addAnnotatedClass(FeeDeduction.class);
-			conf.addAnnotatedClass(CADeduction.class);
+			conf.addAnnotatedClass(CAPayment.class);
 			conf.addAnnotatedClass(CashAdvance.class);
 			conf.addAnnotatedClass(SalaryRelease.class);
 

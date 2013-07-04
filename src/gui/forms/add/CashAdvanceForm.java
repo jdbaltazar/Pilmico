@@ -24,8 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
+import common.entity.cashadvance.CashAdvance;
 import common.entity.profile.Employee;
-import common.entity.salary.CashAdvance;
 import common.manager.Manager;
 
 import util.DropdownLabel;

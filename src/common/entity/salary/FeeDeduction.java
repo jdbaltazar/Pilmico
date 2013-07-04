@@ -24,15 +24,20 @@ public class FeeDeduction {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "salary_release_id")
 	private SalaryRelease salaryRelease;
+	
+	@Column
+	private double amount;
+	
 
 	public FeeDeduction() {
 		super();
 	}
 
-	public FeeDeduction(Fee fee, SalaryRelease salaryRelease) {
+	public FeeDeduction(Fee fee, SalaryRelease salaryRelease, double amount) {
 		super();
 		this.fee = fee;
 		this.salaryRelease = salaryRelease;
+		this.amount = amount;
 	}
 
 	public int getId() {
@@ -57,6 +62,14 @@ public class FeeDeduction {
 
 	public void setSalaryRelease(SalaryRelease salaryRelease) {
 		this.salaryRelease = salaryRelease;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 }

@@ -1,4 +1,4 @@
-package common.entity.salary;
+package common.entity.cashadvance;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -56,8 +56,8 @@ public class CashAdvance {
 	@Column
 	private String remarks;
 
-	@OneToMany(mappedBy = "cashAdvance", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<CADeduction> caDeductions = new HashSet<CADeduction>();
+	@OneToMany(mappedBy = "expense", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<CAPayment> caPayments = new HashSet<CAPayment>();
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
@@ -67,22 +67,7 @@ public class CashAdvance {
 		super();
 	}
 
-	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, String remarks,
-			Set<CADeduction> caDeductions) {
-		super();
-		this.date = date;
-		this.paid = paid;
-		this.amount = amount;
-		this.employee = employee;
-		this.balance = balance;
-		this.issuedBy = issuedBy;
-		this.valid = valid;
-		this.remarks = remarks;
-		this.caDeductions = caDeductions;
-	}
-
-	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, String remarks,
-			boolean accounted) {
+	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.paid = paid;
@@ -188,12 +173,30 @@ public class CashAdvance {
 		this.remarks = remarks;
 	}
 
-	public Set<CADeduction> getCaDeductions() {
-		return caDeductions;
+	public Set<CAPayment> getCaPayments() {
+		return caPayments;
 	}
 
-	public void setCaDeductions(Set<CADeduction> caDeductions) {
-		this.caDeductions = caDeductions;
+	public void setCaPayments(Set<CAPayment> caPayments) {
+		this.caPayments = caPayments;
+	}
+
+	public void addCAPayment(CAPayment caPayment) {
+		caPayment.setCashAdvance(this);
+		caPayments.add(caPayment);
+	}
+
+	public void removeCAPayment(CAPayment caPayment) {
+		removeCAPayment(caPayment.getId());
+	}
+
+	public void removeCAPayment(int caPaymentId) {
+		for (CAPayment cap : caPayments) {
+			if (cap.getId() == caPaymentId) {
+				caPayments.remove(cap);
+				break;
+			}
+		}
 	}
 
 	public InventorySheet getInventorySheet() {
