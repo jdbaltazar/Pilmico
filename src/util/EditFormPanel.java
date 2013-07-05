@@ -31,9 +31,12 @@ public class EditFormPanel extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		Color ppColor = new Color(0, 96, 96, 30); // r,g,b,alpha
-		g2.setColor(ppColor);
-		g2.fillRect(0, 0, getWidth(), getHeight());
+		gradient = new GradientPaint(0, 0, Color.white,0, getHeight(), Color.decode("#E0F0FF"));
+		g2.setPaint(gradient);
+		g2.fill(g.getClipBounds());
+//		Color ppColor = new Color(0, 96, 96, 30); // r,g,b,alpha
+//		g2.setColor(Color.decode("#CCE6FF"));
+//		g2.fillRect(0, 0, getWidth(), getHeight());
 
 		g2.setColor(new Color(150, 150, 150));
 		g2.drawRoundRect(2, 4, getWidth() - 5, getHeight() - 8, 20, 20);

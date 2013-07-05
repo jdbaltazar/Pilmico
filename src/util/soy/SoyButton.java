@@ -15,7 +15,7 @@ public class SoyButton extends SoyPanel {
 	private String name;
 	private SoyLabel title;
 	private boolean isHovered;
-	private boolean alternate;
+	private boolean isVoid;
 
 	public SoyButton(String name) {
 		super();
@@ -25,10 +25,10 @@ public class SoyButton extends SoyPanel {
 		addListener();
 	}
 
-	public SoyButton(String name, boolean bool) {
+	public SoyButton(String name, boolean isVoid) {
 		super();
 
-		alternate = true;
+		this.isVoid = isVoid;
 		this.name = name;
 		init();
 		addListener();
@@ -47,7 +47,7 @@ public class SoyButton extends SoyPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("SOYBUTTON");
+//				System.out.println("SOYBUTTON");
 			}
 
 			@Override
@@ -70,7 +70,7 @@ public class SoyButton extends SoyPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		if (!alternate) {
+		if (!isVoid) {
 			title.setForeground(Color.WHITE);
 			if (!isHovered) {
 				gradient = new GradientPaint(0, 0, new Color(0,0,128), 0,
@@ -83,14 +83,14 @@ public class SoyButton extends SoyPanel {
 			}
 		}
 		else{
-			title.setForeground(Color.BLACK);
+			title.setForeground(Color.WHITE);
 			if (!isHovered) {
-				gradient = new GradientPaint(0, 0, new Color(220, 220, 220), 0,
-						getHeight(), new Color(245, 245, 245));
+				gradient = new GradientPaint(0, 0, Color.decode("#FF1919"), 0,
+						getHeight(), Color.decode("#FF3333"));
 				g2.setPaint(gradient);
 			} else {
-				gradient1 = new GradientPaint(0, 0, new Color(245, 245, 245), 0,
-						getHeight(), new Color(220, 220, 220));
+				gradient1 = new GradientPaint(0, 0, new Color(255,45,45), 0,
+						getHeight(), new Color(255,71,71));
 				g2.setPaint(gradient1);
 			}
 		}

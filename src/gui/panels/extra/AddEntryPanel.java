@@ -6,6 +6,7 @@ import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.DeliveryForm;
 import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
+import gui.forms.add.InventorySheetForm;
 import gui.forms.add.ProductForm;
 import gui.forms.add.ProfileForm;
 import gui.forms.add.PulloutForm;
@@ -67,6 +68,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private AccountReceivablesForm accountReceivables;
 	private DeliveryForm delivery;
 	private PulloutForm pullout;
+	private InventorySheetForm inventorySheetForm;
 	
 	private JCheckBox checkBox;
 
@@ -113,6 +115,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 		accountReceivables = new AccountReceivablesForm();
 		
+		inventorySheetForm = new InventorySheetForm();
+		
 		checkBox = new JCheckBox("Close after saving");
 		checkBox.setOpaque(false);
 		checkBox.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
@@ -133,6 +137,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 		sales.setBounds(70, 55, 670, 370);
 		expensesForm.setBounds(100, 105, 600, 270);
+		
+		inventorySheetForm.setBounds(10, 30, 780, 430);
 		
 		profileForm.setBounds(225, 45, 290, 390);
 		employeeForm.setBounds(165, 50, 450, 400);
@@ -169,6 +175,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		add(salary);
 		
 		add(accountReceivables);
+		
+		add(inventorySheetForm);
 		
 		add(profileForm);
 		add(employeeForm);
@@ -313,6 +321,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			//Values.salesOrderForm.refreshDate();
 			sales.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
+			//Values.salesOrderForm.refreshDate();
+			inventorySheetForm.setVisible(true);
 		}
 
 	}
