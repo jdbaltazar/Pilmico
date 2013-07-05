@@ -96,11 +96,11 @@ public class AccountReceivable {
 		this.valid = valid;
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy) {
+	public AccountReceivable(Date date, Person customer, Account issuedBy) {
 		super();
 		this.date = date;
 		this.customer = customer;
-		this.balance = balance;
+		this.balance = 0d;
 		this.issuedBy = issuedBy;
 		this.valid = true;
 	}
@@ -165,13 +165,22 @@ public class AccountReceivable {
 		return accountReceivableDetails;
 	}
 
-	public void setAccountReceivableDetails(Set<AccountReceivableDetail> accountReceivableDetails) {
-		this.accountReceivableDetails = accountReceivableDetails;
-	}
+	// public void setAccountReceivableDetails(Set<AccountReceivableDetail>
+	// accountReceivableDetails) {
+	// this.accountReceivableDetails = accountReceivableDetails;
+	// // increment the balance
+	// for (AccountReceivableDetail ard : accountReceivableDetails) {
+	// balance += ((ard.getPricePerSack() * ard.getQuantityPerSack()) +
+	// (ard.getPricePerKilo() * ard.getQuantityPerKilo()));
+	// }
+	// }
 
 	public void addAccountReceivableDetail(AccountReceivableDetail accountReceivableDetail) {
 		accountReceivableDetail.setAccountReceivable(this);
 		accountReceivableDetails.add(accountReceivableDetail);
+		balance += ((accountReceivableDetail.getPricePerSack() * accountReceivableDetail.getQuantityPerSack()) + (accountReceivableDetail
+				.getPricePerKilo() * accountReceivableDetail.getQuantityPerKilo()));
+
 	}
 
 	public void removeAccountReceivableDetail(AccountReceivableDetail accountReceivableDetail) {
@@ -180,22 +189,27 @@ public class AccountReceivable {
 
 	public void removeAccountReceivableDetail(int accountReceivableDetailId) {
 		for (AccountReceivableDetail ard : accountReceivableDetails) {
-			if (ard.getId() == accountReceivableDetailId)
+			if (ard.getId() == accountReceivableDetailId) {
 				accountReceivableDetails.remove(ard);
+				balance -= ((ard.getPricePerSack() * ard.getQuantityPerSack()) + (ard.getPricePerKilo() * ard.getQuantityPerKilo()));
+			}
 		}
+
 	}
 
 	public Set<ARPayment> getArPayments() {
 		return arPayments;
 	}
 
-	public void setArPayments(Set<ARPayment> arPayments) {
-		this.arPayments = arPayments;
-	}
+	//
+	// public void setArPayments(Set<ARPayment> arPayments) {
+	// this.arPayments = arPayments;
+	// }
 
 	public void addARPayment(ARPayment arPayment) {
 		arPayment.setAccountReceivable(this);
 		arPayments.add(arPayment);
+		balance -= (arPayment.getAmount());
 	}
 
 	public void removeARPayment(ARPayment arPayment) {
@@ -206,6 +220,7 @@ public class AccountReceivable {
 		for (ARPayment arp : arPayments) {
 			if (arp.getId() == arPaymentId) {
 				accountReceivableDetails.remove(arp);
+				balance -= (arp.getAmount());
 				break;
 			}
 		}

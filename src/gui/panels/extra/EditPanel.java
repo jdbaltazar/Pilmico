@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import common.entity.product.Product;
+import common.entity.supplier.Supplier;
 
 import util.Tables;
 import util.Values;
@@ -152,7 +153,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals("SUPPLIERS")) {
-			add(new EditSupplierPanel(), BorderLayout.CENTER);
+			add(new EditSupplierPanel((Supplier) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {

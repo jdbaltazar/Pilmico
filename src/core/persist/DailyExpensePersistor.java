@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesType;
+import common.entity.dailyexpenses.Expense;
 import common.entity.sales.Sales;
 import common.manager.DailyExpensesManager;
 
@@ -18,6 +19,8 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	@Override
 	public void addDailyExpenses(DailyExpenses expense) throws Exception {
 		add(expense);
+		
+		System.out.println("de added!");
 	}
 
 	@Override
@@ -89,6 +92,47 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	@Override
 	public void deleteExpenseType(int id) throws Exception {
 		remove(getExpenseType(id));
+	}
+
+	@Override
+	public void addExpenses(Expense expense) throws Exception {
+		add(expense);
+	}
+
+	@Override
+	public Expense getExpense(int id) throws Exception {
+		return (Expense) getExpense(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Expense> getExpenses() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Expense.class);
+		List<Expense> expenses = new ArrayList<Expense>();
+		try {
+			expenses = criteria.addOrder(Order.asc("name")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return expenses;
+	}
+
+	@Override
+	public void updateExpenses(Expense expense) throws Exception {
+		update(expense);
+	}
+
+	@Override
+	public void deleteExpense(Expense expense) throws Exception {
+		remove(expense);
+	}
+
+	@Override
+	public void deleteExpense(int id) throws Exception {
+		remove(getExpense(id));
 	}
 
 }

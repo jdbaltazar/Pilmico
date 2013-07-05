@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,12 +26,18 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
+import common.entity.log.Log;
+import common.entity.log.LogType;
+import common.entity.note.Note;
+import common.entity.note.NoteType;
+import common.entity.profile.Account;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.SBButton;
 import util.SimplePanel;
 import util.Values;
 import util.soy.SoyButton;
-
 
 public class AddNotePopup extends JDialog {
 
@@ -67,7 +74,7 @@ public class AddNotePopup extends JDialog {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
-		setBackground(new Color(0,0,0,0));
+		setBackground(new Color(0, 0, 0, 0));
 
 	}
 
@@ -77,8 +84,7 @@ public class AddNotePopup extends JDialog {
 		error = new ErrorLabel();
 
 		date = new JSpinner(new SpinnerDateModel());
-		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date,
-				"MMMM dd, yyyy hh:mm:ss a");
+		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
 		date.setEditor(timeEditor2);
 		date.setValue(new Date());
 		date.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
@@ -97,21 +103,17 @@ public class AddNotePopup extends JDialog {
 		tag = new FormField("Tag", 100, Color.white, Color.gray);
 		tag.setToolTipText("Tag Persons");
 
-		description = new FormTextArea("Description", 500, Color.white,
-				Color.gray);
+		description = new FormTextArea("Description", 500, Color.white, Color.gray);
 		descPane = new JScrollPane(description);
 
 		noteType = new FormDropdown(new String[] {});
 
-		/*try {
-			List<NoteType> noteTypes = Manager.noteManager.getNoteTypes();
-
-			for (NoteType nt : noteTypes) {
-				noteType.addItem(nt);
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}*/
+		/*
+		 * try { List<NoteType> noteTypes = Manager.noteManager.getNoteTypes();
+		 * 
+		 * for (NoteType nt : noteTypes) { noteType.addItem(nt); } } catch
+		 * (Exception e1) { e1.printStackTrace(); }
+		 */
 
 		close = new SBButton("close.png", "close.png", "Close");
 		close.setBounds(245, 10, 24, 24);
@@ -139,8 +141,43 @@ public class AddNotePopup extends JDialog {
 
 		error.setBounds(120, 310, 150, 25);
 
+		List<NoteType> nTypes = new ArrayList<NoteType>();
+		try {
+			nTypes = Manager.noteManager.getNoteTypes();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (NoteType n : nTypes) {
+			noteType.addItem(n);
+		}
+
 		save.addMouseListener(new MouseAdapter() {
-			
+			public void mouseClicked(MouseEvent e) {
+
+				if (isValidated()) {
+					try {
+
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						Note note = new Note(d, Manager.loggedInAccount, description.getText(), tag.getText(), (NoteType) noteType.getSelectedItem());
+
+						Manager.noteManager.addNote(note);
+
+						// Account acc = Manager.getInstance().getLoggedInAccount();
+						// Manager.logManager.addLog(new
+						// Log(Manager.logManager.getLogType(LogType.SYSTEM),
+						// acc.getUsername() + " added note " + note.getId()));
+						dispose();
+						new SuccessPopup("Add", 1).setVisible(true);
+						Values.footerPanel.updateNotes();
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
+					error.setText("All fields are required");
+
+			}
 		});
 
 		panel.add(date);
@@ -156,9 +193,7 @@ public class AddNotePopup extends JDialog {
 
 	private boolean isValidated() {
 
-		if (!description.getText().equals("Description")
-				&& !description.getText().equals("")
-				&& !tag.getText().equals(""))
+		if (!description.getText().equals("Description") && !description.getText().equals(""))
 			return true;
 
 		return false;

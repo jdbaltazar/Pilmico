@@ -42,4 +42,8 @@ public class Expense {
 		this.name = name;
 	}
 
+	public String toString() {
+		return name;
+	}
+
 }

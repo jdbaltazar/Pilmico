@@ -5,15 +5,19 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity(name = "Employment")
+@Entity
+@Table(name = "Employment")
 public class Employee {
 
 	@Id
@@ -45,6 +49,9 @@ public class Employee {
 	@Column(name = "termination_date")
 	@Temporal(TemporalType.DATE)
 	private Date terminationDate;
+
+	@OneToOne(mappedBy = "employee", fetch = FetchType.LAZY)
+	private Account account;
 
 	public Employee() {
 		super();
@@ -156,8 +163,12 @@ public class Employee {
 		this.terminationDate = terminationDate;
 	}
 
+	public Account getAccount() {
+		return account;
+	}
+
 	public String toString() {
-		return designation + person.toString();
+		return designation + " " + person.toString();
 	}
 
 }

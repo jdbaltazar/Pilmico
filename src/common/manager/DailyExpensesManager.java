@@ -4,6 +4,7 @@ import java.util.List;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesType;
+import common.entity.dailyexpenses.Expense;
 
 public interface DailyExpensesManager {
 
@@ -34,5 +35,19 @@ public interface DailyExpensesManager {
 	public void deleteDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
 
 	public void deleteDailyExpenses(int id) throws Exception;
+
+	// expense
+
+	public void addExpenses(Expense expense) throws Exception;
+
+	public Expense getExpense(int id) throws Exception;
+
+	public List<Expense> getExpenses() throws Exception;
+
+	public void updateExpenses(Expense expense) throws Exception;
+
+	public void deleteExpense(Expense expense) throws Exception;
+
+	public void deleteExpense(int id) throws Exception;
 
 }

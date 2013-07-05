@@ -14,6 +14,8 @@ public interface EmployeePersonManager {
 	public Employee getEmployee(int id) throws Exception;
 
 	public List<Employee> getEmployees() throws Exception;
+	
+	public List<Employee> getEmployeesWithoutAccounts() throws Exception;
 
 	public void updateEmployee(Employee employee) throws Exception;
 

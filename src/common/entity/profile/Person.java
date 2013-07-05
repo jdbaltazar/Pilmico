@@ -1,10 +1,18 @@
 package common.entity.profile;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import common.entity.sales.SalesDetail;
 
 @Entity
 public class Person {
@@ -31,6 +39,9 @@ public class Person {
 
 	@Column
 	private boolean customer;
+
+	@OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Employee> employments = new HashSet<Employee>();
 
 	public Person() {
 		super();
@@ -111,6 +122,10 @@ public class Person {
 
 	public void setCustomer(boolean customer) {
 		this.customer = customer;
+	}
+
+	public Set<Employee> getEmployments() {
+		return employments;
 	}
 
 	public String toString() {

@@ -209,7 +209,7 @@ public class Delivery {
 		this.deliveryDetails = deliveryDetails;
 	}
 
-	public void addDEliveryDetail(DeliveryDetail deliveryDetail) {
+	public void addDeliveryDetail(DeliveryDetail deliveryDetail) {
 		deliveryDetail.setDelivery(this);
 		deliveryDetails.add(deliveryDetail);
 	}

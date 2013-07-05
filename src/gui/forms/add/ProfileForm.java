@@ -14,6 +14,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import common.entity.profile.Person;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.FormCheckbox;
 import util.SimplePanel;
@@ -63,8 +66,7 @@ public class ProfileForm extends SimplePanel {
 				cbox.setBounds(x1, 55 + y, 200, 25);
 				add(cbox);
 			} else {
-				fields.add(new FormField(Tables.profileFormLabel[i], 100,
-						Color.white, Color.gray));
+				fields.add(new FormField(Tables.profileFormLabel[i], 100, Color.white, Color.gray));
 				fields.get(i).setBounds(x1, 55 + y, 200, 25);
 				add(fields.get(i));
 			}
@@ -86,6 +88,16 @@ public class ProfileForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields.get(4)
+						.getText(), true);
+				try {
+					Manager.employeePersonManager.addPerson(p);
+					System.out.println("person added!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
@@ -105,9 +117,7 @@ public class ProfileForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("")
-				&& !firstName.equals("") && !lastName.equals("")
-				&& !address.equals(""))
+		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
 			return true;
 
 		return false;

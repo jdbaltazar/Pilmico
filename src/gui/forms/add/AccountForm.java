@@ -8,10 +8,16 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+
+import common.entity.profile.Account;
+import common.entity.profile.AccountType;
+import common.entity.profile.Employee;
+import common.manager.Manager;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
@@ -33,13 +39,12 @@ public class AccountForm extends SimplePanel {
 	private JComboBox employeeCombo;
 	private JTextField employeesField;
 	private DefaultComboBoxModel model;
-	
+
 	private int initY = 70;
 
 	private ErrorLabel error;
 	private DropdownLabel employee, acctT;
 	private SBButton fwd;
-	private String username, password, firstName, lastName, address;
 
 	private final int num = Tables.accountFormLabel.length;
 
@@ -51,14 +56,13 @@ public class AccountForm extends SimplePanel {
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
 		fwd = new SBButton("forward.png", "forward.png", "Add new category");
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
 		error = new ErrorLabel();
-		
+
 		employee = new DropdownLabel("Employee*");
 		acctT = new DropdownLabel("Account Type*");
 
@@ -78,34 +82,32 @@ public class AccountForm extends SimplePanel {
 		employeeCombo.setSelectedIndex(-1);
 
 		employeeCombo.setEditable(true);
-		employeesField = (JTextField) employeeCombo.getEditor()
-				.getEditorComponent();
+		employeesField = (JTextField) employeeCombo.getEditor().getEditorComponent();
 		employeesField.setText("");
 		employeesField.addKeyListener(new ComboKeyHandler(employeeCombo));
 
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 50; i < num; i++, y += 60) {
 
-			if (i != 0 && i!=1) {
-				fields.add(new FormField(Tables.accountFormLabel[i], 100,
-						Color.white, Color.gray));
+			if (i != 0 && i != 1) {
+				fields.add(new FormField(Tables.accountFormLabel[i], 100, Color.white, Color.gray));
 				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
 				add(fields.get(ctr));
 
 				ctr++;
 			}
 
-			if (i == 0){
+			if (i == 0) {
 				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
 				employee.setBounds(x1, initY + y - 7, 100, 11);
 				employeeCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			
-			if (i == 1){
+
+			if (i == 1) {
 				acctT.setBounds(x1, initY + y - 7, 100, 11);
 				acctType.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			
+
 		}
 
 		clear.setBounds(167, 330, 80, 30);
@@ -123,9 +125,38 @@ public class AccountForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				Account acc = new Account(fields.get(0).getText(), fields.get(1).getText(), (AccountType) acctType.getSelectedItem(),
+						(Employee) employeeCombo.getSelectedItem());
+				try {
+					Manager.accountManager.addAccount(acc);
+					System.out.println("acount saved");
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
-		
+
+		List<AccountType> accountTypes = new ArrayList<AccountType>();
+		try {
+			accountTypes = Manager.accountManager.getAccountTypes();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+
+		for (AccountType at : accountTypes) {
+			acctType.addItem(at);
+		}
+
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = Manager.employeePersonManager.getEmployeesWithoutAccounts();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		for (Employee emp : employees) {
+			employeeCombo.addItem(emp);
+		}
+
 		add(fwd);
 		add(employee);
 		add(acctT);
@@ -147,11 +178,6 @@ public class AccountForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-
-		if (!username.equals("") && !password.equals("")
-				&& !firstName.equals("") && !lastName.equals("")
-				&& !address.equals(""))
-			return true;
 
 		return false;
 	}
