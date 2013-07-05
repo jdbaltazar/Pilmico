@@ -45,12 +45,16 @@ public class UtilityPopup extends JDialog {
 		Values.mainFrame.dimScreen(true);
 
 		setLocation(p);
-		setSize(WIDTH, HEIGHT);
 		setLayout(new BorderLayout());
 		setUndecorated(true);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+		
+		if(utility == Values.CATEGORY)
+			setSize(WIDTH, HEIGHT);
+		else
+			setSize(300, HEIGHT);
 	}
 
 	private void addComponents() {
@@ -80,10 +84,18 @@ public class UtilityPopup extends JDialog {
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		error = new ErrorLabel();
 		
+		
+		if(utility == Values.CATEGORY){
 		field.setBounds(5, 20, 140, 20);
 		close.setBounds(132, 2, 16, 16);
+		}
+		else{
+			field.setBounds(5, 20, 290, 20);
+			close.setBounds(282, 2, 16, 16);
+		}
+		
 		error.setBounds(7, 3, 120, 15);
-
+		
 		panel.add(field);
 		panel.add(error);
 

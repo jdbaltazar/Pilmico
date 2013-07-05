@@ -3,6 +3,7 @@ package gui.panels.extra;
 import gui.forms.edit.EditAccountPanel;
 import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSupplierPanel;
+import gui.forms.edit.ViewSalesForm;
 import gui.forms.util.FormField;
 
 import java.awt.BorderLayout;
@@ -155,8 +156,9 @@ public class EditPanel extends SoyPanel implements Runnable {
 			add(new EditSupplierPanel((Supplier) o), BorderLayout.CENTER);
 		}
 
-		else if (Values.tableUtilPanel.getLabel().equals("STOCK PURCHASE")) {
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			// add(new EditStockPurchase(), BorderLayout.CENTER);
+			add(new ViewSalesForm(), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals("SALES ORDER")) {

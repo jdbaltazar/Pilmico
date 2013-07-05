@@ -327,6 +327,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			//Values.salesOrderForm.refreshDate();
 			inventorySheetForm.setVisible(true);
 		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
+			//Values.salesOrderForm.refreshDate();
+			inventorySheetForm.setVisible(true);
+		}
 
 	}
 

@@ -90,6 +90,7 @@ public class Values {
 	public static final int ACCOUNT_TYPE = 3;
 	public static final int LOG_TYPE = 4;
 	public static final int NOTE_TYPE = 5;
+	public static final int REMARKS = 5;
 
 	public static final int ADD = 0;
 	public static final int EDIT = 1;

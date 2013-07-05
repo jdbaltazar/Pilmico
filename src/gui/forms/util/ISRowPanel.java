@@ -34,7 +34,6 @@ public class ISRowPanel extends JPanel{
 		
 		setLayout(new BorderLayout());
 		
-		System.out.println("y:" + y);
 		row = new JPanel();
 		row.setLayout(null);
 		row.setOpaque(true);
