@@ -6,16 +6,19 @@ import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.DeliveryForm;
 import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
+import gui.forms.add.InventorySheetForm;
 import gui.forms.add.ProductForm;
 import gui.forms.add.ProfileForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
+import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
 import gui.list.AccountTypeList;
 import gui.list.CategoryList;
 import gui.list.ConditionList;
+import gui.list.LogTypeList;
 import gui.list.NoteTypeList;
 import gui.list.UnitList;
 
@@ -65,7 +68,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private AccountReceivablesForm accountReceivables;
 	private DeliveryForm delivery;
 	private PulloutForm pullout;
-
+	private InventorySheetForm inventorySheetForm;
+	
 	private JCheckBox checkBox;
 
 	public AddEntryPanel() {
@@ -84,13 +88,13 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		addListener();
 
 		accountForm = new AccountForm();
-
+		
 		productForm = new ProductForm();
 		pullout = new PulloutForm();
-
+		
 		delivery = new DeliveryForm();
 		supplierForm = new SupplierForm();
-
+		
 		profileForm = new ProfileForm();
 		employeeForm = new EmployeeForm();
 
@@ -105,80 +109,86 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		stockPurchase = new StockPurchasePanel();
 		expensesForm = new ExpensesForm();
 		sales = new SalesForm();
-
+		
 		cashAdvanceForm = new CashAdvanceForm();
 		salary = new SalaryReleaseForm();
-
+		
 		accountReceivables = new AccountReceivablesForm();
-
+		
+		inventorySheetForm = new InventorySheetForm();
+		
 		checkBox = new JCheckBox("Close after saving");
 		checkBox.setOpaque(false);
 		checkBox.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
-		checkBox.setForeground(new Color(25, 25, 112));
+		checkBox.setForeground(new Color(25,25,112));
 		checkBox.setFocusPainted(false);
 		checkBox.setSelected(true);
 	}
 
 	private void addComponents() {
 		accountForm.setBounds(225, 45, 300, 390);
-
+		
 		productForm.setBounds(102, 50, 600, 390);
 		pullout.setBounds(70, 76, 670, 330);
-
+		
 		delivery.setBounds(70, 55, 670, 370);
 		supplierForm.setBounds(198, 80, 400, 320);
-		// stockPurchase.setBounds(180, 40, 450, 400);
-
+//		stockPurchase.setBounds(180, 40, 450, 400);
+		
 		sales.setBounds(70, 55, 670, 370);
 		expensesForm.setBounds(100, 105, 600, 270);
-
+		
+		inventorySheetForm.setBounds(10, 30, 780, 430);
+		
 		profileForm.setBounds(225, 45, 290, 390);
 		employeeForm.setBounds(165, 50, 450, 400);
-
-		// cashAdvanceForm.setBounds(225, 40, 300, 395);
+		
+//		cashAdvanceForm.setBounds(225, 40, 300, 395);
 		cashAdvanceForm.setBounds(230, 60, 300, 345);
 		salary.setBounds(86, 65, 638, 360);
-
+		
 		accountReceivables.setBounds(70, 55, 670, 365);
 
 		accountTypeList.setBounds(150, 50, 200, 160);
 		// logTypeList.setBounds(300, 50, 200, 160);
 		// noteTypeList.setBounds(550, 50, 200, 160);
-		noteTypeList.setBounds(440, 50, 200, 160); // 300
+		noteTypeList.setBounds(440, 50, 200, 160); //300
 
 		unitList.setBounds(50, 265, 200, 160);
 		conditionList.setBounds(300, 265, 200, 160);
 		categoryList.setBounds(550, 265, 200, 160);
-
+		
 		checkBox.setBounds(660, 5, 200, 20);
 
 		add(accountForm);
-
+		
 		add(productForm);
 		add(pullout);
-
+		
 		add(delivery);
 		add(supplierForm);
-
+		
 		add(sales);
 		add(expensesForm);
-
+		
 		add(cashAdvanceForm);
 		add(salary);
-
+		
 		add(accountReceivables);
-
+		
+		add(inventorySheetForm);
+		
 		add(profileForm);
 		add(employeeForm);
 
 		add(accountTypeList);
-		// add(logTypeList);
+//		add(logTypeList);
 		add(noteTypeList);
 
 		add(unitList);
 		add(conditionList);
 		add(categoryList);
-
+		
 		add(checkBox);
 
 	}
@@ -189,11 +199,10 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// gradient = new GradientPaint(0, 0, new Color(169, 169, 169), 0,
-		// getHeight(), new Color(40, 40, 40));
-
-		gradient = new GradientPaint(0, 0, new Color(240, 240, 252), 0, getHeight(), new Color(245, 245, 253));
-
+//		gradient = new GradientPaint(0, 0, new Color(169, 169, 169), 0, getHeight(), new Color(40, 40, 40));
+		
+		gradient = new GradientPaint(0, 0, new Color(240,240,252), 0, getHeight(), new Color(245,245,253));
+		
 		g2.setPaint(gradient);
 		g2.fill(g.getClipBounds());
 
@@ -267,15 +276,15 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		if (Values.tableUtilPanel.getLabel().equals(Tables.PRODUCTS)) {
 			productForm.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUT)) {
 			pullout.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PROFILES)) {
 			profileForm.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)) {
 			employeeForm.setVisible(true);
 		}
@@ -287,31 +296,36 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
 			cashAdvanceForm.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
 			salary.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			accountReceivables.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERY)) {
 			delivery.setVisible(true);
 		}
-
+		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {
 			supplierForm.setVisible(true);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
-			// Values.stockPurchasePanel.refreshDate();
+			//Values.stockPurchasePanel.refreshDate();
 			expensesForm.setVisible(true);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
-			// Values.salesOrderForm.refreshDate();
+			//Values.salesOrderForm.refreshDate();
 			sales.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
+			//Values.salesOrderForm.refreshDate();
+			inventorySheetForm.setVisible(true);
 		}
 
 	}
@@ -328,11 +342,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private void showAllComponents(boolean truth) {
 		for (int i = 0; i < getComponentCount(); i++)
 			getComponent(i).setVisible(truth);
-
+		
 		checkBox.setVisible(true);
 	}
-
-	public boolean isCloseSelected() {
+	
+	public boolean isCloseSelected(){
 		return checkBox.isSelected();
 	}
 }

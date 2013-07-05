@@ -1,5 +1,7 @@
 package core.persist;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -7,6 +9,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -49,39 +54,54 @@ import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
+import common.util.Credentials;
+import core.security.SecurityTool;
 
 public class HibernateUtil {
 
 	private static SessionFactory sessionFactory;
+	private static final String hibernateConnectionCredentialsFileName = "config.xml";
 
 	static {
 		init();
 	}
 
 	public static void init() {
-		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
-		// mysql account credectials
-		if (!tryToBuildSessionFactory("root", "123456"))
+		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+		if (!tryToBuildSessionFactory()) {
 			throw new RuntimeException("connection unsuccessful");
+		} else {
+			System.out.println("Connection successful");
+		}
+
 	}
 
-	private static boolean tryToBuildSessionFactory(String username, String password) throws ExceptionInInitializerError {
+	private static boolean tryToBuildSessionFactory() throws ExceptionInInitializerError {
 		try {
+
+			// load credentials
+			XStream xs = new XStream(new DomDriver());
+			xs.alias("credentials", Credentials.class);
+			Credentials credentials = new Credentials();
+
+			FileInputStream fis = new FileInputStream(hibernateConnectionCredentialsFileName);
+			xs.fromXML(fis, credentials);
+
 			Properties p = new Properties();
 			p.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 
 			// soybean-database name
-			p.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/pilmico");
+			p.setProperty("hibernate.connection.url", credentials.getHibernateConnectionUrl());
 			p.setProperty("hibernate.show_sql", "false");
-			p.setProperty("hibernate.connection.username", username);
-			p.setProperty("hibernate.connection.password", password);
+			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(credentials.getHibernateConnectionUsername()));
+			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(credentials.getHibernateConnectionPassword()));
 
 			p.setProperty("log4j.rootLogger", "ERROR, myConsoleAppender");
 			p.setProperty("log4j.appender.myConsoleAppender", "org.apache.log4j.ConsoleAppender");
 			p.setProperty("log4j.appender.myConsoleAppender.layout", "org.apache.log4j.PatternLayout");
 			p.setProperty("log4j.appender.myConsoleAppender.layout.ConversionPattern", "%-5p %c %x - %m%n");
-			
+
 			PropertyConfigurator.configure(p);
 
 			// p.setProperty("hibernate.search.default.indexBase",
@@ -168,9 +188,9 @@ public class HibernateUtil {
 		return sessionFactory != null;
 	}
 
-	public static boolean evaluate(String username, String password) {
+	public static boolean evaluate() {
 		if (!isConnected())
-			return tryToBuildSessionFactory(username, password);
+			return tryToBuildSessionFactory();
 		else
 			return false;
 	}
