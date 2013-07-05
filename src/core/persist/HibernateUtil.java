@@ -2,6 +2,7 @@ package core.persist;
 
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -75,6 +76,14 @@ public class HibernateUtil {
 			p.setProperty("hibernate.show_sql", "false");
 			p.setProperty("hibernate.connection.username", username);
 			p.setProperty("hibernate.connection.password", password);
+
+			p.setProperty("log4j.rootLogger", "ERROR, myConsoleAppender");
+			p.setProperty("log4j.appender.myConsoleAppender", "org.apache.log4j.ConsoleAppender");
+			p.setProperty("log4j.appender.myConsoleAppender.layout", "org.apache.log4j.PatternLayout");
+			p.setProperty("log4j.appender.myConsoleAppender.layout.ConversionPattern", "%-5p %c %x - %m%n");
+			
+			PropertyConfigurator.configure(p);
+
 			// p.setProperty("hibernate.search.default.indexBase",
 			// "./lucene-index");
 			// p.setProperty("hibernate.search.default.directory_provider",

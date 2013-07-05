@@ -56,7 +56,7 @@ public class CashAdvance {
 	@Column
 	private String remarks;
 
-	@OneToMany(mappedBy = "expense", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cashAdvance", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CAPayment> caPayments = new HashSet<CAPayment>();
 
 	@ManyToOne(cascade = CascadeType.PERSIST)

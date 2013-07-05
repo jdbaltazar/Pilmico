@@ -11,7 +11,6 @@ import org.hibernate.criterion.Order;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
-import common.entity.sales.Sales;
 import common.manager.DailyExpensesManager;
 
 public class DailyExpensePersistor extends Persistor implements DailyExpensesManager {

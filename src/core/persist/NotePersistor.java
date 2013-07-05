@@ -8,7 +8,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import common.entity.delivery.Delivery;
 import common.entity.note.Note;
 import common.entity.note.NoteType;
 import common.manager.NoteManager;

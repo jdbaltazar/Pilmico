@@ -8,7 +8,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.manager.DeliveryManager;
 
