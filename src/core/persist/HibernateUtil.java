@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import app.util.Credentials;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -54,7 +56,6 @@ import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
-import common.util.Credentials;
 import core.security.SecurityTool;
 
 public class HibernateUtil {

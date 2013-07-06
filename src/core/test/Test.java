@@ -14,6 +14,8 @@ import java.util.List;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
+import app.util.Credentials;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -40,7 +42,6 @@ import common.manager.NoteManager;
 import common.manager.SalesManager;
 import common.manager.StoreManager;
 import common.manager.SupplierManager;
-import common.util.Credentials;
 import core.persist.AccountPersistor;
 import core.persist.CashAdvancePersistor;
 import core.persist.EmployeePersonPersistor;
