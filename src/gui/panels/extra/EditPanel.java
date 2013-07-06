@@ -161,9 +161,9 @@ public class EditPanel extends SoyPanel implements Runnable {
 			add(new ViewSalesForm(), BorderLayout.CENTER);
 		}
 
-		else if (Values.tableUtilPanel.getLabel().equals("SALES ORDER")) {
-			// add(new EditSalesOrder(), BorderLayout.CENTER);
-		}
+		// else if (Values.tableUtilPanel.getLabel().equals("SALES ORDER")) {
+		// // add(new EditSalesOrder(), BorderLayout.CENTER);
+		// }
 
 	}
 

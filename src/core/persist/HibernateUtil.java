@@ -60,7 +60,6 @@ import core.security.SecurityTool;
 public class HibernateUtil {
 
 	private static SessionFactory sessionFactory;
-	private static final String hibernateConnectionCredentialsFileName = "config.xml";
 
 	static {
 		init();
@@ -80,22 +79,13 @@ public class HibernateUtil {
 	private static boolean tryToBuildSessionFactory() throws ExceptionInInitializerError {
 		try {
 
-			// load credentials
-			XStream xs = new XStream(new DomDriver());
-			xs.alias("credentials", Credentials.class);
-			Credentials credentials = new Credentials();
-
-			FileInputStream fis = new FileInputStream(hibernateConnectionCredentialsFileName);
-			xs.fromXML(fis, credentials);
-
 			Properties p = new Properties();
 			p.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 
-			// soybean-database name
-			p.setProperty("hibernate.connection.url", credentials.getHibernateConnectionUrl());
+			p.setProperty("hibernate.connection.url", Credentials.getInstance().getHibernateConnectionUrl());
 			p.setProperty("hibernate.show_sql", "false");
-			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(credentials.getHibernateConnectionUsername()));
-			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(credentials.getHibernateConnectionPassword()));
+			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(Credentials.getInstance().getHibernateConnectionUsername()));
+			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(Credentials.getInstance().getHibernateConnectionPassword()));
 
 			p.setProperty("log4j.rootLogger", "ERROR, myConsoleAppender");
 			p.setProperty("log4j.appender.myConsoleAppender", "org.apache.log4j.ConsoleAppender");

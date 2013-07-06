@@ -34,9 +34,6 @@ public class CashAdvance {
 	private Date date;
 
 	@Column
-	private boolean paid;
-
-	@Column
 	private double amount;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -67,10 +64,9 @@ public class CashAdvance {
 		super();
 	}
 
-	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, String remarks) {
+	public CashAdvance(Date date, double amount, Employee employee, double balance, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
-		this.paid = paid;
 		this.amount = amount;
 		this.employee = employee;
 		this.balance = balance;
@@ -79,10 +75,9 @@ public class CashAdvance {
 		this.remarks = remarks;
 	}
 
-	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy, boolean valid, boolean accounted) {
+	public CashAdvance(Date date, double amount, Employee employee, double balance, Account issuedBy, boolean valid, boolean accounted) {
 		super();
 		this.date = date;
-		this.paid = paid;
 		this.amount = amount;
 		this.employee = employee;
 		this.balance = balance;
@@ -90,10 +85,9 @@ public class CashAdvance {
 		this.valid = valid;
 	}
 
-	public CashAdvance(Date date, boolean paid, double amount, Employee employee, double balance, Account issuedBy) {
+	public CashAdvance(Date date, double amount, Employee employee, double balance, Account issuedBy) {
 		super();
 		this.date = date;
-		this.paid = paid;
 		this.amount = amount;
 		this.employee = employee;
 		this.balance = balance;
@@ -115,14 +109,6 @@ public class CashAdvance {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public boolean isPaid() {
-		return paid;
-	}
-
-	public void setPaid(boolean paid) {
-		this.paid = paid;
 	}
 
 	public double getAmount() {

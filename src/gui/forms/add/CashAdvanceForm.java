@@ -167,12 +167,12 @@ public class CashAdvanceForm extends SimplePanel {
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 				Employee emp = (Employee) issuedFor.getSelectedItem();
-				CashAdvance cashAdvance = new CashAdvance(d, false, Double.parseDouble(fields.get(0).getText()), emp, Double.parseDouble(fields.get(0)
-						.getText()), Manager.loggedInAccount);
+				CashAdvance cashAdvance = new CashAdvance(d, Double.parseDouble(fields.get(0).getText()), emp, Double
+						.parseDouble(fields.get(0).getText()), Manager.loggedInAccount);
 
 				try {
 					Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
-					
+
 					System.out.println("ca saved!!!");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

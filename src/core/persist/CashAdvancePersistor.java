@@ -35,7 +35,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	@Override
 	public List<CashAdvance> getCashAdvances() throws Exception {
 		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		Criteria criteria = session.createCriteria(CashAdvance.class);
 		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
 		try {
 			cashAdvances = criteria.addOrder(Order.desc("date")).list();
