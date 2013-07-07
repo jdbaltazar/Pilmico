@@ -28,7 +28,11 @@ public interface DailyExpensesManager {
 
 	public DailyExpenses getDailyExpense(int id) throws Exception;
 
-	public List<DailyExpenses> getDailyExpenses() throws Exception;
+	public List<DailyExpenses> getAllDailyExpenses() throws Exception;
+
+	public List<DailyExpenses> getValidDailyExpenses() throws Exception;
+
+	public List<DailyExpenses> getInvalidDailyExpenses() throws Exception;
 
 	public void updateDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
 

@@ -13,7 +13,11 @@ public interface CashAdvanceManager {
 
 	public CashAdvance getCashAdvance(int id) throws Exception;
 
-	public List<CashAdvance> getCashAdvances() throws Exception;
+	public List<CashAdvance> getAllCashAdvances() throws Exception;
+
+	public List<CashAdvance> getValidCashAdvances() throws Exception;
+
+	public List<CashAdvance> getInvalidCashAdvances() throws Exception;
 
 	public void updateCashAdvance(CashAdvance cashAdvance) throws Exception;
 
@@ -25,7 +29,11 @@ public interface CashAdvanceManager {
 
 	public CAPayment getCAPayment(int id) throws Exception;
 
-	public List<CAPayment> getCAPayments() throws Exception;
+	public List<CAPayment> getAllCAPayments() throws Exception;
+
+	public List<CAPayment> getValidCAPayments() throws Exception;
+
+	public List<CAPayment> getInvalidCAPayments() throws Exception;
 
 	public void updateCAPayment(CAPayment caPayment) throws Exception;
 

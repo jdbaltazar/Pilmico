@@ -6,15 +6,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.security.InvalidKeyException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
-import app.util.Credentials;
+import app.Credentials;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -42,6 +47,7 @@ import common.manager.NoteManager;
 import common.manager.SalesManager;
 import common.manager.StoreManager;
 import common.manager.SupplierManager;
+import core.database.DatabaseTool;
 import core.persist.AccountPersistor;
 import core.persist.CashAdvancePersistor;
 import core.persist.EmployeePersonPersistor;
@@ -76,17 +82,53 @@ public class Test {
 		return false;
 	}
 
-	public static void main(String[] args) {
+	public void runSql(String pSql) throws FileNotFoundException, Exception {
 
-		String hello = "pilmico";
+		String username = SecurityTool.decrypt(Credentials.getInstance().getUsername());
+		String password = SecurityTool.decrypt(Credentials.getInstance().getPassword());
+		String tCommand = "mysql -u " + username + (password != null ? " -p" + password : "") + " " + "pilmico";
+		System.out.println(tCommand);
 
-		try {
-			System.out.println("dec: " + SecurityTool.decrypt("htre1/TF0v8SgQzHAHkARw=="));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Process tProcess = Runtime.getRuntime().exec(tCommand);
+		OutputStream tOutputStream = tProcess.getOutputStream();
+		Writer w = new OutputStreamWriter(tOutputStream);
+		System.out.println(pSql);
+		w.write(pSql);
+		w.flush();
+
+		Scanner in = new Scanner(tProcess.getErrorStream());
+
+		String errorMessage = "";
+
+		while (in.hasNext()) {
+			errorMessage += in.next() + " ";
 		}
 
+		if (errorMessage.length() > 0) {
+			System.out.println(errorMessage);
+			// throw new ClientSqlExecutionException(errorMessage);
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		// String hello = "pilmico";
+		//
+		// try {
+		// System.out.println("dec: " +
+		// SecurityTool.decrypt("htre1/TF0v8SgQzHAHkARw=="));
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
+		// try {
+		// Database.resetDatabase();
+		// } catch (SQLException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		// String pass = "paasword";
 		// try {
 		// String encrypted = "@ðÞNx£õê‚0]Ž¥KÅÉ";

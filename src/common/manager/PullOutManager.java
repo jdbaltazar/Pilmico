@@ -10,7 +10,11 @@ public interface PullOutManager {
 
 	public PullOut getPullOut(int id) throws Exception;
 
-	public List<PullOut> getPullOuts() throws Exception;
+	public List<PullOut> getAllPullOuts() throws Exception;
+
+	public List<PullOut> getValidPullOuts() throws Exception;
+
+	public List<PullOut> getInvalidPullOuts() throws Exception;
 
 	public void updatePullOut(PullOut pullOut) throws Exception;
 

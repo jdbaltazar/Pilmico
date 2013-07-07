@@ -1,7 +1,5 @@
 package core.persist;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -10,10 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import app.util.Credentials;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import app.Credentials;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -60,6 +55,8 @@ import core.security.SecurityTool;
 
 public class HibernateUtil {
 
+	public static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
+	public static final String URL = "jdbc:mysql://localhost/";
 	private static SessionFactory sessionFactory;
 
 	static {
@@ -81,12 +78,12 @@ public class HibernateUtil {
 		try {
 
 			Properties p = new Properties();
-			p.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+			p.setProperty("hibernate.connection.driver_class", DRIVER_NAME);
 
-			p.setProperty("hibernate.connection.url", Credentials.getInstance().getHibernateConnectionUrl());
+			p.setProperty("hibernate.connection.url", URL + Credentials.getInstance().getDatabaseName());
 			p.setProperty("hibernate.show_sql", "false");
-			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(Credentials.getInstance().getHibernateConnectionUsername()));
-			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(Credentials.getInstance().getHibernateConnectionPassword()));
+			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(Credentials.getInstance().getUsername()));
+			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(Credentials.getInstance().getPassword()));
 
 			p.setProperty("log4j.rootLogger", "ERROR, myConsoleAppender");
 			p.setProperty("log4j.appender.myConsoleAppender", "org.apache.log4j.ConsoleAppender");

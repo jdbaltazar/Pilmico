@@ -195,7 +195,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillExpenses() {
 		try {
 			String[] headers = { "ID", "Date", "Amount", "Expense Type", "Issued by" };
-			List<DailyExpenses> dailyExpenses = Manager.dailyExpenseManager.getDailyExpenses();
+			List<DailyExpenses> dailyExpenses = Manager.dailyExpenseManager.getAllDailyExpenses();
 			// String[][] entries = { { "1", "June 20, 2013", "Type A",
 			// "John David S. Baltazar" }, { "2", "June 18, 2013", "Type B",
 			// "Juan dela Cruz" } };
@@ -223,7 +223,7 @@ public class CenterPanel extends SoyPanel {
 			// "John David S. Baltazar", "More" }, { "2", "June 18, 2013",
 			// "Juan dela Cruz", "" } };
 
-			List<Sales> sales = Manager.salesManager.getSales();
+			List<Sales> sales = Manager.salesManager.getAllSales();
 			String[][] entries = new String[sales.size()][headers.length];
 
 			int i = 0;
@@ -248,7 +248,7 @@ public class CenterPanel extends SoyPanel {
 			// String[][] entries = { { "1", "June 20, 2012",
 			// "John David S. Baltazar", "2500" }, { "2", "January 18, 2012",
 			// "Juan dela Cruz", "5000" } };
-			List<ARPayment> arPayments = Manager.accountReceivableManager.getARPayments();
+			List<ARPayment> arPayments = Manager.accountReceivableManager.getAllARPayments();
 			String[][] entries = new String[arPayments.size()][headers.length];
 
 			int i = 0;
@@ -274,7 +274,7 @@ public class CenterPanel extends SoyPanel {
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
 			// "5000" } };
 
-			List<AccountReceivable> accountReceivables = Manager.accountReceivableManager.getAccountReceivables();
+			List<AccountReceivable> accountReceivables = Manager.accountReceivableManager.getAllAccountReceivables();
 			String[][] entries = new String[accountReceivables.size()][headers.length];
 
 			int i = 0;
@@ -301,7 +301,7 @@ public class CenterPanel extends SoyPanel {
 			// "John David S. Baltazar", "Hog Feeds", "expired" },
 			// { "2", "April 18, 2013", "Juan dela Cruz", "Chicken Feeds", "" } };
 
-			List<PullOut> pullOuts = Manager.pullOutManager.getPullOuts();
+			List<PullOut> pullOuts = Manager.pullOutManager.getAllPullOuts();
 			String[][] entries = new String[pullOuts.size()][headers.length];
 
 			int i = 0;
@@ -322,7 +322,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillCashAdvance() {
 		try {
 			String[] headers = { "ID", "Date", "Amount", "Employee", "Balance", "Issued By" };
-			List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getCashAdvances();
+			List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getAllCashAdvances();
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
@@ -367,7 +367,7 @@ public class CenterPanel extends SoyPanel {
 			// String[][] entries = { { "1", "April 18, 2013",
 			// "John David S. Baltazar", "" }, { "2", "May 11, 2012",
 			// "John David S. Baltazar", "Hoax" } };
-			List<Delivery> deliveries = Manager.deliveryManager.getDeliveries();
+			List<Delivery> deliveries = Manager.deliveryManager.getAllDeliveries();
 			String[][] entries = new String[deliveries.size()][headers.length];
 			int i = 0;
 			for (Delivery d : deliveries) {

@@ -10,7 +10,11 @@ public interface DeliveryManager {
 
 	public Delivery getDelivery(int id) throws Exception;
 
-	public List<Delivery> getDeliveries() throws Exception;
+	public List<Delivery> getAllDeliveries() throws Exception;
+
+	public List<Delivery> getValidDeliveries() throws Exception;
+
+	public List<Delivery> getInvalidDeliveries() throws Exception;
 
 	public void updateDelivery(Delivery delivery) throws Exception;
 

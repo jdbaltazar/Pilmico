@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
@@ -33,12 +34,44 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CashAdvance> getCashAdvances() throws Exception {
+	public List<CashAdvance> getAllCashAdvances() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(CashAdvance.class);
 		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
 		try {
 			cashAdvances = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CashAdvance> getValidCashAdvances() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			cashAdvances = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CashAdvance> getInvalidCashAdvances() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			cashAdvances = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -74,12 +107,44 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CAPayment> getCAPayments() throws Exception {
+	public List<CAPayment> getAllCAPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
 		List<CAPayment> caPayments = new ArrayList<CAPayment>();
 		try {
 			caPayments = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return caPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getValidCAPayments() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		List<CAPayment> caPayments = new ArrayList<CAPayment>();
+		try {
+			caPayments = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return caPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getInvalidCAPayments() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		List<CAPayment> caPayments = new ArrayList<CAPayment>();
+		try {
+			caPayments = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

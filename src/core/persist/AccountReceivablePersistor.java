@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -33,12 +34,44 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AccountReceivable> getAccountReceivables() throws Exception {
+	public List<AccountReceivable> getAllAccountReceivables() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(AccountReceivable.class);
 		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
 		try {
 			accountReceivables = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getValidAccountReceivables() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			accountReceivables = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getInvalidAccountReceivables() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			accountReceivables = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -81,12 +114,44 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ARPayment> getARPayments() throws Exception {
+	public List<ARPayment> getAllARPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(ARPayment.class);
 		List<ARPayment> arPayments = new ArrayList<ARPayment>();
 		try {
 			arPayments = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getValidARPayments() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			arPayments = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getInvalidARPayments() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			arPayments = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

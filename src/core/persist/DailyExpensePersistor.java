@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesType;
@@ -18,7 +19,7 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	@Override
 	public void addDailyExpenses(DailyExpenses expense) throws Exception {
 		add(expense);
-		
+
 		System.out.println("de added!");
 	}
 
@@ -34,12 +35,44 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DailyExpenses> getDailyExpenses() throws Exception {
+	public List<DailyExpenses> getAllDailyExpenses() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DailyExpenses.class);
 		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
 		try {
 			expense = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return expense;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getValidDailyExpenses() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
+		try {
+			expense = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return expense;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getInvalidDailyExpenses() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
+		try {
+			expense = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

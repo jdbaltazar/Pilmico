@@ -10,7 +10,11 @@ public interface SalesManager {
 
 	public Sales getSales(int id) throws Exception;
 
-	public List<Sales> getSales() throws Exception;
+	public List<Sales> getAllSales() throws Exception;
+
+	public List<Sales> getValidSales() throws Exception;
+
+	public List<Sales> getInvalidSales() throws Exception;
 
 	public void updateSales(Sales sales) throws Exception;
 

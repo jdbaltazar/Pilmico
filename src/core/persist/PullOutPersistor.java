@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import common.entity.pullout.PullOut;
 import common.manager.PullOutManager;
@@ -30,12 +31,44 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PullOut> getPullOuts() throws Exception {
+	public List<PullOut> getAllPullOuts() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(PullOut.class);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
 			pullOuts = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return pullOuts;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PullOut> getValidPullOuts() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(PullOut.class);
+		List<PullOut> pullOuts = new ArrayList<PullOut>();
+		try {
+			pullOuts = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return pullOuts;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PullOut> getInvalidPullOuts() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(PullOut.class);
+		List<PullOut> pullOuts = new ArrayList<PullOut>();
+		try {
+			pullOuts = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

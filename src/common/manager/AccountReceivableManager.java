@@ -13,7 +13,11 @@ public interface AccountReceivableManager {
 
 	public AccountReceivable getAccountReceivable(int id) throws Exception;
 
-	public List<AccountReceivable> getAccountReceivables() throws Exception;
+	public List<AccountReceivable> getAllAccountReceivables() throws Exception;
+
+	public List<AccountReceivable> getValidAccountReceivables() throws Exception;
+
+	public List<AccountReceivable> getInvalidAccountReceivables() throws Exception;
 
 	public void updateAccountReceivable(AccountReceivable accountReceivable) throws Exception;
 
@@ -27,7 +31,11 @@ public interface AccountReceivableManager {
 
 	public ARPayment getARPayment(int id) throws Exception;
 
-	public List<ARPayment> getARPayments() throws Exception;
+	public List<ARPayment> getAllARPayments() throws Exception;
+
+	public List<ARPayment> getValidARPayments() throws Exception;
+
+	public List<ARPayment> getInvalidARPayments() throws Exception;
 
 	public void updateARPayment(ARPayment arPayment) throws Exception;
 

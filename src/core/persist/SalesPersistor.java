@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import common.entity.sales.Sales;
 import common.manager.SalesManager;
@@ -30,12 +31,44 @@ public class SalesPersistor extends Persistor implements SalesManager {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Sales> getSales() throws Exception {
+	public List<Sales> getAllSales() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Sales.class);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
 			sales = criteria.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return sales;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Sales> getValidSales() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Sales.class);
+		List<Sales> sales = new ArrayList<Sales>();
+		try {
+			sales = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return sales;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Sales> getInvalidSales() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Sales.class);
+		List<Sales> sales = new ArrayList<Sales>();
+		try {
+			sales = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
