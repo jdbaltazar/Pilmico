@@ -66,23 +66,27 @@ public class Values {
 	public static int HEIGHT = 600;
 
 	public static final int HOME = -1;
-	
-	public static final int PRODUCTS = 0;
-	public static final int PULLOUT = 1;
-	public static final int ACCOUNT_RECEIVABLES = 2;
-	public static final int AR_PAYMENTS = 3;
-	public static final int DELIVERY = 4;
-	public static final int SUPPLIERS = 5;
-	public static final int CASH_ADVANCE = 6;
-	public static final int SALARY = 7;
-	public static final int PROFILES = 8;
-	public static final int EMPLOYEES = 9;
-	public static final int ACCOUNTS = 10;
-	public static final int EXPENSES = 11;
-	public static final int SALES = 12;
-	public static final int INVENTORY_SHEET = 13;
-	public static final int LOGS = 14;
 
+	
+	public static final int EXPENSES = 0;
+	public static final int SALARY = 1;
+	public static final int DELIVERY = 2;
+	public static final int PULLOUT = 3;
+	public static final int SUPPLIERS = 4;
+	public static final int ACCOUNT_RECEIVABLES = 5;
+	public static final int AR_PAYMENTS = 6;
+	public static final int CASH_ADVANCE = 7;
+	public static final int CA_PAYMENTS = 8;
+	public static final int PROFILES = 9;
+	public static final int EMPLOYEES = 10;
+	public static final int ACCOUNTS = 11;
+	public static final int PRODUCTS = 12;
+	public static final int SALES = 13;
+	public static final int DISCOUNTS = 14;
+	public static final int DEPOSITS = 15;
+	public static final int INVENTORY_SHEET = 16;
+	public static final int LOGS = 17;
+	
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;
 	
@@ -108,6 +112,10 @@ public class Values {
 	
 	public static Color row1 = Color.decode("#F5FFF5");
 	public static Color row2 = Color.decode("#E6FFE6");
+	
+	public static Color PENDING_COLOR = Color.decode("#FFFFE6");
+	public static Color ACCOUNTED_COLOR = new Color(236,254,236);
+	public static Color INVALIDATED_COLOR = new Color(255,245,245);
 
 	public static String[] productFormLabel = { "Name*", "Description",
 			"For Sale?*", "Unit*", "Selling Price (per kilo)*",

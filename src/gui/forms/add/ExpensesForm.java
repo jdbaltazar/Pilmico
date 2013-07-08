@@ -282,67 +282,6 @@ public class ExpensesForm extends SimplePanel {
 					e1.printStackTrace();
 				}
 
-				/*
-				 * if (isValidated()) { try { Date d = ((SpinnerDateModel)
-				 * date.getModel()).getDate(); Account acc = (Account)
-				 * accountCombo.getSelectedItem(); SalesOrder so = new SalesOrder(d,
-				 * acc);
-				 * 
-				 * boolean valid = true;
-				 * 
-				 * // error-trapping here int i = 0; for (RowPanel sor : rowPanel) {
-				 * i++; Item item = (Item) sor.getSelectedItem(); if
-				 * (sor.getQuantity() > item.getUnitsOnStock()) {
-				 * Toolkit.getDefaultToolkit().beep();
-				 * 
-				 * JOptionPane.showMessageDialog(null, "Error in row " + i +
-				 * ": only " + item.getUnitsOnStock() +" "+ item.getUnit().getName()
-				 * + " of item \n" + item.getName() +
-				 * " left. Purchase new stocks\nor update quantity of item",
-				 * "System Error", JOptionPane.ERROR_MESSAGE);
-				 * 
-				 * valid = false; } }
-				 * 
-				 * if (valid) {
-				 * 
-				 * for (RowPanel sor : rowPanel) { so.addSalesOrderDetail(new
-				 * SalesOrderDetail(so, sor.getQuantity(), (Item)
-				 * sor.getSelectedItem())); }
-				 * 
-				 * Manager.salesOrderManager.addSalesOrder(so);
-				 * 
-				 * // update quantity of items Set<SalesOrderDetail> sods =
-				 * so.getSalesOrderDetails(); for (SalesOrderDetail sod : sods) {
-				 * Item item = sod.getItem();
-				 * item.setUnitsOnStock(item.getUnitsOnStock() - sod.getQuantity());
-				 * Manager.itemManager.updateItem(item); }
-				 * 
-				 * Account ac = Manager.loggedInAccount; String str =
-				 * ac.getAccountType() + " " + ac.getFirstAndLAstName() +
-				 * " added sales order no " + so.getId() + " for account " +
-				 * so.getAccount().getId() + ": " +
-				 * so.getAccount().getFirstAndLAstName() + " with " +
-				 * so.getSalesOrderDetails().size() + " lines.";
-				 * 
-				 * String str2 = ""; Set<SalesOrderDetail> ds =
-				 * so.getSalesOrderDetails(); if (ds.size() > 0) { str2 =
-				 * " Quantity of item(s): "; int total = ds.size(); for
-				 * (SalesOrderDetail sod : ds) { total--; str2 = str2 +
-				 * sod.getItem().getId(); if (total > 0) { str2 = str2 + ", "; }
-				 * else { str2 = str2 + " updated"; } }
-				 * 
-				 * } str = str + str2; Log log = new Log(str);
-				 * Manager.logManager.addLog(log);
-				 * 
-				 * new SuccessPopup("Add").setVisible(true); clearForm();
-				 * Values.centerPanel.changeTable(Values.SALES_ORDER);
-				 * Values.topPanel.refreshStockCost();
-				 * 
-				 * } else { System.out.println("Cannot add sales order! "); }
-				 * 
-				 * } catch (Exception e1) { // TODO Auto-generated catch block
-				 * e1.printStackTrace(); } } else error.setText(msg);
-				 */
 			}
 		});
 

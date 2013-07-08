@@ -85,7 +85,7 @@ public class CenterPanel extends SoyPanel {
 
 	public void changeTable(int val) {
 
-		// if (val != Values.HOME)
+		if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
@@ -156,9 +156,21 @@ public class CenterPanel extends SoyPanel {
 		case Values.EXPENSES:
 			fillExpenses();
 			break;
+			
+		case Values.DISCOUNTS:
+			fillDiscounts();
+			break;
+			
+		case Values.DEPOSITS:
+			fillDeposits();
+			break;
 
 		case Values.LOGS:
 			fillLogs();
+			break;
+			
+		case Values.CA_PAYMENTS:
+			fillCAPayments();
 			break;
 		/*
 		 * case Values.SALES_ORDER: fillSalesOrder(); break;
@@ -312,7 +324,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][3] = pullOut.getIssuedBy().getEmployee().getFirstPlusLastName();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, pullOuts), Tables.PULLOUT), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, pullOuts), Tables.PULLOUTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -346,6 +358,19 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
+	
+	private void fillCAPayments() {
+		try {
+			String[] headers = { "ID", "Date", "Issued by", "Amount" };
+			String[][] entries = {{"1", "June 20, 2011", "John David S. Baltazar", "500"}, {"2", "December 18, 2010", "Juan dela Cruz", "5000"}};
+//			String[][] entries = new String[1][headers.length];
+
+			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.CA_PAYMENTS), BorderLayout.CENTER);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void fillSalary() {
 		try {
@@ -359,22 +384,6 @@ public class CenterPanel extends SoyPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void fillStockPurchase() {
-
-		try {
-
-			String[] headers = { "Puchase No", "Date", "Supplier" };
-			String[][] entries = { { "1", "June 20, 2013", "Universal Feeds Corp." }, { "2", "June 18, 2013", "Rubina Foods Inc." } };
-			// String[][] entries = new String[1][headers.length];
-
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), "STOCK PURCHASE"), BorderLayout.CENTER);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private void fillDelivery() {
@@ -394,7 +403,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, deliveries), Tables.DELIVERY), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, deliveries), Tables.DELIVERIES), BorderLayout.CENTER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -428,14 +437,26 @@ public class CenterPanel extends SoyPanel {
 
 	}
 
-	private void fillSalesOrder() {
+	private void fillDiscounts() {
 		try {
 
-			String[] headers = { "Sales No.", "Date", "Cashier" };
-			String[][] entries = { { "1", "June 8, 2013", "Juan dela Cruz" }, { "2", "May 27, 2013", "Juan dela Cruz" } };
-			// String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "Date", "Amount", "Customer", "Product"};
+			String[][] entries = new String[1][headers.length];
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), "SALES ORDER"), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DISCOUNTS), BorderLayout.CENTER);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void fillDeposits() {
+		try {
+
+			String[] headers = { "ID", "Date", "Account No.", "Depositor" };
+			String[][] entries = new String[1][headers.length];
+
+			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DEPOSITS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();

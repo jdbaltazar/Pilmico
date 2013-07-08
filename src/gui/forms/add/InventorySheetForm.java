@@ -34,15 +34,17 @@ import util.MainFormLabel;
 import util.SimplePanel;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
+import util.Values;
 
 public class InventorySheetForm extends SimplePanel {
 
 	// 780x430
 	private int startX = 15, startY = 17, PANE_WIDTH = 750, PANE_HEIGHT = 380,
 			TOTAL_LABEL_WIDTH = 100, TABLE_GAP = 50, TAB = 150,
-			SECTION_GAP = 120, LABEL_GAP = 30, TOTAL_INVENTORY_LABEL = 16,
-			TOTAL_FORMS_OVERALL = 12, SCROLLBAR_WIDTH = 16;
+			SECTION_GAP = 120, LABEL_GAP = 30, 
+			TOTAL_FORMS_OVERALL = 12, SCROLLBAR_WIDTH = 16, ROW_HEIGHT = 30;
 
+	public static int PRODUCT_LABEL_WIDTH = 160, SACK_LABEL_WIDTH = 70, SALES_KG_WIDTH = 90, TOTAL_INVENTORY_LABEL = 16, PRODUCT_ROW_WIDTH = 1360;
 	private JPanel navigationPanel;
 
 	private ViewportDragScrollListener v1, v2;
@@ -50,6 +52,7 @@ public class InventorySheetForm extends SimplePanel {
 
 	private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
 	private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> productsInventory = new ArrayList<ISRowPanel>();
 
 	private ArrayList<JLabel> sectionLabel = new ArrayList<JLabel>();
 	private ArrayList<JLabel> totalInventoryLabel = new ArrayList<JLabel>();
@@ -168,11 +171,15 @@ public class InventorySheetForm extends SimplePanel {
 		kg8Label = new TableHeaderLabel("kilo");
 
 		productsPanel = new JPanel();
-		productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(),
-				PANE_HEIGHT + 500));
+		productsPanel.setOpaque(false);
+		productsPanel.setLayout(null);
+//		productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(),
+		//			PANE_HEIGHT + 500));
 
 		productsPane = new PDControlScrollPane();
 		productsPane.setViewportView(productsPanel);
+		productsPane.setOpaque(false);
+		productsPane.getViewport().setOpaque(false);
 
 		productsPane.getVerticalScrollBar().setUnitIncrement(20);
 
@@ -463,7 +470,7 @@ public class InventorySheetForm extends SimplePanel {
 				dateLabel.getY() + dateLabel.getHeight() + 30, 150, 20);
 
 		productLabel.setBounds(startX, sectionLabel.get(0).getY()
-				+ sectionLabel.get(0).getHeight() + LABEL_GAP, 160, 30);
+				+ sectionLabel.get(0).getHeight() + LABEL_GAP, PRODUCT_LABEL_WIDTH, 30);
 
 		begInvtyLabel.setBounds(startX + productLabel.getWidth(),
 				productLabel.getY(), 140, 10);
@@ -568,7 +575,7 @@ public class InventorySheetForm extends SimplePanel {
 			productTotalLabel.getY(),
 			kg7Label.getWidth(), 20);
 
-		
+		fillTables();
 
 		sectionLabel.get(1).setText("ASSETS");
 		sectionLabel.get(1).setBounds(startX,
@@ -906,7 +913,7 @@ public class InventorySheetForm extends SimplePanel {
 				+ SECTION_GAP, 150, 20);
 		
 		for(int i = 0; i < 7; i++){
-			cashBreakdown.add(new ISRowPanel(cashBreakdownPanel, -1));
+			cashBreakdown.add(new ISRowPanel(null, cashBreakdownPanel, -1));
 			cashBreakdownPanel.add(cashBreakdown.get(i));
 			
 			cashBreakdownPanel.updateUI();
@@ -1081,6 +1088,43 @@ public class InventorySheetForm extends SimplePanel {
 
 		add(navigationPanel);
 		add(isPane);
+		
+	}
+
+	private void fillTables() {
+		// TODO Auto-generated method stub
+//		productsPanel.setPreferredSize(new Dimension(salesLabel.getX() + salesLabel.getWidth() - productLabel.getX(), productsPanel.getComponentCount() * ROW_HEIGHT));
+
+		for(int i = 0; i < 28; i++){
+			productsInventory.add(new ISRowPanel(null, productsPanel, Values.PRODUCTS));
+			productsPanel.add(productsInventory.get(i));
+			
+			productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(), productsPanel.getComponentCount() * ROW_HEIGHT));
+			productsPanel.updateUI();
+			productsPanel.revalidate();
+		}
+		
+		alternateRows(Values.PRODUCTS);
+		
+//		System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
+	}
+	
+	private void alternateRows(int array) {
+
+		switch(array){
+		
+		
+		case Values.PRODUCTS:
+			for (int i = 0; i < productsInventory.size(); i++)
+				if (i % 2 == 0)
+					productsInventory.get(i).getRow().setBackground(Values.row1);
+				else
+					productsInventory.get(i).getRow().setBackground(Values.row2);
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 }

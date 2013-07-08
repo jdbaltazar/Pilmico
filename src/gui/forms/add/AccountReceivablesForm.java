@@ -126,8 +126,15 @@ public class AccountReceivablesForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		model = new DefaultComboBoxModel(array);
-		customerCombo = new JComboBox(model);
+		List<Person> customers = new ArrayList<Person>();
+		try {
+			customers = Manager.employeePersonManager.getCustomersOnly();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+//		model = new DefaultComboBoxModel(array);
+		customerCombo = new JComboBox(customers.toArray());
 		customerCombo.setEditable(true);
 		customerCombo.setSelectedIndex(-1);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
@@ -195,15 +202,6 @@ public class AccountReceivablesForm extends SimplePanel {
 			}
 		});
 
-		List<Person> customers = new ArrayList<Person>();
-		try {
-			customers = Manager.employeePersonManager.getCustomersOnly();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		for (Person p : customers) {
-			customerCombo.addItem(p);
-		}
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -214,8 +212,8 @@ public class AccountReceivablesForm extends SimplePanel {
 		panel.add(customerLabel);
 		panel.add(customerCombo);
 
-		panel.add(balanceLabel);
-		panel.add(balance);
+//		panel.add(balanceLabel);
+//		panel.add(balance);
 
 		panel.add(addRow);
 

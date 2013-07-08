@@ -113,7 +113,7 @@ public class EditSupplierPanel extends EditFormPanel {
 		fields.get(1).setText(supplier.getAddress());
 		fields.get(2).setText(supplier.getTin());
 		fields.get(3).setText(supplier.getContactNo());
-		fields.get(4).setText(supplier.getContactPerson().getFirstPlusLastName());
+//		fields.get(4).setText(supplier.getContactPerson().getFirstPlusLastName());
 		fields.get(5).setText(supplier.getRemarks());
 	}
 

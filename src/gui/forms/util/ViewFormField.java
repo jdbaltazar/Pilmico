@@ -12,8 +12,8 @@ public class ViewFormField extends JLabel{
 		super(label);
 		
 		setOpaque(false);
-		setFont(new Font("Lucida Grande", Font.PLAIN, 11));
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+//		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		setHorizontalAlignment(JLabel.CENTER);
 		setToolTipText(label);
 	}
