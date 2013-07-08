@@ -336,8 +336,8 @@ public class ViewSalesForm extends EditFormPanel {
 		issuedAt.setText(sales.getIssuedAt());
 		Set<SalesDetail> salesDetails = sales.getSalesDetails();
 		for (SalesDetail sd : salesDetails) {
-			// rowPanel.add(new RowPanel());
-
+			rowPanel.add(new RowPanel());
+			
 		}
 
 	}
