@@ -3,23 +3,30 @@ package util;
 public class Tables {
 
 	public static String PRODUCTS = "PRODUCTS";
-	public static String PULLOUT = "PULLOUT";
+	public static String PULLOUTS = "PULLOUTS";
 	
 	public static String ACCOUNT_RECEIVABLES = "ACCOUNT RECEIVABLES";
 	public static String AR_PAYMENTS = "AR PAYMENTS";
 
 	public static String CASH_ADVANCE = "CASH ADVANCE";
-	public static String SALARY = "SALARY";
+	public static String CA_PAYMENTS = "CA PAYMENTS";
+	
 	
 	public static String PROFILES = "PROFILES";
 	public static String ACCOUNTS = "ACCOUNTS";
 	public static String EMPLOYEES = "EMPLOYEES";
 
-	public static String DELIVERY = "DELIVERY";
+	public static String DELIVERIES = "DELIVERIES";
 	public static String SUPPLIERS = "SUPPLIERS";
 
 	public static String EXPENSES = "EXPENSES";
+	public static String SALARY = "SALARY";
+	
 	public static String SALES = "SALES";
+	
+	public static String DISCOUNTS = "DISCOUNTS";
+	
+	public static String DEPOSITS = "DEPOSITS";
 
 	public static String INVENTORY_SHEET = "INVENTORY SHEET";
 

@@ -108,7 +108,15 @@ public class RowPanel extends JPanel {
 			// for (int i = 0; i < items.size(); i++) {
 			// stocks[i] = items.get(i).getName();
 			// }
-			productsCombo = new JComboBox();
+			List<Product> products = new ArrayList<Product>();
+			try {
+				products = Manager.productManager.getProducts();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+			productsCombo = new JComboBox(products.toArray());
+			
 			feesCombo = new JComboBox();
 			expensesCombo = new JComboBox();
 
@@ -253,10 +261,10 @@ public class RowPanel extends JPanel {
 					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES))
 						Values.accountReceivablesForm.removeRow(Integer.parseInt(e.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUT))
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS))
 						Values.pulloutForm.removeRow(Integer.parseInt(e.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERY))
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES))
 						Values.deliveryForm.removeRow(Integer.parseInt(e.getActionCommand()));
 					/*
 					 * else Values.stockPurchasePanel.removeRow(Integer.parseInt(e.
@@ -293,16 +301,6 @@ public class RowPanel extends JPanel {
 			productsCombo.setBounds(87, 7, 235, 20);
 
 		deleteRow.setBounds(533, 9, 16, 16);
-
-		List<Product> products = new ArrayList<Product>();
-		try {
-			products = Manager.productManager.getProducts();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		for (Product p : products) {
-			productsCombo.addItem(p);
-		}
 
 		row.add(quantitySack);
 		row.add(quantityKG);

@@ -3,6 +3,10 @@ package gui.panels.extra;
 import gui.forms.edit.EditAccountPanel;
 import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSupplierPanel;
+import gui.forms.edit.ViewARForm;
+import gui.forms.edit.ViewDeliveryForm;
+import gui.forms.edit.ViewExpensesForm;
+import gui.forms.edit.ViewPulloutForm;
 import gui.forms.edit.ViewSalesForm;
 import gui.forms.util.FormField;
 
@@ -152,7 +156,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 			add(new EditAccountPanel(), BorderLayout.CENTER);
 		}
 
-		else if (Values.tableUtilPanel.getLabel().equals("SUPPLIERS")) {
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {
 			add(new EditSupplierPanel((Supplier) o), BorderLayout.CENTER);
 		}
 
@@ -161,9 +165,21 @@ public class EditPanel extends SoyPanel implements Runnable {
 			add(new ViewSalesForm(), BorderLayout.CENTER);
 		}
 
-		// else if (Values.tableUtilPanel.getLabel().equals("SALES ORDER")) {
-		// // add(new EditSalesOrder(), BorderLayout.CENTER);
-		// }
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
+			add(new ViewExpensesForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
+			add(new ViewDeliveryForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
+			add(new ViewARForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
+			add(new ViewPulloutForm(), BorderLayout.CENTER);
+		}
 
 	}
 

@@ -40,9 +40,9 @@ public class TableUtilPanel extends SoyPanel {
 	private TablePanel tablePanel;
 	private String label;
 	private JLabel tableLabel;
-	private String[] links = { Tables.PRODUCTS, Tables.PULLOUT,
-			Tables.ACCOUNT_RECEIVABLES, Tables.AR_PAYMENTS, Tables.DELIVERY,
-			Tables.SUPPLIERS, Tables.CASH_ADVANCE, Tables.SALARY,
+	private String[] links = { Tables.EXPENSES, Tables.SALARY, Tables.DELIVERIES,
+			Tables.PULLOUTS, Tables.SUPPLIERS, Tables.ACCOUNT_RECEIVABLES,
+			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS,
 			Tables.PROFILES, Tables.EMPLOYEES, Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
 
@@ -67,9 +67,9 @@ public class TableUtilPanel extends SoyPanel {
 
 		tableLabel = new JLabel(label);
 
-		 tableLabel.setFont(new Font("Forte", Font.PLAIN, 18));
+		tableLabel.setFont(new Font("Forte", Font.PLAIN, 18));
 		// tableLabel.setForeground(Color.GRAY.darker());
-		 tableLabel.setForeground(Color.blue.darker());
+		tableLabel.setForeground(Color.blue.darker());
 
 		// tableLabel.setBounds(70, 12, 200, 20);
 
@@ -151,62 +151,71 @@ public class TableUtilPanel extends SoyPanel {
 	}
 
 	private void putLinks() {
-		for (int i = 0; i < links.length; i++){
+		for (int i = 0; i < links.length; i++) {
 			labels.add(new TableLink(links[i], i));
-			
-			if(label.equals(links[i]))
+
+			if (label.equals(links[i]))
 				labels.get(i).setForeground(Color.BLUE.darker());
 		}
-		
-		if (label.equals(Tables.PRODUCTS) || label.equals(Tables.PULLOUT)) {
+
+		if (label.equals(Tables.EXPENSES) || label.equals(Tables.SALARY)) {
 
 			JLabel l = new JLabel("->");
-			l.setBounds(132, 11, 20, 20);
-			labels.get(Values.PRODUCTS).setBounds(40, 11, 90, 20);
-			labels.get(Values.PULLOUT).setBounds(150, 11, 73, 20);
-			
-			searchPanel.add(labels.get(Values.PRODUCTS));
+			l.setBounds(135, 11, 20, 20);
+			labels.get(Values.EXPENSES).setBounds(40, 11, 93, 20);
+			labels.get(Values.SALARY).setBounds(153, 11, 68, 20);
+
+			searchPanel.add(labels.get(Values.EXPENSES));
 			searchPanel.add(l);
-			searchPanel.add(labels.get(Values.PULLOUT));
+			searchPanel.add(labels.get(Values.SALARY));
 		}
-		
-		else if (label.equals(Tables.ACCOUNT_RECEIVABLES) || label.equals(Tables.AR_PAYMENTS)) {
+
+		else if (label.equals(Tables.ACCOUNT_RECEIVABLES)
+				|| label.equals(Tables.AR_PAYMENTS)) {
 
 			JLabel l = new JLabel("->");
 			l.setBounds(247, 11, 20, 20);
 			labels.get(Values.ACCOUNT_RECEIVABLES).setBounds(40, 11, 205, 20);
 			labels.get(Values.AR_PAYMENTS).setBounds(265, 11, 132, 20);
-			
+
 			searchPanel.add(labels.get(Values.ACCOUNT_RECEIVABLES));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.AR_PAYMENTS));
 		}
-		
-		else if (label.equals(Tables.DELIVERY) || label.equals(Tables.SUPPLIERS)) {
+
+		else if (label.equals(Tables.DELIVERIES)
+				|| label.equals(Tables.SUPPLIERS) || label.equals(Tables.PULLOUTS)) {
 
 			JLabel l = new JLabel("->");
-			l.setBounds(132, 11, 20, 20);
-			labels.get(Values.DELIVERY).setBounds(40, 11, 90, 20);
-			labels.get(Values.SUPPLIERS).setBounds(150, 11, 97, 20);
-			
+			JLabel l2 = new JLabel("->");
+			l.setBounds(147, 11, 20, 20);
+			l2.setBounds(245, 11, 20, 20);
+			labels.get(Values.DELIVERY).setBounds(40, 11, 105, 20);
+			labels.get(Values.PULLOUT).setBounds(165, 11, 78, 20);
+			labels.get(Values.SUPPLIERS).setBounds(263, 11, 97, 20);
+
 			searchPanel.add(labels.get(Values.DELIVERY));
 			searchPanel.add(l);
+			searchPanel.add(labels.get(Values.PULLOUT));
+			searchPanel.add(l2);
 			searchPanel.add(labels.get(Values.SUPPLIERS));
 		}
 		
-		else if (label.equals(Tables.CASH_ADVANCE) || label.equals(Tables.SALARY)) {
+		else if (label.equals(Tables.CASH_ADVANCE) || label.equals(Tables.CA_PAYMENTS)) {
 
 			JLabel l = new JLabel("->");
 			l.setBounds(184, 11, 20, 20);
 			labels.get(Values.CASH_ADVANCE).setBounds(40, 11, 143, 20);
-			labels.get(Values.SALARY).setBounds(203, 11, 68, 20);
+			labels.get(Values.CA_PAYMENTS).setBounds(203, 11, 132, 20);
 			
 			searchPanel.add(labels.get(Values.CASH_ADVANCE));
 			searchPanel.add(l);
-			searchPanel.add(labels.get(Values.SALARY));
+			searchPanel.add(labels.get(Values.CA_PAYMENTS));
 		}
-		
-		else if (label.equals(Tables.PROFILES) || label.equals(Tables.EMPLOYEES) || label.equals(Tables.ACCOUNTS)) {
+
+		else if (label.equals(Tables.PROFILES)
+				|| label.equals(Tables.EMPLOYEES)
+				|| label.equals(Tables.ACCOUNTS)) {
 
 			JLabel l = new JLabel("->");
 			JLabel l2 = new JLabel("->");
@@ -215,15 +224,14 @@ public class TableUtilPanel extends SoyPanel {
 			labels.get(Values.EMPLOYEES).setBounds(146, 11, 110, 20);
 			l2.setBounds(258, 11, 20, 20);
 			labels.get(Values.ACCOUNTS).setBounds(276, 11, 93, 20);
-			
-			
+
 			searchPanel.add(labels.get(Values.PROFILES));
 			searchPanel.add(l);
 			searchPanel.add(l2);
 			searchPanel.add(labels.get(Values.EMPLOYEES));
 			searchPanel.add(labels.get(Values.ACCOUNTS));
 		}
-		
+
 	}
 
 	private boolean isMultiple() {

@@ -145,8 +145,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 //		cashAdvanceForm.setBounds(225, 40, 300, 395);
 		cashAdvanceForm.setBounds(230, 60, 300, 345);
-		salary.setBounds(86, 65, 638, 360);
-		
+		salary.setBounds(86, 75, 638, 330);
+
 		accountReceivables.setBounds(70, 55, 670, 365);
 
 		accountTypeList.setBounds(150, 50, 200, 160);
@@ -276,8 +276,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		if (Values.tableUtilPanel.getLabel().equals(Tables.PRODUCTS)) {
 			productForm.setVisible(true);
 		}
-		
-		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUT)) {
+
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
 			pullout.setVisible(true);
 		}
 		
@@ -304,8 +304,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			accountReceivables.setVisible(true);
 		}
-		
-		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERY)) {
+
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
 			delivery.setVisible(true);
 		}
 		

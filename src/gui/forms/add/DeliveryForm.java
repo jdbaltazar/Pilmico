@@ -175,19 +175,19 @@ public class DeliveryForm extends SimplePanel {
 			}
 		});
 
-		dateLabel.setBounds(43, 12, 40, 20); // 15
+		dateLabel.setBounds(49, 12, 40, 20); // 15
 		date.setBounds(88, 10, 150, 20);
 
-		receivedByLabel.setBounds(293, 12, 85, 20);// 260
+		receivedByLabel.setBounds(305, 12, 85, 20);// 260
 		receivedBy.setBounds(378, 10, 200, 20);
 
 		ponumLabel.setBounds(36, 35, 50, 20);
 		po_no.setBounds(86, 32, 70, 20);
 
-		deliveryNumLabel.setBounds(286, 35, 100, 20); // 260
+		deliveryNumLabel.setBounds(304, 35, 100, 20); // 260
 		delivery_no.setBounds(386, 32, 140, 20);
 
-		supplierLabel.setBounds(15, 58, 70, 20);
+		supplierLabel.setBounds(27, 58, 70, 20);
 		supplierCombo.setBounds(85, 56, 220, 20);
 		supplierFwd.setBounds(308, 58, 16, 16);
 

@@ -60,7 +60,7 @@ public class SalaryReleaseForm extends SimplePanel{
 	private SoyButton save;
 	private JLabel issuedBy, caDeductions;
 	private FormDropdown issuedFor;
-	private MainFormField grossPay;
+	private MainFormField grossPay,  netPay;
 	private MainFormLabel issuedByLabel, issuedForLabel, dateLabel, salaryLabel, payLabel;
 	
 	private DefaultComboBoxModel model;
@@ -102,6 +102,8 @@ public class SalaryReleaseForm extends SimplePanel{
 		issuedForLabel = new MainFormLabel("Issued for:");
 		salaryLabel = new MainFormLabel("Gross Pay:");
 		payLabel = new MainFormLabel("Net Pay:");
+		
+		netPay = new MainFormField(10, false);
 		
 		grossPay = new MainFormField(10);
 		
@@ -147,33 +149,33 @@ public class SalaryReleaseForm extends SimplePanel{
 		feesPane.getViewport().setOpaque(false);
 		
 		
-		dateLabel.setBounds(40, 50, 40, 20);
-		date.setBounds(85, 50, 150, 20);
+		dateLabel.setBounds(70, 50, 40, 20);
+		date.setBounds(115, 50, 180, 20);
 
-		issuedForLabel.setBounds(290, 50, 80, 20);
-		issuedFor.setBounds(375, 50, 200, 20);
+		issuedByLabel.setBounds(42, 90, 70, 20);
+		issuedBy.setBounds(115, 90, 180, 20);
 		
+		issuedForLabel.setBounds(40, 130, 80, 20);
+		issuedFor.setBounds(115, 130, 180, 20);
 		
-		issuedByLabel.setBounds(40, 75, 70, 20);
-		issuedBy.setBounds(120, 75, 150, 20);
+		salaryLabel.setBounds(40,170, 70, 20);
+		grossPay.setBounds(115, 170, 80, 20);
 		
-		salaryLabel.setBounds(290, 75, 70, 20);
-		grossPay.setBounds(365, 76, 65, 20);
-		
-		payLabel.setBounds(450, 75, 65, 20);
+		payLabel.setBounds(52, 210, 65, 20);
+		netPay.setBounds(115, 210, 80, 20);
 		
 		caDeductions.setBounds(40, 110, 260, 15);
 		dateHeaderLabel.setBounds(39, 125, 160, LABEL_HEIGHT);
 		amountLabel.setBounds(199, 125, 102, LABEL_HEIGHT);
 		cashAdvancesPane.setBounds(40, 144, 277, 140);
 		
-		addRow.setBounds(320, 116, 16, 16);
+		addRow.setBounds(320, 65, 16, 16);
 		
-		feesLabel.setBounds(340, 110, 200, 25);
-		deleteLabel.setBounds(540, 110, 42, 25);
-		feesPane.setBounds(341, 134, 257, 150);
+		feesLabel.setBounds(340, 60, 200, 25);
+		deleteLabel.setBounds(540, 60, 42, 25);
+		feesPane.setBounds(341, 79, 262, 150);
 				
-		fwd.setBounds(308, 58, 16, 16);
+		fwd.setBounds(300, 130, 16, 16);
 		
 		addRow.addActionListener(new ActionListener() {
 
@@ -205,11 +207,14 @@ public class SalaryReleaseForm extends SimplePanel{
 		panel.add(grossPay);
 		
 		panel.add(payLabel);
+		panel.add(netPay);
 		
-		panel.add(caDeductions);
+		panel.add(fwd);
+		
+		/*panel.add(caDeductions);
 		panel.add(dateHeaderLabel);
 		panel.add(amountLabel);
-		panel.add(cashAdvancesPane);
+		panel.add(cashAdvancesPane);*/
 		
 		panel.add(addRow);
 		
@@ -289,7 +294,7 @@ public class SalaryReleaseForm extends SimplePanel{
 
 		error = new ErrorLabel();
 
-		save.setBounds(280, LABEL_Y + 310, 80, 30);
+		save.setBounds(280, LABEL_Y + 270, 80, 30);
 
 		error.setBounds(305, 340, 200, 30);
 
