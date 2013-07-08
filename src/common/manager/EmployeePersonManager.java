@@ -2,10 +2,23 @@ package common.manager;
 
 import java.util.List;
 
+import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 
 public interface EmployeePersonManager {
+
+	// employee types
+
+	public void addEmploymentStatus(String empStatus) throws Exception;
+
+	public EmploymentStatus getEmploymentStatus(int id) throws Exception;
+
+	public List<EmploymentStatus> getEmploymentStatuses() throws Exception;
+
+	public void updateEmploymentStatus(EmploymentStatus empStatus) throws Exception;
+
+	public void deleteEmploymentStatus(EmploymentStatus empStatus) throws Exception;
 
 	// employees
 
@@ -14,7 +27,7 @@ public interface EmployeePersonManager {
 	public Employee getEmployee(int id) throws Exception;
 
 	public List<Employee> getEmployees() throws Exception;
-	
+
 	public List<Employee> getEmployeesWithoutAccounts() throws Exception;
 
 	public void updateEmployee(Employee employee) throws Exception;

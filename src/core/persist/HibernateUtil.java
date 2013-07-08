@@ -1,15 +1,25 @@
 package core.persist;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import app.util.Credentials;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.DailyExpensesType;
@@ -33,13 +43,12 @@ import common.entity.product.Price;
 import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
+import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
-import common.entity.salary.CADeduction;
-import common.entity.salary.CashAdvance;
 import common.entity.salary.Fee;
 import common.entity.salary.FeeDeduction;
 import common.entity.salary.SalaryRelease;
@@ -47,6 +56,7 @@ import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
+import core.security.SecurityTool;
 
 public class HibernateUtil {
 
@@ -57,23 +67,38 @@ public class HibernateUtil {
 	}
 
 	public static void init() {
-		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
+/*<<<<<<< HEAD
 		// mysql account credectials
 		if (!tryToBuildSessionFactory("root", ""))
+=======*/
+		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+		if (!tryToBuildSessionFactory()) {
 			throw new RuntimeException("connection unsuccessful");
+		} else {
+			System.out.println("Connection successful");
+		}
+
 	}
 
-	private static boolean tryToBuildSessionFactory(String username, String password) throws ExceptionInInitializerError {
+	private static boolean tryToBuildSessionFactory() throws ExceptionInInitializerError {
 		try {
+
 			Properties p = new Properties();
 			p.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 
-			// soybean-database name
-			p.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/pilmico");
+			p.setProperty("hibernate.connection.url", Credentials.getInstance().getHibernateConnectionUrl());
 			p.setProperty("hibernate.show_sql", "false");
-			p.setProperty("hibernate.connection.username", username);
-			p.setProperty("hibernate.connection.password", password);
+			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(Credentials.getInstance().getHibernateConnectionUsername()));
+			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(Credentials.getInstance().getHibernateConnectionPassword()));
+
+			p.setProperty("log4j.rootLogger", "ERROR, myConsoleAppender");
+			p.setProperty("log4j.appender.myConsoleAppender", "org.apache.log4j.ConsoleAppender");
+			p.setProperty("log4j.appender.myConsoleAppender.layout", "org.apache.log4j.PatternLayout");
+			p.setProperty("log4j.appender.myConsoleAppender.layout.ConversionPattern", "%-5p %c %x - %m%n");
+
+			PropertyConfigurator.configure(p);
+
 			// p.setProperty("hibernate.search.default.indexBase",
 			// "./lucene-index");
 			// p.setProperty("hibernate.search.default.directory_provider",
@@ -85,6 +110,7 @@ public class HibernateUtil {
 			conf.addAnnotatedClass(LogType.class);
 			conf.addAnnotatedClass(Log.class);
 
+			conf.addAnnotatedClass(Designation.class);
 			conf.addAnnotatedClass(Person.class);
 			conf.addAnnotatedClass(EmploymentStatus.class);
 			conf.addAnnotatedClass(Employee.class);
@@ -120,7 +146,7 @@ public class HibernateUtil {
 
 			conf.addAnnotatedClass(Fee.class);
 			conf.addAnnotatedClass(FeeDeduction.class);
-			conf.addAnnotatedClass(CADeduction.class);
+			conf.addAnnotatedClass(CAPayment.class);
 			conf.addAnnotatedClass(CashAdvance.class);
 			conf.addAnnotatedClass(SalaryRelease.class);
 
@@ -157,9 +183,9 @@ public class HibernateUtil {
 		return sessionFactory != null;
 	}
 
-	public static boolean evaluate(String username, String password) {
+	public static boolean evaluate() {
 		if (!isConnected())
-			return tryToBuildSessionFactory(username, password);
+			return tryToBuildSessionFactory();
 		else
 			return false;
 	}

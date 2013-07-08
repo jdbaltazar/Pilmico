@@ -48,7 +48,7 @@ public class DailyExpenses {
 
 	@OneToMany(mappedBy = "expense", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DailyExpensesDetail> dailyExpenseDetails = new HashSet<DailyExpensesDetail>();
-
+	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
 	private InventorySheet inventorySheet;

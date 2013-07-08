@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.cashadvance.CAPayment;
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
@@ -53,9 +54,6 @@ public class SalaryRelease {
 	@OneToMany(mappedBy = "salaryRelease", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<FeeDeduction> feeDeductions = new HashSet<FeeDeduction>();
 
-	@OneToMany(mappedBy = "salaryRelease", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<CADeduction> caDeductions = new HashSet<CADeduction>();
-
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
 	private InventorySheet inventorySheet;
@@ -65,7 +63,7 @@ public class SalaryRelease {
 	}
 
 	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks,
-			Set<FeeDeduction> feeDeductions, Set<CADeduction> caDeductions) {
+			Set<FeeDeduction> feeDeductions, Set<CAPayment> caDeductions) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
@@ -74,7 +72,6 @@ public class SalaryRelease {
 		this.valid = valid;
 		this.remarks = remarks;
 		this.feeDeductions = feeDeductions;
-		this.caDeductions = caDeductions;
 	}
 
 	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks) {
@@ -182,32 +179,6 @@ public class SalaryRelease {
 		for (FeeDeduction fd : feeDeductions) {
 			if (fd.getId() == feeDeductionId) {
 				feeDeductions.remove(fd);
-				break;
-			}
-		}
-	}
-
-	public Set<CADeduction> getCaDeductions() {
-		return caDeductions;
-	}
-
-	public void setCaDeductions(Set<CADeduction> caDeductions) {
-		this.caDeductions = caDeductions;
-	}
-
-	public void addCADeduction(CADeduction caDeduction) {
-		caDeduction.setSalaryRelease(this);
-		caDeductions.add(caDeduction);
-	}
-
-	public void removeCADeduction(CADeduction caDeduction) {
-		removeCADeduction(caDeduction.getId());
-	}
-
-	public void removeCADeduction(int caDeductionId) {
-		for (CADeduction cad : caDeductions) {
-			if (cad.getId() == caDeductionId) {
-				caDeductions.remove(cad);
 				break;
 			}
 		}

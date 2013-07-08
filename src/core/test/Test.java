@@ -1,6 +1,12 @@
 package core.test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +14,12 @@ import java.util.List;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
+import app.util.Credentials;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
+import common.entity.cashadvance.CashAdvance;
 import common.entity.log.Log;
 import common.entity.log.LogType;
 import common.entity.note.Note;
@@ -17,7 +29,6 @@ import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 import common.entity.profile.Employee;
-import common.entity.salary.CashAdvance;
 import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.entity.supplier.Supplier;
@@ -67,23 +78,87 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		String pass = "paasword";
+		String hello = "pilmico";
+
 		try {
-			String encrypted = "@ðÞNx£õê‚0]Ž¥KÅÉ"; //SecurityTool.getInstance().getEncryptStringValue(pass);
-
-			System.out.println("Encrypted: " + encrypted);
-
-			System.out.println("Decrypted: " + SecurityTool.getInstance().decrypt(encrypted.getBytes()));
-		} catch (InvalidKeyException e1) {
+			System.out.println("dec: " + SecurityTool.decrypt("htre1/TF0v8SgQzHAHkARw=="));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (BadPaddingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IllegalBlockSizeException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
+
+		// String pass = "paasword";
+		// try {
+		// String encrypted = "@ðÞNx£õê‚0]Ž¥KÅÉ";
+		// //SecurityTool.getInstance().getEncryptStringValue(pass);
+		//
+		// System.out.println("Encrypted: " + encrypted);
+		//
+		// System.out.println("Decrypted: " +
+		// SecurityTool.getInstance().decrypt(encrypted.getBytes()));
+		// } catch (InvalidKeyException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// } catch (BadPaddingException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// } catch (IllegalBlockSizeException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+
+		// Configuration config = new Configuration("username", "password",
+		// "urlconnection");
+		// XStream xStream = new XStream(new DomDriver());
+		// xStream.alias("configuration", Configuration.class);
+		// // System.out.println(xStream.toXML(config));
+		//
+		// // /Write to a file in the file system
+		// try {
+		//
+		// File file = new File("D:/hello.xml");
+		// FileOutputStream fs = new FileOutputStream(file);
+		// xStream.toXML(config, fs);
+		// } catch (FileNotFoundException e1) {
+		// e1.printStackTrace();
+		// }
+
+		// XStream xs = new XStream(new DomDriver());
+		// Configuration config = new Configuration();
+		//
+		// try {
+		// FileInputStream fis = new FileInputStream("config.xml");
+		// xs.fromXML(fis, config);
+		//
+		// // print the data from the object that has been read
+		// System.out.println("connection: " +
+		// config.getHibernateConnectionUrl());
+		//
+		// } catch (FileNotFoundException ex) {
+		// ex.printStackTrace();
+		// }
+
+		// File file = new File("config.xml");
+		// Configuration config = (Configuration)xs.fromXML(file);
+		// System.out.println("connection: " +
+		// config.getHibernateConnectionUrl());
+
+		// ================================================================================
+
+		// XStream xs = new XStream(new DomDriver());
+		// xs.alias("configuration", Credentials.class);
+		// Credentials c = new Credentials();
+		//
+		// try {
+		// FileInputStream fis = new FileInputStream("config.xml");
+		// xs.fromXML(fis, c);
+		//
+		// // print the data from the object that has been read
+		// System.out.println("connection: " + c.getHibernateConnectionUrl());
+		//
+		// } catch (FileNotFoundException ex) {
+		// ex.printStackTrace();
+		// }
 
 		// String dbUserName = "root";
 		// String dbPassword = "123456";

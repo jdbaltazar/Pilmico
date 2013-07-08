@@ -6,11 +6,11 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import common.entity.profile.Employee;
+import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Person;
 import common.manager.EmployeePersonManager;
 
@@ -102,6 +102,31 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	@Override
 	public void deletePerson(int id) throws Exception {
 		remove(getPerson(id));
+	}
+
+	@Override
+	public void addEmploymentStatus(String empStatus) throws Exception {
+		add(empStatus);
+	}
+
+	@Override
+	public EmploymentStatus getEmploymentStatus(int id) throws Exception {
+		return (EmploymentStatus) get(EmploymentStatus.class, id);
+	}
+
+	@Override
+	public List<EmploymentStatus> getEmploymentStatuses() throws Exception {
+		return getAll(EmploymentStatus.class);
+	}
+
+	@Override
+	public void updateEmploymentStatus(EmploymentStatus empStatus) throws Exception {
+		update(empStatus);
+	}
+
+	@Override
+	public void deleteEmploymentStatus(EmploymentStatus empStatus) throws Exception {
+		remove(empStatus);
 	}
 
 }

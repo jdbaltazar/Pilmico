@@ -1,44 +1,44 @@
 package core.security;
 
-import javax.crypto.Cipher;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import java.security.Key;
-import java.security.InvalidKeyException;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import Decoder.BASE64Decoder;
+import Decoder.BASE64Encoder;
 
 public class SecurityTool {
-	private static String algorithm = "DESede";
-	private static Key key = null;
-	private static Cipher cipher = null;
-	private static SecurityTool obj = new SecurityTool();
+
+	private static final String ENCODING = "UTF-8";
+	private static final String ALGORITHM = "AES";
+	private static final String KEY = "PilmicoStore2013";
 
 	private SecurityTool() {
-		try {
-			key = KeyGenerator.getInstance(algorithm).generateKey();
-			cipher = Cipher.getInstance(algorithm);
-		} catch (Exception e) {
-		}
+
 	}
 
-	public static SecurityTool getInstance() {
-		return obj;
+	public static String encrypt(String valueToEnc) throws Exception {
+		Key key = generateKey();
+		Cipher c = Cipher.getInstance(ALGORITHM);
+		c.init(Cipher.ENCRYPT_MODE, key);
+		byte[] encValue = c.doFinal(valueToEnc.getBytes());
+		String encryptedValue = new BASE64Encoder().encode(encValue);
+		return encryptedValue;
 	}
 
-	public static byte[] encrypt(String input) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-		cipher.init(Cipher.ENCRYPT_MODE, key);
-		byte[] inputBytes = input.getBytes();
-		return cipher.doFinal(inputBytes);
+	public static String decrypt(String encryptedValue) throws Exception {
+		Key key = generateKey();
+		Cipher c = Cipher.getInstance(ALGORITHM);
+		c.init(Cipher.DECRYPT_MODE, key);
+		byte[] decordedValue = new BASE64Decoder().decodeBuffer(encryptedValue);
+		byte[] decValue = c.doFinal(decordedValue);
+		String decryptedValue = new String(decValue);
+		return decryptedValue;
 	}
 
-	public String getEncryptStringValue(String input) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-		return new String(encrypt(input));
-	}
-
-	public String decrypt(byte[] encryptionBytes) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-		cipher.init(Cipher.DECRYPT_MODE, key);
-		byte[] recoveredBytes = cipher.doFinal(encryptionBytes);
-		String recovered = new String(recoveredBytes);
-		return recovered;
+	private static Key generateKey() throws Exception {
+		Key key = new SecretKeySpec(KEY.getBytes(ENCODING), ALGORITHM);
+		return key;
 	}
 }

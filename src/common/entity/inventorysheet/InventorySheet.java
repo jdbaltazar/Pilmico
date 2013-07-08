@@ -34,7 +34,7 @@ public class InventorySheet {
 	@Column(name = "date")
 	@Temporal(TemporalType.DATE)
 	private Date date;
-	
+
 	@Column(name = "previous_acoh")
 	private double previousAcoh;
 
@@ -64,5 +64,4 @@ public class InventorySheet {
 	// private Set<AccountReceivable> accountReceivables = new
 	// HashSet<AccountReceivable>();
 
-	
 }

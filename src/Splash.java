@@ -1,6 +1,4 @@
 import gui.MainFrame;
-import gui.popup.DBPassword;
-import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.Cursor;
 import java.awt.EventQueue;
