@@ -92,11 +92,6 @@ public class HibernateUtil {
 
 			PropertyConfigurator.configure(p);
 
-			// p.setProperty("hibernate.search.default.indexBase",
-			// "./lucene-index");
-			// p.setProperty("hibernate.search.default.directory_provider",
-			// "filesystem");
-
 			Configuration conf = new Configuration();
 			conf.setProperties(p);
 
