@@ -94,6 +94,24 @@ public class AccountReceivablesForm extends SimplePanel {
 		fwdCustomer = new SBButton("forward.png", "forward.png", "Add new customer");
 		fwdProduct = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
+		
+		fwdCustomer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.PROFILES);
+			}
+		});
+		
+		fwdProduct.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.PRODUCTS);
+			}
+		});
 
 		panel = new JPanel();
 		panel.setLayout(null);

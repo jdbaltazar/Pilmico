@@ -94,6 +94,24 @@ public class DeliveryForm extends SimplePanel {
 		supplierFwd = new SBButton("forward.png", "forward.png", "Add new supplier");
 		productFwd = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
+		
+		supplierFwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.SUPPLIERS);
+			}
+		});
+		
+		productFwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.PRODUCTS);
+			}
+		});		
 
 		panel = new JPanel();
 		panel.setLayout(null);

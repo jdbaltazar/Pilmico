@@ -81,7 +81,7 @@ public class SalaryReleaseForm extends SimplePanel{
 	
 	private void init() {
 		
-		fwd = new SBButton("forward.png", "forward.png", "Add new customer");
+		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
 		
@@ -176,6 +176,14 @@ public class SalaryReleaseForm extends SimplePanel{
 		feesPane.setBounds(341, 79, 262, 150);
 				
 		fwd.setBounds(300, 130, 16, 16);
+		fwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
+			}
+		});
 		
 		addRow.addActionListener(new ActionListener() {
 

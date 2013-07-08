@@ -6,6 +6,8 @@ import gui.forms.util.FormField;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -64,7 +66,15 @@ public class EmployeeForm extends SimplePanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		fwd = new SBButton("forward.png", "forward.png", "Add new category");
+		fwd = new SBButton("forward.png", "forward.png", "Add new profile");
+		fwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.PROFILES);
+			}
+		});
 
 		profile = new DropdownLabel("Profile*");
 		status = new DropdownLabel("Employment Status*");

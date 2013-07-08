@@ -6,6 +6,8 @@ import gui.forms.util.FormField;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -71,6 +73,15 @@ public class CashAdvanceForm extends SimplePanel {
 		save = new SoyButton("Save");
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
+		fwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
+			}
+		});
+
 
 		error = new ErrorLabel();
 

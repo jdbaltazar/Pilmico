@@ -70,7 +70,7 @@ public class PulloutForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg = "";
-	private SBButton fwdCustomer, fwdProduct;
+	private SBButton fwdProduct;
 
 	public PulloutForm() {
 		// TODO Auto-generated constructor stub
@@ -83,9 +83,17 @@ public class PulloutForm extends SimplePanel {
 
 	private void init() {
 
-		fwdCustomer = new SBButton("forward.png", "forward.png", "Add new customer");
 		fwdProduct = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
+
+		fwdProduct.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
+			}
+		});
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -131,8 +139,6 @@ public class PulloutForm extends SimplePanel {
 
 		issuedByLabel.setBounds(300, 50, 70, 20);
 		issuedBy.setBounds(375, 50, 180, 20);
-
-		fwdCustomer.setBounds(318, 82, 16, 16);
 
 		addRow.setBounds(32, LABEL_Y + 5, 16, 16);
 
@@ -181,8 +187,6 @@ public class PulloutForm extends SimplePanel {
 		panel.add(deleteLabel);
 
 		panel.add(productsPane);
-
-		panel.add(fwdCustomer);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);

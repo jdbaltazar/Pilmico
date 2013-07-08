@@ -205,6 +205,15 @@ public class SalesForm extends SimplePanel {
 		customerLabel.setBounds(15, 58, 70, 20);
 		customerCombo.setBounds(85, 56, 220, 20);
 		customerFwd.setBounds(308, 58, 16, 16);
+		
+		customerFwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.PROFILES);
+			}
+		});
 
 		issuedaTLabel.setBounds(335, 58, 70, 20);
 		issuedAt.setBounds(410, 56, 200, 20);
@@ -355,6 +364,14 @@ public class SalesForm extends SimplePanel {
 		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
 
 		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
+		productFwd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.PRODUCTS);
+			}
+		});
 
 		if (shownFields) {
 			productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);

@@ -1,6 +1,7 @@
 package gui.forms.edit;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.EditRowPanel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
@@ -26,7 +27,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -48,7 +48,6 @@ import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
-import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -57,11 +56,10 @@ import util.MainFormLabel;
 import util.SBButton;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
-import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ViewSalesForm extends EditFormPanel {
+public class ViewSalesForm extends EditFormPanel{
 
 	/**
 	 * 
@@ -74,13 +72,11 @@ public class ViewSalesForm extends EditFormPanel {
 	private Object[] array = {};
 	private JScrollBar sb;
 
-	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
+	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private JTextField quantity;
-	private JButton deleteRow, addRow;
 	private JLabel status;
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
 	private ImageIcon icon;
-	private SoyButton voidBtn;
 	private ViewFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
 
 	private DefaultComboBoxModel model;
@@ -89,25 +85,17 @@ public class ViewSalesForm extends EditFormPanel {
 
 	private ErrorLabel error;
 	private String msg = "";
-	private SBButton customerFwd, productFwd;
+	private SBButton voidBtn;
 
-	private Sales sales;
-
-	public ViewSalesForm(Sales sales) {
+	public ViewSalesForm() {
 		// TODO Auto-generated constructor stub
 		super("View Sales Form");
-		this.sales = sales;
 		init();
 		addComponents();
-		fillEntries();
-
+		
 	};
 
 	private void init() {
-
-		customerFwd = new SBButton("forward.png", "forward.png", "Add new customer");
-		productFwd = new SBButton("forward.png", "forward.png", "Add new product");
-		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -116,12 +104,12 @@ public class ViewSalesForm extends EditFormPanel {
 		scrollPane = new JScrollPane();
 
 		icon = new ImageIcon("images/pending.png");
-
+		
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
 
-		date = new ViewFormField("");
+		date = new ViewFormField(new Date().toString());
 		issueDate = new ViewFormField(new Date().toString());
 
 		issuedaTLabel = new ViewFormLabel("Issued at:");
@@ -180,32 +168,16 @@ public class ViewSalesForm extends EditFormPanel {
 
 		customerLabel.setBounds(15, 58, 70, 20);
 		customerCombo.setBounds(90, 56, 250, 20);
-		customerFwd.setBounds(308, 58, 16, 16);
 
 		issuedaTLabel.setBounds(335, 58, 70, 20);
 		issuedAt.setBounds(410, 56, 200, 20);
 
 		setupTable(LABEL_Y, true);
-
-		addRow.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
-				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-				alternateRows();
-
-				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-				productsPanel.updateUI();
-				productsPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) productsPanel.getPreferredSize().getHeight(), 10, 10);
-				productsPanel.scrollRectToVisible(rect);
-			}
-		});
+		
 
 		showUnrequired(true);
 
+		fillTable();
 		panel.add(dateLabel);
 		panel.add(date);
 
@@ -223,12 +195,12 @@ public class ViewSalesForm extends EditFormPanel {
 
 		panel.add(customerLabel);
 		panel.add(customerCombo);
-		// panel.add(customerFwd);
+//		panel.add(customerFwd);
 
 		panel.add(issuedaTLabel);
 		panel.add(issuedAt);
 
-		// panel.add(productFwd);
+//		panel.add(productFwd);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
 		panel.add(priceKG);
@@ -236,7 +208,7 @@ public class ViewSalesForm extends EditFormPanel {
 		panel.add(productLabel);
 		panel.add(deleteLabel);
 
-		// panel.add(addRow);
+//		panel.add(addRow);
 
 		panel.add(productsPane);
 
@@ -244,14 +216,29 @@ public class ViewSalesForm extends EditFormPanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 
-		scrollPane.setBounds(90, 45, 637, 310);
+		scrollPane.setBounds(83, 45, 637, 310);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
-
+		
 		add(scrollPane);
 		add(status);
 	}
 
+	private void fillTable() {
+		// TODO Auto-generated method stub
+		
+		for(int i = 0; i < 8; i++){
+		rowPanel.add(new EditRowPanel(null, productsPanel, Values.SALES));
+		productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+		alternateRows();
+
+		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
+		productsPanel.updateUI();
+		productsPanel.revalidate();
+		}
+
+	}
+	
 	private void alternateRows() {
 
 		for (int i = 0; i < rowPanel.size(); i++)
@@ -264,15 +251,11 @@ public class ViewSalesForm extends EditFormPanel {
 	private void setupTable(int y, boolean shownFields) {
 		LABEL_Y = y;
 
-		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
-
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
 		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
 		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(346, LABEL_Y, 249, LABEL_HEIGHT);
-
-		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
 
 		if (shownFields) {
 			productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 175);
@@ -298,13 +281,12 @@ public class ViewSalesForm extends EditFormPanel {
 		receiptLabel.setVisible(show);
 		receipt_no.setVisible(show);
 
-		customerFwd.setVisible(show);
 	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		voidBtn = new SoyButton("Void", true);
-
+		voidBtn = new SBButton("invalidate.png","invalidate2.png", "Void");
+		
 		error = new ErrorLabel();
 
 		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
@@ -315,7 +297,7 @@ public class ViewSalesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-
+				
 				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS).setVisible(true);
 
 			}
@@ -323,22 +305,6 @@ public class ViewSalesForm extends EditFormPanel {
 
 		add(voidBtn);
 		add(error);
-
-	}
-
-	private void fillEntries() {
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
-		cashier.setText(Manager.loggedInAccount.getFirstPlusName());
-		rc_no.setText(sales.getRcNo());
-		receipt_no.setText(sales.getReceiptNo());
-		issueDate.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
-		customerCombo.setText(sales.getCustomer().getFirstPlusLastName());
-		issuedAt.setText(sales.getIssuedAt());
-		Set<SalesDetail> salesDetails = sales.getSalesDetails();
-		for (SalesDetail sd : salesDetails) {
-			// rowPanel.add(new RowPanel());
-			// asasasas
-		}
 
 	}
 }

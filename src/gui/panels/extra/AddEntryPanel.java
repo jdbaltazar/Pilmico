@@ -21,6 +21,7 @@ import gui.list.ConditionList;
 import gui.list.LogTypeList;
 import gui.list.NoteTypeList;
 import gui.list.UnitList;
+import gui.popup.NotesPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,8 +31,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import util.Tables;
 import util.Values;
@@ -70,6 +77,13 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private PulloutForm pullout;
 	private InventorySheetForm inventorySheetForm;
 	
+	private JPanel dummy;
+	private JScrollPane dummyPane;
+	
+	
+	private JPanel motherPanel, motherPanel2;
+	private JLabel backToPrevious;
+	
 	private JCheckBox checkBox;
 
 	public AddEntryPanel() {
@@ -86,6 +100,16 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		setLayout(null);
 		setPrefSize(getWidth(), minHeight);
 		addListener();
+		
+		
+		dummy = new JPanel();
+		dummy.setOpaque(false);
+		dummy.setLayout(null);
+		
+		dummyPane = new JScrollPane(dummy);
+		dummyPane.setOpaque(false);
+		dummyPane.getViewport().setOpaque(false);
+		dummyPane.setBorder(BorderFactory.createEmptyBorder());
 
 		accountForm = new AccountForm();
 		
@@ -123,6 +147,35 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		checkBox.setForeground(new Color(25,25,112));
 		checkBox.setFocusPainted(false);
 		checkBox.setSelected(true);
+		
+		backToPrevious = new JLabel("< Back");
+		backToPrevious.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		backToPrevious.setForeground(Color.BLUE.darker());
+		backToPrevious.addMouseListener(new MouseAdapter() {
+
+			Font original;
+
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				original = e.getComponent().getFont();
+				Map attributes = original.getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+				e.getComponent().setFont(original.deriveFont(attributes));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				e.getComponent().setFont(original);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				showAllComponents(false);
+				motherPanel.setVisible(true);
+			}
+		});
+		
 	}
 
 	private void addComponents() {
@@ -140,7 +193,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 		inventorySheetForm.setBounds(10, 30, 780, 430);
 		
-		profileForm.setBounds(225, 45, 290, 390);
+		profileForm.setBounds(243, 45, 290, 390);
 		employeeForm.setBounds(165, 50, 450, 400);
 		
 //		cashAdvanceForm.setBounds(225, 40, 300, 395);
@@ -159,6 +212,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		categoryList.setBounds(550, 265, 200, 160);
 		
 		checkBox.setBounds(660, 5, 200, 20);
+		
+		backToPrevious.setBounds(8, 8, 40, 20);
+		dummy.add(backToPrevious);
+		
+		dummyPane.setBounds(0, 0, 120, 50);
 
 		add(accountForm);
 		
@@ -190,6 +248,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		add(categoryList);
 		
 		add(checkBox);
+		add(dummyPane);
 
 	}
 
@@ -279,6 +338,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
 			pullout.setVisible(true);
+			motherPanel = pullout;
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PROFILES)) {
@@ -287,30 +347,37 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)) {
 			employeeForm.setVisible(true);
+			motherPanel = employeeForm;
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNTS)) {
 			accountForm.setVisible(true);
+			motherPanel = accountForm;
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
 			cashAdvanceForm.setVisible(true);
+			motherPanel = cashAdvanceForm;
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
 			salary.setVisible(true);
+			motherPanel = salary;
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			accountReceivables.setVisible(true);
+			motherPanel = accountReceivables;
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
 			delivery.setVisible(true);
+			motherPanel = delivery;
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {
 			supplierForm.setVisible(true);
+			motherPanel = supplierForm;
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
@@ -321,11 +388,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			//Values.salesOrderForm.refreshDate();
 			sales.setVisible(true);
-		}
-		
-		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
-			//Values.salesOrderForm.refreshDate();
-			inventorySheetForm.setVisible(true);
+			motherPanel = sales;
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
@@ -337,7 +400,6 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 	public void showUtilityPanels() {
 		accountTypeList.setVisible(true);
-		// logTypeList.setVisible(true);
 		noteTypeList.setVisible(true);
 		unitList.setVisible(true);
 		conditionList.setVisible(true);
@@ -348,7 +410,43 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		for (int i = 0; i < getComponentCount(); i++)
 			getComponent(i).setVisible(truth);
 		
+		checkBox.setSelected(true);
 		checkBox.setVisible(true);
+	}
+	
+	public void linkPanel(int value){
+		
+		dummyPane.setVisible(true);
+		checkBox.setSelected(false);
+		checkBox.setVisible(false);
+		motherPanel.setVisible(false);
+		
+		switch(value){
+		
+		case Values.PRODUCTS:
+			productForm.setVisible(true);
+			break;
+			
+		case Values.EMPLOYEES:
+			employeeForm.setVisible(true);
+			break;
+			
+		case Values.PROFILES:
+			profileForm.setVisible(true);
+			break;
+			
+		case Values.SUPPLIERS:
+			supplierForm.setVisible(true);
+			break;
+			
+		default:
+			break;
+		}
+		
+	}
+	
+	public JPanel motherPanel(){
+		return motherPanel;
 	}
 	
 	public boolean isCloseSelected(){
