@@ -1,6 +1,5 @@
 package util;
 
-
 public class Utility {
 
 	/*
@@ -22,5 +21,7 @@ public class Utility {
 	public static final int CompleteFormat = 4;
 	public static final int CompleteFormatWithoutSec = 5;
 	public static final int MySqlFormat = 6;
+	public static final int DMYFormat = 7;
+	public static final int DMYHMAFormat = 8;
 
 }

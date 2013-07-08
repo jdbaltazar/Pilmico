@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import common.entity.note.Note;
+
 import util.SBButton;
 import util.soy.SoyPanel;
 
@@ -35,12 +37,15 @@ public class Notes extends SoyPanel {
 	private JTextArea desc;
 	private BufferedImage image;
 
+	private Note n;
+
 	/*
 	 * public Notes(int y, String command, Note n) { this.y = y; this.command =
 	 * command; this.n = n; init(); }
 	 */
 
-	public Notes(int y, String command) {
+	public Notes(Note n, int y, String command) {
+		this.n = n;
 		this.y = y;
 		this.command = command;
 		init();

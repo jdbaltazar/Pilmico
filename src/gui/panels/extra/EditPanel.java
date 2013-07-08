@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import common.entity.product.Product;
+import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 
 import util.Tables;
@@ -162,21 +163,21 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			// add(new EditStockPurchase(), BorderLayout.CENTER);
-			add(new ViewSalesForm(), BorderLayout.CENTER);
+			add(new ViewSalesForm((Sales) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
 			add(new ViewExpensesForm(), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
 			add(new ViewDeliveryForm(), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			add(new ViewARForm(), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
 			add(new ViewPulloutForm(), BorderLayout.CENTER);
 		}

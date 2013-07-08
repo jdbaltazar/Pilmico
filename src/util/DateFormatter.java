@@ -50,6 +50,14 @@ public class DateFormatter {
 		case Utility.MySqlFormat:
 			sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			break;
+			
+		case Utility.DMYFormat:
+			sdf = new SimpleDateFormat("dd MMM yyyy");
+			break;
+			
+		case Utility.DMYHMAFormat:
+			sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a");
+			break;
 
 		default:
 			break;

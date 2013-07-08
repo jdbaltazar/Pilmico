@@ -41,4 +41,5 @@ public class SecurityTool {
 		Key key = new SecretKeySpec(KEY.getBytes(ENCODING), ALGORITHM);
 		return key;
 	}
+
 }

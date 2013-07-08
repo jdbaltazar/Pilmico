@@ -110,6 +110,13 @@ public class Account {
 		return s;
 	}
 
+	public String getFirstPlusName() {
+		if (!accountType.getName().equalsIgnoreCase(AccountType.systemAdmin)) {
+			return employee.getFirstPlusLastName();
+		}
+		return accountType.getName();
+	}
+
 	public String toString() {
 		return username;
 	}
