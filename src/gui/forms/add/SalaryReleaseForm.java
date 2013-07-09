@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -108,6 +110,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		netPay = new MainFormField(10, false);
 
 		grossPay = new MainFormField(10);
+		grossPay.setEditable(false);
 
 		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		issuedBy.setOpaque(false);
@@ -207,12 +210,23 @@ public class SalaryReleaseForm extends SimplePanel {
 			List<Employee> employees = Manager.employeePersonManager.getEmployeesExcludeManagers();
 			for (Employee emp : employees) {
 				issuedFor.addItem(emp);
+				grossPay.setText(emp.getSalary() + "");
 			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		issuedFor.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				Employee emp = (Employee) issuedFor.getSelectedItem();
+				grossPay.setText(emp.getSalary() + "");
+			}
+		});
+
 		panel.add(dateLabel);
 		panel.add(date);
 

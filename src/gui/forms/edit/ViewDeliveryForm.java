@@ -3,13 +3,18 @@ package gui.forms.edit;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.forms.util.EditRowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -35,10 +41,12 @@ import javax.swing.SpinnerDateModel;
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
 import common.entity.product.Product;
+import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -47,6 +55,7 @@ import util.MainFormLabel;
 import util.SBButton;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -75,14 +84,20 @@ public class ViewDeliveryForm extends EditFormPanel {
 	private ErrorLabel error;
 	private String msg = "";
 
+	private SBButton voidBtn;
+
 	private JLabel status;
 
-	public ViewDeliveryForm() {
+	private Delivery delivery;
+
+	public ViewDeliveryForm(Delivery delivery) {
 		// TODO Auto-generated constructor stub
 		super("View Delivery Form");
+		this.delivery = delivery;
 		init();
 		addComponents();
 
+		fillEntries();
 	};
 
 	private void init() {
@@ -93,13 +108,11 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 		scrollPane = new JScrollPane();
 
-		icon = new ImageIcon("images/invalidated.png");
-
-		status = new JLabel("VOID", icon, JLabel.LEADING);
+		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.RED);
 
-		remarks = new ViewFormLabel("-wrong date and wrong number of items", true);
+		remarks = new ViewFormLabel("", true);
 
 		date = new ViewFormField("");
 		supplier = new ViewFormField("");
@@ -286,6 +299,10 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
+
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
+
 		save = new SoyButton("Save");
 
 		error = new ErrorLabel();
@@ -300,8 +317,59 @@ public class ViewDeliveryForm extends EditFormPanel {
 			}
 		});
 
+		voidBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, delivery).setVisible(true);
+			}
+		});
+
 		// panel.add(save);
+		add(voidBtn);
 		add(error);
+
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(delivery.getInventorySheet() != null ? false : delivery.isValid());
+
+		String s = "";
+		if (delivery.getInventorySheet() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (delivery.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				remarks.setText(delivery.getRemarks());
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(delivery.getDate()));
+		receivedBy.setText(delivery.getReceivedBy().getFirstPlusLastName());
+		po_no.setText(delivery.getPoNo());
+		delivery_no.setText(delivery.getDeliveryNo());
+		supplier.setText(delivery.getSupplier() != null ? delivery.getSupplier().getName() : "");
+		terms.setText(delivery.getTerms());
+
+		Set<DeliveryDetail> deliveryDetails = delivery.getDeliveryDetails();
+		for (DeliveryDetail sd : deliveryDetails) {
+			// rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
+			// productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+			// alternateRows();
+			//
+			// productsPanel.setPreferredSize(new Dimension(330,
+			// productsPanel.getComponentCount() * ROW_HEIGHT));
+			// productsPanel.updateUI();
+			// productsPanel.revalidate();
+		}
 
 	}
 

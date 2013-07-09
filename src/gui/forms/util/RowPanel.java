@@ -254,12 +254,15 @@ public class RowPanel extends JPanel {
 		List<Expense> expenses = new ArrayList<Expense>();
 		try {
 			expenses = Manager.dailyExpenseManager.getExpenses();
+
+			System.out.println("size of expenseS: " + expenses.size());
+			for (Expense e : expenses) {
+				expensesCombo.addItem(e);
+			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		for (Expense e : expenses) {
-			expensesCombo.addItem(e);
-		}
+
 		row.add(amountOfExpense);
 		row.add(expensesCombo);
 		row.add(deleteRow);
@@ -368,12 +371,20 @@ public class RowPanel extends JPanel {
 		this.command = command;
 	}
 
-	public Product getSelectedProduct() {
+	public Product getSelectedProduct() throws ClassCastException {
 		return (Product) productsCombo.getSelectedItem();
 	}
 
-	public Expense getSelectedExpense() {
-		return (Expense) expensesCombo.getSelectedItem();
+	public String getSelectedExpense() {
+		return expensesComboField.getText();
+
+		// if (expensesCombo.getSelectedIndex() == -1) {
+		// System.out.println("new expense!!");
+		// return new Expense(expensesComboField.getText());
+		// } else {
+		// System.out.println("old expense: " + expensesCombo.getSelectedItem());
+		// return (Expense) expensesCombo.getSelectedItem();
+		// }
 	}
 
 	public int getQuantityInSack() {

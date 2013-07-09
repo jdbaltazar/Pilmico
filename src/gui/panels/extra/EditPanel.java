@@ -23,7 +23,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.delivery.Delivery;
 import common.entity.product.Product;
+import common.entity.pullout.PullOut;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 
@@ -172,7 +174,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
-			add(new ViewDeliveryForm(), BorderLayout.CENTER);
+			add(new ViewDeliveryForm((Delivery) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
@@ -180,7 +182,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
-			add(new ViewPulloutForm(), BorderLayout.CENTER);
+			add(new ViewPulloutForm((PullOut) o), BorderLayout.CENTER);
 		}
 
 	}

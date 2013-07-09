@@ -48,6 +48,8 @@ public interface DailyExpensesManager {
 
 	public Expense getExpense(int id) throws Exception;
 
+	public Expense searchExpense(String name) throws Exception;
+
 	public List<Expense> getExpenses() throws Exception;
 
 	public void updateExpenses(Expense expense) throws Exception;

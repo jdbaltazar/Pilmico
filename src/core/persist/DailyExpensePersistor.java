@@ -153,6 +153,26 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		add(expense);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Expense searchExpense(String name) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Expense.class);
+		List<Expense> expenses = new ArrayList<Expense>();
+		Expense expense = null;
+		try {
+			expenses = criteria.add(Restrictions.eq("name", name)).list();
+			if (expenses.size() > 0) {
+				expense = expenses.get(0);
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return expense;
+	}
+
 	@Override
 	public Expense getExpense(int id) throws Exception {
 		return (Expense) getExpense(id);

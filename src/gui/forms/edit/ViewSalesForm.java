@@ -311,7 +311,8 @@ public class ViewSalesForm extends EditFormPanel {
 	}
 
 	private void fillEntries() {
-		voidBtn.setVisible(sales.isValid());
+
+		voidBtn.setVisible(sales.getInventorySheet() != null ? false : sales.isValid());
 
 		String s = "";
 		if (sales.getInventorySheet() != null) {
@@ -330,7 +331,7 @@ public class ViewSalesForm extends EditFormPanel {
 		status.setIcon(icon);
 
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
-		cashier.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		cashier.setText(sales.getCashier().getFirstPlusLastName());
 		rc_no.setText(sales.getRcNo());
 		receipt_no.setText(sales.getReceiptNo());
 		issueDate.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));

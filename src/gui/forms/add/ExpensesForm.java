@@ -269,7 +269,21 @@ public class ExpensesForm extends SimplePanel {
 				DailyExpenses de = new DailyExpenses(d, (DailyExpensesType) (type.getSelectedItem()), Manager.loggedInAccount);
 
 				for (RowPanel rp : rowPanel) {
-					Expense expense = rp.getSelectedExpense();
+					String exp = rp.getSelectedExpense();
+					Expense expense = null;
+					try {
+						expense = Manager.dailyExpenseManager.searchExpense(exp);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					if (expense == null) {
+						try {
+							expense = new Expense(exp);
+							Manager.dailyExpenseManager.addExpenses(expense);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
 					de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense, rp.getExpenseAmount()));
 				}
 

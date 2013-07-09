@@ -25,6 +25,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.Expense;
 import common.entity.log.Log;
 import common.entity.log.LogType;
 import common.entity.note.Note;
@@ -112,6 +113,15 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
+
+		try {
+			List<Expense> expenses = Manager.dailyExpenseManager.getExpenses();
+
+			System.out.println("size: " + expenses.size());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// String hello = "pilmico";
 		//
