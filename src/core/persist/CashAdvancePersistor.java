@@ -37,6 +37,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	public List<CashAdvance> getAllCashAdvances() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
 		try {
 			cashAdvances = criteria.addOrder(Order.desc("date")).list();
@@ -53,6 +54,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	public List<CashAdvance> getValidCashAdvances() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
 		try {
 			cashAdvances = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -69,6 +71,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	public List<CashAdvance> getInvalidCashAdvances() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
 		try {
 			cashAdvances = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
@@ -110,6 +113,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	public List<CAPayment> getAllCAPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CAPayment> caPayments = new ArrayList<CAPayment>();
 		try {
 			caPayments = criteria.addOrder(Order.desc("date")).list();
@@ -126,6 +130,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	public List<CAPayment> getValidCAPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CAPayment> caPayments = new ArrayList<CAPayment>();
 		try {
 			caPayments = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -142,6 +147,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	public List<CAPayment> getInvalidCAPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CAPayment> caPayments = new ArrayList<CAPayment>();
 		try {
 			caPayments = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();

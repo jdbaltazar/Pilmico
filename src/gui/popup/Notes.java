@@ -8,7 +8,10 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,8 +20,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import common.entity.note.Note;
+import common.manager.Manager;
 
+import util.DateFormatter;
 import util.SBButton;
+import util.Utility;
+import util.Values;
 import util.soy.SoyPanel;
 
 @SuppressWarnings("serial")
@@ -39,32 +46,32 @@ public class Notes extends SoyPanel {
 
 	private Note n;
 
-	/*
-	 * public Notes(int y, String command, Note n) { this.y = y; this.command =
-	 * command; this.n = n; init(); }
-	 */
-
-	public Notes(Note n, int y, String command) {
-		this.n = n;
+	public Notes(int y, String command, Note n) {
 		this.y = y;
 		this.command = command;
+		this.n = n;
 		init();
 	}
 
 	private void init() {
 		// TODO Auto-generated method stub
 
-		/*
-		 * try { if (n.getNoteType().getName().equals("Important")) image =
-		 * (BufferedImage) ImageIO.read(new File( "images/notes_purple.png"));
-		 * else if (n.getNoteType().getName().equals("Very Important")) image =
-		 * (BufferedImage) ImageIO.read(new File( "images/notes_pink.png")); else
-		 * if (n.getNoteType().getName().equals("Reminder")) image =
-		 * (BufferedImage) ImageIO.read(new File( "images/notes_yellow.png"));
-		 * else image = (BufferedImage) ImageIO.read(new File(
-		 * "images/notes_green.png")); } catch (IOException e) {
-		 * e.printStackTrace(); }
-		 */
+		try {
+			if (n.getNoteType().getName().equals("Important"))
+				image = (BufferedImage) ImageIO.read(new File(
+						"images/notes_purple.png"));
+			else if (n.getNoteType().getName().equals("Very Important"))
+				image = (BufferedImage) ImageIO.read(new File(
+						"images/notes_pink.png"));
+			else if (n.getNoteType().getName().equals("Reminder"))
+				image = (BufferedImage) ImageIO.read(new File(
+						"images/notes_yellow.png"));
+			else
+				image = (BufferedImage) ImageIO.read(new File(
+						"images/notes_green.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		setLayout(new BorderLayout());
 		setOpaque(false);
@@ -73,13 +80,15 @@ public class Notes extends SoyPanel {
 		note.setLayout(null);
 		note.setOpaque(false);
 
-		date = new JLabel();
+		date = new JLabel(DateFormatter.getInstance()
+				.getFormat(Utility.CompleteFormatWithoutSec)
+				.format(n.getDate()));
 		date.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
-		tag = new JLabel();
+		tag = new JLabel(n.getTag());
 		tag.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
-		desc = new JTextArea();
+		desc = new JTextArea(n.getDescription());
 		desc.setFont(new Font("Kristen ITC", Font.PLAIN, 11));
 		desc.setEditable(false);
 		desc.setLineWrap(true);
@@ -97,6 +106,23 @@ public class Notes extends SoyPanel {
 			public void actionPerformed(ActionEvent a) {
 				// TODO Auto-generated method stub
 
+				try {
+					Manager.noteManager.deleteNote(n);
+					Values.notesPopup.removeRow(Integer.parseInt(a
+							.getActionCommand()));
+					
+					/*Account acc = Manager.getInstance()
+							.getLoggedInAccount();
+					Manager.logManager.addLog(new Log(Manager.logManager
+							.getLogType(LogType.SYSTEM), acc.getUsername()
+							+ " deleted note "+ n.getId()));*/
+					Values.footerPanel.updateNotes();
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		});
 
@@ -110,8 +136,9 @@ public class Notes extends SoyPanel {
 		descPane.setOpaque(false);
 		descPane.setBorder(BorderFactory.createEmptyBorder());
 
-		note.add(remove);
-
+//		if(Manager.loggedInAccount.getAccountType().getName().equals(AccountType.manager))
+			note.add(remove);
+		
 		note.add(date);
 		note.add(tag);
 		note.add(descPane);
@@ -121,8 +148,8 @@ public class Notes extends SoyPanel {
 		 * rowPanel.setBackground(Color.YELLOW);
 		 * rowPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		 * 
-		 * // rowPanel.setBounds(0, (notesPanel.getComponentCount() * ROW_HEIGHT),
-		 * // ROW_WIDTH, ROW_HEIGHT);
+		 * // rowPanel.setBounds(0, (notesPanel.getComponentCount() *
+		 * ROW_HEIGHT), // ROW_WIDTH, ROW_HEIGHT);
 		 * 
 		 * rowPanel.add(note);
 		 */
@@ -153,8 +180,10 @@ public class Notes extends SoyPanel {
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
 
 		g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
@@ -164,5 +193,4 @@ public class Notes extends SoyPanel {
 		g.dispose();
 
 	}
-
 }

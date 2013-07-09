@@ -34,6 +34,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 	public List<PullOut> getAllPullOuts() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(PullOut.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
 			pullOuts = criteria.addOrder(Order.desc("date")).list();
@@ -50,6 +51,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 	public List<PullOut> getValidPullOuts() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(PullOut.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
 			pullOuts = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -66,6 +68,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 	public List<PullOut> getInvalidPullOuts() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(PullOut.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
 			pullOuts = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();

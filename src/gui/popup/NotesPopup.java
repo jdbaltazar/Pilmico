@@ -35,14 +35,13 @@ public class NotesPopup extends JDialog {
 	private JTextArea desc;
 
 	private ArrayList<Notes> notes = new ArrayList<Notes>();
-	private List<Note> ns = new ArrayList<Note>();
 
 	private final int ROW_HEIGHT = 140, ROW_WIDTH = 220;
 
 	public NotesPopup() {
 		init();
 		addComponents();
-		loadValues();
+
 		Values.notesPopup = this;
 	}
 
@@ -77,44 +76,29 @@ public class NotesPopup extends JDialog {
 		notesPanel.setLayout(null);
 		notesPanel.setOpaque(false);
 
-		/*
-		 * if (Manager.loggedInAccount.getAccountType().getName()
-		 * .equals(AccountType.manager)) panel = new
-		 * SimplePanel("View / Remove Notes"); else
-		 */
-		panel = new SimplePanel("View Notes");
+		panel = new SimplePanel("View / Remove Notes");
 		panel.setOpaque(false);
-		/*
-		 * // panel.setPreferredSize(new Dimension(400, 700)); edit = new
-		 * SoyButton("Edit"); cancel = new SoyButton("Cancel");
-		 * 
-		 * 
-		 * panel.setLayout(null);
-		 * 
-		 * edit.setBounds(260, 340, 80, 30); cancel.setBounds(370, 340, 80, 30);
-		 * 
-		 * cancel.addMouseListener(new MouseAdapter() {
-		 * 
-		 * @Override public void mouseClicked(MouseEvent e) { dispose(); } });
-		 */
+		/*if (Manager.loggedInAccount.getAccountType().getName()
+				.equals(AccountType.manager))
+		else
+			panel = new SimplePanel("View Notes");*/
 
-		// List<Note> ns;
-		// try {
-		// ns = Manager.noteManager.getNotes();
-		// int i = 0;
-		// for (Note n : ns) {
-		//
-		// notes.add(new Notes(notesPanel.getComponentCount() * ROW_HEIGHT,
-		// notesPanel.getComponentCount() + ""));
-		// notesPanel.add(notes.get(0));
-		// notesPanel.setPreferredSize(new Dimension(ROW_WIDTH,
-		// notesPanel.getComponentCount() * ROW_HEIGHT));
-		// System.out.println("aaaaaaaaaa");
-		// i++;
-		// }
-		// } catch (Exception e1) {
-		// e1.printStackTrace();
-		// }
+		List<Note> ns;
+		try {
+			ns = Manager.noteManager.getNotes();
+			int i = 0;
+			for (Note n : ns) {
+				notes.add(new Notes(
+						notesPanel.getComponentCount() * ROW_HEIGHT, notesPanel
+								.getComponentCount() + "", n));
+				notesPanel.add(notes.get(i));
+				notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel
+						.getComponentCount() * ROW_HEIGHT));
+				i++;
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 
 		notesPane = new JScrollPane(notesPanel);
 		notesPane.setOpaque(false);
@@ -129,24 +113,6 @@ public class NotesPopup extends JDialog {
 		add(panel);
 	}
 
-	private void loadValues() {
-
-		try {
-			ns = Manager.noteManager.getNotes();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		for (Note n : ns) {
-			Notes noteUi = new Notes(n, ns.size() * ROW_HEIGHT, ns.size() + "");
-			notes.add(noteUi);
-			notesPanel.add(noteUi);
-			notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel.getComponentCount() * ROW_HEIGHT));
-		}
-
-	}
-
 	public void removeRow(int rowNum) {
 		System.out.println("pressed row button: " + rowNum);
 
@@ -154,7 +120,8 @@ public class NotesPopup extends JDialog {
 		notesPanel.updateUI();
 		notesPanel.revalidate();
 
-		notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel.getComponentCount() * ROW_HEIGHT));
+		notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel
+				.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
 	}
@@ -162,7 +129,8 @@ public class NotesPopup extends JDialog {
 	private void updateList(int removedRow) {
 
 		for (int i = removedRow + 1; i < notes.size(); i++) {
-			notes.get(i).setBounds(0, notes.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
+			notes.get(i).setBounds(0, notes.get(i).getY() - ROW_HEIGHT,
+					ROW_WIDTH, ROW_HEIGHT);
 			notes.get(i).setY(notes.get(i).getY() - ROW_HEIGHT);
 			notes.get(i).getRemove().setActionCommand((i - 1) + "");
 			notes.get(i).updateUI();
@@ -170,8 +138,6 @@ public class NotesPopup extends JDialog {
 		}
 
 		notes.remove(removedRow);
-
-		System.out.println("rowpanel2 size: " + notes.size());
 
 	}
 }

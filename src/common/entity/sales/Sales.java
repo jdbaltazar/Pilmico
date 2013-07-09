@@ -30,7 +30,7 @@ public class Sales {
 	private int id;
 
 	@Column(name = "date")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -44,7 +44,7 @@ public class Sales {
 	private String issuedAt;
 
 	@Column(name = "issued_on")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date issuedOn;
 
 	@Column(name = "receipt_no")
@@ -149,6 +149,12 @@ public class Sales {
 
 	public Person getCustomer() {
 		return customer;
+	}
+
+	public String getCustomerFirstPlusLastName() {
+		if (customer == null)
+			return "";
+		return customer.getFirstPlusLastName();
 	}
 
 	public void setCustomer(Person customer) {

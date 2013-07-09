@@ -38,6 +38,7 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	public List<DailyExpenses> getAllDailyExpenses() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
 		try {
 			expense = criteria.addOrder(Order.desc("date")).list();
@@ -54,6 +55,7 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	public List<DailyExpenses> getValidDailyExpenses() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
 		try {
 			expense = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -70,6 +72,7 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	public List<DailyExpenses> getInvalidDailyExpenses() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
 		try {
 			expense = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();

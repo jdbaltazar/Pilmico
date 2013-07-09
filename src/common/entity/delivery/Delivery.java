@@ -31,7 +31,7 @@ public class Delivery {
 	private int id;
 
 	@Column(name = "Date")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)

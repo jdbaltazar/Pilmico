@@ -32,7 +32,7 @@ public class InventorySheet {
 	private int id;
 
 	@Column(name = "date")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@Column(name = "previous_acoh")

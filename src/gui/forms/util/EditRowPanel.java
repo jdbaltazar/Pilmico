@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import common.entity.sales.SalesDetail;
+
 import util.Values;
 
 public class EditRowPanel extends JPanel {
@@ -38,11 +40,16 @@ public class EditRowPanel extends JPanel {
 		row.setLayout(null);
 		row.setBackground(Color.decode("#FFFFE6"));
 
-		if (table == Values.SALES || table == Values.DELIVERY
-				|| table == Values.PULLOUT
-				|| table == Values.ACCOUNT_RECEIVABLES) {
+		if (table == Values.SALES || table == Values.DELIVERY || table == Values.PULLOUT || table == Values.ACCOUNT_RECEIVABLES) {
 
-			drawProductRow();
+			if (table == Values.SALES) {
+				SalesDetail sd = (SalesDetail) object;
+				drawProductRow(sd.getQuantityInSack(), sd.getQuantityInKilo(), sd.getPricePerSack(), sd.getPricePerKilo(), sd.getProduct().getName());
+			}else if (table == Values.DELIVERY) {
+				// SalesDetail sd = (SalesDetail) object;
+				// drawProductRow(sd.getQuantityInSack(), sd.getQuantityInKilo(), sd.getPricePerSack(), sd.getPricePerKilo(), sd.getProduct().getName());
+			}
+			
 			setBounds(0, y, 580, ROW_HEIGHT);
 
 		}
@@ -50,34 +57,27 @@ public class EditRowPanel extends JPanel {
 		// System.out.println("y: "+y+ " panel width: "+panel.getWidth());
 	}
 
-	private void drawProductRow() {
+	private void drawProductRow(double sack, double kg, double pricePerSack, double pricePerKg, String productName) {
+
 		ROW_HEIGHT = 35;
 
-		formField.add(new ViewFormField("12.0"));
+		formField.add(new ViewFormField(sack + ""));
 		formField.get(formField.size() - 1).setBounds(0, 0, 77, ROW_HEIGHT);
 
-		formField.add(new ViewFormField("5.0"));
-		formField.get(formField.size() - 1).setBounds(
-				formField.get(formField.size() - 2).getX()
-						+ formField.get(formField.size() - 2).getWidth(), 0,
+		formField.add(new ViewFormField(kg + ""));
+		formField.get(formField.size() - 1).setBounds(formField.get(formField.size() - 2).getX() + formField.get(formField.size() - 2).getWidth(), 0,
 				77, ROW_HEIGHT);
 
-		formField.add(new ViewFormField("129.0"));
-		formField.get(formField.size() - 1).setBounds(
-				formField.get(formField.size() - 2).getX()
-						+ formField.get(formField.size() - 2).getWidth(), 0,
+		formField.add(new ViewFormField(pricePerSack + ""));
+		formField.get(formField.size() - 1).setBounds(formField.get(formField.size() - 2).getX() + formField.get(formField.size() - 2).getWidth(), 0,
 				85, ROW_HEIGHT);
 
-		formField.add(new ViewFormField("47.0"));
-		formField.get(formField.size() - 1).setBounds(
-				formField.get(formField.size() - 2).getX()
-						+ formField.get(formField.size() - 2).getWidth(), 0,
+		formField.add(new ViewFormField(pricePerKg + ""));
+		formField.get(formField.size() - 1).setBounds(formField.get(formField.size() - 2).getX() + formField.get(formField.size() - 2).getWidth(), 0,
 				77, ROW_HEIGHT);
 
-		formField.add(new ViewFormField("BOOSTER"));
-		formField.get(formField.size() - 1).setBounds(
-				formField.get(formField.size() - 2).getX()
-						+ formField.get(formField.size() - 2).getWidth(), 0,
+		formField.add(new ViewFormField(productName));
+		formField.get(formField.size() - 1).setBounds(formField.get(formField.size() - 2).getX() + formField.get(formField.size() - 2).getWidth(), 0,
 				249, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {

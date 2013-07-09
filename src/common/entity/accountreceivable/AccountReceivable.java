@@ -30,7 +30,7 @@ public class AccountReceivable {
 	private int id;
 
 	@Column(name = "date")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)

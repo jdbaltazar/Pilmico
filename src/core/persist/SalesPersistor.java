@@ -34,6 +34,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 	public List<Sales> getAllSales() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Sales.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
 			sales = criteria.addOrder(Order.desc("date")).list();
@@ -50,6 +51,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 	public List<Sales> getValidSales() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Sales.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
 			sales = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -66,6 +68,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 	public List<Sales> getInvalidSales() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Sales.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
 			sales = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();

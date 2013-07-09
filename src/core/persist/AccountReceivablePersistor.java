@@ -37,6 +37,7 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 	public List<AccountReceivable> getAllAccountReceivables() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
 		try {
 			accountReceivables = criteria.addOrder(Order.desc("date")).list();
@@ -53,6 +54,7 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 	public List<AccountReceivable> getValidAccountReceivables() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
 		try {
 			accountReceivables = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -69,6 +71,7 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 	public List<AccountReceivable> getInvalidAccountReceivables() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
 		try {
 			accountReceivables = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
@@ -117,6 +120,7 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 	public List<ARPayment> getAllARPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<ARPayment> arPayments = new ArrayList<ARPayment>();
 		try {
 			arPayments = criteria.addOrder(Order.desc("date")).list();
@@ -133,6 +137,7 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 	public List<ARPayment> getValidARPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<ARPayment> arPayments = new ArrayList<ARPayment>();
 		try {
 			arPayments = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -149,6 +154,7 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 	public List<ARPayment> getInvalidARPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<ARPayment> arPayments = new ArrayList<ARPayment>();
 		try {
 			arPayments = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();

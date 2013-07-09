@@ -71,21 +71,21 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		 add(new LoginPanel());
+		// add(new LoginPanel());
 
-		/*try {
+		try {
 			Manager.getInstance().login("manager", "pilmico".toCharArray());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		changeTable(Values.HOME);*/
+		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-//		if (val != Values.HOME)
+		if (val != Values.HOME)
 			remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
@@ -156,11 +156,11 @@ public class CenterPanel extends SoyPanel {
 		case Values.EXPENSES:
 			fillExpenses();
 			break;
-			
+
 		case Values.DISCOUNTS:
 			fillDiscounts();
 			break;
-			
+
 		case Values.DEPOSITS:
 			fillDeposits();
 			break;
@@ -168,7 +168,7 @@ public class CenterPanel extends SoyPanel {
 		case Values.LOGS:
 			fillLogs();
 			break;
-			
+
 		case Values.CA_PAYMENTS:
 			fillCAPayments();
 			break;
@@ -358,12 +358,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void fillCAPayments() {
 		try {
 			String[] headers = { "ID", "Date", "Issued by", "Amount" };
-			String[][] entries = {{"1", "June 20, 2011", "John David S. Baltazar", "500"}, {"2", "December 18, 2010", "Juan dela Cruz", "5000"}};
-//			String[][] entries = new String[1][headers.length];
+			String[][] entries = { { "1", "June 20, 2011", "John David S. Baltazar", "500" }, { "2", "December 18, 2010", "Juan dela Cruz", "5000" } };
+			// String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.CA_PAYMENTS), BorderLayout.CENTER);
 
@@ -440,7 +440,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillDiscounts() {
 		try {
 
-			String[] headers = { "ID", "Date", "Amount", "Customer", "Product"};
+			String[] headers = { "ID", "Date", "Amount", "Customer", "Product" };
 			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DISCOUNTS), BorderLayout.CENTER);
@@ -449,7 +449,7 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void fillDeposits() {
 		try {
 

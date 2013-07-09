@@ -30,7 +30,7 @@ public class CashAdvance {
 	private int id;
 
 	@Column
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@Column

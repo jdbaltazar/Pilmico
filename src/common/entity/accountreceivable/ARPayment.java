@@ -30,7 +30,7 @@ public class ARPayment {
 	private AccountReceivable accountReceivable;
 
 	@Column(name = "date")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@Column

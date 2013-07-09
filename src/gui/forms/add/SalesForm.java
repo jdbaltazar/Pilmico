@@ -443,6 +443,7 @@ public class SalesForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				System.out.println("date: "+d.toString());
 				Date d2 = ((SpinnerDateModel) issueDate.getModel()).getDate();
 				Person p = null;
 				if (customerCombo.getSelectedItem() != null) {

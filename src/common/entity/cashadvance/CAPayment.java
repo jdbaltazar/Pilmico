@@ -30,7 +30,7 @@ public class CAPayment {
 	private CashAdvance cashAdvance;
 
 	@Column
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@Column

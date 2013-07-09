@@ -34,6 +34,7 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 	public List<Delivery> getAllDeliveries() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		try {
 			deliveries = criteria.addOrder(Order.desc("date")).list();
@@ -50,6 +51,7 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 	public List<Delivery> getValidDeliveries() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		try {
 			deliveries = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -66,6 +68,7 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 	public List<Delivery> getInvalidDeliveries() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		try {
 			deliveries = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
