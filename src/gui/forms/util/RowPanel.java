@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,6 @@ public class RowPanel extends JPanel {
 	public RowPanel(JPanel srcPanel, String label) {
 		this.srcPanel = srcPanel;
 		this.label = label;
-
 		init();
 	}
 
@@ -116,7 +117,7 @@ public class RowPanel extends JPanel {
 			}
 
 			productsCombo = new JComboBox(products.toArray());
-			
+
 			feesCombo = new JComboBox();
 			expensesCombo = new JComboBox();
 
@@ -150,10 +151,32 @@ public class RowPanel extends JPanel {
 		amountOfExpense = new JNumericField(10, JNumericField.DECIMAL, true);
 
 		amountOfExpense.setPrecision(2);
+
+		amountOfExpense.setText("0");
+
 		quantitySack.setPrecision(2);
 		quantityKG.setPrecision(2);
 		priceSack.setPrecision(2);
 		priceKG.setPrecision(2);
+
+		priceSack.setEditable(false);
+		priceKG.setEditable(false);
+
+		quantitySack.setText("0");
+		quantityKG.setText("0");
+
+		productsCombo.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				if (productsCombo.getSelectedItem() != null) {
+					Product p = (Product) productsCombo.getSelectedItem();
+					priceSack.setText(p.getPricePerSack() + "");
+					priceKG.setText(p.getPricePerKilo() + "");
+				}
+			}
+		});
 
 		// quantitySack.setText(quant + "");
 

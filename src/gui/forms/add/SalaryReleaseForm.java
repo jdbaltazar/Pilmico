@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -25,6 +26,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import common.entity.profile.Employee;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.MainFormField;
 import util.MainFormLabel;
@@ -36,9 +40,7 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class SalaryReleaseForm extends SimplePanel{
-	
-	
+public class SalaryReleaseForm extends SimplePanel {
 
 	/**
 	 * 
@@ -60,9 +62,9 @@ public class SalaryReleaseForm extends SimplePanel{
 	private SoyButton save;
 	private JLabel issuedBy, caDeductions;
 	private FormDropdown issuedFor;
-	private MainFormField grossPay,  netPay;
+	private MainFormField grossPay, netPay;
 	private MainFormLabel issuedByLabel, issuedForLabel, dateLabel, salaryLabel, payLabel;
-	
+
 	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -71,120 +73,119 @@ public class SalaryReleaseForm extends SimplePanel{
 	private String msg = "";
 	private SBButton fwd, fwd2;
 
-	public SalaryReleaseForm(){
+	public SalaryReleaseForm() {
 		super("Add Salary Form");
 		init();
 		addComponents();
-		
+
 		Values.salaryReleaseForm = this;
 	}
-	
+
 	private void init() {
-		
+
 		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		
+
 		scrollPane = new JScrollPane();
-		
+
 		issuedFor = new FormDropdown();
-		
+
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
-		
+
 		dateLabel = new MainFormLabel("Date:");
 		issuedByLabel = new MainFormLabel("Issued by:");
 		issuedForLabel = new MainFormLabel("Issued for:");
 		salaryLabel = new MainFormLabel("Gross Pay:");
 		payLabel = new MainFormLabel("Net Pay:");
-		
+
 		netPay = new MainFormField(10, false);
-		
+
 		grossPay = new MainFormField(10);
-		
-		issuedBy = new JLabel("John David S. Baltazar");
+
+		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		issuedBy.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		caDeductions = new JLabel("CASH ADVANCES");
 		caDeductions.setOpaque(true);
 		caDeductions.setFont(new Font("Tahoma", Font.BOLD, 10));
 		caDeductions.setForeground(Color.white);
 		caDeductions.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		caDeductions.setBackground(new Color(119,136,153));
+		caDeductions.setBackground(new Color(119, 136, 153));
 		caDeductions.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		dateHeaderLabel = new TableHeaderLabel("Date");
 		amountLabel = new TableHeaderLabel("Amount");
 		feesLabel = new TableHeaderLabel("Fees");
 		deleteLabel = new TableHeaderLabel(icon);
 
 		model = new DefaultComboBoxModel(array);
-		
+
 		cashAdvancesPanel = new JPanel();
 		cashAdvancesPanel.setLayout(null);
 		cashAdvancesPanel.setOpaque(false);
-		
+
 		addCADeduction();
-		
+
 		cashAdvancesPane = new JScrollPane(cashAdvancesPanel);
 		cashAdvancesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		cashAdvancesPane.setOpaque(false);
 		cashAdvancesPane.getViewport().setOpaque(false);
-		
+
 		feesPanel = new JPanel();
 		feesPanel.setLayout(null);
 		feesPanel.setOpaque(false);
-		
+
 		feesPane = new JScrollPane(feesPanel);
 		feesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		feesPane.setOpaque(false);
 		feesPane.getViewport().setOpaque(false);
-		
-		
+
 		dateLabel.setBounds(70, 50, 40, 20);
 		date.setBounds(115, 50, 180, 20);
 
 		issuedByLabel.setBounds(42, 90, 70, 20);
 		issuedBy.setBounds(115, 90, 180, 20);
-		
+
 		issuedForLabel.setBounds(40, 130, 80, 20);
 		issuedFor.setBounds(115, 130, 180, 20);
-		
-		salaryLabel.setBounds(40,170, 70, 20);
+
+		salaryLabel.setBounds(40, 170, 70, 20);
 		grossPay.setBounds(115, 170, 80, 20);
-		
+
 		payLabel.setBounds(52, 210, 65, 20);
 		netPay.setBounds(115, 210, 80, 20);
-		
+
 		caDeductions.setBounds(40, 110, 260, 15);
 		dateHeaderLabel.setBounds(39, 125, 160, LABEL_HEIGHT);
 		amountLabel.setBounds(199, 125, 102, LABEL_HEIGHT);
 		cashAdvancesPane.setBounds(40, 144, 277, 140);
-		
+
 		addRow.setBounds(320, 65, 16, 16);
-		
+
 		feesLabel.setBounds(340, 60, 200, 25);
 		deleteLabel.setBounds(540, 60, 42, 25);
 		feesPane.setBounds(341, 79, 262, 150);
-				
+
 		fwd.setBounds(300, 130, 16, 16);
 		fwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
 			}
 		});
-		
+
 		addRow.addActionListener(new ActionListener() {
 
 			@Override
@@ -192,7 +193,7 @@ public class SalaryReleaseForm extends SimplePanel{
 				feesRowPanel.add(new RowPanel(feesPanel, Tables.SALARY));
 				feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
 				alternateRows(true);
-				
+
 				feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
 				feesPanel.updateUI();
 				feesPanel.revalidate();
@@ -201,46 +202,56 @@ public class SalaryReleaseForm extends SimplePanel{
 				feesPanel.scrollRectToVisible(rect);
 			}
 		});
-		
+
+		try {
+			List<Employee> employees = Manager.employeePersonManager.getEmployeesExcludeManagers();
+			for (Employee emp : employees) {
+				issuedFor.addItem(emp);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		panel.add(dateLabel);
 		panel.add(date);
-		
+
 		panel.add(issuedForLabel);
 		panel.add(issuedFor);
-		
+
 		panel.add(issuedByLabel);
 		panel.add(issuedBy);
-		
+
 		panel.add(salaryLabel);
 		panel.add(grossPay);
-		
+
 		panel.add(payLabel);
 		panel.add(netPay);
-		
+
 		panel.add(fwd);
-		
-		/*panel.add(caDeductions);
-		panel.add(dateHeaderLabel);
-		panel.add(amountLabel);
-		panel.add(cashAdvancesPane);*/
-		
+
+		/*
+		 * panel.add(caDeductions); panel.add(dateHeaderLabel);
+		 * panel.add(amountLabel); panel.add(cashAdvancesPane);
+		 */
+
 		panel.add(addRow);
-		
+
 		panel.add(feesLabel);
 		panel.add(deleteLabel);
 		panel.add(feesPane);
-		
+
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(0, 0, 638, 360);
-		
+
 		add(scrollPane);
 	}
-	
-	private void addCADeduction(){
+
+	private void addCADeduction() {
 		caRowPanel.add(new RowPanel(cashAdvancesPanel, "CADeductions"));
 		cashAdvancesPanel.add(caRowPanel.get(caRowPanel.size() - 1));
 		alternateRows(false);
@@ -252,19 +263,18 @@ public class SalaryReleaseForm extends SimplePanel{
 		Rectangle rect = new Rectangle(0, (int) cashAdvancesPanel.getPreferredSize().getHeight(), 10, 10);
 		cashAdvancesPanel.scrollRectToVisible(rect);
 	}
-	
-	private void alternateRows(boolean isForFees){
-		
-		if(isForFees){
-		for(int i = 0; i < feesRowPanel.size(); i ++)
-			if(i%2 == 0)
-				feesRowPanel.get(i).getRow().setBackground(Values.row1);
-			else
-				feesRowPanel.get(i).getRow().setBackground(Values.row2);
-		}
-		else
-			for(int i = 0; i < caRowPanel.size(); i ++)
-				if(i%2 == 0)
+
+	private void alternateRows(boolean isForFees) {
+
+		if (isForFees) {
+			for (int i = 0; i < feesRowPanel.size(); i++)
+				if (i % 2 == 0)
+					feesRowPanel.get(i).getRow().setBackground(Values.row1);
+				else
+					feesRowPanel.get(i).getRow().setBackground(Values.row2);
+		} else
+			for (int i = 0; i < caRowPanel.size(); i++)
+				if (i % 2 == 0)
 					caRowPanel.get(i).getRow().setBackground(Values.row1);
 				else
 					caRowPanel.get(i).getRow().setBackground(Values.row2);
@@ -278,7 +288,7 @@ public class SalaryReleaseForm extends SimplePanel{
 		feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
-		
+
 		alternateRows(true);
 	}
 

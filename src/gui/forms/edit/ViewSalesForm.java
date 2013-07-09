@@ -109,9 +109,9 @@ public class ViewSalesForm extends EditFormPanel {
 
 		scrollPane = new JScrollPane();
 
-		icon = new ImageIcon("images/pending.png");
+		String s = "";
 
-		status = new JLabel("PENDING", icon, JLabel.LEADING);
+		status = new JLabel(s, null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
 
@@ -127,10 +127,7 @@ public class ViewSalesForm extends EditFormPanel {
 		cashierLabel = new ViewFormLabel("Cashier:");
 		customerLabel = new ViewFormLabel("Customer:");
 
-		String c = "";
-		if (Manager.loggedInAccount != null)
-			c = Manager.loggedInAccount.getEmployee().getFirstPlusLastName();
-		cashier = new ViewFormField(c);
+		cashier = new ViewFormField("");
 
 		issuedAt = new ViewFormField("");
 		rc_no = new ViewFormField("");
@@ -223,7 +220,7 @@ public class ViewSalesForm extends EditFormPanel {
 
 		scrollPane.setBounds(83, 45, 637, 310);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 
 		add(scrollPane);
 		add(status);
@@ -288,7 +285,7 @@ public class ViewSalesForm extends EditFormPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS).setVisible(true);
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, sales).setVisible(true);
 
 			}
 		});
@@ -298,18 +295,11 @@ public class ViewSalesForm extends EditFormPanel {
 
 	}
 
-	private void fillEntries() {
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
-		cashier.setText(Manager.loggedInAccount.getFirstPlusName());
-		rc_no.setText(sales.getRcNo());
-		receipt_no.setText(sales.getReceiptNo());
-		issueDate.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
-		customerCombo.setText(sales.getCustomerFirstPlusLastName());
-		issuedAt.setText(sales.getIssuedAt());
-		Set<SalesDetail> salesDetails = sales.getSalesDetails();
+	private void fillTable() {
+		// TODO Auto-generated method stub
 
-		for (SalesDetail sd : salesDetails) {
-			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
+		for (int i = 0; i < 8; i++) {
+			rowPanel.add(new EditRowPanel(null, productsPanel, Values.SALES));
 			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 			alternateRows();
 
@@ -320,11 +310,36 @@ public class ViewSalesForm extends EditFormPanel {
 
 	}
 
-	private void fillTable() {
-		// TODO Auto-generated method stub
+	private void fillEntries() {
+		voidBtn.setVisible(sales.isValid());
 
-		for (int i = 0; i < 8; i++) {
-			rowPanel.add(new EditRowPanel(null, productsPanel, Values.SALES));
+		String s = "";
+		if (sales.getInventorySheet() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (sales.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
+		cashier.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		rc_no.setText(sales.getRcNo());
+		receipt_no.setText(sales.getReceiptNo());
+		issueDate.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
+		customerCombo.setText(sales.getCustomerFirstPlusLastName());
+		issuedAt.setText(sales.getIssuedAt());
+
+		Set<SalesDetail> salesDetails = sales.getSalesDetails();
+		for (SalesDetail sd : salesDetails) {
+			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
 			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 			alternateRows();
 

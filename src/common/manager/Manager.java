@@ -7,6 +7,8 @@ import core.persist.AccountReceivablePersistor;
 import core.persist.CashAdvancePersistor;
 import core.persist.DailyExpensePersistor;
 import core.persist.DeliveryPersistor;
+import core.persist.DepositPersistor;
+import core.persist.DiscountIssuePersistor;
 import core.persist.EmployeePersonPersistor;
 import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
@@ -29,6 +31,10 @@ public class Manager {
 	public static DailyExpensesManager dailyExpenseManager = new DailyExpensePersistor();
 
 	public static DeliveryManager deliveryManager = new DeliveryPersistor();
+
+	public static DepositManager depositManager = new DepositPersistor();
+
+	public static DiscountIssueManager discountIssueManager = new DiscountIssuePersistor();
 
 	public static EmployeePersonManager employeePersonManager = new EmployeePersonPersistor();
 

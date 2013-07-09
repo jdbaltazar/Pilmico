@@ -9,6 +9,10 @@ import javax.persistence.Id;
 @Entity
 public class Designation {
 
+	public static final String MANAGER = "Employee";
+	public static final String CASHIER = "Cashier";
+	public static final String BOY = "Boy";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
@@ -40,6 +44,10 @@ public class Designation {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String toString() {
+		return name;
 	}
 
 }

@@ -28,6 +28,8 @@ public interface EmployeePersonManager {
 
 	public List<Employee> getEmployees() throws Exception;
 
+	public List<Employee> getEmployeesExcludeManagers() throws Exception;
+
 	public List<Employee> getEmployeesWithoutAccounts() throws Exception;
 
 	public void updateEmployee(Employee employee) throws Exception;

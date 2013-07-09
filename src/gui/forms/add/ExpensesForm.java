@@ -117,7 +117,7 @@ public class ExpensesForm extends SimplePanel {
 		typeLabel = new MainFormLabel("Type:");
 		dateLabel = new MainFormLabel("Date:");
 
-		issuedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
@@ -272,10 +272,10 @@ public class ExpensesForm extends SimplePanel {
 					Expense expense = rp.getSelectedExpense();
 					de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense, rp.getExpenseAmount()));
 				}
-				
+
 				try {
 					Manager.dailyExpenseManager.addDailyExpenses(de);
-					
+
 					System.out.println("daily expenses saved");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

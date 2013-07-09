@@ -108,7 +108,7 @@ public class PulloutForm extends SimplePanel {
 		issuedByLabel = new MainFormLabel("Issued by:");
 		dateLabel = new MainFormLabel("Date:");
 
-		issuedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));

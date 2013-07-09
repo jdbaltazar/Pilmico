@@ -24,6 +24,7 @@ import common.entity.delivery.DeliveryDetail;
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
+import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.Breakdown;
 import common.entity.inventorysheet.BreakdownLine;
 import common.entity.inventorysheet.Denomination;
@@ -65,10 +66,10 @@ public class HibernateUtil {
 
 	public static void init() {
 
-/*<<<<<<< HEAD
-		// mysql account credectials
-		if (!tryToBuildSessionFactory("root", ""))
-=======*/
+		/*
+		 * <<<<<<< HEAD // mysql account credectials if
+		 * (!tryToBuildSessionFactory("root", "")) =======
+		 */
 		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 		if (!tryToBuildSessionFactory()) {
 			throw new RuntimeException("connection unsuccessful");
@@ -149,6 +150,8 @@ public class HibernateUtil {
 			conf.addAnnotatedClass(Denomination.class);
 			conf.addAnnotatedClass(BreakdownLine.class);
 			conf.addAnnotatedClass(Breakdown.class);
+
+			conf.addAnnotatedClass(DiscountIssue.class);
 
 			conf.addAnnotatedClass(InventorySheetDetail.class);
 			conf.addAnnotatedClass(InventorySheet.class);

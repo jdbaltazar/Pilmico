@@ -50,8 +50,8 @@ import util.TableHeaderLabel;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ViewDeliveryForm extends EditFormPanel{
-	
+public class ViewDeliveryForm extends EditFormPanel {
+
 	/**
 	 * 
 	 */
@@ -74,7 +74,7 @@ public class ViewDeliveryForm extends EditFormPanel{
 
 	private ErrorLabel error;
 	private String msg = "";
-	
+
 	private JLabel status;
 
 	public ViewDeliveryForm() {
@@ -94,13 +94,12 @@ public class ViewDeliveryForm extends EditFormPanel{
 		scrollPane = new JScrollPane();
 
 		icon = new ImageIcon("images/invalidated.png");
-		
+
 		status = new JLabel("VOID", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.RED);
-		
+
 		remarks = new ViewFormLabel("-wrong date and wrong number of items", true);
-		
 
 		date = new ViewFormField("");
 		supplier = new ViewFormField("");
@@ -113,7 +112,7 @@ public class ViewDeliveryForm extends EditFormPanel{
 		receivedByLabel = new ViewFormLabel("Received by:");
 		supplierLabel = new ViewFormLabel("Supplier:");
 
-		receivedBy = new ViewFormField(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		receivedBy = new ViewFormField("");
 
 		terms = new ViewFormField("");
 		po_no = new ViewFormField("");
@@ -158,22 +157,21 @@ public class ViewDeliveryForm extends EditFormPanel{
 
 		setupTable(91, true);
 
-		/*addRow.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
-				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-				alternateRows();
-
-				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-				productsPanel.updateUI();
-				productsPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) productsPanel.getPreferredSize().getHeight(), 10, 10);
-				productsPanel.scrollRectToVisible(rect);
-			}
-		});*/
+		/*
+		 * addRow.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) {
+		 * rowPanel.add(new RowPanel(productsPanel, Values.ADD));
+		 * productsPanel.add(rowPanel.get(rowPanel.size() - 1)); alternateRows();
+		 * 
+		 * productsPanel.setPreferredSize(new Dimension(330,
+		 * productsPanel.getComponentCount() * ROW_HEIGHT));
+		 * productsPanel.updateUI(); productsPanel.revalidate();
+		 * 
+		 * Rectangle rect = new Rectangle(0, (int)
+		 * productsPanel.getPreferredSize().getHeight(), 10, 10);
+		 * productsPanel.scrollRectToVisible(rect); } });
+		 */
 
 		showUnrequired(true);
 
@@ -214,7 +212,7 @@ public class ViewDeliveryForm extends EditFormPanel{
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
-		
+
 		add(scrollPane);
 		add(status);
 		add(remarks);
@@ -302,7 +300,7 @@ public class ViewDeliveryForm extends EditFormPanel{
 			}
 		});
 
-//		panel.add(save);
+		// panel.add(save);
 		add(error);
 
 	}

@@ -14,6 +14,8 @@ public interface DailyExpensesManager {
 
 	public DailyExpensesType getExpenseType(int id) throws Exception;
 
+	public DailyExpensesType getExpenseType(String name) throws Exception;
+
 	public List<DailyExpensesType> getExpenseTypes() throws Exception;
 
 	public void updateExpenseType(DailyExpensesType expenseType) throws Exception;

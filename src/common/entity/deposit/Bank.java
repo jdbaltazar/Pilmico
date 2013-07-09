@@ -26,7 +26,7 @@ public class Bank {
 	@Column
 	private String address;
 
-	@Column
+	@Column(name = "contact_no")
 	private String contactNo;
 
 	@OneToMany(mappedBy = "bank", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

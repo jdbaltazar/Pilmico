@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.product.Product;
+import common.entity.profile.Account;
 import common.entity.profile.Person;
 
 @Entity
@@ -37,6 +38,10 @@ public class DiscountIssue {
 	private double amount;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "issued_by")
+	private Account issuedBy;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "person_id")
 	private Person customer;
 
@@ -54,20 +59,22 @@ public class DiscountIssue {
 		super();
 	}
 
-	public DiscountIssue(Date date, Product product, double amount, Person customer, boolean valid, String remarks) {
+	public DiscountIssue(Date date, Product product, double amount, Account issuedBy, Person customer, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.product = product;
 		this.amount = amount;
+		this.issuedBy = issuedBy;
 		this.customer = customer;
 		this.valid = valid;
 		this.remarks = remarks;
 	}
 
-	public DiscountIssue(Date date, double amount, boolean valid) {
+	public DiscountIssue(Date date, double amount, Account issuedBy, boolean valid) {
 		super();
 		this.date = date;
 		this.amount = amount;
+		this.issuedBy = issuedBy;
 		this.valid = valid;
 	}
 
@@ -101,6 +108,14 @@ public class DiscountIssue {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public Account getIssuedBy() {
+		return issuedBy;
+	}
+
+	public void setIssuedBy(Account issuedBy) {
+		this.issuedBy = issuedBy;
 	}
 
 	public Person getCustomer() {

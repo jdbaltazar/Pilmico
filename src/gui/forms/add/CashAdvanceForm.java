@@ -74,14 +74,13 @@ public class CashAdvanceForm extends SimplePanel {
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
 		fwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
 			}
 		});
-
 
 		error = new ErrorLabel();
 
@@ -90,7 +89,7 @@ public class CashAdvanceForm extends SimplePanel {
 		issuedForLabel = new DropdownLabel("Issued for");
 
 		// issuedBy = new FormDropdown();
-		issuedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
@@ -195,7 +194,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			employees = Manager.employeePersonManager.getEmployees();
+			employees = Manager.employeePersonManager.getEmployeesExcludeManagers();
 			for (Employee emp : employees) {
 				issuedFor.addItem(emp);
 			}

@@ -125,7 +125,7 @@ public class SalesForm extends SimplePanel {
 
 		String c = "";
 		if (Manager.loggedInAccount != null)
-			c = Manager.loggedInAccount.getEmployee().getFirstPlusLastName();
+			c = Manager.loggedInAccount.getFirstPlusLastName();
 		cashier = new JLabel(c);
 		cashier.setOpaque(false);
 		cashier.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
@@ -205,9 +205,9 @@ public class SalesForm extends SimplePanel {
 		customerLabel.setBounds(15, 58, 70, 20);
 		customerCombo.setBounds(85, 56, 220, 20);
 		customerFwd.setBounds(308, 58, 16, 16);
-		
+
 		customerFwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -255,6 +255,8 @@ public class SalesForm extends SimplePanel {
 
 				Rectangle rect = new Rectangle(0, (int) productsPanel.getPreferredSize().getHeight(), 10, 10);
 				productsPanel.scrollRectToVisible(rect);
+
+				// save.setEnabled(true);
 			}
 		});
 
@@ -365,7 +367,7 @@ public class SalesForm extends SimplePanel {
 
 		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
 		productFwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -436,6 +438,7 @@ public class SalesForm extends SimplePanel {
 		error = new ErrorLabel();
 
 		save.setBounds(275, 275, 80, 30);
+		// save.setEnabled(false);
 
 		error.setBounds(305, 340, 200, 30);
 
@@ -443,7 +446,7 @@ public class SalesForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				System.out.println("date: "+d.toString());
+				System.out.println("date: " + d.toString());
 				Date d2 = ((SpinnerDateModel) issueDate.getModel()).getDate();
 				Person p = null;
 				if (customerCombo.getSelectedItem() != null) {

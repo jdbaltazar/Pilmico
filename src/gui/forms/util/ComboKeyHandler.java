@@ -91,9 +91,19 @@ public class ComboKeyHandler extends KeyAdapter {
 		DefaultComboBoxModel m = new DefaultComboBoxModel();
 		for (Object o : list) {
 			String s = o.toString();
-			if (s.startsWith(text))
-				m.addElement(s);
+			if (startsWith(s, text, true))
+				m.addElement(o);
 		}
 		return m;
+	}
+
+	private static boolean startsWith(String str, String prefix, boolean ignoreCase) {
+		if (str == null || prefix == null) {
+			return (str == null && prefix == null);
+		}
+		if (prefix.length() > str.length()) {
+			return false;
+		}
+		return str.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
 	}
 }

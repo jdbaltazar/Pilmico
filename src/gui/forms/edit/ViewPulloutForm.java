@@ -97,7 +97,7 @@ public class ViewPulloutForm extends EditFormPanel{
 		issuedByLabel = new ViewFormLabel("Issued by:");
 		dateLabel = new ViewFormLabel("Date:");
 
-		issuedBy = new ViewFormField(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		issuedBy = new ViewFormField("");
 
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");

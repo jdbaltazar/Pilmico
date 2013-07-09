@@ -133,7 +133,7 @@ public class DeliveryForm extends SimplePanel {
 		receivedByLabel = new MainFormLabel("Received by:");
 		supplierLabel = new MainFormLabel("Supplier:");
 
-		receivedBy = new JLabel(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		receivedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		receivedBy.setOpaque(false);
 		receivedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		receivedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));

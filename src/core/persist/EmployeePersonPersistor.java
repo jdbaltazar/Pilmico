@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Person;
@@ -127,6 +128,18 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	@Override
 	public void deleteEmploymentStatus(EmploymentStatus empStatus) throws Exception {
 		remove(empStatus);
+	}
+
+	@Override
+	public List<Employee> getEmployeesExcludeManagers() throws Exception {
+		List<Employee> all = getAll(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		for (Employee e : all) {
+			if (e.getDesignation().getName().equalsIgnoreCase(Designation.CASHIER) || e.getDesignation().getName().equalsIgnoreCase(Designation.BOY)) {
+				employees.add(e);
+			}
+		}
+		return employees;
 	}
 
 }

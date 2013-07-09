@@ -28,6 +28,25 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		return (DailyExpenses) get(DailyExpenses.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public DailyExpensesType getExpenseType(String name) throws Exception {
+		DailyExpensesType det = null;
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpensesType.class);
+		List<DailyExpensesType> dets = new ArrayList<DailyExpensesType>();
+		try {
+			dets = criteria.add(Restrictions.like("name", name)).list();
+			if (dets.size() > 0)
+				det = dets.get(0);
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return det;
+	}
+
 	// @Override
 	// public List<DailyExpenses> getDailyExpenses() throws Exception {
 	// return getAll(DailyExpenses.class);

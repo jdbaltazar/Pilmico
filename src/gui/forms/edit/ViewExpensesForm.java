@@ -1,5 +1,6 @@
 package gui.forms.edit;
 
+import gui.forms.util.EditRowPanel;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
@@ -17,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +38,7 @@ import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.MainFormLabel;
@@ -43,6 +46,7 @@ import util.SBButton;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -54,8 +58,7 @@ public class ViewExpensesForm extends EditFormPanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel expensesPanel, row, p;
 	private JScrollPane expensesPane;
-	private final int ROW_WIDTH = 280, ROW_HEIGHT = 35, LABEL_HEIGHT = 25,
-			LABEL_Y = 25, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
+	private final int ROW_WIDTH = 280, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 25, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
 	private Object[] array = {};
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
@@ -71,11 +74,14 @@ public class ViewExpensesForm extends EditFormPanel {
 
 	private ErrorLabel error;
 
-	public ViewExpensesForm() {
-		// TODO Auto-generated constructor stub
+	private DailyExpenses dailyExpenses;
+
+	public ViewExpensesForm(DailyExpenses dailyExpenses) {
 		super("View Daily Expenses Form");
+		this.dailyExpenses = dailyExpenses;
 		init();
 		addComponents();
+		fillEntries();
 
 	};
 
@@ -88,13 +94,10 @@ public class ViewExpensesForm extends EditFormPanel {
 		scrollPane = new JScrollPane();
 
 		type = new ViewFormField("");
-		issuedBy = new ViewFormField(Manager.loggedInAccount.getEmployee()
-				.getFirstPlusLastName());
+		issuedBy = new ViewFormField("");
 		date = new ViewFormField("");
 
-		icon = new ImageIcon("images/accounted.png");
-		
-		status = new JLabel("ACCOUNTED", icon, JLabel.LEADING);
+		status = new JLabel("", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.green.darker());
 
@@ -111,15 +114,13 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		expensesPane = new JScrollPane(expensesPanel);
 
-		expensesPane
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		expensesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		expensesPane.setOpaque(false);
 		expensesPane.getViewport().setOpaque(false);
 
 		amountLabel.setBounds(23, LABEL_Y, 77, LABEL_HEIGHT);
-		expenseLabel.setBounds(100, LABEL_Y, ROW_WIDTH - amountLabel.getWidth()
-				- 15, LABEL_HEIGHT);
+		expenseLabel.setBounds(100, LABEL_Y, ROW_WIDTH - amountLabel.getWidth() - 15, LABEL_HEIGHT);
 
 		expensesPane.setBounds(24, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
@@ -132,25 +133,22 @@ public class ViewExpensesForm extends EditFormPanel {
 		issuedByLabel.setBounds(310, LABEL_Y + 95, 70, 20);// 350
 		issuedBy.setBounds(395, LABEL_Y + 95, 160, 20);
 
-		/*addRow.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				rowPanel.add(new RowPanel(expensesPanel, Tables.EXPENSES));
-				expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
-				alternateRows();
-
-				expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20,
-						expensesPanel.getComponentCount() * ROW_HEIGHT));
-				expensesPanel.updateUI();
-				expensesPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) expensesPanel
-						.getPreferredSize().getHeight(), 10, 10);
-				expensesPanel.scrollRectToVisible(rect);
-			}
-		});*/
+		/*
+		 * addRow.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) {
+		 * 
+		 * rowPanel.add(new RowPanel(expensesPanel, Tables.EXPENSES));
+		 * expensesPanel.add(rowPanel.get(rowPanel.size() - 1)); alternateRows();
+		 * 
+		 * expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20,
+		 * expensesPanel.getComponentCount() * ROW_HEIGHT));
+		 * expensesPanel.updateUI(); expensesPanel.revalidate();
+		 * 
+		 * Rectangle rect = new Rectangle(0, (int) expensesPanel
+		 * .getPreferredSize().getHeight(), 10, 10);
+		 * expensesPanel.scrollRectToVisible(rect); } });
+		 */
 
 		panel.add(amountLabel);
 		panel.add(expenseLabel);
@@ -171,12 +169,11 @@ public class ViewExpensesForm extends EditFormPanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 
-		scrollPane.setBounds(115, 95, issuedBy.getX() + issuedBy.getWidth()
-				+ amountLabel.getX(),
-				expensesPane.getY() + expensesPane.getHeight() + LABEL_Y + 3);
+		scrollPane.setBounds(115, 95, issuedBy.getX() + issuedBy.getWidth() + amountLabel.getX(), expensesPane.getY() + expensesPane.getHeight()
+				+ LABEL_Y + 3);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
-		
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
+
 		add(scrollPane);
 		add(status);
 	}
@@ -195,8 +192,7 @@ public class ViewExpensesForm extends EditFormPanel {
 		expensesPanel.updateUI();
 		expensesPanel.revalidate();
 
-		expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20,
-				expensesPanel.getComponentCount() * ROW_HEIGHT));
+		expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20, expensesPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
 
@@ -206,8 +202,7 @@ public class ViewExpensesForm extends EditFormPanel {
 	private void updateList(int removedRow) {
 
 		for (int i = removedRow + 1; i < rowPanel.size(); i++) {
-			rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT,
-					ROW_WIDTH, ROW_HEIGHT);
+			rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
 			rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
 			// System.out.println("command: "+rowPanel2.get(i).getCommand());
 			rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
@@ -234,8 +229,45 @@ public class ViewExpensesForm extends EditFormPanel {
 			}
 		});
 
-		// panel.add(voidBtn);
+		panel.add(voidBtn);
 		add(error);
 
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(dailyExpenses.isValid());
+
+		String s = "";
+		if (dailyExpenses.getInventorySheet() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (dailyExpenses.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+		type.setText(dailyExpenses.getDailyExpensesType().toString());
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
+		issuedBy.setText(dailyExpenses.getAccount().getFirstPlusLastName());
+
+		Set<DailyExpensesDetail> details = dailyExpenses.getDailyExpenseDetails();
+		for (DailyExpensesDetail ded : details) {
+			// rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
+			// expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
+			// alternateRows();
+			//
+			// expensesPanel.setPreferredSize(new Dimension(330,
+			// expensesPanel.getComponentCount() * ROW_HEIGHT));
+			// expensesPanel.updateUI();
+			// expensesPanel.revalidate();
+		}
 	}
 }

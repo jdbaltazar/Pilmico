@@ -42,6 +42,14 @@ public class InventorySheet {
 	@JoinColumn(name = "issued_by")
 	private Account issuedBy;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
 	// CascadeType.ALL, orphanRemoval = true)
 	// private Set<InventorySheetDetail> inventorySheetDetails = new
@@ -62,6 +70,6 @@ public class InventorySheet {
 	// @OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade =
 	// CascadeType.ALL, orphanRemoval = true)
 	// private Set<AccountReceivable> accountReceivables = new
-	// HashSet<AccountReceivable>();
+	// HashSet<AccountReceivable>();x
 
 }

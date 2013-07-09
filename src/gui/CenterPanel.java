@@ -23,9 +23,12 @@ import util.soy.SoyPanel;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Deposit;
+import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
@@ -181,7 +184,7 @@ public class CenterPanel extends SoyPanel {
 
 		default:
 			// fillLogs();
-			fillNULLForm();
+			fillInventories();
 			break;
 
 		}
@@ -192,9 +195,9 @@ public class CenterPanel extends SoyPanel {
 		updateUI();
 	}
 
-	private void fillNULLForm() {
+	private void fillInventories() {
 		try {
-			String[] headers = { "N / A" };
+			String[] headers = { "IS No", "Date","Cash on Hand", "Over/Short", "Amount", "Issued by", "Remarks" };
 			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.INVENTORY_SHEET), BorderLayout.CENTER);
@@ -206,7 +209,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillExpenses() {
 		try {
-			String[] headers = { "ID", "Date", "Amount", "Expense Type", "Issued by" };
+			String[] headers = { "ID", "IS No", "Date", "Amount", "Expense Type", "Issued by", "Valid?", "Remarks" };
 			List<DailyExpenses> dailyExpenses = Manager.dailyExpenseManager.getAllDailyExpenses();
 			// String[][] entries = { { "1", "June 20, 2013", "Type A",
 			// "John David S. Baltazar" }, { "2", "June 18, 2013", "Type B",
@@ -215,10 +218,13 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (DailyExpenses de : dailyExpenses) {
 				entries[i][0] = de.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.MDYFormat).format(de.getDate());
-				entries[i][2] = de.getDailyExpensesAmount() + "";
-				entries[i][3] = de.getDailyExpensesType().getName();
-				entries[i][4] = de.getAccount().getEmployee().getFirstPlusLastName();
+				entries[i][1] = de.getInventorySheet() == null ? "-" : de.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(de.getDate());
+				entries[i][3] = de.getDailyExpensesAmount() + "";
+				entries[i][4] = de.getDailyExpensesType().getName();
+				entries[i][5] = de.getAccount().getFirstPlusLastName();
+				entries[i][6] = de.isValid() ? "Yes" : "No";
+				entries[i][7] = de.getRemarks();
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, dailyExpenses), Tables.EXPENSES), BorderLayout.CENTER);
@@ -230,7 +236,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillSales() {
 		try {
-			String[] headers = { "ID", "Date", "Amount", "Cashier", "Remarks" };
+			String[] headers = { "ID", "IS No", "Date", "Amount", "Cashier", "Valid?", "Remarks" };
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "More" }, { "2", "June 18, 2013",
 			// "Juan dela Cruz", "" } };
@@ -241,10 +247,12 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Sales s : sales) {
 				entries[i][0] = s.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(s.getDate());
-				entries[i][2] = s.getSalesAmount() + "";
-				entries[i][3] = s.getCashier().getEmployee().getFirstPlusLastName();
-				entries[i][4] = s.getRemarks();
+				entries[i][1] = s.getInventorySheet() == null ? "-" : s.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(s.getDate());
+				entries[i][3] = s.getSalesAmount() + "";
+				entries[i][4] = s.getCashier().getFirstPlusLastName();
+				entries[i][5] = s.isValid() ? "Yes" : "No";
+				entries[i][6] = s.getRemarks();
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, sales), Tables.SALES), BorderLayout.CENTER);
@@ -256,7 +264,8 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillAR_Payments() {
 		try {
-			String[] headers = { "ID", "AR ID", "Date", "Amount", "Issued By" };
+			String[] headers = { "ID", "AR ID", "IS No", "Date", "Amount", "Issued By", "Valid?", "Remarks" };
+
 			// String[][] entries = { { "1", "June 20, 2012",
 			// "John David S. Baltazar", "2500" }, { "2", "January 18, 2012",
 			// "Juan dela Cruz", "5000" } };
@@ -266,9 +275,13 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (ARPayment arp : arPayments) {
 				entries[i][0] = arp.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(arp.getDate());
-				entries[i][2] = arp.getAmount() + "";
-				entries[i][3] = arp.getIssuedBy().getEmployee().getFirstPlusLastName();
+				entries[i][1] = arp.getAccountReceivable().getId() + "";
+				entries[i][1] = arp.getInventorySheet() == null ? "-" : arp.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arp.getDate());
+				entries[i][3] = arp.getAmount() + "";
+				entries[i][4] = arp.getIssuedBy().getFirstPlusLastName();
+				entries[i][5] = arp.isValid() ? "Yes" : "No";
+				entries[i][6] = arp.getRemarks();
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, arPayments), Tables.AR_PAYMENTS), BorderLayout.CENTER);
@@ -280,7 +293,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillAR() {
 		try {
-			String[] headers = { "ID", "Date", "Customer", "Balance", "Issued By" };
+			String[] headers = { "ID", "IS No", "Date", "Customer", "Balance", "Issued By", "Valid?", "Remarks" };
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
@@ -292,10 +305,14 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (AccountReceivable ar : accountReceivables) {
 				entries[i][0] = "" + ar.getId();
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(ar.getDate());
-				entries[i][2] = ar.getCustomer().getFirstPlusLastName();
-				entries[i][3] = ar.getBalance() + "";
-				entries[i][4] = ar.getIssuedBy().getEmployee().getFirstPlusLastName();
+				entries[i][1] = ar.getInventorySheet() == null ? "-" : ar.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ar.getDate());
+				entries[i][3] = ar.getCustomer().getFirstPlusLastName();
+				entries[i][4] = ar.getBalance() + "";
+				entries[i][5] = ar.getIssuedBy().getFirstPlusLastName();
+				entries[i][6] = ar.isValid() ? "Yes" : "No";
+				entries[i][7] = ar.getRemarks();
+
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, accountReceivables), Tables.ACCOUNT_RECEIVABLES), BorderLayout.CENTER);
@@ -306,8 +323,9 @@ public class CenterPanel extends SoyPanel {
 	}
 
 	private void fillPullout() {
+
 		try {
-			String[] headers = { "ID", "Date", "Amount", "Issued By" };
+			String[] headers = { "ID", "IS No", "Date", "Amount", "Issued by", "Valid?", "Remarks" };
 
 			// String[][] entries = { { "1", "May 20, 2013",
 			// "John David S. Baltazar", "Hog Feeds", "expired" },
@@ -319,9 +337,12 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (PullOut pullOut : pullOuts) {
 				entries[i][0] = pullOut.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(pullOut.getDate());
-				entries[i][2] = pullOut.getPulloutAmount() + "";
-				entries[i][3] = pullOut.getIssuedBy().getEmployee().getFirstPlusLastName();
+				entries[i][1] = pullOut.getInventorySheet() == null ? "-" : pullOut.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(pullOut.getDate());
+				entries[i][3] = pullOut.getPulloutAmount() + "";
+				entries[i][4] = pullOut.getIssuedBy().getFirstPlusLastName();
+				entries[i][5] = pullOut.isValid() ? "Yes" : "No";
+				entries[i][6] = pullOut.getRemarks();
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, pullOuts), Tables.PULLOUTS), BorderLayout.CENTER);
@@ -333,7 +354,8 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillCashAdvance() {
 		try {
-			String[] headers = { "ID", "Date", "Amount", "Employee", "Balance", "Issued By" };
+
+			String[] headers = { "ID", "IS No", "Date", "Employee", "Balance", "Issued By", "Valid?", "Remarks" };
 			List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getAllCashAdvances();
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
@@ -343,12 +365,13 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (CashAdvance ca : cashAdvances) {
 				entries[i][0] = ca.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(ca.getDate());
-				entries[i][2] = ca.getAmount() + "";
+				entries[i][1] = ca.getInventorySheet() == null ? "-" : ca.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ca.getDate());
 				entries[i][3] = ca.getEmployee().getFirstPlusLastName();
 				entries[i][4] = ca.getBalance() + "";
-				entries[i][5] = ca.getIssuedBy().getEmployee().getFirstPlusLastName();
-
+				entries[i][5] = ca.getIssuedBy().getFirstPlusLastName();
+				entries[i][6] = ca.isValid() ? "Yes" : "No";
+				entries[i][7] = ca.getRemarks();
 				i++;
 			}
 
@@ -361,9 +384,28 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillCAPayments() {
 		try {
-			String[] headers = { "ID", "Date", "Issued by", "Amount" };
-			String[][] entries = { { "1", "June 20, 2011", "John David S. Baltazar", "500" }, { "2", "December 18, 2010", "Juan dela Cruz", "5000" } };
+			String[] headers = { "ID", "CA ID", "IS No", "Date", "Amount", "Issued by", "Valid?", "Remarks" };
+			// String[][] entries = { { "1", "June 20, 2011",
+			// "John David S. Baltazar", "500" }, { "2", "December 18, 2010",
+			// "Juan dela Cruz", "5000" } };
 			// String[][] entries = new String[1][headers.length];
+
+			List<CAPayment> caps = Manager.cashAdvanceManager.getAllCAPayments();
+			String[][] entries = new String[caps.size()][headers.length];
+
+			int i = 0;
+			for (CAPayment s : caps) {
+				entries[i][0] = s.getId() + "";
+				entries[i][1] = s.getCashAdvance().getId() + "";
+				entries[i][2] = s.getInventorySheet() == null ? "-" : s.getInventorySheet().getId() + "";
+				entries[i][3] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(s.getDate());
+				entries[i][4] = s.getAmount() + "";
+				entries[i][5] = s.getIssuedBy().getFirstPlusLastName();
+				entries[i][6] = s.isValid() ? "Yes" : "No";
+				entries[i][7] = s.getRemarks();
+
+				i++;
+			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.CA_PAYMENTS), BorderLayout.CENTER);
 
@@ -387,8 +429,14 @@ public class CenterPanel extends SoyPanel {
 	}
 
 	private void fillDelivery() {
+
+		String[] headers = { "ID", "IS No", "Date", "Amount", "Cashier", "Valid?", "Remarks" };
+		// String[][] entries = { { "1", "June 20, 2013",
+		// "John David S. Baltazar", "More" }, { "2", "June 18, 2013",
+		// "Juan dela Cruz", "" } };
+
 		try {
-			String[] headers = { "ID", "Date", "Amount", "Received by" };
+
 			// String[][] entries = { { "1", "April 18, 2013",
 			// "John David S. Baltazar", "" }, { "2", "May 11, 2012",
 			// "John David S. Baltazar", "Hoax" } };
@@ -397,9 +445,12 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Delivery d : deliveries) {
 				entries[i][0] = d.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.CompleteFormatWithoutSec).format(d.getDate());
-				entries[i][2] = d.getDeliveryAmount() + "";
-				entries[i][3] = d.getReceivedBy().getEmployee().getFirstPlusLastName();
+				entries[i][1] = d.getInventorySheet() == null ? "-" : d.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
+				entries[i][3] = d.getDeliveryAmount() + "";
+				entries[i][4] = d.getReceivedBy().getFirstPlusLastName();
+				entries[i][5] = d.isValid() ? "Yes" : "No";
+				entries[i][6] = d.getRemarks();
 				i++;
 			}
 
@@ -440,8 +491,21 @@ public class CenterPanel extends SoyPanel {
 	private void fillDiscounts() {
 		try {
 
-			String[] headers = { "ID", "Date", "Amount", "Customer", "Product" };
-			String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "IS No", "Date", "Amount", "Issued By", "Valid?", "Remarks" };
+			List<DiscountIssue> dis = Manager.discountIssueManager.getAllDiscountIssues();
+			String[][] entries = new String[dis.size()][headers.length];
+
+			int i = 0;
+			for (DiscountIssue di : dis) {
+				entries[i][0] = di.getId() + "";
+				entries[i][1] = di.getInventorySheet() == null ? "-" : di.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(di.getDate());
+				entries[i][3] = di.getAmount() + "";
+				entries[i][4] = di.getIssuedBy().getFirstPlusLastName();
+				entries[i][5] = di.isValid() ? "Yes" : "No";
+				entries[i][6] = di.getRemarks();
+				i++;
+			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DISCOUNTS), BorderLayout.CENTER);
 
@@ -453,8 +517,21 @@ public class CenterPanel extends SoyPanel {
 	private void fillDeposits() {
 		try {
 
-			String[] headers = { "ID", "Date", "Account No.", "Depositor" };
-			String[][] entries = new String[1][headers.length];
+			String[] headers = { "ID", "IS No", "Date", "Amount", "Account/Bank", "Issued By", "Valid?", "Remarks" };
+			List<Deposit> deposits = Manager.depositManager.getAllDeposits();
+			String[][] entries = new String[deposits.size()][headers.length];
+
+			int i = 0;
+			for (Deposit d : deposits) {
+				entries[i][0] = d.getId() + "";
+				entries[i][1] = d.getInventorySheet() == null ? "-" : d.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
+				entries[i][3] = d.getAmount() + "";
+				entries[i][4] = d.getIssuedBy().getFirstPlusLastName();
+				entries[i][5] = d.isValid() ? "Yes" : "No";
+				entries[i][6] = d.getRemarks();
+				i++;
+			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DEPOSITS), BorderLayout.CENTER);
 

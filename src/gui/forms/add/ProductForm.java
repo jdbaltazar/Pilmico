@@ -217,8 +217,7 @@ public class ProductForm extends SimplePanel {
 				try {
 					Manager.productManager.addProduct(p);
 					new SuccessPopup("Add", 1).setVisible(true);
-					
-					
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -239,7 +238,7 @@ public class ProductForm extends SimplePanel {
 
 					if (JOptionPane.showConfirmDialog(null, "If a new category is added, it cannot be deleted. Continue?", "Warning!",
 							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-						new UtilityPopup(b, "Add new category", Values.CATEGORY).setVisible(true);
+						new UtilityPopup(b, "Add new category", Values.CATEGORY, new Category()).setVisible(true);
 						// Category c = new Category(fwd.getText());
 						// category.addItem(c);
 					}

@@ -16,6 +16,10 @@ import gui.forms.util.FormField;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import common.entity.product.Category;
+import common.entity.sales.Sales;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.SBButton;
 import util.SimplePanel;
@@ -31,12 +35,13 @@ public class UtilityPopup extends JDialog {
 	private JPanel panel;
 	private SBButton close;
 	private ErrorLabel error;
+	private Object object;
 
-	public UtilityPopup(Point p, String label, int utility) {
+	public UtilityPopup(Point p, String label, int utility, Object o) {
 		this.p = p;
 		this.label = label;
 		this.utility = utility;
-
+		this.object = o;
 		init();
 		addComponents();
 	}
@@ -50,8 +55,8 @@ public class UtilityPopup extends JDialog {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
-		
-		if(utility == Values.CATEGORY)
+
+		if (utility == Values.CATEGORY)
 			setSize(WIDTH, HEIGHT);
 		else
 			setSize(300, HEIGHT);
@@ -59,17 +64,16 @@ public class UtilityPopup extends JDialog {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		panel = new SimplePanel(""){
+		panel = new SimplePanel("") {
 			@Override
-			public void paintComponent(Graphics g){
+			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-						RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-				gradient = new GradientPaint(0, 0, new Color(245,255,250),0, getHeight(), Color.white);
+				gradient = new GradientPaint(0, 0, new Color(245, 255, 250), 0, getHeight(), Color.white);
 				g2.setPaint(gradient);
 				g2.fill(g.getClipBounds());
-				
+
 				paintChildren(g2);
 
 				g2.dispose();
@@ -77,25 +81,23 @@ public class UtilityPopup extends JDialog {
 			}
 
 		};
-		
+
 		panel.setOpaque(false);
-		
+
 		field = new FormField(label, 100, Color.white, Color.gray);
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		error = new ErrorLabel();
-		
-		
-		if(utility == Values.CATEGORY){
-		field.setBounds(5, 20, 140, 20);
-		close.setBounds(132, 2, 16, 16);
-		}
-		else{
+
+		if (utility == Values.CATEGORY) {
+			field.setBounds(5, 20, 140, 20);
+			close.setBounds(132, 2, 16, 16);
+		} else {
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
 		}
-		
+
 		error.setBounds(7, 3, 120, 15);
-		
+
 		panel.add(field);
 		panel.add(error);
 
@@ -106,30 +108,70 @@ public class UtilityPopup extends JDialog {
 				// TODO Auto-generated method stub
 
 				if (!field.getText().equals("")) {
-					
-					Values.mainFrame.dimScreen(false);
-					
-					switch (utility) {
 
-					case Values.CATEGORY:
-						Values.productForm.updateFormDropdowns();
-						break;
+					if (object instanceof Sales) {
+						Sales s = (Sales) object;
+						s.setValid(false);
+						s.setRemarks(field.getText());
+						try {
+							Manager.salesManager.updateSales(s);
+							Values.mainFrame.dimScreen(false);
 
-					default:
-						break;
+							switch (utility) {
+
+							case Values.CATEGORY:
+								Values.productForm.updateFormDropdowns();
+								break;
+
+							default:
+								break;
+
+							}
+
+							dispose();
+							new SuccessPopup("Edit", 1).setVisible(true);
+
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							error.setText("Cannot update sales");
+							e.printStackTrace();
+						}
+					} else if (object instanceof Category) {
+						Category c = (Category) object;
+						c.setName(field.getText());
+						try {
+							Manager.productManager.addCategory(c);
+							Values.mainFrame.dimScreen(false);
+
+							switch (utility) {
+
+							case Values.CATEGORY:
+								Values.productForm.updateFormDropdowns();
+								break;
+
+							default:
+								break;
+
+							}
+
+							dispose();
+							new SuccessPopup("Add", 1).setVisible(true);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							error.setText("Cannot update sales");
+
+						}
 
 					}
-					
-					dispose();
-					new SuccessPopup("Add", 1).setVisible(true);
-				}
-				else
+
+				} else
 					error.setText("Textfield empty");
 			}
 		});
-		
+
 		close.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -137,7 +179,7 @@ public class UtilityPopup extends JDialog {
 				dispose();
 			}
 		});
-		
+
 		add(close);
 		add(panel);
 	}

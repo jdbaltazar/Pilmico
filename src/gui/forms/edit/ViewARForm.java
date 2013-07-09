@@ -48,7 +48,7 @@ import util.TableHeaderLabel;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ViewARForm extends EditFormPanel{
+public class ViewARForm extends EditFormPanel {
 
 	/**
 	 * 
@@ -93,11 +93,11 @@ public class ViewARForm extends EditFormPanel{
 		scrollPane = new JScrollPane();
 
 		icon = new ImageIcon("images/pending.png");
-		
+
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		remarks = new ViewFormLabel("", true);
 
 		date = new ViewFormField("");
@@ -108,7 +108,7 @@ public class ViewARForm extends EditFormPanel{
 
 		customerLabel = new ViewFormLabel("Customer:");
 
-		issuedBy = new ViewFormField(Manager.loggedInAccount.getEmployee().getFirstPlusLastName());
+		issuedBy = new ViewFormField("");
 
 		balance = new ViewFormField("");
 
@@ -153,22 +153,21 @@ public class ViewARForm extends EditFormPanel{
 
 		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
-		/*addRow.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
-				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-				alternateRows();
-
-				productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-				productsPanel.updateUI();
-				productsPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) productsPanel.getPreferredSize().getHeight(), 10, 10);
-				productsPanel.scrollRectToVisible(rect);
-			}
-		});*/
+		/*
+		 * addRow.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) {
+		 * rowPanel.add(new RowPanel(productsPanel, Values.ADD));
+		 * productsPanel.add(rowPanel.get(rowPanel.size() - 1)); alternateRows();
+		 * 
+		 * productsPanel.setPreferredSize(new Dimension(330,
+		 * productsPanel.getComponentCount() * ROW_HEIGHT));
+		 * productsPanel.updateUI(); productsPanel.revalidate();
+		 * 
+		 * Rectangle rect = new Rectangle(0, (int)
+		 * productsPanel.getPreferredSize().getHeight(), 10, 10);
+		 * productsPanel.scrollRectToVisible(rect); } });
+		 */
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -182,30 +181,30 @@ public class ViewARForm extends EditFormPanel{
 		panel.add(balanceLabel);
 		panel.add(balance);
 
-//		panel.add(addRow);
+		// panel.add(addRow);
 
-//		panel.add(fwdProduct);
+		// panel.add(fwdProduct);
 		panel.add(quantitySACKlabel);
 		panel.add(quantityKGLabel);
 		panel.add(priceKG);
 		panel.add(priceSACK);
 		panel.add(productLabel);
-//		panel.add(deleteLabel);
+		// panel.add(deleteLabel);
 
 		panel.add(productsPane);
 
-//		panel.add(fwdCustomer);
+		// panel.add(fwdCustomer);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
-//		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane.setBounds(83, 63, 638, 280);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
-		
+
 		add(scrollPane);
 		add(status);
 		add(remarks);
@@ -259,11 +258,10 @@ public class ViewARForm extends EditFormPanel{
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-
 			}
 		});
 
-//		panel.add(save);
+		// panel.add(save);
 		add(error);
 
 	}

@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.product.Product;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
@@ -167,7 +168,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
-			add(new ViewExpensesForm(), BorderLayout.CENTER);
+			add(new ViewExpensesForm((DailyExpenses) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
