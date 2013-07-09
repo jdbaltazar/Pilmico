@@ -112,7 +112,7 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	@Override
 	public List<CAPayment> getAllCAPayments() throws Exception {
 		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Delivery.class);
+		Criteria criteria = session.createCriteria(CAPayment.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<CAPayment> caPayments = new ArrayList<CAPayment>();
 		try {

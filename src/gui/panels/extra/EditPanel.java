@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import common.entity.accountreceivable.AccountReceivable;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.product.Product;
@@ -178,7 +179,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
-			add(new ViewARForm(), BorderLayout.CENTER);
+			add(new ViewARForm((AccountReceivable) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
