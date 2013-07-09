@@ -48,8 +48,8 @@ public class SalaryReleaseForm extends SimplePanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel cashAdvancesPanel, feesPanel;
-	private JScrollPane cashAdvancesPane, feesPane;
+	private JPanel feesPanel;
+	private JScrollPane feesPane;
 	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
 	private Object[] array = {};
 	private JScrollBar sb;
@@ -58,11 +58,11 @@ public class SalaryReleaseForm extends SimplePanel {
 	private ArrayList<RowPanel> caRowPanel = new ArrayList<RowPanel>();
 	private JTextField quantity;
 	private JButton deleteRow, addRow;
-	private TableHeaderLabel dateHeaderLabel, amountLabel, deleteLabel, feesLabel;
+	private TableHeaderLabel deleteLabel, feesLabel;
 	private SpinnerDate date;
 	private ImageIcon icon;
 	private SoyButton save;
-	private JLabel issuedBy, caDeductions;
+	private JLabel issuedBy;
 	private FormDropdown issuedFor;
 	private MainFormField grossPay, netPay;
 	private MainFormLabel issuedByLabel, issuedForLabel, dateLabel, salaryLabel, payLabel;
@@ -118,31 +118,10 @@ public class SalaryReleaseForm extends SimplePanel {
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		issuedBy.setHorizontalAlignment(JLabel.CENTER);
 
-		caDeductions = new JLabel("CASH ADVANCES");
-		caDeductions.setOpaque(true);
-		caDeductions.setFont(new Font("Tahoma", Font.BOLD, 10));
-		caDeductions.setForeground(Color.white);
-		caDeductions.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		caDeductions.setBackground(new Color(119, 136, 153));
-		caDeductions.setHorizontalAlignment(JLabel.CENTER);
-
-		dateHeaderLabel = new TableHeaderLabel("Date");
-		amountLabel = new TableHeaderLabel("Amount");
 		feesLabel = new TableHeaderLabel("Fees");
 		deleteLabel = new TableHeaderLabel(icon);
 
 		model = new DefaultComboBoxModel(array);
-
-		cashAdvancesPanel = new JPanel();
-		cashAdvancesPanel.setLayout(null);
-		cashAdvancesPanel.setOpaque(false);
-
-		addCADeduction();
-
-		cashAdvancesPane = new JScrollPane(cashAdvancesPanel);
-		cashAdvancesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		cashAdvancesPane.setOpaque(false);
-		cashAdvancesPane.getViewport().setOpaque(false);
 
 		feesPanel = new JPanel();
 		feesPanel.setLayout(null);
@@ -168,16 +147,11 @@ public class SalaryReleaseForm extends SimplePanel {
 		payLabel.setBounds(52, 210, 65, 20);
 		netPay.setBounds(115, 210, 80, 20);
 
-		caDeductions.setBounds(40, 110, 260, 15);
-		dateHeaderLabel.setBounds(39, 125, 160, LABEL_HEIGHT);
-		amountLabel.setBounds(199, 125, 102, LABEL_HEIGHT);
-		cashAdvancesPane.setBounds(40, 144, 277, 140);
-
 		addRow.setBounds(320, 65, 16, 16);
 
 		feesLabel.setBounds(340, 60, 200, 25);
-		deleteLabel.setBounds(540, 60, 42, 25);
-		feesPane.setBounds(341, 79, 262, 150);
+		deleteLabel.setBounds(540, 60, 46, 25);
+		feesPane.setBounds(341, 85, 262, 150);
 
 		fwd.setBounds(300, 130, 16, 16);
 		fwd.addActionListener(new ActionListener() {
@@ -265,19 +239,6 @@ public class SalaryReleaseForm extends SimplePanel {
 		add(scrollPane);
 	}
 
-	private void addCADeduction() {
-		caRowPanel.add(new RowPanel(cashAdvancesPanel, "CADeductions"));
-		cashAdvancesPanel.add(caRowPanel.get(caRowPanel.size() - 1));
-		alternateRows(false);
-
-		cashAdvancesPanel.setPreferredSize(new Dimension(237, cashAdvancesPanel.getComponentCount() * ROW_HEIGHT));
-		cashAdvancesPanel.updateUI();
-		cashAdvancesPanel.revalidate();
-
-		Rectangle rect = new Rectangle(0, (int) cashAdvancesPanel.getPreferredSize().getHeight(), 10, 10);
-		cashAdvancesPanel.scrollRectToVisible(rect);
-	}
-
 	private void alternateRows(boolean isForFees) {
 
 		if (isForFees) {
@@ -343,7 +304,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (cashAdvancesPanel.getComponentCount() == 0) {
+		if (feesPanel.getComponentCount() == 0) {
 
 			msg = "Put at least one item";
 
@@ -355,7 +316,7 @@ public class SalaryReleaseForm extends SimplePanel {
 	}
 
 	private void clearForm() {
-		cashAdvancesPanel.removeAll();
+		feesPanel.removeAll();
 		feesRowPanel.clear();
 		refreshDate();
 

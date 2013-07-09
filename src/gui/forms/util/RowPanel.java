@@ -38,6 +38,7 @@ public class RowPanel extends JPanel {
 
 	private JButton deleteRow, addRow;
 	private JPanel row;
+	private FormField bankAccount;
 
 	private RowJLabel date, amount;
 
@@ -164,6 +165,8 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setText("0");
 		quantityKG.setText("0");
+		
+		bankAccount = new FormField("Account Number", 100);
 
 		productsCombo.addItemListener(new ItemListener() {
 
@@ -194,6 +197,8 @@ public class RowPanel extends JPanel {
 			addExpensesRow();
 		else if (label.equals(Tables.SALARY))
 			addFeesRow();
+		else if (label.equals(Tables.BANK))
+			addBankAccountRow();
 		else
 			addProductRow();
 
@@ -228,9 +233,29 @@ public class RowPanel extends JPanel {
 		});
 
 		feesCombo.setBounds(21, 7, 160, 20);
-		deleteRow.setBounds(210, 9, 16, 16);
+		deleteRow.setBounds(214, 9, 16, 16);
 
 		row.add(feesCombo);
+		row.add(deleteRow);
+
+		add(row);
+	}
+	
+	private void addBankAccountRow() {
+		deleteRow.setActionCommand(command);
+		deleteRow.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Values.bankForm.removeRow(Integer.parseInt(e.getActionCommand()));
+			}
+		});
+
+		bankAccount.setBounds(21, 7, 160, 20);
+		deleteRow.setBounds(214, 9, 16, 16);
+
+		row.add(bankAccount);
 		row.add(deleteRow);
 
 		add(row);

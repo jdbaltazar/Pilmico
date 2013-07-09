@@ -42,7 +42,7 @@ public class TableUtilPanel extends SoyPanel {
 	private JLabel tableLabel;
 	private String[] links = { Tables.EXPENSES, Tables.SALARY, Tables.DELIVERIES,
 			Tables.PULLOUTS, Tables.SUPPLIERS, Tables.ACCOUNT_RECEIVABLES,
-			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS,
+			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS, Tables.DEPOSITS, Tables.BANK,
 			Tables.PROFILES, Tables.EMPLOYEES, Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
 
@@ -204,13 +204,25 @@ public class TableUtilPanel extends SoyPanel {
 		else if (label.equals(Tables.CASH_ADVANCE) || label.equals(Tables.CA_PAYMENTS)) {
 
 			JLabel l = new JLabel("->");
-			l.setBounds(184, 11, 20, 20);
+			l.setBounds(185, 11, 20, 20);
 			labels.get(Values.CASH_ADVANCE).setBounds(40, 11, 143, 20);
 			labels.get(Values.CA_PAYMENTS).setBounds(203, 11, 132, 20);
 			
 			searchPanel.add(labels.get(Values.CASH_ADVANCE));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.CA_PAYMENTS));
+		}
+		
+		else if (label.equals(Tables.DEPOSITS) || label.equals(Tables.BANK)) {
+
+			JLabel l = new JLabel("->");
+			l.setBounds(128, 11, 20, 20);
+			labels.get(Values.DEPOSITS).setBounds(40, 11, 86, 20);
+			labels.get(Values.BANK).setBounds(146, 11, 55, 20);
+			
+			searchPanel.add(labels.get(Values.DEPOSITS));
+			searchPanel.add(l);
+			searchPanel.add(labels.get(Values.BANK));
 		}
 
 		else if (label.equals(Tables.PROFILES)

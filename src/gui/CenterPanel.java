@@ -168,6 +168,10 @@ public class CenterPanel extends SoyPanel {
 			fillDeposits();
 			break;
 
+		case Values.BANK:
+			fillBank();
+			break;
+			
 		case Values.LOGS:
 			fillLogs();
 			break;
@@ -538,6 +542,22 @@ public class CenterPanel extends SoyPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void fillBank() {
+		try {
+			String[] headers = { "ID", "Name", "Address", "Contact No."};
+	
+			 String[][] entries = { { "1", "Banco de Oro",
+			 "Marikina City", ""},
+			 { "2", "Landbank of the Philippines", "Tacloban City", "325-5689",
+			 } };
+
+			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.BANK), BorderLayout.CENTER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void fillProfiles() {

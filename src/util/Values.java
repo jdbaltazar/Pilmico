@@ -6,6 +6,7 @@ import gui.MainFrame;
 import gui.TopPanel;
 import gui.forms.add.AccountForm;
 import gui.forms.add.AccountReceivablesForm;
+import gui.forms.add.BankForm;
 import gui.forms.add.DeliveryForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.ProductForm;
@@ -61,6 +62,7 @@ public class Values {
 	public static DeliveryForm deliveryForm;
 	public static ExpensesForm expensesForm;
 	public static SalaryReleaseForm salaryReleaseForm;
+	public static BankForm bankForm;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
@@ -77,15 +79,16 @@ public class Values {
 	public static final int AR_PAYMENTS = 6;
 	public static final int CASH_ADVANCE = 7;
 	public static final int CA_PAYMENTS = 8;
-	public static final int PROFILES = 9;
-	public static final int EMPLOYEES = 10;
-	public static final int ACCOUNTS = 11;
-	public static final int PRODUCTS = 12;
-	public static final int SALES = 13;
-	public static final int DISCOUNTS = 14;
-	public static final int DEPOSITS = 15;
-	public static final int INVENTORY_SHEET = 16;
-	public static final int LOGS = 17;
+	public static final int DEPOSITS = 9;
+	public static final int BANK = 10;
+	public static final int PROFILES = 11;
+	public static final int EMPLOYEES = 12;
+	public static final int ACCOUNTS = 13;
+	public static final int PRODUCTS = 14;
+	public static final int SALES = 15;
+	public static final int DISCOUNTS = 16;
+	public static final int INVENTORY_SHEET = 17;
+	public static final int LOGS = 18;
 	
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;
