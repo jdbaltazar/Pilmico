@@ -27,6 +27,7 @@ public class Tables {
 	public static String DISCOUNTS = "DISCOUNTS";
 	
 	public static String DEPOSITS = "DEPOSITS";
+	public static String BANK = "BANK";
 
 	public static String INVENTORY_SHEET = "INVENTORY SHEET";
 
@@ -51,6 +52,16 @@ public class Tables {
 			"Contact No.", "Contact Person", "Remarks" };
 	
 	public static String[] cashAdvanceFormLabel = {"Date*", "Issued By*", "Issued For*", "Amount*", "Balance*"};
+	
+	public static String[] discountFormLabel = {"Date", "Issued By", "Product", "Customer", "Amount"};
+	
+	public static String[] depositFormLabel = {"Date", "Issued By", "Depositor", "Bank Account", "Amount"};
+	
+	public static String[] ARPaymentFormLabel = {"AR ID", "Date", "Issued By", "Customer Representative", "Amount"};
+	
+	public static String[] CAPaymentFormLabel = {"CA ID", "Date", "Issued By", "Employee Representative", "Amount"};
+	
+	public static String[] bankFormLabel = {"Name*", "Address", "Contact Number"};
 
 	
 /*	import java.awt.*;

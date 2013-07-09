@@ -1,9 +1,14 @@
 package gui.panels.extra;
 
+import gui.forms.add.ARPaymentForm;
 import gui.forms.add.AccountForm;
 import gui.forms.add.AccountReceivablesForm;
+import gui.forms.add.BankForm;
+import gui.forms.add.CAPaymentForm;
 import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.DeliveryForm;
+import gui.forms.add.DepositForm;
+import gui.forms.add.DiscountForm;
 import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.InventorySheetForm;
@@ -76,6 +81,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private DeliveryForm delivery;
 	private PulloutForm pullout;
 	private InventorySheetForm inventorySheetForm;
+	private DiscountForm discount;
+	private BankForm bank;
+	private DepositForm deposit;
+	private ARPaymentForm arPayment;
+	private CAPaymentForm caPayment;
 	
 	private JPanel dummy;
 	private JScrollPane dummyPane;
@@ -135,9 +145,17 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		sales = new SalesForm();
 		
 		cashAdvanceForm = new CashAdvanceForm();
+		caPayment = new CAPaymentForm();
+		
 		salary = new SalaryReleaseForm();
 		
 		accountReceivables = new AccountReceivablesForm();
+		arPayment = new ARPaymentForm();
+		
+		discount = new DiscountForm();
+		
+		deposit = new DepositForm();
+		bank = new BankForm();
 		
 		inventorySheetForm = new InventorySheetForm();
 		
@@ -198,18 +216,17 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 //		cashAdvanceForm.setBounds(225, 40, 300, 395);
 		cashAdvanceForm.setBounds(230, 60, 300, 345);
+		caPayment.setBounds(240, 50, 300, 380);
+		
 		salary.setBounds(86, 75, 638, 330);
 
 		accountReceivables.setBounds(70, 55, 670, 365);
-
-		accountTypeList.setBounds(150, 50, 200, 160);
-		// logTypeList.setBounds(300, 50, 200, 160);
-		// noteTypeList.setBounds(550, 50, 200, 160);
-		noteTypeList.setBounds(440, 50, 200, 160); //300
-
-		unitList.setBounds(50, 265, 200, 160);
-		conditionList.setBounds(300, 265, 200, 160);
-		categoryList.setBounds(550, 265, 200, 160);
+		arPayment.setBounds(240, 50, 300, 380);
+		
+		discount.setBounds(240, 50, 300, 380);
+		
+		deposit.setBounds(240, 50, 300, 380);
+		bank.setBounds(130, 87, 550, 310);
 		
 		checkBox.setBounds(660, 5, 200, 20);
 		
@@ -230,23 +247,23 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		add(expensesForm);
 		
 		add(cashAdvanceForm);
+		add(caPayment);
+		
 		add(salary);
 		
 		add(accountReceivables);
+		add(arPayment);
+		
+		add(discount);
+		
+		add(deposit);
+		add(bank);
 		
 		add(inventorySheetForm);
 		
 		add(profileForm);
 		add(employeeForm);
 
-		add(accountTypeList);
-//		add(logTypeList);
-		add(noteTypeList);
-
-		add(unitList);
-		add(conditionList);
-		add(categoryList);
-		
 		add(checkBox);
 		add(dummyPane);
 
@@ -368,6 +385,25 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			accountReceivables.setVisible(true);
 			motherPanel = accountReceivables;
+		}
+		
+		/*else if (Values.tableUtilPanel.getLabel().equals(Tables.AR_PAYMENTS)) {
+			arPayment.setVisible(true);
+			motherPanel = arPayment;
+		}*/
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DISCOUNTS)) {
+			arPayment.setVisible(true);
+//			discount.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
+			caPayment.setVisible(true);
+//			deposit.setVisible(true);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
+			bank.setVisible(true);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
