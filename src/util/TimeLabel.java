@@ -21,21 +21,20 @@ public class TimeLabel extends JLabel implements ActionListener {
 
 	public TimeLabel() {
 		setFont(new Font("Calibri", 0, 14));
-		setForeground(new Color(0,0,77));
+		setForeground(new Color(0, 0, 77));
 		setHorizontalAlignment(JLabel.RIGHT);
 		timer = new javax.swing.Timer(1000, this);
 		timer.setRepeats(true);
 		timer.start();
 	}
 
-	/*public static TimeLabel getComponent() {
-		if (ins == null)
-			ins = new TimeLabel();
-		return ins;
-	}*/
+	/*
+	 * public static TimeLabel getComponent() { if (ins == null) ins = new
+	 * TimeLabel(); return ins; }
+	 */
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {		
+	public void actionPerformed(ActionEvent arg0) {
 		now = new Date();
 		setText(DateFormat.getDateTimeInstance().format(now));
 	}

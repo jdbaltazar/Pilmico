@@ -58,6 +58,10 @@ public class DateFormatter {
 		case Utility.DMYHMAFormat:
 			sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a");
 			break;
+			
+		case Utility.DMYHMSAFormat:
+			sdf = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a");
+			break;
 
 		default:
 			break;
