@@ -45,20 +45,6 @@ public class InventorySheetDetail {
 	@Column(name = "price_per_kilo")
 	private double pricePerKilo;
 
-	private double deliveriesInSack;
-
-	private double deliveriesInKilo;
-
-	private double pulloutsInSack;
-
-	private double pulloutsInKilo;
-
-	// sales + account receivables
-	private double offTakeInSack;
-
-	// sales + account receivables
-	private double offTakeInKilo;
-
 	public InventorySheetDetail() {
 		super();
 	}
@@ -75,12 +61,6 @@ public class InventorySheetDetail {
 		this.pricePerSack = pricePerSack;
 		this.pricePerKilo = pricePerKilo;
 
-		this.deliveriesInSack = 0;
-		this.deliveriesInKilo = 0;
-		this.pulloutsInSack = 0;
-		this.pulloutsInKilo = 0;
-		this.offTakeInSack = 0;
-		this.offTakeInKilo = 0;
 	}
 
 	public int getId() {
@@ -153,54 +133,6 @@ public class InventorySheetDetail {
 
 	public void setPricePerKilo(double pricePerKilo) {
 		this.pricePerKilo = pricePerKilo;
-	}
-
-	public double getDeliveriesInSack() {
-		return deliveriesInSack;
-	}
-
-	public void setDeliveriesInSack(double deliveriesInSack) {
-		this.deliveriesInSack = deliveriesInSack;
-	}
-
-	public double getDeliveriesInKilo() {
-		return deliveriesInKilo;
-	}
-
-	public void setDeliveriesInKilo(double deliveriesInKilo) {
-		this.deliveriesInKilo = deliveriesInKilo;
-	}
-
-	public double getPulloutsInSack() {
-		return pulloutsInSack;
-	}
-
-	public void setPulloutsInSack(double pulloutsInSack) {
-		this.pulloutsInSack = pulloutsInSack;
-	}
-
-	public double getPulloutsInKilo() {
-		return pulloutsInKilo;
-	}
-
-	public void setPulloutsInKilo(double pulloutsInKilo) {
-		this.pulloutsInKilo = pulloutsInKilo;
-	}
-
-	public double getOffTakeInSack() {
-		return offTakeInSack;
-	}
-
-	public void setOffTakeInSack(double offTakeInSack) {
-		this.offTakeInSack = offTakeInSack;
-	}
-
-	public double getOffTakeInKilo() {
-		return offTakeInKilo;
-	}
-
-	public void setOffTakeInKilo(double offTakeInKilo) {
-		this.offTakeInKilo = offTakeInKilo;
 	}
 
 }

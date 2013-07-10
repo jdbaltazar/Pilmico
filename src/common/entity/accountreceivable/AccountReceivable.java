@@ -170,16 +170,16 @@ public class AccountReceivable {
 	// this.accountReceivableDetails = accountReceivableDetails;
 	// // increment the balance
 	// for (AccountReceivableDetail ard : accountReceivableDetails) {
-	// balance += ((ard.getPricePerSack() * ard.getQuantityPerSack()) +
-	// (ard.getPricePerKilo() * ard.getQuantityPerKilo()));
+	// balance += ((ard.getPricePerSack() * ard.getQuantityInSack()) +
+	// (ard.getPricePerKilo() * ard.getQuantityInKilo()));
 	// }
 	// }
 
 	public void addAccountReceivableDetail(AccountReceivableDetail accountReceivableDetail) {
 		accountReceivableDetail.setAccountReceivable(this);
 		accountReceivableDetails.add(accountReceivableDetail);
-		balance += ((accountReceivableDetail.getPricePerSack() * accountReceivableDetail.getQuantityPerSack()) + (accountReceivableDetail
-				.getPricePerKilo() * accountReceivableDetail.getQuantityPerKilo()));
+		balance += ((accountReceivableDetail.getPricePerSack() * accountReceivableDetail.getQuantityInSack()) + (accountReceivableDetail
+				.getPricePerKilo() * accountReceivableDetail.getQuantityInKilo()));
 
 	}
 
@@ -191,7 +191,7 @@ public class AccountReceivable {
 		for (AccountReceivableDetail ard : accountReceivableDetails) {
 			if (ard.getId() == accountReceivableDetailId) {
 				accountReceivableDetails.remove(ard);
-				balance -= ((ard.getPricePerSack() * ard.getQuantityPerSack()) + (ard.getPricePerKilo() * ard.getQuantityPerKilo()));
+				balance -= ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
 			}
 		}
 
