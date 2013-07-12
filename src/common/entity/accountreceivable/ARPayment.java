@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
 import common.entity.profile.Account;
 import common.entity.profile.Person;
 
@@ -52,7 +52,7 @@ public class ARPayment {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheet inventorySheet;
+	private InventorySheetData inventorySheet;
 
 	public ARPayment() {
 		super();
@@ -152,11 +152,11 @@ public class ARPayment {
 		this.remarks = remarks;
 	}
 
-	public InventorySheet getInventorySheet() {
+	public InventorySheetData getInventorySheet() {
 		return inventorySheet;
 	}
 
-	public void setInventorySheet(InventorySheet inventorySheet) {
+	public void setInventorySheet(InventorySheetData inventorySheet) {
 		this.inventorySheet = inventorySheet;
 	}
 

@@ -165,7 +165,7 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setText("0");
 		quantityKG.setText("0");
-		
+
 		bankAccount = new FormField("Account Number", 100);
 
 		productsCombo.addItemListener(new ItemListener() {
@@ -240,7 +240,7 @@ public class RowPanel extends JPanel {
 
 		add(row);
 	}
-	
+
 	private void addBankAccountRow() {
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
@@ -412,16 +412,17 @@ public class RowPanel extends JPanel {
 		// }
 	}
 
-	public int getQuantityInSack() {
-		return Integer.parseInt(quantitySack.getText());
+	public double getQuantityInSack() {
+		return Double.parseDouble(quantitySack.getText());
+
 	}
 
-	public int getQuantityInKilo() {
-		return Integer.parseInt(quantityKG.getText());
+	public double getQuantityInKilo() {
+		return Double.parseDouble(quantityKG.getText());
 	}
 
-	public int getExpenseAmount() {
-		return Integer.parseInt(amountOfExpense.getText());
+	public double getExpenseAmount() {
+		return Double.parseDouble(amountOfExpense.getText());
 	}
 
 }

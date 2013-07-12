@@ -171,7 +171,7 @@ public class CenterPanel extends SoyPanel {
 		case Values.BANK:
 			fillBank();
 			break;
-			
+
 		case Values.LOGS:
 			fillLogs();
 			break;
@@ -201,7 +201,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillInventories() {
 		try {
-			String[] headers = { "IS No", "Date","Cash on Hand", "Over/Short", "Amount", "Issued by", "Remarks" };
+			String[] headers = { "IS No", "Date", "Cash on Hand", "Over/Short", "Amount", "Issued by", "Remarks" };
 			String[][] entries = new String[1][headers.length];
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.INVENTORY_SHEET), BorderLayout.CENTER);
@@ -543,15 +543,12 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void fillBank() {
 		try {
-			String[] headers = { "ID", "Name", "Address", "Contact No."};
-	
-			 String[][] entries = { { "1", "Banco de Oro",
-			 "Marikina City", ""},
-			 { "2", "Landbank of the Philippines", "Tacloban City", "325-5689",
-			 } };
+			String[] headers = { "ID", "Name", "Address", "Contact No." };
+
+			String[][] entries = { { "1", "Banco de Oro", "Marikina City", "" }, { "2", "Landbank of the Philippines", "Tacloban City", "325-5689", } };
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.BANK), BorderLayout.CENTER);
 		} catch (Exception e) {

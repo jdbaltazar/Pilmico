@@ -9,19 +9,19 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import common.entity.delivery.Delivery;
-import common.entity.inventorysheet.InventorySheet;
-import common.manager.InventorySheetManager;
+import common.entity.inventorysheet.InventorySheetData;
+import common.manager.InventorySheetDataManager;
 
-public class InventorySheetPersistor extends Persistor implements InventorySheetManager {
+public class InventorySheetPersistor extends Persistor implements InventorySheetDataManager {
 
 	@Override
-	public void addInventorySheet(InventorySheet inventorySheet) throws Exception {
+	public void addInventorySheet(InventorySheetData inventorySheet) throws Exception {
 		add(inventorySheet);
 	}
 
 	@Override
-	public InventorySheet getInventorySheet(int id) throws Exception {
-		return (InventorySheet) get(InventorySheet.class, id);
+	public InventorySheetData getInventorySheet(int id) throws Exception {
+		return (InventorySheetData) get(InventorySheetData.class, id);
 	}
 
 	// @Override
@@ -31,11 +31,11 @@ public class InventorySheetPersistor extends Persistor implements InventorySheet
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<InventorySheet> getInventorySheets() throws Exception {
+	public List<InventorySheetData> getInventorySheets() throws Exception {
 		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(InventorySheet.class);
+		Criteria criteria = session.createCriteria(InventorySheetData.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<InventorySheet> inventorySheets = new ArrayList<InventorySheet>();
+		List<InventorySheetData> inventorySheets = new ArrayList<InventorySheetData>();
 		try {
 			inventorySheets = criteria.addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
@@ -47,12 +47,12 @@ public class InventorySheetPersistor extends Persistor implements InventorySheet
 	}
 
 	@Override
-	public void updateInventorySheet(InventorySheet inventorySheet) throws Exception {
+	public void updateInventorySheet(InventorySheetData inventorySheet) throws Exception {
 		update(inventorySheet);
 	}
 
 	@Override
-	public void deleteInventorySheet(InventorySheet inventorySheet) throws Exception {
+	public void deleteInventorySheet(InventorySheetData inventorySheet) throws Exception {
 		remove(inventorySheet);
 	}
 

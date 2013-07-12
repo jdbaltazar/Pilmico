@@ -28,8 +28,8 @@ import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.Breakdown;
 import common.entity.inventorysheet.BreakdownLine;
 import common.entity.inventorysheet.Denomination;
-import common.entity.inventorysheet.InventorySheet;
-import common.entity.inventorysheet.InventorySheetDetail;
+import common.entity.inventorysheet.InventorySheetData;
+import common.entity.inventorysheet.InventorySheetDataDetail;
 import common.entity.log.Log;
 import common.entity.log.LogType;
 import common.entity.note.Note;
@@ -153,8 +153,8 @@ public class HibernateUtil {
 
 			conf.addAnnotatedClass(DiscountIssue.class);
 
-			conf.addAnnotatedClass(InventorySheetDetail.class);
-			conf.addAnnotatedClass(InventorySheet.class);
+			conf.addAnnotatedClass(InventorySheetDataDetail.class);
+			conf.addAnnotatedClass(InventorySheetData.class);
 
 			sessionFactory = conf.buildSessionFactory();
 

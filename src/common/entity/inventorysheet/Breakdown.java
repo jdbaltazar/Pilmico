@@ -28,13 +28,13 @@ public class Breakdown {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheet inventorySheet;
+	private InventorySheetData inventorySheet;
 
 	public Breakdown() {
 		super();
 	}
 
-	public Breakdown(double coins, double check, String remarks, InventorySheet inventorySheet) {
+	public Breakdown(double coins, double check, String remarks, InventorySheetData inventorySheet) {
 		super();
 		this.coins = coins;
 		this.check = check;
@@ -74,11 +74,11 @@ public class Breakdown {
 		this.remarks = remarks;
 	}
 
-	public InventorySheet getInventorySheet() {
+	public InventorySheetData getInventorySheet() {
 		return inventorySheet;
 	}
 
-	public void setInventorySheet(InventorySheet inventorySheet) {
+	public void setInventorySheet(InventorySheetData inventorySheet) {
 		this.inventorySheet = inventorySheet;
 	}
 

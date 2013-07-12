@@ -51,7 +51,7 @@ public class Employee {
 	@Temporal(TemporalType.DATE)
 	private Date terminationDate;
 
-	@OneToOne(mappedBy = "employee", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
 	private Account account;
 
 	public Employee() {
