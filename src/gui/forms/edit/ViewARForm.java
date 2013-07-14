@@ -80,7 +80,7 @@ public class ViewARForm extends EditFormPanel {
 	private ErrorLabel error;
 	private String msg = "";
 
-	private SBButton voidBtn;
+	private SBButton voidBtn, payBtn;
 
 	private JLabel status;
 
@@ -103,6 +103,8 @@ public class ViewARForm extends EditFormPanel {
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
+		
+		payBtn = new SBButton("invalidate.png", "invalidate.png", "Pay");
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
@@ -152,7 +154,9 @@ public class ViewARForm extends EditFormPanel {
 		customer.setBounds(95, 48, 200, 20);
 
 		balanceLabel.setBounds(305, 50, 70, 20);
-		balance.setBounds(380, 48, 130, 20);
+		balance.setBounds(380, 48, 150, 20);
+		
+		payBtn.setBounds(535, 51, 16, 16);
 
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
@@ -163,6 +167,15 @@ public class ViewARForm extends EditFormPanel {
 
 		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
+		payBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.startAnimation();
+				Values.addEntryPanel.showPaymentForm(Values.AR_PAYMENTS);
+			}
+		});
 		/*
 		 * addRow.addActionListener(new ActionListener() {
 		 * 
@@ -191,6 +204,7 @@ public class ViewARForm extends EditFormPanel {
 		panel.add(balanceLabel);
 		panel.add(balance);
 
+		panel.add(payBtn);
 		// panel.add(addRow);
 
 		// panel.add(fwdProduct);

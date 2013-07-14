@@ -140,6 +140,7 @@ public class SBTable extends JTable implements MouseListener {
 			Values.editPanel.startAnimation();
 			// Values.editPanel.showComponent(objects.get(row));
 			Values.editPanel.showComponent(objects.get(row));
+//			Values.editPanel.showComponent(null);
 			// }
 		}
 		if (arg0.getClickCount() == 1 && (Values.tableUtilPanel.getLabel().equals(Tables.LOGS))) {

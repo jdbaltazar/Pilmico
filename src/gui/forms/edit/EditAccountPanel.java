@@ -14,12 +14,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import util.EditFormPanel;
 import util.ErrorLabel;
 import util.Values;
 import util.soy.SoyButton;
 import util.soy.SoyPanel;
 
-public class EditAccountPanel extends SoyPanel {
+public class EditAccountPanel extends EditFormPanel {
 
 	/**
 	 * 
@@ -42,6 +43,7 @@ public class EditAccountPanel extends SoyPanel {
 	}*/
 	
 	public EditAccountPanel() {
+		super("View / Edit Account");
 		init();
 
 		addComponents();
@@ -76,7 +78,7 @@ public class EditAccountPanel extends SoyPanel {
 				x += 300;
 			}
 
-			if (i != 2) {
+			if (i != 1) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Values.accountFormLabel[i]));
 
@@ -87,7 +89,7 @@ public class EditAccountPanel extends SoyPanel {
 				labelsCtr++;
 			}
 
-			if (i == 2) {
+			if (i == 1) {
 				labels.add(new FormLabel(Values.accountFormLabel[i]));
 				labels.get(labelsCtr).setBounds(x, 50 + y, 100, 15);
 
@@ -160,37 +162,6 @@ public class EditAccountPanel extends SoyPanel {
 			return true;
 
 		return false;
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		Color ppColor = new Color(0, 96, 96, 30); // r,g,b,alpha
-		g2.setColor(ppColor);
-		g2.fillRect(0, 0, getWidth(), getHeight());
-
-		g2.setColor(new Color(150, 150, 150));
-		g2.drawRoundRect(2, 4, getWidth() - 5, getHeight() - 8, 20, 20);
-
-		/*
-		 * g2.setColor(new Color(0,0,139)); g2.draw3DRect(14, 14, 10, 10, true);
-		 * g2.fill3DRect(14, 14, 10, 10, true); g2.drawString("View/Edit Item",
-		 * 30, 24);
-		 */
-
-		g2.setColor(new Color(0, 0, 139));
-		g2.draw3DRect(14, 380, 10, 10, true);
-		g2.fill3DRect(14, 380, 10, 10, true);
-		g2.setFont(new Font("TimeBurner", Font.PLAIN, 14));
-		g2.drawString("View / Edit Account", 30, 390);
-
-		paintChildren(g2);
-
-		g2.dispose();
-		g.dispose();
 	}
 
 }

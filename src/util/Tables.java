@@ -12,7 +12,7 @@ public class Tables {
 	public static String CA_PAYMENTS = "CA PAYMENTS";
 	
 	
-	public static String PROFILES = "PROFILES";
+	public static String CUSTOMERS = "CUSTOMERS";
 	public static String ACCOUNTS = "ACCOUNTS";
 	public static String EMPLOYEES = "EMPLOYEES";
 
@@ -40,13 +40,13 @@ public class Tables {
 			"Alert on Quantity*" };
 
 	public static String[] profileFormLabel = { "Last Name*", "First Name*",
-		"Middle Name", "Address", "Contact Number", "Customer" };
+		"Middle Name", "Address", "Contact Number" };
 	
 	public static String[] accountFormLabel = { "Employee*", "Account Type*",
 			"Username*", "Password*" };
 
-	public static String[] employeeFormLabel = { "Profile*", "Designation*",
-			"Employment Status*", "Starting Date", "Salary", "Remarks", "End Date" };
+	public static String[] employeeFormLabel = { "Last Name*","First Name*","Middle Name", "Address", "Contact No.", "Designation*",
+			"Employment Status*", "Starting Date", "Salary*", "Remarks", "End Date" };
 
 	public static String[] supplierFormLabel = { "Name*", "Address", "TIN",
 			"Contact No.", "Contact Person", "Remarks" };

@@ -98,6 +98,7 @@ public class ViewSalesForm extends EditFormPanel {
 		this.sales = sales;
 		init();
 		addComponents();
+		colorTable();
 		fillEntries();
 	};
 
@@ -113,7 +114,6 @@ public class ViewSalesForm extends EditFormPanel {
 
 		status = new JLabel(s, null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
-		status.setForeground(Color.orange);
 
 		date = new ViewFormField("");
 		issueDate = new ViewFormField(new Date().toString());
@@ -216,7 +216,6 @@ public class ViewSalesForm extends EditFormPanel {
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 
 		scrollPane.setBounds(83, 45, 637, 310);
 
@@ -225,6 +224,33 @@ public class ViewSalesForm extends EditFormPanel {
 		add(scrollPane);
 		add(status);
 	}
+	
+	private void colorTable(){
+
+		String s = "";
+		if (sales.getInventorySheet() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
+		} else {
+			if (sales.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+				status.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				status.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+	}
+
 
 	private void alternateRows() {
 
@@ -313,22 +339,6 @@ public class ViewSalesForm extends EditFormPanel {
 	private void fillEntries() {
 
 		voidBtn.setVisible(sales.getInventorySheet() != null ? false : sales.isValid());
-
-		String s = "";
-		if (sales.getInventorySheet() != null) {
-			icon = new ImageIcon("images/accounted.png");
-			s = "ACCOUNTED";
-		} else {
-			if (sales.isValid()) {
-				icon = new ImageIcon("images/pending.png");
-				s = "PENDING";
-			} else {
-				icon = new ImageIcon("images/invalidated.png");
-				s = "INVALIDATED";
-			}
-		}
-		status.setText(s);
-		status.setIcon(icon);
 
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
 		cashier.setText(sales.getCashier().getFirstPlusLastName());

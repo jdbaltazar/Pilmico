@@ -21,6 +21,7 @@ import common.manager.Manager;
 
 import util.EditFormPanel;
 import util.ErrorLabel;
+import util.FormCheckbox;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
@@ -71,8 +72,8 @@ public class EditProductPanel extends EditFormPanel {
 		category = new FormDropdown();
 		condition = new FormDropdown();
 
-		cbox1 = new JCheckBox("Available?*");
-		cbox2 = new JCheckBox("Alert using sack?*");
+		cbox1 = new FormCheckbox("Available?*", true);
+		cbox2 = new FormCheckbox("Alert using sack?*", true);
 
 		/*
 		 * try { List<Unit> units = Manager.itemManager.getUnits(); List<Category>

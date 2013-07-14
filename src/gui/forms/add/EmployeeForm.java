@@ -19,6 +19,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -44,20 +46,19 @@ public class EmployeeForm extends SimplePanel {
 	private static final long serialVersionUID = -1337878469442864579L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
-	private FormDropdown employmentStatus;
-	private JComboBox personCombo;
-	private JTextField personField;
+	private FormDropdown employmentStatus, designation;
 	private DefaultComboBoxModel model;
 	private JSpinner startDate, endDate;
 
-	private int initY = 70;
+	private int initY = 50;
 
 	private ErrorLabel error;
-	private DropdownLabel profile, status, startD, endD;
+	private DropdownLabel designationLabel, status, startD, endD;
 	private String username, password, firstName, lastName, address;
 
 	private final int num = Tables.employeeFormLabel.length;
-	private SBButton fwd;
+	private JPanel panel;
+	private JScrollPane scrollPane;
 
 	public EmployeeForm() {
 		super("Add Employee");
@@ -66,17 +67,14 @@ public class EmployeeForm extends SimplePanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		fwd = new SBButton("forward.png", "forward.png", "Add new profile");
-		fwd.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				Values.addEntryPanel.linkPanel(Values.PROFILES);
-			}
-		});
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setOpaque(false);
 
-		profile = new DropdownLabel("Profile*");
+		scrollPane = new JScrollPane();
+
+
+		designationLabel = new DropdownLabel("Designation*");
 		status = new DropdownLabel("Employment Status*");
 		startD = new DropdownLabel("Starting Date");
 		endD = new DropdownLabel("Ending Date");
@@ -91,6 +89,7 @@ public class EmployeeForm extends SimplePanel {
 		endDate = new SpinnerDate("MMMM dd, yyyy");
 
 		employmentStatus = new FormDropdown();
+		designation = new FormDropdown();
 
 		try {
 			model = new DefaultComboBoxModel();
@@ -101,56 +100,52 @@ public class EmployeeForm extends SimplePanel {
 		}
 
 		model = new DefaultComboBoxModel();
-		personCombo = new JComboBox(model);
-
-		personCombo.setSelectedIndex(-1);
-
-		personCombo.setEditable(true);
-		personField = (JTextField) personCombo.getEditor().getEditorComponent();
-		personField.setText("");
-		personField.addKeyListener(new ComboKeyHandler(personCombo));
 
 		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 60) {
+		for (int i = 0, y = 0, x1 = 19; i < num; i++, y += 60) {
 
 			if (i == 4) {
-				x1 = 245;
+				x1 = 224;
+				y = 0;
+			}
+			
+			if (i == 8) {
+				x1 = 429;
 				y = 0;
 			}
 
-			if (i == 1 || i == 4 || i == 5) {
+			if (i!=5 && i != 6 && i != 7 && i != 10) {
 				fields.add(new FormField(Tables.employeeFormLabel[i], 100, Color.white, Color.gray));
 				fields.get(ctr).setBounds(x1, initY + y, 170, 25);
-				add(fields.get(ctr));
+				panel.add(fields.get(ctr));
 
 				ctr++;
 			}
 
-			if (i == 0) {
-				fwd.setBounds(x1 + 43, initY + y - 11, 16, 16);
-				profile.setBounds(x1, initY + y - 7, 100, 11);
-				personCombo.setBounds(x1, initY + y + 5, 170, 20);
+			if (i == 5) {
+				designationLabel.setBounds(x1, initY + y - 7, 100, 11);
+				designation.setBounds(x1, initY + y + 5, 170, 20);
 			}
 
-			if (i == 2) {
+			if (i == 6) {
 				status.setBounds(x1, initY + y - 7, 100, 11);
 				employmentStatus.setBounds(x1, initY + y + 5, 170, 20);
 			}
 
-			if (i == 3) {
+			if (i == 7) {
 				startD.setBounds(x1, initY + y - 7, 100, 11);
 				startDate.setBounds(x1, initY + y + 5, 170, 20);
 			}
 
-			if (i == 6) {
+			if (i == 10) {
 				endD.setBounds(x1, initY + y - 7, 100, 11);
 				endDate.setBounds(x1, initY + y + 5, 170, 20);
 			}
 
 		}
 
-		clear.setBounds(257, 330, 80, 30);
-		save.setBounds(138, 330, 80, 30);
+		clear.setBounds(342, 300, 80, 30);
+		save.setBounds(223, 300, 80, 30);
 
 		error.setBounds(160, 290, 230, 25);
 
@@ -177,22 +172,29 @@ public class EmployeeForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		scrollPane.setBounds(10, 10, 620, 360);
 
-		add(clear);
-		add(save);
+		panel.add(clear);
+		panel.add(save);
 
-		add(fwd);
+		panel.add(designation);
+		panel.add(designationLabel);
+		
+		panel.add(status);
+		panel.add(startD);
+		panel.add(endD);
 
-		add(profile);
-		add(status);
-		add(startD);
-		add(endD);
+		panel.add(employmentStatus);
+		panel.add(endDate);
+		panel.add(startDate);
+		
+		scrollPane.setViewportView(panel);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		add(employmentStatus);
-		add(personCombo);
-		add(endDate);
-		add(startDate);
-
+		add(scrollPane);
 		add(error);
 
 	}

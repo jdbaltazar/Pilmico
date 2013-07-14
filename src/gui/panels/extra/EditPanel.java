@@ -4,7 +4,12 @@ import gui.forms.edit.EditAccountPanel;
 import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSupplierPanel;
 import gui.forms.edit.ViewARForm;
+import gui.forms.edit.ViewARPaymentForm;
+import gui.forms.edit.ViewCAForm;
+import gui.forms.edit.ViewCAPaymentForm;
 import gui.forms.edit.ViewDeliveryForm;
+import gui.forms.edit.ViewDepositForm;
+import gui.forms.edit.ViewDiscountForm;
 import gui.forms.edit.ViewExpensesForm;
 import gui.forms.edit.ViewPulloutForm;
 import gui.forms.edit.ViewSalesForm;
@@ -184,6 +189,26 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
 			add(new ViewPulloutForm((PullOut) o), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DISCOUNTS)) {
+			add(new ViewDiscountForm(), BorderLayout.CENTER);
+		}
+
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
+			add(new ViewDepositForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
+			add(new ViewCAForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.CA_PAYMENTS)) {
+			add(new ViewCAPaymentForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.AR_PAYMENTS)) {
+			add(new ViewARPaymentForm(), BorderLayout.CENTER);
 		}
 
 	}
