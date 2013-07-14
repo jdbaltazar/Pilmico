@@ -43,7 +43,7 @@ public class TableUtilPanel extends SoyPanel {
 	private String[] links = { Tables.EXPENSES, Tables.SALARY, Tables.DELIVERIES,
 			Tables.PULLOUTS, Tables.SUPPLIERS, Tables.ACCOUNT_RECEIVABLES,
 			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS, Tables.DEPOSITS, Tables.BANK,
-			Tables.PROFILES, Tables.EMPLOYEES, Tables.ACCOUNTS };
+			Tables.CUSTOMERS, Tables.EMPLOYEES, Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
 
 	public TableUtilPanel(TablePanel tablePanel, String label) {
@@ -181,6 +181,9 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(labels.get(Values.ACCOUNT_RECEIVABLES));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.AR_PAYMENTS));
+			
+			if(label.equals(Tables.AR_PAYMENTS))
+				addbtn.setVisible(false);
 		}
 
 		else if (label.equals(Tables.DELIVERIES)
@@ -211,6 +214,9 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(labels.get(Values.CASH_ADVANCE));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.CA_PAYMENTS));
+			
+			if(label.equals(Tables.CA_PAYMENTS))
+					addbtn.setVisible(false);
 		}
 		
 		else if (label.equals(Tables.DEPOSITS) || label.equals(Tables.BANK)) {
@@ -225,22 +231,22 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(labels.get(Values.BANK));
 		}
 
-		else if (label.equals(Tables.PROFILES)
+		else if (label.equals(Tables.CUSTOMERS)
 				|| label.equals(Tables.EMPLOYEES)
 				|| label.equals(Tables.ACCOUNTS)) {
 
 			JLabel l = new JLabel("->");
 			JLabel l2 = new JLabel("->");
-			l.setBounds(128, 11, 20, 20);
-			labels.get(Values.PROFILES).setBounds(40, 11, 86, 20);
-			labels.get(Values.EMPLOYEES).setBounds(146, 11, 110, 20);
-			l2.setBounds(258, 11, 20, 20);
-			labels.get(Values.ACCOUNTS).setBounds(276, 11, 93, 20);
+			l.setBounds(147, 11, 20, 20);
+			labels.get(Values.CUSTOMERS).setBounds(40, 11, 105, 20);//86
+			labels.get(Values.EMPLOYEES).setBounds(165, 11, 107, 20);
+			l2.setBounds(274, 11, 20, 20);
+			labels.get(Values.ACCOUNTS).setBounds(292, 11, 93, 20);
 
-			searchPanel.add(labels.get(Values.PROFILES));
+			searchPanel.add(labels.get(Values.CUSTOMERS));
 			searchPanel.add(l);
-			searchPanel.add(l2);
 			searchPanel.add(labels.get(Values.EMPLOYEES));
+			searchPanel.add(l2);
 			searchPanel.add(labels.get(Values.ACCOUNTS));
 		}
 

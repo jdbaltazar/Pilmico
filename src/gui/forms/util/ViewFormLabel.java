@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public class ViewFormLabel extends JLabel{

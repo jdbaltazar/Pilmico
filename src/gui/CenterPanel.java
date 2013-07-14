@@ -140,7 +140,7 @@ public class CenterPanel extends SoyPanel {
 			fillSalary();
 			break;
 
-		case Values.PROFILES:
+		case Values.CUSTOMERS:
 			fillProfiles();
 			break;
 
@@ -495,21 +495,26 @@ public class CenterPanel extends SoyPanel {
 	private void fillDiscounts() {
 		try {
 
-			String[] headers = { "ID", "IS No", "Date", "Amount", "Issued By", "Valid?", "Remarks" };
-			List<DiscountIssue> dis = Manager.discountIssueManager.getAllDiscountIssues();
-			String[][] entries = new String[dis.size()][headers.length];
-
-			int i = 0;
-			for (DiscountIssue di : dis) {
-				entries[i][0] = di.getId() + "";
-				entries[i][1] = di.getInventorySheet() == null ? "-" : di.getInventorySheet().getId() + "";
-				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(di.getDate());
-				entries[i][3] = di.getAmount() + "";
-				entries[i][4] = di.getIssuedBy().getFirstPlusLastName();
-				entries[i][5] = di.isValid() ? "Yes" : "No";
-				entries[i][6] = di.getRemarks();
-				i++;
-			}
+//			String[] headers = { "ID", "IS No", "Date", "Amount", "Issued By", "Valid?", "Remarks" };
+//			List<DiscountIssue> dis = Manager.discountIssueManager.getAllDiscountIssues();
+//			String[][] entries = new String[dis.size()][headers.length];
+			String[] headers = { "ID", "Name", "Address", "Contact No."};
+			 String[][] entries = { { "1", "Banco de Oro",
+				 "Marikina City", ""},
+				 { "2", "Landbank of the Philippines", "Tacloban City", "325-5689",
+				 } };
+			 
+//			int i = 0;
+//			for (DiscountIssue di : dis) {
+//				entries[i][0] = di.getId() + "";
+//				entries[i][1] = di.getInventorySheet() == null ? "-" : di.getInventorySheet().getId() + "";
+//				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(di.getDate());
+//				entries[i][3] = di.getAmount() + "";
+//				entries[i][4] = di.getIssuedBy().getFirstPlusLastName();
+//				entries[i][5] = di.isValid() ? "Yes" : "No";
+//				entries[i][6] = di.getRemarks();
+//				i++;
+//			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DISCOUNTS), BorderLayout.CENTER);
 
@@ -521,7 +526,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillDeposits() {
 		try {
 
-			String[] headers = { "ID", "IS No", "Date", "Amount", "Account/Bank", "Issued By", "Valid?", "Remarks" };
+			/*String[] headers = { "ID", "IS No", "Date", "Amount", "Account/Bank", "Issued By", "Valid?", "Remarks" };
 			List<Deposit> deposits = Manager.depositManager.getAllDeposits();
 			String[][] entries = new String[deposits.size()][headers.length];
 
@@ -535,7 +540,13 @@ public class CenterPanel extends SoyPanel {
 				entries[i][5] = d.isValid() ? "Yes" : "No";
 				entries[i][6] = d.getRemarks();
 				i++;
-			}
+			}*/
+			
+			String[] headers = { "ID", "Name", "Address", "Contact No."};
+			 String[][] entries = { { "1", "Banco de Oro",
+				 "Marikina City", ""},
+				 { "2", "Landbank of the Philippines", "Tacloban City", "325-5689",
+				 } };
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DEPOSITS), BorderLayout.CENTER);
 
@@ -577,7 +588,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][3] = p.getContactNo();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, customers), Tables.PROFILES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, customers), Tables.CUSTOMERS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -625,7 +636,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][5] = a.getEmployee().getStatus().getStatus();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.ACCOUNTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, accounts), Tables.ACCOUNTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();

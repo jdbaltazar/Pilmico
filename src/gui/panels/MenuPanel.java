@@ -151,7 +151,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 			Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 			
 		if (e.getSource().equals(options.get(9)))
-			Values.centerPanel.changeTable(Values.PROFILES);
+			Values.centerPanel.changeTable(Values.CUSTOMERS);
 		
 		if (e.getSource().equals(options.get(10)))
 			Values.centerPanel.changeTable(Values.LOGS);

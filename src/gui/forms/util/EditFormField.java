@@ -22,7 +22,7 @@ public class EditFormField extends JTextField{
 	private void init() {
 		// TODO Auto-generated method stub
 
-		setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.GRAY.darker()));
+		setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#006600")));
 		
 		setDocument(new FieldLimit(limit));
 		setFont(new Font("Lucida Grande", Font.PLAIN, 12));

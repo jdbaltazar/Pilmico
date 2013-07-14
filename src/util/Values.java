@@ -81,7 +81,7 @@ public class Values {
 	public static final int CA_PAYMENTS = 8;
 	public static final int DEPOSITS = 9;
 	public static final int BANK = 10;
-	public static final int PROFILES = 11;
+	public static final int CUSTOMERS = 11;
 	public static final int EMPLOYEES = 12;
 	public static final int ACCOUNTS = 13;
 	public static final int PRODUCTS = 14;

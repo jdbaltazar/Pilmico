@@ -47,7 +47,7 @@ public class DepositForm extends SimplePanel {
 	private JSpinner date;
 	private JLabel issuedBy;
 	private int initY = 26;
-	private DropdownLabel dateLabel, issuedByLabel, productLabel, customerLabel;
+	private DropdownLabel dateLabel, issuedByLabel, depositorLabel, bankAcctLabel;
 	private SBButton fwd, fwd2;
 	private JComboBox depositorCombo, bankAcctCombo;
 	private JTextField depositorComboField, bankAcctComboField;
@@ -91,8 +91,8 @@ public class DepositForm extends SimplePanel {
 
 		dateLabel = new DropdownLabel("Date");
 		issuedByLabel = new DropdownLabel("Issued by");
-		productLabel = new DropdownLabel("Depositor*");
-		customerLabel = new DropdownLabel("Bank Account*");
+		depositorLabel = new DropdownLabel("Depositor*");
+		bankAcctLabel = new DropdownLabel("Bank Account*");
 
 		// issuedBy = new FormDropdown();
 		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
@@ -158,13 +158,13 @@ public class DepositForm extends SimplePanel {
 
 			if (i == 2) {
 				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
-				productLabel.setBounds(x1, initY + y - 7, 200, 11);
+				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
 				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
 			
 			if (i == 3) {
 				fwd2.setBounds(x1 + 76, initY + y - 11, 16, 16);
-				customerLabel.setBounds(x1, initY + y - 7, 200, 11);
+				bankAcctLabel.setBounds(x1, initY + y - 7, 200, 11);
 				bankAcctCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
 		}
@@ -200,10 +200,10 @@ public class DepositForm extends SimplePanel {
 		panel.add(issuedByLabel);
 		
 		panel.add(depositorCombo);
-		panel.add(productLabel);
+		panel.add(depositorLabel);
 		
 		panel.add(bankAcctCombo);
-		panel.add(customerLabel);
+		panel.add(bankAcctLabel);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);

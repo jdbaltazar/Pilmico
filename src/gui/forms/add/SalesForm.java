@@ -211,7 +211,7 @@ public class SalesForm extends SimplePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Values.addEntryPanel.linkPanel(Values.PROFILES);
+				Values.addEntryPanel.linkPanel(Values.CUSTOMERS);
 			}
 		});
 
@@ -340,7 +340,7 @@ public class SalesForm extends SimplePanel {
 
 		add(scrollPane);
 	}
-
+	
 	private void alternateRows() {
 
 		for (int i = 0; i < rowPanel.size(); i++)

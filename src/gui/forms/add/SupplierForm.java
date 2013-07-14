@@ -61,7 +61,7 @@ public class SupplierForm extends SimplePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Values.addEntryPanel.linkPanel(Values.PROFILES);
+				Values.addEntryPanel.linkPanel(Values.CUSTOMERS);
 			}
 		});
 		

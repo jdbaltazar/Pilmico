@@ -212,7 +212,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		inventorySheetForm.setBounds(10, 30, 780, 430);
 		
 		profileForm.setBounds(243, 45, 290, 390);
-		employeeForm.setBounds(165, 50, 450, 400);
+		employeeForm.setBounds(80, 60, 640, 370);
 		
 //		cashAdvanceForm.setBounds(225, 40, 300, 395);
 		cashAdvanceForm.setBounds(230, 60, 300, 345);
@@ -358,7 +358,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			motherPanel = pullout;
 		}
 		
-		else if (Values.tableUtilPanel.getLabel().equals(Tables.PROFILES)) {
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.CUSTOMERS)) {
 			profileForm.setVisible(true);
 		}
 		
@@ -393,13 +393,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}*/
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DISCOUNTS)) {
-			arPayment.setVisible(true);
-//			discount.setVisible(true);
+			discount.setVisible(true);
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
-			caPayment.setVisible(true);
-//			deposit.setVisible(true);
+			deposit.setVisible(true);
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
@@ -432,6 +430,23 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			inventorySheetForm.setVisible(true);
 		}
 
+	}
+	
+	public void showPaymentForm(int form){
+		
+		switch(form){
+		
+		case Values.CA_PAYMENTS:
+			caPayment.setVisible(true);
+			break;
+			
+		case Values.AR_PAYMENTS:
+			arPayment.setVisible(true);
+			break;
+			
+		default:
+				break;
+		}
 	}
 
 	public void showUtilityPanels() {
@@ -467,7 +482,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			employeeForm.setVisible(true);
 			break;
 			
-		case Values.PROFILES:
+		case Values.CUSTOMERS:
 			profileForm.setVisible(true);
 			break;
 			
