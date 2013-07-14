@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import common.entity.inventorysheet.InventorySheetData;
 import common.entity.profile.Account;
 import common.entity.profile.Person;
+import common.entity.sales.SalesDetail;
 
 @Entity
 public class AccountReceivable {
@@ -163,6 +164,15 @@ public class AccountReceivable {
 
 	public Set<AccountReceivableDetail> getAccountReceivableDetails() {
 		return accountReceivableDetails;
+	}
+
+	public double getAccountReceivablesAmount() {
+		double total = 0;
+		for (AccountReceivableDetail ard : accountReceivableDetails) {
+			total += ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
+		}
+		return total;
+
 	}
 
 	// public void setAccountReceivableDetails(Set<AccountReceivableDetail>

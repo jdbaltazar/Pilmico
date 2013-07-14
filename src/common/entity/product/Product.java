@@ -151,14 +151,14 @@ public class Product {
 		return currentPrice;
 	}
 
-	public double getPricePerSack() {
+	public double getCurrentPricePerSack() {
 		Price p = getCurrentPrice();
 		if (p != null)
 			return getCurrentPrice().getPricePerSack();
 		return 0;
 	}
 
-	public double getPricePerKilo() {
+	public double getCurrentPricePerKilo() {
 		Price p = getCurrentPrice();
 		if (p != null)
 			return getCurrentPrice().getPricePerKilo();

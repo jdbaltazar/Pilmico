@@ -8,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import common.entity.product.Product;
 
 @Entity
+@Table(name = "InventorySheetDetail")
 public class InventorySheetDataDetail {
 
 	@Id
@@ -49,8 +51,8 @@ public class InventorySheetDataDetail {
 		super();
 	}
 
-	public InventorySheetDataDetail(InventorySheetData inventorySheet, Product product, double beginningInventoryInSack, double beginningInventoryInKilo,
-			double onDisplayInSack, double onDisplayInKilo, double pricePerSack, double pricePerKilo) {
+	public InventorySheetDataDetail(InventorySheetData inventorySheet, Product product, double beginningInventoryInSack,
+			double beginningInventoryInKilo, double onDisplayInSack, double onDisplayInKilo, double pricePerSack, double pricePerKilo) {
 		super();
 		this.inventorySheet = inventorySheet;
 		this.product = product;

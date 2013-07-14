@@ -79,9 +79,9 @@ public interface InventorySheetManager {
 
 	// prices
 
-	public double getPriceInSackForProduct(int productId);
+	public double getPricePerSackForProduct(int productId);
 
-	public double getPriceInKiloForProduct(int productId);
+	public double getPricePerKiloForProduct(int productId);
 
 	public double getTotalPricesInSack();
 

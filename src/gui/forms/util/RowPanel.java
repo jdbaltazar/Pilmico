@@ -175,8 +175,8 @@ public class RowPanel extends JPanel {
 				// TODO Auto-generated method stub
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
-					priceSack.setText(p.getPricePerSack() + "");
-					priceKG.setText(p.getPricePerKilo() + "");
+					priceSack.setText(p.getCurrentPricePerSack() + "");
+					priceKG.setText(p.getCurrentPricePerKilo() + "");
 				}
 			}
 		});

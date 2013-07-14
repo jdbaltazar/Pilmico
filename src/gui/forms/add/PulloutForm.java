@@ -251,7 +251,7 @@ public class PulloutForm extends SimplePanel {
 
 				for (RowPanel rp : rowPanel) {
 					Product product = rp.getSelectedProduct();
-					pullOut.addPullOutDetail(new PullOutDetail(pullOut, product, product.getPricePerKilo(), product.getPricePerSack(), rp
+					pullOut.addPullOutDetail(new PullOutDetail(pullOut, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
 							.getQuantityInKilo(), rp.getQuantityInSack()));
 				}
 				try {
