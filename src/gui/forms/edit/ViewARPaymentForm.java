@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import common.entity.accountreceivable.ARPayment;
 import common.manager.Manager;
 
 import util.EditFormPanel;
@@ -23,7 +24,7 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ViewARPaymentForm extends EditFormPanel{
+public class ViewARPaymentForm extends EditFormPanel {
 
 	/**
 	 * 
@@ -43,8 +44,11 @@ public class ViewARPaymentForm extends EditFormPanel{
 	private JLabel status;
 	private ImageIcon icon;
 
-	public ViewARPaymentForm() {
+	private ARPayment arPayment;
+
+	public ViewARPaymentForm(ARPayment arPayment) {
 		super("View AR Payment");
+		this.arPayment = arPayment;
 		addComponents();
 
 	}
@@ -52,17 +56,17 @@ public class ViewARPaymentForm extends EditFormPanel{
 	private void addComponents() {
 		// TODO Auto-generated method stub
 		icon = new ImageIcon("images/pending.png");
-		
+
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -86,21 +90,21 @@ public class ViewARPaymentForm extends EditFormPanel{
 				arIDLabel.setBounds(x1, initY + y - 7, 60, 11);
 				arID.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 1) {
 				dateLabel.setBounds(x1, initY + y - 7, 60, 11);
 				date.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
 			if (i == 2) {
 				issuedByLabel.setBounds(x1, initY + y - 7, 60, 11);
-				issuedBy.setBounds(x1 + 65, initY + y  - 14, 200, 20);
+				issuedBy.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
 
 			if (i == 3) {
 				custRepLabel.setBounds(x1 - 10, initY + y - 7, 70, 11);
 				custRep.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 4) {
 				amountLabel.setBounds(x1, initY + y - 7, 60, 11);
 				amount.setBounds(x1 + 65, initY + y - 14, 200, 20);
@@ -129,23 +133,22 @@ public class ViewARPaymentForm extends EditFormPanel{
 
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
-		
+
 		panel.add(arID);
 		panel.add(arIDLabel);
-		
+
 		panel.add(custRep);
 		panel.add(custRepLabel);
-		
+
 		panel.add(amount);
 		panel.add(amountLabel);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));	
-		
+		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+
 		scrollPane.setBounds(245, 63, 300, 275);
-		
-		
+
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 
 		add(scrollPane);

@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
+import common.entity.discountissue.DiscountIssue;
 import common.manager.Manager;
 
 import util.DropdownLabel;
@@ -39,7 +40,7 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ViewDiscountForm extends EditFormPanel{
+public class ViewDiscountForm extends EditFormPanel {
 
 	/**
 	 * 
@@ -61,26 +62,28 @@ public class ViewDiscountForm extends EditFormPanel{
 	private JLabel status;
 	private ImageIcon icon;
 
-	public ViewDiscountForm() {
-		super("View Discount");
-		addComponents();
+	private DiscountIssue discountIssue;
 
+	public ViewDiscountForm(DiscountIssue discountIssue) {
+		super("View Discount");
+		this.discountIssue = discountIssue;
+		addComponents();
 	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
 		icon = new ImageIcon("images/pending.png");
-		
+
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -106,19 +109,19 @@ public class ViewDiscountForm extends EditFormPanel{
 			}
 			if (i == 1) {
 				issuedByLabel.setBounds(x1, initY + y - 7, 60, 11);
-				issuedBy.setBounds(x1 + 65, initY + y  - 14, 200, 20);
+				issuedBy.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
 
 			if (i == 2) {
 				productLabel.setBounds(x1, initY + y - 7, 60, 11);
 				product.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 3) {
 				customerLabel.setBounds(x1, initY + y - 7, 60, 11);
 				customer.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 4) {
 				amountLabel.setBounds(x1, initY + y - 7, 60, 11);
 				amount.setBounds(x1 + 65, initY + y - 14, 200, 20);
@@ -143,31 +146,30 @@ public class ViewDiscountForm extends EditFormPanel{
 			}
 		});
 
-//		panel.add(clear);
-//		panel.add(save);
+		// panel.add(clear);
+		// panel.add(save);
 
 		panel.add(issuedBy);
 		panel.add(date);
 
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
-		
+
 		panel.add(product);
 		panel.add(productLabel);
-		
+
 		panel.add(customer);
 		panel.add(customerLabel);
-		
+
 		panel.add(amount);
 		panel.add(amountLabel);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));	
-		
+		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+
 		scrollPane.setBounds(245, 63, 300, 275);
-		
-		
+
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 
 		add(scrollPane);
@@ -183,10 +185,8 @@ public class ViewDiscountForm extends EditFormPanel{
 	}
 
 	private boolean isValidated() {
-
 		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
 			return true;
-
 		return false;
 	}
 
@@ -199,4 +199,5 @@ public class ViewDiscountForm extends EditFormPanel{
 			e2.printStackTrace();
 		}
 	}
+
 }
