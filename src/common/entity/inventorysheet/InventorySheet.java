@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.delivery.Delivery;

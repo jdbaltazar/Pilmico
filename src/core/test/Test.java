@@ -1,63 +1,16 @@
 package core.test;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.security.InvalidKeyException;
-import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-
 import app.Credentials;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
-import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.Expense;
-import common.entity.log.Log;
-import common.entity.log.LogType;
-import common.entity.note.Note;
-import common.entity.note.NoteType;
-import common.entity.product.Category;
-import common.entity.product.Product;
-import common.entity.profile.Account;
-import common.entity.profile.AccountType;
-import common.entity.profile.Employee;
-import common.entity.sales.Sales;
-import common.entity.sales.SalesDetail;
-import common.entity.supplier.Supplier;
-import common.manager.AccountManager;
-import common.manager.CashAdvanceManager;
-import common.manager.EmployeePersonManager;
-import common.manager.ProductManager;
-import common.manager.LogManager;
 import common.manager.Manager;
-import common.manager.NoteManager;
-import common.manager.SalesManager;
-import common.manager.StoreManager;
-import common.manager.SupplierManager;
-import core.database.DatabaseTool;
-import core.persist.AccountPersistor;
-import core.persist.CashAdvancePersistor;
-import core.persist.EmployeePersonPersistor;
-import core.persist.ProductPersistor;
-import core.persist.LogPersistor;
-import core.persist.NotePersistor;
-import core.persist.SalesPersistor;
-import core.persist.StorePersistor;
-import core.persist.SupplierPersistor;
 import core.security.SecurityTool;
 
 public class Test {

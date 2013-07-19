@@ -32,6 +32,8 @@ import util.SimplePanel;
 import util.Tables;
 import util.soy.SoyButton;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
 import common.manager.Manager;
 
 public class ARPaymentForm extends SimplePanel {
@@ -51,7 +53,6 @@ public class ARPaymentForm extends SimplePanel {
 	private JComboBox customerRepCombo;
 	private JTextField customerRepComboField;
 
-	
 	private ErrorLabel error;
 	private String username, password, firstName, lastName, address;
 
@@ -59,21 +60,22 @@ public class ARPaymentForm extends SimplePanel {
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
+	private AccountReceivable accountReceivable;
+
 	public ARPaymentForm() {
 		super("Add AR Payment");
 		addComponents();
-
 	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -98,8 +100,8 @@ public class ARPaymentForm extends SimplePanel {
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		issuedBy.setHorizontalAlignment(JLabel.CENTER);
-		
-		arID = new JLabel("1");
+
+		arID = new JLabel(accountReceivable != null ? accountReceivable.getId() + "" : "");
 		arID.setOpaque(false);
 		arID.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		arID.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
@@ -121,7 +123,7 @@ public class ARPaymentForm extends SimplePanel {
 				tf.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
-		
+
 		customerRepCombo = new JComboBox();
 		customerRepCombo.setEditable(true);
 		customerRepCombo.setSelectedIndex(-1);
@@ -135,7 +137,7 @@ public class ARPaymentForm extends SimplePanel {
 
 			if (i == 4) {
 
-				fields.add(new JNumericField(Tables.ARPaymentFormLabel[i]+"*"));
+				fields.add(new JNumericField(Tables.ARPaymentFormLabel[i] + "*"));
 				fields.get(ctr).setMaxLength(10);
 				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
 				panel.add(fields.get(ctr));
@@ -155,7 +157,7 @@ public class ARPaymentForm extends SimplePanel {
 				issuedByLabel.setBounds(x1, initY + y - 7, 200, 11);
 				issuedBy.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			
+
 			if (i == 3) {
 				fwd.setBounds(x1 + 129, initY + y - 11, 16, 16);
 				customerRepLabel.setBounds(x1, initY + y - 7, 200, 11);
@@ -178,6 +180,16 @@ public class ARPaymentForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				ARPayment arPayment = new ARPayment(accountReceivable, d, Double.parseDouble(fields.get(0).getText()), Manager.loggedInAccount);
+				try {
+					Manager.accountReceivableManager.addARPayment(arPayment);
+					System.out.println("ar payment saved");
+					clearFields();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
@@ -188,13 +200,13 @@ public class ARPaymentForm extends SimplePanel {
 		panel.add(issuedBy);
 
 		panel.add(fwd);
-		
+
 		panel.add(dateLabel);
 		panel.add(date);
-		
+
 		panel.add(customerRepLabel);
 		panel.add(customerRepCombo);
-		
+
 		panel.add(arIDLabel);
 		panel.add(arID);
 
@@ -202,12 +214,15 @@ public class ARPaymentForm extends SimplePanel {
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(10, 25, 280, 340);
-		
-		
+
 		add(scrollPane);
 
+	}
+
+	public void setAccountReceivable(AccountReceivable accountReceivable) {
+		this.accountReceivable = accountReceivable;
 	}
 
 	private void clearFields() {

@@ -10,7 +10,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import common.entity.discountissue.DiscountIssue;
-import common.entity.sales.Sales;
 import common.manager.DiscountIssueManager;
 
 public class DiscountIssuePersistor extends Persistor implements DiscountIssueManager {

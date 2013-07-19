@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
 import common.entity.inventorysheet.InventorySheetData;
 import common.entity.profile.Account;
 import common.entity.profile.Person;
-import common.entity.sales.SalesDetail;
 
 @Entity
 public class AccountReceivable {

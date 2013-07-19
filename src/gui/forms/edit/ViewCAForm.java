@@ -71,7 +71,7 @@ public class ViewCAForm extends EditFormPanel {
 
 		scrollPane = new JScrollPane();
 
-		payBtn = new SBButton("invalidate.png", "invalidate.png", "Pay");
+		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
 
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
@@ -125,7 +125,7 @@ public class ViewCAForm extends EditFormPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.startAnimation();
-				Values.addEntryPanel.showPaymentForm(Values.CA_PAYMENTS);
+				Values.addEntryPanel.showPaymentForm(Values.CA_PAYMENTS, cashAdvance);
 			}
 		});
 
