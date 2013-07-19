@@ -132,7 +132,7 @@ public class ISRowPanel extends JPanel {
 				public void mouseEntered(MouseEvent arg0) {
 					// TODO Auto-generated method stub
 					rowBkgrndColor = row.getBackground();
-					row.setBackground(Color.CYAN);
+					row.setBackground(Color.decode("#B2FFFF"));
 				}
 				
 				@Override
