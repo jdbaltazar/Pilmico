@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -25,8 +28,9 @@ public class ISRowPanel extends JPanel {
 	private JPanel panel = new JPanel();
 	private ArrayList<ViewFormField> formField = new ArrayList<ViewFormField>();
 	private JLabel label, totalLabel;
-	private int ROW_WIDTH = 580, ROW_HEIGHT = 30, y, table = 0, componentCount;
+	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, y, table = 0, componentCount;
 	private Object object;
+	private Color rowBkgrndColor;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
 
@@ -38,6 +42,7 @@ public class ISRowPanel extends JPanel {
 	}
 
 	private void init() {
+		formField = new ArrayList<ViewFormField>();
 		y = panel.getComponentCount() * ROW_HEIGHT;
 
 		setLayout(new BorderLayout());
@@ -51,7 +56,14 @@ public class ISRowPanel extends JPanel {
 
 		case Values.PRODUCTS:
 			drawProductInventory();
+//			System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
 			setBounds(0, y, InventorySheetForm.PRODUCT_ROW_WIDTH, ROW_HEIGHT);
+			break;
+			
+		case Values.SALES:
+			drawSalesRow();
+//			System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
+			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH, ROW_HEIGHT);
 			break;
 			
 		default:
@@ -60,7 +72,7 @@ public class ISRowPanel extends JPanel {
 			break;
 		}
 
-		System.out.println("y: "+y+ " panel width: "+panel.getWidth());
+//		System.out.println("y: "+y+ " panel width: "+panel.getWidth());
 	}
 	
 	private void drawProductInventory(){
@@ -88,8 +100,51 @@ public class ISRowPanel extends JPanel {
 		}
 		
 		row.setOpaque(true);
-		row.setBorder(BorderFactory.createEtchedBorder());
+		//row.setBorder(BorderFactory.createEtchedBorder());
+		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		add(row);
 		
+	}
+	
+	private void drawSalesRow(){
+		
+		formField.add(new ViewFormField("20 December 2011"));
+		formField.get(formField.size()-1).setBounds(0,0,InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
+		
+		formField.add(new ViewFormField("Baltazar, John David S."));
+		formField.get(formField.size()-1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH,0,InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
+		
+		formField.add(new ViewFormField("1560.00"));
+		formField.get(formField.size()-1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH + InventorySheetForm.ISSUED_BY_LABEL_WIDTH,0,InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
+		
+		for(int i = 0; i<formField.size();i++){
+//			System.out.println("formfield size: "+formField.size()+ " formField.get(i).getX(): "+formField.get(i).getX());
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
+			formField.get(i).addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					row.setBackground(rowBkgrndColor);
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					rowBkgrndColor = row.getBackground();
+					row.setBackground(Color.CYAN);
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			row.add(formField.get(i));
+		}
+		
+		row.setOpaque(true);
 		add(row);
 		
 	}

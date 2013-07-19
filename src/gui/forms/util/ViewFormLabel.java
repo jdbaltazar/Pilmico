@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 public class ViewFormLabel extends JLabel{
 	
 	private Font original;
+	private String label;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ViewFormLabel(String label){
@@ -34,6 +35,7 @@ public class ViewFormLabel extends JLabel{
 	
 	public ViewFormLabel(String label, boolean remarks){
 		super(label);
+		this.label = label;
 		
 		initRemarks();
 	}
@@ -42,6 +44,7 @@ public class ViewFormLabel extends JLabel{
 		setFont(new Font("Segoe Print", Font.ITALIC, 12));
 		setHorizontalAlignment(JLabel.RIGHT);
 		setForeground(Color.RED);
+		setToolTipText(label);
 		
 	}
 

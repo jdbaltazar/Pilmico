@@ -33,7 +33,7 @@ public class TableUtilPanel extends SoyPanel {
 
 	private static final long serialVersionUID = 9077704680088367571L;
 	private JPanel searchPanel;
-	private SBButton addbtn, exportbtn;
+	private SBButton addbtn, exportbtn, graphBtn;
 	private JLabel search;
 	public static FormField searchField;
 	private ImageIcon icon;
@@ -118,6 +118,17 @@ public class TableUtilPanel extends SoyPanel {
 			}
 		});
 
+		graphBtn = new SBButton("graph.png", "graph2.png", "Show Graph");
+		graphBtn.setBounds(100, 11, 20, 20);
+		graphBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.centerPanel.changeTable(Values.SALES_GRAPH);
+			}
+		});
+		
 		search = new JLabel(icon);
 
 		search.setBounds(565, 12, 24, 24);
@@ -126,7 +137,10 @@ public class TableUtilPanel extends SoyPanel {
 		// search.setBounds(38, 12, 24, 24);
 		// searchField.setBounds(62, 9, 200, 25);
 
-		if (!label.equals("LOGS")) {// && !label.equals("ACCOUNTS")) {
+		if(label.equals(Tables.SALES))
+			searchPanel.add(graphBtn);
+		
+		if (!label.equals(Tables.LOGS)) {// && !label.equals("ACCOUNTS")) {
 			tableLabel.setBounds(40, 11, 200, 20);
 			searchPanel.add(addbtn);
 		} /*
@@ -138,6 +152,7 @@ public class TableUtilPanel extends SoyPanel {
 
 		searchPanel.add(search);
 		searchPanel.add(searchField);
+		
 
 		if (!isMultiple())
 			searchPanel.add(tableLabel);

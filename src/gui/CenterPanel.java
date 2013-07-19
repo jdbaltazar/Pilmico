@@ -1,5 +1,6 @@
 package gui;
 
+import gui.graph.LinePlot;
 import gui.panels.LeftPanel;
 import gui.panels.LoginPanel;
 import gui.panels.MenuPanel;
@@ -58,6 +59,7 @@ public class CenterPanel extends SoyPanel {
 	// private Object[][] suppliers = { { "Universal Rubina",
 	// "Quezon City, Philippines", "Rubina D. Rubina" },
 	// { "Jack n Jill", "Paranaque, Philippines", "Jack N. Jill" } };
+	private LinePlot linePlot;
 
 	private TablePanel tablePanel;
 
@@ -69,6 +71,7 @@ public class CenterPanel extends SoyPanel {
 	}
 
 	private void init() {
+		linePlot = new LinePlot();
 		setLayout(new BorderLayout());
 	}
 
@@ -179,16 +182,16 @@ public class CenterPanel extends SoyPanel {
 		case Values.CA_PAYMENTS:
 			fillCAPayments();
 			break;
-		/*
-		 * case Values.SALES_ORDER: fillSalesOrder(); break;
-		 * 
-		 * 
-		 * case Values.PURCHASE: fillStockPurchase(); break;
-		 */
-
-		default:
-			// fillLogs();
+			
+		case Values.INVENTORY_SHEET:
 			fillInventories();
+			break;
+			
+		case Values.SALES_GRAPH:
+			add(linePlot, BorderLayout.CENTER);
+			break;
+			
+		default:
 			break;
 
 		}
@@ -692,6 +695,7 @@ public class CenterPanel extends SoyPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void logout() {
