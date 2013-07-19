@@ -80,7 +80,7 @@ public class ViewSalesForm extends EditFormPanel {
 	private JLabel status;
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
 	private ImageIcon icon;
-	private ViewFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
+	private ViewFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel, remarks;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -114,6 +114,8 @@ public class ViewSalesForm extends EditFormPanel {
 
 		status = new JLabel(s, null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
+		
+		remarks = new ViewFormLabel("", true);
 
 		date = new ViewFormField("");
 		issueDate = new ViewFormField(new Date().toString());
@@ -220,9 +222,11 @@ public class ViewSalesForm extends EditFormPanel {
 		scrollPane.setBounds(83, 45, 637, 310);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
 		add(status);
+		add(remarks);
 	}
 	
 	private void colorTable(){
@@ -358,6 +362,9 @@ public class ViewSalesForm extends EditFormPanel {
 			productsPanel.updateUI();
 			productsPanel.revalidate();
 		}
+		
+		if(!sales.isValid())
+			remarks.setText("-"+sales.getRemarks());
 
 	}
 }

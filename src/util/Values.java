@@ -90,6 +90,8 @@ public class Values {
 	public static final int INVENTORY_SHEET = 17;
 	public static final int LOGS = 18;
 	
+	public static final int SALES_GRAPH = 19;
+	
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;
 	

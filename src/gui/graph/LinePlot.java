@@ -97,7 +97,7 @@ public class LinePlot extends ExamplePanel {
 		pointRenderer.setSetting(PointRenderer.SHAPE, circle);
 		// pointRenderer.setSetting(PointRenderer.VALUE_DISPLAYED, true);
 
-		plotLower.setSetting(Plot.TITLE, "Pilmico");
+		plotLower.setSetting(Plot.TITLE, "Pilmico Sales");
 		// insert Pilmico Font here
 		// plotLower.setSetting(Plot.TITLE_FONT, n);
 		// plotLower.setSetting(Plot.LEGEND, true);
