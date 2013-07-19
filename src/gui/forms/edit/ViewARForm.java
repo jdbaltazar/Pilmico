@@ -104,7 +104,7 @@ public class ViewARForm extends EditFormPanel {
 
 		scrollPane = new JScrollPane();
 		
-		payBtn = new SBButton("invalidate.png", "invalidate.png", "Pay");
+		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
@@ -173,7 +173,7 @@ public class ViewARForm extends EditFormPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.startAnimation();
-				Values.addEntryPanel.showPaymentForm(Values.AR_PAYMENTS);
+				Values.addEntryPanel.showPaymentForm(Values.AR_PAYMENTS, accountReceivable);
 			}
 		});
 		/*

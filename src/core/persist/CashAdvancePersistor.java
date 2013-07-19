@@ -11,7 +11,6 @@ import org.hibernate.criterion.Restrictions;
 
 import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
-import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.manager.CashAdvanceManager;
 

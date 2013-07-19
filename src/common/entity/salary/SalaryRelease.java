@@ -18,7 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import common.entity.cashadvance.CAPayment;
-import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
 
@@ -56,7 +56,7 @@ public class SalaryRelease {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheet inventorySheet;
+	private InventorySheetData inventorySheet;
 
 	public SalaryRelease() {
 		super();
@@ -184,11 +184,11 @@ public class SalaryRelease {
 		}
 	}
 
-	public InventorySheet getInventorySheet() {
+	public InventorySheetData getInventorySheet() {
 		return inventorySheet;
 	}
 
-	public void setInventorySheet(InventorySheet inventorySheet) {
+	public void setInventorySheet(InventorySheetData inventorySheet) {
 		this.inventorySheet = inventorySheet;
 	}
 

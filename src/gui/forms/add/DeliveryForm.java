@@ -387,7 +387,7 @@ public class DeliveryForm extends SimplePanel {
 						Product p = rp.getSelectedProduct();
 						System.out.println("qty in kilo: " + rp.getQuantityInKilo());
 						System.out.println("qty in sack: " + rp.getQuantityInSack());
-						delivery.addDeliveryDetail(new DeliveryDetail(delivery, p, p.getPricePerKilo(), p.getPricePerSack(), rp.getQuantityInKilo(), rp
+						delivery.addDeliveryDetail(new DeliveryDetail(delivery, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp
 								.getQuantityInSack()));
 					}
 

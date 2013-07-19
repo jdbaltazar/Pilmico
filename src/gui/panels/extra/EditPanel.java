@@ -27,9 +27,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Deposit;
+import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
 import common.entity.pullout.PullOut;
 import common.entity.sales.Sales;
@@ -190,25 +195,25 @@ public class EditPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
 			add(new ViewPulloutForm((PullOut) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DISCOUNTS)) {
-			add(new ViewDiscountForm(), BorderLayout.CENTER);
+			add(new ViewDiscountForm((DiscountIssue) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
-			add(new ViewDepositForm(), BorderLayout.CENTER);
+			add(new ViewDepositForm((Deposit) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
-			add(new ViewCAForm(), BorderLayout.CENTER);
+			add(new ViewCAForm((CashAdvance) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CA_PAYMENTS)) {
-			add(new ViewCAPaymentForm(), BorderLayout.CENTER);
+			add(new ViewCAPaymentForm((CAPayment) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.AR_PAYMENTS)) {
-			add(new ViewARPaymentForm(), BorderLayout.CENTER);
+			add(new ViewARPaymentForm((ARPayment) o), BorderLayout.CENTER);
 		}
 
 	}

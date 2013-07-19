@@ -37,9 +37,10 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.deposit.Deposit;
 import common.manager.Manager;
 
-public class ViewDepositForm extends EditFormPanel{
+public class ViewDepositForm extends EditFormPanel {
 	/**
 	 * 
 	 */
@@ -58,8 +59,11 @@ public class ViewDepositForm extends EditFormPanel{
 	private JLabel status;
 	private ImageIcon icon;
 
-	public ViewDepositForm() {
+	private Deposit deposit;
+
+	public ViewDepositForm(Deposit deposit) {
 		super("View Deposit");
+		this.deposit = deposit;
 		addComponents();
 
 	}
@@ -67,17 +71,17 @@ public class ViewDepositForm extends EditFormPanel{
 	private void addComponents() {
 		// TODO Auto-generated method stub
 		icon = new ImageIcon("images/pending.png");
-		
+
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -103,19 +107,19 @@ public class ViewDepositForm extends EditFormPanel{
 			}
 			if (i == 1) {
 				issuedByLabel.setBounds(x1, initY + y - 7, 60, 11);
-				issuedBy.setBounds(x1 + 65, initY + y  - 14, 200, 20);
+				issuedBy.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
 
 			if (i == 2) {
 				depositorLabel.setBounds(x1, initY + y - 7, 60, 11);
 				depositor.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 3) {
 				bankAcctLabel.setBounds(x1 - 10, initY + y - 7, 70, 11);
 				bankAcct.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 4) {
 				amountLabel.setBounds(x1, initY + y - 7, 60, 11);
 				amount.setBounds(x1 + 65, initY + y - 14, 200, 20);
@@ -144,23 +148,22 @@ public class ViewDepositForm extends EditFormPanel{
 
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
-		
+
 		panel.add(depositor);
 		panel.add(depositorLabel);
-		
+
 		panel.add(bankAcct);
 		panel.add(bankAcctLabel);
-		
+
 		panel.add(amount);
 		panel.add(amountLabel);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));	
-		
+		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+
 		scrollPane.setBounds(245, 63, 300, 275);
-		
-		
+
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 
 		add(scrollPane);

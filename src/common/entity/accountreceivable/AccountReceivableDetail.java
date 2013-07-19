@@ -94,19 +94,19 @@ public class AccountReceivableDetail {
 		this.pricePerSack = pricePerSack;
 	}
 
-	public double getQuantityPerKilo() {
+	public double getQuantityInKilo() {
 		return quantityInKilo;
 	}
 
-	public void setQuantityPerKilo(double quantityInKilo) {
+	public void setQuantityInKilo(double quantityInKilo) {
 		this.quantityInKilo = quantityInKilo;
 	}
 
-	public double getQuantityPerSack() {
+	public double getQuantityInSack() {
 		return quantityInSack;
 	}
 
-	public void setQuantityPerSack(double quantityInSack) {
+	public void setQuantityInSack(double quantityInSack) {
 		this.quantityInSack = quantityInSack;
 	}
 

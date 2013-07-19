@@ -65,7 +65,7 @@ public class SBTable extends JTable implements MouseListener {
 		setFocusable(false);
 		setShowGrid(false);
 		setOpaque(false);
-		setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		setFont(new Font("Lucida Sans", Font.PLAIN, 12));
 		// removeColumn(getColumnModel().getColumn(getColumnCount()-1));
 
 		sorter = new TableRowSorter<MyTableModel>(model);

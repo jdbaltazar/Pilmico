@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
 import common.entity.profile.Account;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
@@ -66,7 +66,7 @@ public class Delivery {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheet inventorySheet;
+	private InventorySheetData inventorySheet;
 
 	public Delivery() {
 		super();
@@ -236,11 +236,11 @@ public class Delivery {
 
 	}
 
-	public InventorySheet getInventorySheet() {
+	public InventorySheetData getInventorySheet() {
 		return inventorySheet;
 	}
 
-	public void setInventorySheet(InventorySheet inventorySheet) {
+	public void setInventorySheet(InventorySheetData inventorySheet) {
 		this.inventorySheet = inventorySheet;
 	}
 

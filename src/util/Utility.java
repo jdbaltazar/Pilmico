@@ -23,5 +23,6 @@ public class Utility {
 	public static final int MySqlFormat = 6;
 	public static final int DMYFormat = 7;
 	public static final int DMYHMAFormat = 8;
+	public static final int DMYHMSAFormat = 9;
 
 }

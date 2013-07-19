@@ -166,7 +166,7 @@ public class EditProductPanel extends EditFormPanel {
 				double pricePerKilo = Double.parseDouble(fields.get(8).getText());
 
 				// check if price is the same with old
-				if (pricePerSack != product.getPricePerSack() || pricePerKilo != product.getPricePerKilo()) {
+				if (pricePerSack != product.getCurrentPricePerSack() || pricePerKilo != product.getCurrentPricePerKilo()) {
 					product.addPrice(new Price(product, new Date(), pricePerSack, pricePerKilo));
 				}
 
@@ -218,8 +218,8 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(4).setText(product.getQuantityInKilo() + "");
 		fields.get(5).setText(product.getDisplayInSack() + "");
 		fields.get(6).setText(product.getDisplayInKilo() + "");
-		fields.get(7).setText(product.getPricePerSack() + "");
-		fields.get(8).setText(product.getPricePerKilo() + "");
+		fields.get(7).setText(product.getCurrentPricePerSack() + "");
+		fields.get(8).setText(product.getCurrentPricePerKilo() + "");
 		fields.get(fields.size() - 1).setText(product.getAlertOnQuantity() + "");
 
 		cbox1.setSelected(product.isAvailable());

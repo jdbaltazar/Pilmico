@@ -456,7 +456,7 @@ public class SalesForm extends SimplePanel {
 
 				for (RowPanel rp : rowPanel) {
 					Product product = rp.getSelectedProduct();
-					s.addSalesDetail(new SalesDetail(s, product, product.getPricePerKilo(), product.getPricePerSack(), rp.getQuantityInKilo(), rp
+					s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp
 							.getQuantityInSack()));
 				}
 

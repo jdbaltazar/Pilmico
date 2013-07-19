@@ -1,13 +1,18 @@
 package common.entity.inventorysheet;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Breakdown {
@@ -23,23 +28,31 @@ public class Breakdown {
 	@Column
 	private double check;
 
-	@Column
-	private String remarks;
-
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheet inventorySheet;
+	private InventorySheetData inventorySheetData;
+
+	@OneToMany(mappedBy = "breakdown", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<BreakdownLine> breakdownLines = new HashSet<BreakdownLine>();
 
 	public Breakdown() {
 		super();
 	}
 
-	public Breakdown(double coins, double check, String remarks, InventorySheet inventorySheet) {
+	public Breakdown(int id, double coins, double check, InventorySheetData inventorySheetData, Set<BreakdownLine> breakdownLines) {
+		super();
+		this.id = id;
+		this.coins = coins;
+		this.check = check;
+		this.inventorySheetData = inventorySheetData;
+		this.breakdownLines = breakdownLines;
+	}
+
+	public Breakdown(double coins, double check, InventorySheetData inventorySheetData) {
 		super();
 		this.coins = coins;
 		this.check = check;
-		this.remarks = remarks;
-		this.inventorySheet = inventorySheet;
+		this.inventorySheetData = inventorySheetData;
 	}
 
 	public int getId() {
@@ -66,20 +79,20 @@ public class Breakdown {
 		this.check = check;
 	}
 
-	public String getRemarks() {
-		return remarks;
+	public InventorySheetData getInventorySheet() {
+		return inventorySheetData;
 	}
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	public void setInventorySheet(InventorySheetData inventorySheetData) {
+		this.inventorySheetData = inventorySheetData;
 	}
 
-	public InventorySheet getInventorySheet() {
-		return inventorySheet;
+	public Set<BreakdownLine> getBreakdownLines() {
+		return breakdownLines;
 	}
 
-	public void setInventorySheet(InventorySheet inventorySheet) {
-		this.inventorySheet = inventorySheet;
+	public void setBreakdownLines(Set<BreakdownLine> breakdownLines) {
+		this.breakdownLines = breakdownLines;
 	}
 
 }

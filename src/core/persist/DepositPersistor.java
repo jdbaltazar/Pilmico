@@ -10,7 +10,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import common.entity.deposit.Deposit;
-import common.entity.sales.Sales;
 import common.manager.DepositManager;
 
 public class DepositPersistor extends Persistor implements DepositManager {
