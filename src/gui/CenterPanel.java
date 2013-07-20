@@ -28,6 +28,7 @@ import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Bank;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
@@ -77,23 +78,22 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		 add(new LoginPanel());
-		add(new LoginPanel());
+		// add(new LoginPanel());
 
-//		try {
-//			Manager.getInstance().login("manager", "pilmico".toCharArray());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		changeTable(Values.HOME);
+		try {
+			Manager.getInstance().login("manager", "pilmico".toCharArray());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		// if (val != Values.HOME)
-		remove(getComponent(getComponentCount() - 1));
+		if (val != Values.HOME)
+			remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
@@ -183,15 +183,15 @@ public class CenterPanel extends SoyPanel {
 		case Values.CA_PAYMENTS:
 			fillCAPayments();
 			break;
-			
+
 		case Values.INVENTORY_SHEET:
 			fillInventories();
 			break;
-			
+
 		case Values.SALES_GRAPH:
 			add(linePlot, BorderLayout.CENTER);
 			break;
-			
+
 		default:
 			break;
 
@@ -284,12 +284,12 @@ public class CenterPanel extends SoyPanel {
 			for (ARPayment arp : arPayments) {
 				entries[i][0] = arp.getId() + "";
 				entries[i][1] = arp.getAccountReceivable().getId() + "";
-				entries[i][1] = arp.getInventorySheet() == null ? "-" : arp.getInventorySheet().getId() + "";
-				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arp.getDate());
-				entries[i][3] = String.format("%.2f", arp.getAmount());
-				entries[i][4] = arp.getIssuedBy().getFirstPlusLastName();
-				entries[i][5] = arp.isValid() ? "Yes" : "No";
-				entries[i][6] = arp.getRemarks();
+				entries[i][2] = arp.getInventorySheet() == null ? "-" : arp.getInventorySheet().getId() + "";
+				entries[i][3] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arp.getDate());
+				entries[i][4] = String.format("%.2f", arp.getAmount());
+				entries[i][5] = arp.getIssuedBy().getFirstPlusLastName();
+				entries[i][6] = arp.isValid() ? "Yes" : "No";
+				entries[i][7] = arp.getRemarks();
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, arPayments), Tables.AR_PAYMENTS), BorderLayout.CENTER);
@@ -301,7 +301,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillAR() {
 		try {
-			String[] headers = { "ID", "IS No", "Date", "Customer", "Balance", "Issued By", "Valid?", "Remarks" };
+			String[] headers = { "ID", "IS No", "Date", "Customer", "Balance/Amount", "Issued By", "Valid?", "Remarks" };
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
@@ -316,7 +316,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][1] = ar.getInventorySheet() == null ? "-" : ar.getInventorySheet().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ar.getDate());
 				entries[i][3] = ar.getCustomer().getFirstPlusLastName();
-				entries[i][4] = String.format("%.2f", ar.getBalance());
+				entries[i][4] = String.format("%.2f", ar.getBalance()) + "/" + String.format("%.2f", ar.getAccountReceivablesAmount());
 				entries[i][5] = ar.getIssuedBy().getFirstPlusLastName();
 				entries[i][6] = ar.isValid() ? "Yes" : "No";
 				entries[i][7] = ar.getRemarks();
@@ -363,7 +363,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillCashAdvance() {
 		try {
 
-			String[] headers = { "ID", "IS No", "Date", "Employee", "Balance", "Issued By", "Valid?", "Remarks" };
+			String[] headers = { "ID", "IS No", "Date", "Employee", "Balance/Amount", "Issued By", "Valid?", "Remarks" };
 			List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getAllCashAdvances();
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
@@ -376,7 +376,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][1] = ca.getInventorySheet() == null ? "-" : ca.getInventorySheet().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ca.getDate());
 				entries[i][3] = ca.getEmployee().getFirstPlusLastName();
-				entries[i][4] = String.format("%.2f", ca.getBalance());
+				entries[i][4] = String.format("%.2f", ca.getBalance()) + "/" + String.format("%.2f", ca.getAmount());
 				entries[i][5] = ca.getIssuedBy().getFirstPlusLastName();
 				entries[i][6] = ca.isValid() ? "Yes" : "No";
 				entries[i][7] = ca.getRemarks();
@@ -519,7 +519,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DISCOUNTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, dis), Tables.DISCOUNTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -529,26 +529,25 @@ public class CenterPanel extends SoyPanel {
 	private void fillDeposits() {
 		try {
 
-			/*
-			 * String[] headers = { "ID", "IS No", "Date", "Amount",
-			 * "Account/Bank", "Issued By", "Valid?", "Remarks" }; List<Deposit>
-			 * deposits = Manager.depositManager.getAllDeposits(); String[][]
-			 * entries = new String[deposits.size()][headers.length];
-			 * 
-			 * int i = 0; for (Deposit d : deposits) { entries[i][0] = d.getId() +
-			 * ""; entries[i][1] = d.getInventorySheet() == null ? "-" :
-			 * d.getInventorySheet().getId() + ""; entries[i][2] =
-			 * DateFormatter.getInstance
-			 * ().getFormat(Utility.DMYHMAFormat).format(d.getDate());
-			 * entries[i][3] = String.format("%.2f", d.getAmount()); entries[i][4]
-			 * = d.getIssuedBy().getFirstPlusLastName(); entries[i][5] =
-			 * d.isValid() ? "Yes" : "No"; entries[i][6] = d.getRemarks(); i++; }
-			 */
+			String[] headers = { "ID", "IS No", "Date", "Acct No, Bank", "Amount", "Depositor", "Issued By", "Valid?", "Remarks" };
+			List<Deposit> deposits = Manager.depositManager.getAllDeposits();
+			String[][] entries = new String[deposits.size()][headers.length];
 
-			String[] headers = { "ID", "Name", "Address", "Contact No." };
-			String[][] entries = { { "1", "Banco de Oro", "Marikina City", "" }, { "2", "Landbank of the Philippines", "Tacloban City", "325-5689", } };
+			int i = 0;
+			for (Deposit d : deposits) {
+				entries[i][0] = d.getId() + "";
+				entries[i][1] = d.getInventorySheet() == null ? "-" : d.getInventorySheet().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
+				entries[i][3] = d.getBankAccount().getAccountNo() + ", " + d.getBankAccount().getBank().getName();
+				entries[i][4] = String.format("%.2f", d.getAmount());
+				entries[i][4] = d.getDepositor().getFirstPlusLastName();
+				entries[i][6] = d.getIssuedBy().getFirstPlusLastName();
+				entries[i][7] = d.isValid() ? "Yes" : "No";
+				entries[i][8] = d.getRemarks();
+				i++;
+			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.DEPOSITS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, deposits), Tables.DEPOSITS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -557,11 +556,20 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillBank() {
 		try {
-			String[] headers = { "ID", "Name", "Address", "Contact No." };
+			String[] headers = { "ID", "Name", "Address", "Contact No.", "Account No(s)" };
+			List<Bank> banks = Manager.depositManager.getBanks();
+			String[][] entries = new String[banks.size()][headers.length];
+			int i = 0;
+			for (Bank p : banks) {
+				entries[i][0] = p.getId() + "";
+				entries[i][1] = p.getName();
+				entries[i][2] = p.getAddress();
+				entries[i][3] = p.getContactNo();
+				entries[i][4] = p.getAccountNos();
+				i++;
+			}
 
-			String[][] entries = { { "1", "Banco de Oro", "Marikina City", "" }, { "2", "Landbank of the Philippines", "Tacloban City", "325-5689", } };
-
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.BANK), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, banks), Tables.BANK), BorderLayout.CENTER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -648,7 +656,6 @@ public class CenterPanel extends SoyPanel {
 			List<Product> products = Manager.productManager.getProducts();
 			String[][] entries = new String[products.size()][headers.length];
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.PRODUCTS), BorderLayout.CENTER);
 			int i = 0;
 			for (Product p : products) {
 				entries[i][0] = p.getId() + "";
@@ -678,8 +685,6 @@ public class CenterPanel extends SoyPanel {
 			String[][] entries = { { "June 21, 2013", "dummy_acct logged in" } };
 			// String[][] entries = new String[1][headers.length];
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), "LOGS"), BorderLayout.CENTER);
-
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMinWidth(200);
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMaxWidth(200);
 
@@ -689,7 +694,7 @@ public class CenterPanel extends SoyPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void logout() {

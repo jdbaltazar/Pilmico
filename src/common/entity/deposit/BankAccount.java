@@ -17,7 +17,7 @@ public class BankAccount {
 	@Column
 	private int id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "bank_id")
 	private Bank bank;
 

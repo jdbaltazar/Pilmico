@@ -87,8 +87,8 @@ public class HibernateUtil {
 
 			p.setProperty("hibernate.connection.url", URL + Credentials.getInstance().getDatabaseName());
 			p.setProperty("hibernate.show_sql", "false");
-			p.setProperty("hibernate.connection.username", SecurityTool.decrypt(Credentials.getInstance().getUsername()));
-			p.setProperty("hibernate.connection.password", SecurityTool.decrypt(Credentials.getInstance().getPassword()));
+			p.setProperty("hibernate.connection.username", SecurityTool.decryptString(Credentials.getInstance().getUsername()));
+			p.setProperty("hibernate.connection.password", SecurityTool.decryptString(Credentials.getInstance().getPassword()));
 
 			p.setProperty("log4j.rootLogger", "ERROR, myConsoleAppender");
 			p.setProperty("log4j.appender.myConsoleAppender", "org.apache.log4j.ConsoleAppender");

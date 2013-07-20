@@ -65,6 +65,7 @@ public class ARPaymentForm extends SimplePanel {
 	public ARPaymentForm() {
 		super("Add AR Payment");
 		addComponents();
+
 	}
 
 	private void addComponents() {
@@ -184,7 +185,10 @@ public class ARPaymentForm extends SimplePanel {
 				ARPayment arPayment = new ARPayment(accountReceivable, d, Double.parseDouble(fields.get(0).getText()), Manager.loggedInAccount);
 				try {
 					Manager.accountReceivableManager.addARPayment(arPayment);
-					System.out.println("ar payment saved");
+					accountReceivable.addARPayment(arPayment);
+					accountReceivable.setBalance(accountReceivable.getBalance() - arPayment.getAmount());
+					Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+					System.out.println("ar payment saved, balance updated");
 					clearFields();
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -221,8 +225,10 @@ public class ARPaymentForm extends SimplePanel {
 
 	}
 
-	public void setAccountReceivable(AccountReceivable accountReceivable) {
+	public void fillEntries(AccountReceivable accountReceivable) {
 		this.accountReceivable = accountReceivable;
+		arID.setText(accountReceivable != null ? accountReceivable.getId() + "" : "");
+		fields.get(0).setText(accountReceivable != null ? accountReceivable.getBalance() + "" : "");
 	}
 
 	private void clearFields() {

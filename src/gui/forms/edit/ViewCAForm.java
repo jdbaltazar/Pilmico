@@ -3,9 +3,13 @@ package gui.forms.edit;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,10 +24,12 @@ import javax.swing.JScrollPane;
 import common.entity.cashadvance.CashAdvance;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.SBButton;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -36,7 +42,7 @@ public class ViewCAForm extends EditFormPanel {
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private int initY = 32;
-	private ViewFormLabel dateLabel, issuedByLabel, issuedForLabel, balanceLabel, amountLabel;
+	private ViewFormLabel dateLabel, issuedByLabel, issuedForLabel, balanceLabel, amountLabel, remarks;
 	private ViewFormField issuedFor, balance, issuedBy, date, amount;
 
 	private ErrorLabel error;
@@ -46,7 +52,7 @@ public class ViewCAForm extends EditFormPanel {
 	private JScrollPane scrollPane;
 	private JLabel status;
 	private ImageIcon icon;
-	private SBButton payBtn;
+	private SBButton payBtn, voidBtn;
 
 	private CashAdvance cashAdvance;
 
@@ -54,16 +60,26 @@ public class ViewCAForm extends EditFormPanel {
 		super("View Cash Advance");
 		this.cashAdvance = cashAdvance;
 		addComponents();
-
+		fillEntries();
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
-		icon = new ImageIcon("images/pending.png");
 
-		status = new JLabel("PENDING", icon, JLabel.LEADING);
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
+		voidBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, cashAdvance).setVisible(true);
+			}
+		});
+
+		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
+		
+		remarks = new ViewFormLabel("", true);
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -84,7 +100,7 @@ public class ViewCAForm extends EditFormPanel {
 		balanceLabel = new ViewFormLabel("Balance:");
 		amountLabel = new ViewFormLabel("Amount:");
 
-		issuedBy = new ViewFormField(Manager.loggedInAccount.getFirstPlusLastName());
+		issuedBy = new ViewFormField("");
 		date = new ViewFormField("17 Jul 2013 10:15 PM");
 		balance = new ViewFormField("1990.00");
 		issuedFor = new ViewFormField("John David S. Baltazar");
@@ -169,9 +185,43 @@ public class ViewCAForm extends EditFormPanel {
 		scrollPane.setBounds(245, 63, 300, 275);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
-
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
+		
+		add(voidBtn);
 		add(scrollPane);
 		add(status);
+		add(remarks);
+		
 
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(cashAdvance.getInventorySheet() != null ? false : cashAdvance.isValid());
+
+		String s = "";
+		if (cashAdvance.getInventorySheet() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (cashAdvance.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				remarks.setText(cashAdvance.getRemarks());
+			}
+		}
+
+		status.setText(s);
+		status.setIcon(icon);
+
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cashAdvance.getDate()));
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		issuedFor.setText(cashAdvance.getEmployee().toString());
+		amount.setText(cashAdvance.getAmount() + "");
+		balance.setText(cashAdvance.getBalance() + "");
+		payBtn.setVisible(cashAdvance.getBalance() > 0d);
 	}
 }

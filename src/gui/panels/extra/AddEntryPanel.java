@@ -439,12 +439,12 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		switch (form) {
 
 		case Values.CA_PAYMENTS:
-			caPayment.setCashAdvance((CashAdvance) parentTransation);
+			caPayment.fillEntries((CashAdvance) parentTransation);
 			caPayment.setVisible(true);
 			break;
 
 		case Values.AR_PAYMENTS:
-			arPayment.setAccountReceivable((AccountReceivable) parentTransation);
+			arPayment.fillEntries((AccountReceivable) parentTransation);
 			arPayment.setVisible(true);
 			break;
 

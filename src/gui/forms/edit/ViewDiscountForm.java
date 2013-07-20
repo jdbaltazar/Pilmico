@@ -4,9 +4,13 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -31,12 +35,14 @@ import javax.swing.SwingConstants;
 import common.entity.discountissue.DiscountIssue;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.DropdownLabel;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.JNumericField;
 import util.SBButton;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -50,7 +56,7 @@ public class ViewDiscountForm extends EditFormPanel {
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private int initY = 32;
-	private ViewFormLabel dateLabel, issuedByLabel, productLabel, customerLabel, amountLabel;
+	private ViewFormLabel dateLabel, issuedByLabel, productLabel, customerLabel, amountLabel, remarks;
 	private ViewFormField product, customer, issuedBy, date, amount;
 
 	private ErrorLabel error;
@@ -64,19 +70,32 @@ public class ViewDiscountForm extends EditFormPanel {
 
 	private DiscountIssue discountIssue;
 
+	private SBButton voidBtn;
+
 	public ViewDiscountForm(DiscountIssue discountIssue) {
 		super("View Discount");
 		this.discountIssue = discountIssue;
 		addComponents();
+		fillEntries();
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
-		icon = new ImageIcon("images/pending.png");
 
-		status = new JLabel("PENDING", icon, JLabel.LEADING);
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
+		voidBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, discountIssue).setVisible(true);
+			}
+		});
+
+		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
+		
+		remarks = new ViewFormLabel("", true);
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -171,10 +190,44 @@ public class ViewDiscountForm extends EditFormPanel {
 		scrollPane.setBounds(245, 63, 300, 275);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
-
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
+		
+		
+		
+		add(voidBtn);
 		add(scrollPane);
 		add(status);
+		add(remarks);
 
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(discountIssue.getInventorySheet() != null ? false : discountIssue.isValid());
+
+		String s = "";
+		if (discountIssue.getInventorySheet() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (discountIssue.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				remarks.setText(discountIssue.getRemarks());
+			}
+		}
+
+		status.setText(s);
+		status.setIcon(icon);
+
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		product.setText(discountIssue.getProduct().getName());
+		customer.setText(discountIssue.getCustomer().getFirstPlusLastName());
+		amount.setText(discountIssue.getAmount() + "");
 	}
 
 	private void clearFields() {

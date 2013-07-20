@@ -150,9 +150,7 @@ public class RowPanel extends JPanel {
 		priceKG = new JNumericField(10, JNumericField.DECIMAL, true);
 
 		amountOfExpense = new JNumericField(10, JNumericField.DECIMAL, true);
-
 		amountOfExpense.setPrecision(2);
-
 		amountOfExpense.setText("0");
 
 		quantitySack.setPrecision(2);
@@ -423,6 +421,10 @@ public class RowPanel extends JPanel {
 
 	public double getExpenseAmount() {
 		return Double.parseDouble(amountOfExpense.getText());
+	}
+
+	public String getAccountNo() {
+		return bankAccount.getText();
 	}
 
 }

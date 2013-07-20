@@ -88,8 +88,37 @@ public class Bank {
 		this.bankAccounts = bankAccounts;
 	}
 
+	public void addBankAccount(BankAccount bankAccount) {
+		bankAccount.setBank(this);
+		bankAccounts.add(bankAccount);
+	}
+
+	public void removeBankAccount(BankAccount bankAccount) {
+		removeBankAccount(bankAccount.getId());
+	}
+
+	public void removeBankAccount(int bankAccountId) {
+		for (BankAccount ba : bankAccounts) {
+			if (ba.getId() == bankAccountId) {
+				bankAccounts.remove(ba);
+				break;
+			}
+		}
+	}
+
 	public String toString() {
 		return name;
 	}
 
+	public String getAccountNos() {
+		String str = "";
+		int i = 0;
+		for (BankAccount ba : bankAccounts) {
+			str = str + ba.getAccountNo();
+			if (i != bankAccounts.size() - 1)
+				str = str + ", ";
+			i++;
+		}
+		return str;
+	}
 }

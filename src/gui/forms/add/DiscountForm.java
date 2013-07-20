@@ -36,7 +36,10 @@ import util.Values;
 import util.soy.SoyButton;
 
 import common.entity.cashadvance.CashAdvance;
+import common.entity.discountissue.DiscountIssue;
+import common.entity.product.Product;
 import common.entity.profile.Employee;
+import common.entity.profile.Person;
 import common.manager.Manager;
 
 public class DiscountForm extends SimplePanel {
@@ -66,18 +69,18 @@ public class DiscountForm extends SimplePanel {
 	public DiscountForm() {
 		super("Add Discount");
 		addComponents();
-
+		fillEntries();
 	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -99,7 +102,7 @@ public class DiscountForm extends SimplePanel {
 		customerLabel = new DropdownLabel("Customer");
 
 		// issuedBy = new FormDropdown();
-		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
+		issuedBy = new JLabel("");
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
@@ -121,15 +124,14 @@ public class DiscountForm extends SimplePanel {
 				tf.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
-		
+
 		customerCombo = new JComboBox();
 		customerCombo.setEditable(true);
-		customerCombo.setSelectedIndex(-1);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
 		customerComboField.setText("");
 		customerComboField.setOpaque(false);
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
-		
+
 		productCombo = new JComboBox();
 		productCombo.setEditable(true);
 		productCombo.setSelectedIndex(-1);
@@ -143,7 +145,7 @@ public class DiscountForm extends SimplePanel {
 
 			if (i == 4) {
 
-				fields.add(new JNumericField(Tables.discountFormLabel[i]+"*"));
+				fields.add(new JNumericField(Tables.discountFormLabel[i] + "*"));
 				fields.get(ctr).setMaxLength(10);
 				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
 				panel.add(fields.get(ctr));
@@ -165,7 +167,7 @@ public class DiscountForm extends SimplePanel {
 				productLabel.setBounds(x1, initY + y - 7, 200, 11);
 				productCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			
+
 			if (i == 3) {
 				fwd2.setBounds(x1 + 53, initY + y - 11, 16, 16);
 				customerLabel.setBounds(x1, initY + y - 7, 200, 11);
@@ -188,6 +190,18 @@ public class DiscountForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				DiscountIssue discountIssue = new DiscountIssue(d, (Product) productCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
+						Manager.loggedInAccount, (Person) customerCombo.getSelectedItem(), true, "");
+
+				try {
+					Manager.discountIssueManager.addDiscountIssue(discountIssue);
+					System.out.println("discount saved!!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
@@ -199,13 +213,13 @@ public class DiscountForm extends SimplePanel {
 
 		panel.add(fwd);
 		panel.add(fwd2);
-		
+
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
-		
+
 		panel.add(productCombo);
 		panel.add(productLabel);
-		
+
 		panel.add(customerCombo);
 		panel.add(customerLabel);
 
@@ -213,11 +227,32 @@ public class DiscountForm extends SimplePanel {
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(10, 25, 280, 340);
-		
-		
+
 		add(scrollPane);
+
+	}
+
+	private void fillEntries() {
+
+		issuedBy.setText(Manager.loggedInAccount != null ? Manager.loggedInAccount.getFirstPlusLastName() : "");
+		try {
+			List<Product> products = Manager.productManager.getProducts();
+			for (Product p : products) {
+				productCombo.addItem(p);
+			}
+			List<Person> customers = Manager.employeePersonManager.getCustomersOnly();
+			for (Person p : customers) {
+				customerCombo.addItem(p);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		productCombo.setSelectedIndex(-1);
+		customerCombo.setSelectedIndex(-1);
 
 	}
 

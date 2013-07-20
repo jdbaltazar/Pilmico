@@ -185,7 +185,11 @@ public class CAPaymentForm extends SimplePanel {
 
 				try {
 					Manager.cashAdvanceManager.addCAPayment(caPayment);
-					System.out.println("ca payment saved");
+					System.out.println("id: " + caPayment.getId());
+					cashAdvance.addCAPayment(caPayment);
+					cashAdvance.setBalance(cashAdvance.getBalance() - caPayment.getAmount());
+					Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
+					System.out.println("ca payment saved, balance updated");
 					clearFields();
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -221,8 +225,11 @@ public class CAPaymentForm extends SimplePanel {
 
 	}
 
-	public void setCashAdvance(CashAdvance cashAdvance) {
+	public void fillEntries(CashAdvance cashAdvance) {
 		this.cashAdvance = cashAdvance;
+		caID.setText(cashAdvance != null ? cashAdvance.getId() + "" : "");
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		fields.get(0).setText(cashAdvance != null ? cashAdvance.getBalance() + "" : "");
 	}
 
 	private void clearFields() {

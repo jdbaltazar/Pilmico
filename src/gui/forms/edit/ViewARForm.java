@@ -93,7 +93,6 @@ public class ViewARForm extends EditFormPanel {
 		init();
 		addComponents();
 		fillEntries();
-
 	};
 
 	private void init() {
@@ -103,7 +102,7 @@ public class ViewARForm extends EditFormPanel {
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
@@ -155,7 +154,7 @@ public class ViewARForm extends EditFormPanel {
 
 		balanceLabel.setBounds(305, 50, 70, 20);
 		balance.setBounds(380, 48, 150, 20);
-		
+
 		payBtn.setBounds(535, 51, 16, 16);
 
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
@@ -168,7 +167,7 @@ public class ViewARForm extends EditFormPanel {
 		productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
 		payBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -273,26 +272,22 @@ public class ViewARForm extends EditFormPanel {
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
 		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
-
-		save = new SoyButton("Save");
-
-		error = new ErrorLabel();
-
-		save.setBounds(290, 300, 80, 30);
-
-		error.setBounds(305, 340, 200, 30);
-
-		save.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-
-			}
-		});
-
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, accountReceivable).setVisible(true);
+			}
+		});
+
+		error = new ErrorLabel();
+		error.setBounds(305, 340, 200, 30);
+
+		save = new SoyButton("Save");
+		save.setBounds(290, 300, 80, 30);
+		save.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+
 			}
 		});
 
@@ -322,6 +317,7 @@ public class ViewARForm extends EditFormPanel {
 				remarks.setText(accountReceivable.getRemarks());
 			}
 		}
+
 		status.setText(s);
 		status.setIcon(icon);
 
@@ -329,6 +325,8 @@ public class ViewARForm extends EditFormPanel {
 		issuedBy.setText(accountReceivable.getIssuedBy().getFirstPlusLastName());
 		customer.setText(accountReceivable.getCustomer().getFirstPlusLastName());
 		balance.setText(accountReceivable.getBalance() + "");
+
+		payBtn.setVisible(accountReceivable.getBalance() > 0d);
 
 		//
 		// Set<DeliveryDetail> deliveryDetails = delivery.getDeliveryDetails();

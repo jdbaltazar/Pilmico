@@ -1,6 +1,8 @@
 package core.test;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -38,8 +40,8 @@ public class Test {
 
 	public void runSql(String pSql) throws FileNotFoundException, Exception {
 
-		String username = SecurityTool.decrypt(Credentials.getInstance().getUsername());
-		String password = SecurityTool.decrypt(Credentials.getInstance().getPassword());
+		String username = SecurityTool.decryptString(Credentials.getInstance().getUsername());
+		String password = SecurityTool.decryptString(Credentials.getInstance().getPassword());
 		String tCommand = "mysql -u " + username + (password != null ? " -p" + password : "") + " " + "pilmico";
 		System.out.println(tCommand);
 
@@ -68,13 +70,23 @@ public class Test {
 	public static void main(String[] args) {
 
 		try {
-			List<Expense> expenses = Manager.dailyExpenseManager.getExpenses();
+			// SecurityTool.writeToFile(SecurityTool.encryptFile("data/pilmico-create.sql"),
+			// new FileOutputStream("data/unenc2.txt"));
+			SecurityTool.writeToFile(SecurityTool.decryptFile("data/ok.txt"), "data/ok2.txt");
 
-			System.out.println("size: " + expenses.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		// try {
+		// List<Expense> expenses = Manager.dailyExpenseManager.getExpenses();
+		//
+		// System.out.println("size: " + expenses.size());
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		// String hello = "pilmico";
 		//

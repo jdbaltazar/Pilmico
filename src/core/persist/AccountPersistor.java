@@ -155,12 +155,12 @@ public class AccountPersistor extends Persistor implements AccountManager {
 
 	private void encryptAccount(Account acc) throws Exception {
 		// acc.setUsername(SecurityTool.encrypt(acc.getUsername()));
-		acc.setPassword(SecurityTool.encrypt(acc.getPassword()));
+		acc.setPassword(SecurityTool.encryptString(acc.getPassword()));
 	}
 
 	private void decryptAccount(Account acc) throws Exception {
 		// acc.setUsername(SecurityTool.decrypt(acc.getUsername()));
-		acc.setPassword(SecurityTool.decrypt(acc.getPassword()));
+		acc.setPassword(SecurityTool.decryptString(acc.getPassword()));
 	}
 
 }

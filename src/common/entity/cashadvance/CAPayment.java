@@ -25,7 +25,7 @@ public class CAPayment {
 	@Column
 	private int id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "cash_advance_id")
 	private CashAdvance cashAdvance;
 

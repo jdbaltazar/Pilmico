@@ -41,6 +41,8 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.deposit.Bank;
+import common.entity.deposit.BankAccount;
 import common.entity.profile.Employee;
 import common.manager.Manager;
 
@@ -104,9 +106,9 @@ public class BankForm extends SimplePanel {
 		bankAccountPane.setOpaque(false);
 		bankAccountPane.getViewport().setOpaque(false);
 
-		for(int i = 0, y = 80 ; i < Tables.bankFormLabel.length; i++, y+=55){
+		for (int i = 0, y = 80; i < Tables.bankFormLabel.length; i++, y += 55) {
 			fields.add(new FormField(Tables.bankFormLabel[i], 100, Color.white, Color.GRAY));
-			fields.get(i).setBounds(24, y, 200, 25);//115
+			fields.get(i).setBounds(24, y, 200, 25);// 115
 			panel.add(fields.get(i));
 		}
 
@@ -151,11 +153,11 @@ public class BankForm extends SimplePanel {
 
 	private void alternateRows() {
 
-			for (int i = 0; i < accountRowPanel.size(); i++)
-				if (i % 2 == 0)
-					accountRowPanel.get(i).getRow().setBackground(Values.row1);
-				else
-					accountRowPanel.get(i).getRow().setBackground(Values.row2);
+		for (int i = 0; i < accountRowPanel.size(); i++)
+			if (i % 2 == 0)
+				accountRowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+				accountRowPanel.get(i).getRow().setBackground(Values.row2);
 	}
 
 	public void removeRow(int rowNum) {
@@ -196,6 +198,18 @@ public class BankForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				Bank bank = new Bank(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText());
+				for (RowPanel rp : accountRowPanel) {
+					bank.addBankAccount(new BankAccount(bank, rp.getAccountNo()));
+				}
+
+				try {
+					Manager.depositManager.addBank(bank);
+					System.out.println("bank saved!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});

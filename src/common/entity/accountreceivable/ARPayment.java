@@ -25,7 +25,7 @@ public class ARPayment {
 	@Column
 	private int id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "account_receivable_id")
 	private AccountReceivable accountReceivable;
 

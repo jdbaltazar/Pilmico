@@ -54,7 +54,11 @@ public class DatabaseTool {
 		return false;
 	}
 
-	public static void update(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
+	public static void decryptAndUpdate(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
+		update(dbUserName, dbPassword, dbName, filePath);
+	}
+
+	private static void update(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
 
 		String s = new String();
 		StringBuffer sb = new StringBuffer();
