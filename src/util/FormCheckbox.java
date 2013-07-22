@@ -21,9 +21,9 @@ public class FormCheckbox extends JCheckBox{
 		
 		super(label);
 		
-		setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		setFocusPainted(false);
-		setBackground(Color.decode("#F0F4F1"));
+		setBackground(Color.decode("#E2F8E2"));
 		
 	}
 

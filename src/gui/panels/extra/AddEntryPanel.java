@@ -441,6 +441,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 	public void showPaymentForm(int form, Object parentTransation) {
 
+		Values.menuPanel.setVisible(false);
+		
 		switch (form) {
 
 		case Values.CA_PAYMENTS:

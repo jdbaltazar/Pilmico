@@ -26,6 +26,16 @@ public class FormDropdown extends JComboBox {
 		// setFont(new Font("Tahoma", Font.BOLD, 22));
 		init();
 	}
+	
+	public FormDropdown(boolean edit) {
+
+		setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#006600")));
+		setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		setForeground(Color.GRAY);
+		
+		setRequestFocusEnabled(false);
+		setUI(ColorArrowUI.createUI(this));
+	}
 
 	public FormDropdown(Object[] entries) {
 

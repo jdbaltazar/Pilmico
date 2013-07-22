@@ -103,7 +103,7 @@ public class ViewARForm extends EditFormPanel {
 
 		scrollPane = new JScrollPane();
 
-		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
+		payBtn = new SBButton("invalidate.png", "invalidate.png", "Pay");
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));

@@ -106,18 +106,18 @@ public class AccountForm extends SimplePanel {
 
 				ctr++;
 			}
-
+			
 			if (i == 0) {
-				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
-				employee.setBounds(x1, initY + y - 7, 100, 11);
-				employeeCombo.setBounds(x1, initY + y + 5, 200, 20);
-			}
-
-			if (i == 1) {
 				acctT.setBounds(x1, initY + y - 7, 100, 11);
 				acctType.setBounds(x1, initY + y + 5, 200, 20);
 			}
 
+
+			if (i == 1) {
+				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
+				employee.setBounds(x1, initY + y - 7, 100, 11);
+				employeeCombo.setBounds(x1, initY + y + 5, 200, 20);
+			}
 		}
 
 		clear.setBounds(167, 330, 80, 30);

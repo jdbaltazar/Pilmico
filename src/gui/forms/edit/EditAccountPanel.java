@@ -30,8 +30,7 @@ public class EditAccountPanel extends EditFormPanel {
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 	private SoyButton edit;
 	private int num = Values.accountFormLabel.length;
-	private FormDropdown acctType;
-	private String username, password, firstName, lastName, address;
+	private FormDropdown acctType, employee;
 
 	private ErrorLabel error;
 
@@ -51,7 +50,8 @@ public class EditAccountPanel extends EditFormPanel {
 
 	private void init() {
 		setLayout(null);
-		acctType = new FormDropdown();
+		acctType = new FormDropdown(true);
+		employee = new FormDropdown(true);
 
 	/*	try {
 			List<AccountType> accountTypes = Manager.accountManager.getAccountTypes();
@@ -70,37 +70,40 @@ public class EditAccountPanel extends EditFormPanel {
 
 		int labelsCtr = 0, fieldCtr = 0;
 
-		for (int i = 0, x = 160, y = 0; i < num; i++, y += 70) {
-			if (i == 4 || i == 9) {
-				// x=0;
-				// y+=70;
-				y = 0;
-				x += 300;
-			}
+		for (int i = 0, x = 290, y = -5; i < num; i++, y += 73) {
 
-			if (i != 1) {
+			if (i != 1 && i!=0) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Values.accountFormLabel[i]));
 
-				fields.get(fieldCtr).setBounds(x, 65 + y, 170, 25);
+				fields.get(fieldCtr).setBounds(x, 65 + y, 200, 25);
 				labels.get(labelsCtr).setBounds(x, 50 + y, 100, 15);
 
 				fieldCtr++;
 				labelsCtr++;
 			}
 
+			if (i == 0) {
+				labels.add(new FormLabel(Values.accountFormLabel[i]));
+				labels.get(labelsCtr).setBounds(x, 50 + y, 100, 15);
+
+				acctType.setBounds(x, 65 + y, 200, 25);
+
+				labelsCtr++;
+			}
+			
 			if (i == 1) {
 				labels.add(new FormLabel(Values.accountFormLabel[i]));
 				labels.get(labelsCtr).setBounds(x, 50 + y, 100, 15);
 
-				acctType.setBounds(x, 65 + y, 170, 25);
+				employee.setBounds(x, 65 + y, 200, 25);
 
 				labelsCtr++;
 			}
 
 		}
 
-		edit.setBounds(350, 350, 80, 30);
+		edit.setBounds(360, 350, 80, 30);
 
 		error.setBounds(550, 320, 230, 25);
 
@@ -143,6 +146,7 @@ public class EditAccountPanel extends EditFormPanel {
 		});
 
 		add(acctType);
+		add(employee);
 		add(edit);
 
 		add(error);
@@ -158,8 +162,8 @@ public class EditAccountPanel extends EditFormPanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+//		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
+//			return true;
 
 		return false;
 	}

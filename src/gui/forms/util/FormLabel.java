@@ -11,7 +11,7 @@ public class FormLabel extends JLabel{
 		
 		super(name);
 		
-		setFont(new Font("Consolas", Font.PLAIN, 11));
+		setFont(new Font("Lucida Sans", Font.PLAIN, 11));
 		setForeground(Color.decode("#006600"));
 	}
 	
