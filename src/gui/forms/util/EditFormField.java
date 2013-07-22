@@ -25,7 +25,7 @@ public class EditFormField extends JTextField{
 		setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#006600")));
 		
 		setDocument(new FieldLimit(limit));
-		setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		setFont(new Font("Arial Narrow", Font.PLAIN, 15));
 		setForeground(Color.GRAY);
 		setText(label);
 

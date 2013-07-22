@@ -32,13 +32,13 @@ public class EditProductPanel extends EditFormPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<JTextField> fields = new ArrayList<JTextField>();
+	private ArrayList<EditFormField> fields = new ArrayList<EditFormField>();
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 	private SoyButton edit;
 
 	private int num = Tables.productFormLabel.length;
 
-	private FormDropdown unit, category, condition;
+	private FormDropdown category;
 	private JCheckBox cbox1, cbox2;
 	private ErrorLabel error;
 
@@ -68,9 +68,7 @@ public class EditProductPanel extends EditFormPanel {
 
 		error = new ErrorLabel();
 
-		unit = new FormDropdown();
-		category = new FormDropdown();
-		condition = new FormDropdown();
+		category = new FormDropdown(true);
 
 		cbox1 = new FormCheckbox("Available?*", true);
 		cbox2 = new FormCheckbox("Alert using sack?*", true);
@@ -202,9 +200,7 @@ public class EditProductPanel extends EditFormPanel {
 
 		add(cbox1);
 		add(cbox2);
-		add(condition);
 		add(category);
-		add(unit);
 
 		add(error);
 	}

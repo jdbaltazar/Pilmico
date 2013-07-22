@@ -1,6 +1,9 @@
 package gui.panels.extra;
 
 import gui.forms.edit.EditAccountPanel;
+import gui.forms.edit.EditBankForm;
+import gui.forms.edit.EditCustomerForm;
+import gui.forms.edit.EditEmployeeForm;
 import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSupplierPanel;
 import gui.forms.edit.ViewARForm;
@@ -214,6 +217,15 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.AR_PAYMENTS)) {
 			add(new ViewARPaymentForm((ARPayment) o), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)) {
+			add(new EditEmployeeForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.CUSTOMERS)) {
+			add(new EditCustomerForm(), BorderLayout.CENTER);
+//			add(new EditBankForm(), BorderLayout.CENTER);
 		}
 
 	}
