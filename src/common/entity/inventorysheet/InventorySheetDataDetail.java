@@ -23,7 +23,7 @@ public class InventorySheetDataDetail {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "inventory_sheet_id")
-	private InventorySheetData inventorySheet;
+	private InventorySheetData inventorySheetData;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "product_id")
@@ -51,10 +51,10 @@ public class InventorySheetDataDetail {
 		super();
 	}
 
-	public InventorySheetDataDetail(InventorySheetData inventorySheet, Product product, double beginningInventoryInSack,
+	public InventorySheetDataDetail(InventorySheetData inventorySheetData, Product product, double beginningInventoryInSack,
 			double beginningInventoryInKilo, double onDisplayInSack, double onDisplayInKilo, double pricePerSack, double pricePerKilo) {
 		super();
-		this.inventorySheet = inventorySheet;
+		this.inventorySheetData = inventorySheetData;
 		this.product = product;
 		this.beginningInventoryInSack = beginningInventoryInSack;
 		this.beginningInventoryInKilo = beginningInventoryInKilo;
@@ -73,12 +73,12 @@ public class InventorySheetDataDetail {
 		this.id = id;
 	}
 
-	public InventorySheetData getInventorySheet() {
-		return inventorySheet;
+	public InventorySheetData getInventorySheetData() {
+		return inventorySheetData;
 	}
 
-	public void setInventorySheet(InventorySheetData inventorySheet) {
-		this.inventorySheet = inventorySheet;
+	public void setInventorySheetData(InventorySheetData inventorySheetData) {
+		this.inventorySheetData = inventorySheetData;
 	}
 
 	public Product getProduct() {

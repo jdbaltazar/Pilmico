@@ -80,6 +80,23 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		return sales;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Sales> getPendingSales() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Sales.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Sales> sales = new ArrayList<Sales>();
+		try {
+			sales = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return sales;
+	}
+
 	@Override
 	public void updateSales(Sales sales) throws Exception {
 		update(sales);

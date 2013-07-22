@@ -15,6 +15,8 @@ public interface DeliveryManager {
 	public List<Delivery> getValidDeliveries() throws Exception;
 
 	public List<Delivery> getInvalidDeliveries() throws Exception;
+	
+	public List<Delivery> getPendingDeliveries() throws Exception;
 
 	public void updateDelivery(Delivery delivery) throws Exception;
 

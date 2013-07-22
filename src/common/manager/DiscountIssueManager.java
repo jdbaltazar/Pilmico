@@ -15,6 +15,8 @@ public interface DiscountIssueManager {
 	public List<DiscountIssue> getValidDiscountIssues() throws Exception;
 
 	public List<DiscountIssue> getInvalidDiscountIssues() throws Exception;
+	
+	public List<DiscountIssue> getPendingDiscountIssues() throws Exception;
 
 	public void updateDiscountIssue(DiscountIssue discountIssue) throws Exception;
 

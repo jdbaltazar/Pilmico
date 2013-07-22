@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.delivery.Delivery;
 import common.entity.pullout.PullOut;
 import common.manager.PullOutManager;
 
@@ -72,6 +73,23 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
 			pullOuts = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return pullOuts;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PullOut> getPendingPullOuts() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<PullOut> pullOuts = new ArrayList<PullOut>();
+		try {
+			pullOuts = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

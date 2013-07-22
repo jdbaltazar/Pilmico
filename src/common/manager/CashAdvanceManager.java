@@ -19,6 +19,8 @@ public interface CashAdvanceManager {
 
 	public List<CashAdvance> getInvalidCashAdvances() throws Exception;
 
+	public List<CashAdvance> getPendingCashAdvances() throws Exception;
+	
 	public void updateCashAdvance(CashAdvance cashAdvance) throws Exception;
 
 	public void deleteCashAdvance(CashAdvance cashAdvance) throws Exception;
@@ -35,6 +37,8 @@ public interface CashAdvanceManager {
 
 	public List<CAPayment> getInvalidCAPayments() throws Exception;
 
+	public List<CAPayment> getPendingCAPayments() throws Exception;
+	
 	public void updateCAPayment(CAPayment caPayment) throws Exception;
 
 	public void deleteCAPayment(CAPayment caPayment) throws Exception;

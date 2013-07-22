@@ -1,7 +1,6 @@
 package gui;
 
 import gui.graph.LinePlot;
-import gui.panels.LeftPanel;
 import gui.panels.LoginPanel;
 import gui.panels.MenuPanel;
 import gui.panels.TablePanel;
@@ -42,27 +41,11 @@ import common.manager.Manager;
 
 public class CenterPanel extends SoyPanel {
 
-	private LeftPanel leftPanel;
-	private TableUtilPanel tableUtilPanel;
-	private String[] columnNames = { "Name", "Unit", "Selling Price", "Purchase Price", "Quantity", "Item Category" };
-	private Object[][] data = { { "The Bar", "Bottle", "65.00", "55.00", "10", "Liquor" }, { "Lucky Me!", "Piece", "8.50", "7.50", "50", "Noodles" },
-			{ "Chupa chups", "Piece", "8.00", "7.50", "50", "Lollipop" }, { "Nature's Spring", "Bottle", "10.00", "8.50", "10", "Mineral Water" },
-			{ "Purefoods", "Pack", "45.50", "44.30", "10", "Frozen Foods" } };
-	//
-	// private String[] columnNames2 = { "First Name", "Last Name", "Sport" };
-	// private Object[][] data2 = { { "Neil", "Ybanez", "Snorwboarding" }, {
-	// "John", "Doe", "Rowing" }, { "Sue", "Black", "Knitting" },
-	// { "Jane", "White", "Speed reading dfasdasd adasdas" }, { "Joe", "Brown",
-	// "Pool" } };
-	//
-	// private String[] supplierHeader = { "Name", "Address", "Contact Person"
-	// };
-	// private Object[][] suppliers = { { "Universal Rubina",
-	// "Quezon City, Philippines", "Rubina D. Rubina" },
-	// { "Jack n Jill", "Paranaque, Philippines", "Jack N. Jill" } };
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2776395185621879934L;
 	private LinePlot linePlot;
-
-	private TablePanel tablePanel;
 
 	public CenterPanel() {
 		super();
@@ -226,7 +209,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (DailyExpenses de : dailyExpenses) {
 				entries[i][0] = de.getId() + "";
-				entries[i][1] = de.getInventorySheet() == null ? "-" : de.getInventorySheet().getId() + "";
+				entries[i][1] = de.getInventorySheetData() == null ? "-" : de.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(de.getDate());
 				entries[i][3] = String.format("%.2f", de.getDailyExpensesAmount());
 				entries[i][4] = de.getDailyExpensesType().getName();
@@ -255,7 +238,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Sales s : sales) {
 				entries[i][0] = s.getId() + "";
-				entries[i][1] = s.getInventorySheet() == null ? "-" : s.getInventorySheet().getId() + "";
+				entries[i][1] = s.getInventorySheetData() == null ? "-" : s.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(s.getDate());
 				entries[i][3] = String.format("%.2f", s.getSalesAmount());
 				entries[i][4] = s.getCashier().getFirstPlusLastName();
@@ -284,7 +267,7 @@ public class CenterPanel extends SoyPanel {
 			for (ARPayment arp : arPayments) {
 				entries[i][0] = arp.getId() + "";
 				entries[i][1] = arp.getAccountReceivable().getId() + "";
-				entries[i][2] = arp.getInventorySheet() == null ? "-" : arp.getInventorySheet().getId() + "";
+				entries[i][2] = arp.getInventorySheetData() == null ? "-" : arp.getInventorySheetData().getId() + "";
 				entries[i][3] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arp.getDate());
 				entries[i][4] = String.format("%.2f", arp.getAmount());
 				entries[i][5] = arp.getIssuedBy().getFirstPlusLastName();
@@ -313,7 +296,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (AccountReceivable ar : accountReceivables) {
 				entries[i][0] = "" + ar.getId();
-				entries[i][1] = ar.getInventorySheet() == null ? "-" : ar.getInventorySheet().getId() + "";
+				entries[i][1] = ar.getInventorySheetData() == null ? "-" : ar.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ar.getDate());
 				entries[i][3] = ar.getCustomer().getFirstPlusLastName();
 				entries[i][4] = String.format("%.2f", ar.getBalance()) + "/" + String.format("%.2f", ar.getAccountReceivablesAmount());
@@ -345,7 +328,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (PullOut pullOut : pullOuts) {
 				entries[i][0] = pullOut.getId() + "";
-				entries[i][1] = pullOut.getInventorySheet() == null ? "-" : pullOut.getInventorySheet().getId() + "";
+				entries[i][1] = pullOut.getInventorySheetData() == null ? "-" : pullOut.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(pullOut.getDate());
 				entries[i][3] = String.format("%.2f", pullOut.getPulloutAmount());
 				entries[i][4] = pullOut.getIssuedBy().getFirstPlusLastName();
@@ -373,7 +356,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (CashAdvance ca : cashAdvances) {
 				entries[i][0] = ca.getId() + "";
-				entries[i][1] = ca.getInventorySheet() == null ? "-" : ca.getInventorySheet().getId() + "";
+				entries[i][1] = ca.getInventorySheetData() == null ? "-" : ca.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ca.getDate());
 				entries[i][3] = ca.getEmployee().getFirstPlusLastName();
 				entries[i][4] = String.format("%.2f", ca.getBalance()) + "/" + String.format("%.2f", ca.getAmount());
@@ -405,7 +388,7 @@ public class CenterPanel extends SoyPanel {
 			for (CAPayment s : caps) {
 				entries[i][0] = s.getId() + "";
 				entries[i][1] = s.getCashAdvance().getId() + "";
-				entries[i][2] = s.getInventorySheet() == null ? "-" : s.getInventorySheet().getId() + "";
+				entries[i][2] = s.getInventorySheetData() == null ? "-" : s.getInventorySheetData().getId() + "";
 				entries[i][3] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(s.getDate());
 				entries[i][4] =
 
@@ -455,7 +438,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Delivery d : deliveries) {
 				entries[i][0] = d.getId() + "";
-				entries[i][1] = d.getInventorySheet() == null ? "-" : d.getInventorySheet().getId() + "";
+				entries[i][1] = d.getInventorySheetData() == null ? "-" : d.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
 				entries[i][3] =
 
@@ -510,7 +493,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (DiscountIssue di : dis) {
 				entries[i][0] = di.getId() + "";
-				entries[i][1] = di.getInventorySheet() == null ? "-" : di.getInventorySheet().getId() + "";
+				entries[i][1] = di.getInventorySheetData() == null ? "-" : di.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(di.getDate());
 				entries[i][3] = String.format("%.2f", di.getAmount());
 				entries[i][4] = di.getIssuedBy().getFirstPlusLastName();
@@ -536,7 +519,7 @@ public class CenterPanel extends SoyPanel {
 			int i = 0;
 			for (Deposit d : deposits) {
 				entries[i][0] = d.getId() + "";
-				entries[i][1] = d.getInventorySheet() == null ? "-" : d.getInventorySheet().getId() + "";
+				entries[i][1] = d.getInventorySheetData() == null ? "-" : d.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
 				entries[i][3] = d.getBankAccount().getAccountNo() + ", " + d.getBankAccount().getBank().getName();
 				entries[i][4] = String.format("%.2f", d.getAmount());

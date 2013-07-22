@@ -80,6 +80,25 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 		return deliveries;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Delivery> getPendingDeliveries() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		try {
+			deliveries = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date"))
+					.list();
+			
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deliveries;
+	}
+
 	@Override
 	public void updateDelivery(Delivery delivery) throws Exception {
 		update(delivery);

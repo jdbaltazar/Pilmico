@@ -36,6 +36,8 @@ public interface DailyExpensesManager {
 
 	public List<DailyExpenses> getInvalidDailyExpenses() throws Exception;
 
+	public List<DailyExpenses> getPendingDailyExpenses() throws Exception;
+	
 	public void updateDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
 
 	public void deleteDailyExpenses(DailyExpenses dailyExpenses) throws Exception;

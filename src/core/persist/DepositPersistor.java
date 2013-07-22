@@ -77,6 +77,23 @@ public class DepositPersistor extends Persistor implements DepositManager {
 		return deposits;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deposit> getPendingDeposits() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Deposit.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Deposit> deposits = new ArrayList<Deposit>();
+		try {
+			deposits = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
+	}
+
 	@Override
 	public void updateDeposit(Deposit deposit) throws Exception {
 		update(deposit);

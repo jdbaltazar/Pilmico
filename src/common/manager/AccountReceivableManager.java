@@ -19,6 +19,8 @@ public interface AccountReceivableManager {
 
 	public List<AccountReceivable> getInvalidAccountReceivables() throws Exception;
 
+	public List<AccountReceivable> getPendingAccountReceivables() throws Exception;
+
 	public void updateAccountReceivable(AccountReceivable accountReceivable) throws Exception;
 
 	public void deleteAccountReceivable(AccountReceivable accountReceivable) throws Exception;
@@ -36,6 +38,8 @@ public interface AccountReceivableManager {
 	public List<ARPayment> getValidARPayments() throws Exception;
 
 	public List<ARPayment> getInvalidARPayments() throws Exception;
+
+	public List<ARPayment> getPendingARPayments() throws Exception;
 
 	public void updateARPayment(ARPayment arPayment) throws Exception;
 

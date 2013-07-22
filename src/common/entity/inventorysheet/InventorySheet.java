@@ -1,5 +1,6 @@
 package common.entity.inventorysheet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,18 +25,27 @@ public class InventorySheet implements InventorySheetManager {
 		super();
 	}
 
-	public InventorySheet(InventorySheetData inventorySheetData, List<InventorySheetDetail> inventorySheetDetails) {
+	public InventorySheet(InventorySheetData inventorySheetData) {
 		super();
 		this.inventorySheetData = inventorySheetData;
-		init(inventorySheetDetails);
+		init(initInventorySheetDetails());
 		addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
 		addPullOutsToProductInventory(inventorySheetData.getPullouts());
 		addSalesToProductInventory(inventorySheetData.getSales());
 		addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
 	}
 
-	private void init(List<InventorySheetDetail> productInventories) {
-		for (InventorySheetDetail pi : productInventories) {
+	private List<InventorySheetDetail> initInventorySheetDetails() {
+		List<InventorySheetDetail> inventorySheetDetails = new ArrayList<InventorySheetDetail>();
+		Set<InventorySheetDataDetail> inventorySheetDataDetails = inventorySheetData.getInventorySheetDataDetails();
+		for (InventorySheetDataDetail isdd : inventorySheetDataDetails) {
+			inventorySheetDetails.add(new InventorySheetDetail(isdd));
+		}
+		return inventorySheetDetails;
+	}
+
+	private void init(List<InventorySheetDetail> inventorySheetDetails) {
+		for (InventorySheetDetail pi : inventorySheetDetails) {
 			this.productInventories.put(pi.getId(), pi);
 			if (pi.getProduct().getId() > maxId)
 				maxId = pi.getProduct().getId();

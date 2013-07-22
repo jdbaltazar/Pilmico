@@ -33,11 +33,18 @@ import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
 
@@ -900,7 +907,8 @@ public class InventorySheetForm extends SimplePanel {
 
 	}
 
-	public void build() {
+	public void build() throws Exception {
+
 		// List<Product> products, List<Delivery> deliveries, List<PullOut>
 		// pullOuts, List<Sales> sales, List<Acccoun> ar, ar payments, previous
 		// acoh,
@@ -909,6 +917,21 @@ public class InventorySheetForm extends SimplePanel {
 		// discounts
 		// deposits
 		// generate acoh
+		List<Product> products = Manager.productManager.getProducts();
+		List<Delivery> deliveries = Manager.deliveryManager.getPendingDeliveries();
+		List<PullOut> pullOuts = Manager.pullOutManager.getPendingPullOuts();
+		List<Sales> sales = Manager.salesManager.getPendingSales();
+		List<AccountReceivable> accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivables();
+		List<ARPayment> arPayments = Manager.accountReceivableManager.getPendingARPayments();
+		List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
+		List<CAPayment> caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
+		List<DailyExpenses> dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
+		List<SalaryRelease> salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
+		List<DiscountIssue> discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
+		List<Deposit> deposits = Manager.depositManager.getPendingDeposits();
+		double previousAcoh = Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
+
+		// fill the entries of the 
 
 	}
 
