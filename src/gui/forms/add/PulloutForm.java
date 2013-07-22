@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -256,8 +257,9 @@ public class PulloutForm extends SimplePanel {
 				}
 				try {
 					Manager.pullOutManager.addPullOut(pullOut);
-
-					System.out.println("pullout saved!");
+					Values.centerPanel.changeTable(Values.PULLOUT);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -34,6 +35,7 @@ public class SupplierForm extends SimplePanel {
 	private JTextField personField;
 	
 	private DropdownLabel contactPerson;
+	private DefaultComboBoxModel model;
 
 	private SBButton fwd;
 
@@ -69,6 +71,8 @@ public class SupplierForm extends SimplePanel {
 		
 		personCombo = new JComboBox();
 
+		refreshCustomer();
+		
 		personCombo.setSelectedIndex(-1);
 
 		personCombo.setEditable(true);
@@ -128,7 +132,9 @@ public class SupplierForm extends SimplePanel {
 
 				try {
 					Manager.supplierManager.addSupplier(s);
-					System.out.println("supplier added!");
+					clearFields();
+					Values.centerPanel.changeTable(Values.SUPPLIERS);
+					new SuccessPopup("Add").setVisible(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -159,8 +165,24 @@ public class SupplierForm extends SimplePanel {
 	private void clearFields() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
+		
+		refreshCustomer();
 
 		error.setText("");
 	}
 
+	public void refreshCustomer() {
+		
+		try {
+			 model = new
+			 DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			personCombo.setModel(model);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		personCombo.setSelectedIndex(-1);
+
+	}
 }

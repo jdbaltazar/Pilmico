@@ -216,8 +216,9 @@ public class ProductForm extends SimplePanel {
 
 				try {
 					Manager.productManager.addProduct(p);
-					new SuccessPopup("Add", 1).setVisible(true);
-
+					Values.centerPanel.changeTable(Values.PRODUCTS);
+					new SuccessPopup("Add").setVisible(true);
+					clearFields();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -273,9 +274,9 @@ public class ProductForm extends SimplePanel {
 	private void clearFields() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
-
-		fields.get(fields.size() - 1).setText("0");
-		quantityKG.setText("");
+		
+		for (int i = 0; i < numfields.size(); i++)
+			fields.get(i).setText("");
 
 		error.setText("");
 	}

@@ -176,6 +176,7 @@ public class SalaryReleaseForm extends SimplePanel {
 			}
 		});
 
+		issuedFor = new FormDropdown();
 		refreshEmployee();
 
 		issuedFor.addItemListener(new ItemListener() {
@@ -326,7 +327,7 @@ public class SalaryReleaseForm extends SimplePanel {
 			e.printStackTrace();
 		}
 
-		issuedFor.setSelectedIndex(-1);
+		//issuedFor.setSelectedIndex(-1);
 
 	}
 }

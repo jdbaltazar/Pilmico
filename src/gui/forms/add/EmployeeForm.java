@@ -140,6 +140,7 @@ public class EmployeeForm extends SimplePanel {
 			if (i == 10) {
 				endD.setBounds(x1, initY + y - 7, 100, 11);
 				endDate.setBounds(x1, initY + y + 5, 170, 20);
+				endDate.setVisible(false);
 			}
 
 		}

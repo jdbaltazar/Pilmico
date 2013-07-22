@@ -2,6 +2,7 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -124,15 +125,29 @@ public class DiscountForm extends SimplePanel {
 				tf.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
+		
+		 try {
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+		} catch (Exception e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
 
-		customerCombo = new JComboBox();
+		customerCombo = new JComboBox(model);
 		customerCombo.setEditable(true);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
 		customerComboField.setText("");
 		customerComboField.setOpaque(false);
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
-		productCombo = new JComboBox();
+		try {
+			model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		productCombo = new JComboBox(model);
 		productCombo.setEditable(true);
 		productCombo.setSelectedIndex(-1);
 		productComboField = (JTextField) productCombo.getEditor().getEditorComponent();
@@ -196,7 +211,9 @@ public class DiscountForm extends SimplePanel {
 
 				try {
 					Manager.discountIssueManager.addDiscountIssue(discountIssue);
-					System.out.println("discount saved!!");
+					Values.centerPanel.changeTable(Values.DISCOUNTS);
+					new SuccessPopup("Add").setVisible(true);
+					clearFields();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -237,22 +254,7 @@ public class DiscountForm extends SimplePanel {
 	private void fillEntries() {
 
 		issuedBy.setText(Manager.loggedInAccount != null ? Manager.loggedInAccount.getFirstPlusLastName() : "");
-		try {
-			List<Product> products = Manager.productManager.getProducts();
-			for (Product p : products) {
-				productCombo.addItem(p);
-			}
-			List<Person> customers = Manager.employeePersonManager.getCustomersOnly();
-			for (Person p : customers) {
-				customerCombo.addItem(p);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		productCombo.setSelectedIndex(-1);
-		customerCombo.setSelectedIndex(-1);
+		refreshDropdown();
 
 	}
 
@@ -260,6 +262,7 @@ public class DiscountForm extends SimplePanel {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
 
+		refreshDropdown();
 		error.setText("");
 	}
 
@@ -273,11 +276,17 @@ public class DiscountForm extends SimplePanel {
 
 	public void refreshDropdown() {
 		try {
-			model = new DefaultComboBoxModel();
-			// issuedBy = new FormDropdown();
-			// issuedBy.setModel(model);
+			model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
+			 productCombo.setModel(model);
+			 
+			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			 customerCombo.setModel(model);
+			  
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+		
+		productCombo.setSelectedIndex(-1);
+		customerCombo.setSelectedIndex(-1);
 	}
 }

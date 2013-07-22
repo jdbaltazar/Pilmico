@@ -5,6 +5,7 @@ import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -289,8 +290,9 @@ public class ExpensesForm extends SimplePanel {
 
 				try {
 					Manager.dailyExpenseManager.addDailyExpenses(de);
-
-					System.out.println("daily expenses saved");
+					Values.centerPanel.changeTable(Values.EXPENSES);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

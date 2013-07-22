@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -112,14 +113,8 @@ public class CashAdvanceForm extends SimplePanel {
 			}
 		}
 
-		try {
-			model = new DefaultComboBoxModel();
 			issuedFor = new FormDropdown();
-			issuedFor.setModel(model);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
-
+			refreshEmployee();
 		/*
 		 * model = new DefaultComboBoxModel(); employeeCombo = new
 		 * JComboBox(model);
@@ -182,8 +177,10 @@ public class CashAdvanceForm extends SimplePanel {
 
 				try {
 					Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
-
-					System.out.println("ca saved!!!");
+					Values.centerPanel.changeTable(Values.CASH_ADVANCE);
+					new SuccessPopup("Add").setVisible(true);
+					
+					clearFields();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -191,16 +188,6 @@ public class CashAdvanceForm extends SimplePanel {
 
 			}
 		});
-
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = Manager.employeePersonManager.getEmployeesExcludeManagers();
-			for (Employee emp : employees) {
-				issuedFor.addItem(emp);
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 
 		add(clear);
 		add(save);
@@ -233,14 +220,17 @@ public class CashAdvanceForm extends SimplePanel {
 		return false;
 	}
 
-	public void refreshDropdown() {
+	public void refreshEmployee() {
+		
 		try {
-			model = new DefaultComboBoxModel();
-			// issuedBy = new FormDropdown();
-			// issuedBy.setModel(model);
-		} catch (Exception e2) {
-			e2.printStackTrace();
+			 model = new
+			 DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
+			issuedFor.setModel(model);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 
 }

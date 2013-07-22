@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -392,8 +393,9 @@ public class DeliveryForm extends SimplePanel {
 					}
 
 					Manager.deliveryManager.addDelivery(delivery);
-					System.out.println("delivery saved");
-
+					Values.centerPanel.changeTable(Values.DELIVERY);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -433,6 +435,10 @@ public class DeliveryForm extends SimplePanel {
 		rowPanel.clear();
 		refreshDate();
 
+		po_no.setText("");
+		delivery_no.setText("");
+		terms.setText("");
+		
 		error.setText("");
 
 		supplierCombo.setSelectedIndex(-1);
