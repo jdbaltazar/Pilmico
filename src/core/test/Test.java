@@ -13,6 +13,7 @@ import app.Credentials;
 
 import common.entity.dailyexpenses.Expense;
 import common.manager.Manager;
+import core.database.DatabaseTool;
 import core.security.SecurityTool;
 
 public class Test {
@@ -69,15 +70,17 @@ public class Test {
 
 	public static void main(String[] args) {
 
-//		try {
-//			// SecurityTool.writeToFile(SecurityTool.encryptFile("data/pilmico-create.sql"),
-//			// new FileOutputStream("data/unenc2.txt"));
-//			SecurityTool.writeToFile(SecurityTool.decryptFile("data/ok.txt"), "data/ok2.txt");
-//
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-		//		}
+		// try {
+		// //
+		// SecurityTool.writeToFile(SecurityTool.encryptFile("data/pilmico-create.sql"),
+		// // new FileOutputStream("data/unenc2.txt"));
+		// SecurityTool.writeToFile(SecurityTool.decryptFile("data/ok.txt"),
+		// "data/ok2.txt");
+		//
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		// try {
 		// List<Expense> expenses = Manager.dailyExpenseManager.getExpenses();

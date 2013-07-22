@@ -68,6 +68,7 @@ public class InventorySheet implements InventorySheetManager {
 
 	private void addDeliveriesToProductInventory(Set<Delivery> deliveries) {
 		for (Delivery d : deliveries) {
+			inventorySheetData.addDelivery(d);
 			Set<DeliveryDetail> deliveryDetails = d.getDeliveryDetails();
 			for (DeliveryDetail dd : deliveryDetails) {
 				InventorySheetDetail pi = productInventories.get(dd.getProduct().getId());
@@ -79,6 +80,7 @@ public class InventorySheet implements InventorySheetManager {
 
 	private void addPullOutsToProductInventory(Set<PullOut> pullOuts) {
 		for (PullOut po : pullOuts) {
+			inventorySheetData.addPullOut(po);
 			Set<PullOutDetail> pullOutDetails = po.getPullOutDetails();
 			for (PullOutDetail pod : pullOutDetails) {
 				InventorySheetDetail pi = productInventories.get(pod.getProduct().getId());
@@ -90,6 +92,7 @@ public class InventorySheet implements InventorySheetManager {
 
 	private void addSalesToProductInventory(Set<Sales> sales) {
 		for (Sales s : sales) {
+			inventorySheetData.addSales(s);
 			Set<SalesDetail> salesDetails = s.getSalesDetails();
 			for (SalesDetail sd : salesDetails) {
 				InventorySheetDetail pi = productInventories.get(sd.getProduct().getId());
@@ -100,8 +103,9 @@ public class InventorySheet implements InventorySheetManager {
 	}
 
 	private void addAccountReceivablesToProductInventory(Set<AccountReceivable> accountReceivables) {
-		for (AccountReceivable s : accountReceivables) {
-			Set<AccountReceivableDetail> arDetails = s.getAccountReceivableDetails();
+		for (AccountReceivable ar : accountReceivables) {
+			inventorySheetData.addAccountReceivable(ar);
+			Set<AccountReceivableDetail> arDetails = ar.getAccountReceivableDetails();
 			for (AccountReceivableDetail ard : arDetails) {
 				InventorySheetDetail pi = productInventories.get(ard.getProduct().getId());
 				pi.setOffTakeInKilo(pi.getOffTakeInKilo() + ard.getQuantityInKilo());

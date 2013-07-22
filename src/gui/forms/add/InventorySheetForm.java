@@ -967,22 +967,22 @@ public class InventorySheetForm extends SimplePanel {
 	}
 
 	private void fillProductInventoresTotal() {
-		totalInventoryLabel.get(0).setText(inventorySheet.getTotalBeginningInventoryInSack() + "");
-		totalInventoryLabel.get(1).setText(inventorySheet.getTotalBeginningInventoryInKilo() + "");
-		totalInventoryLabel.get(2).setText(inventorySheet.getTotalOnDisplayInSack() + "");
-		totalInventoryLabel.get(3).setText(inventorySheet.getTotalOnDisplayInKilo() + "");
-		totalInventoryLabel.get(4).setText(inventorySheet.getTotalDeliveriesInSack() + "");
-		totalInventoryLabel.get(5).setText(inventorySheet.getTotalDeliveriesInKilo() + "");
-		totalInventoryLabel.get(6).setText(inventorySheet.getTotalPulloutsInSack() + "");
-		totalInventoryLabel.get(7).setText(inventorySheet.getTotalPulloutsInKilo() + "");
-		totalInventoryLabel.get(8).setText(inventorySheet.getTotalEndingInventoryInSack() + "");
-		totalInventoryLabel.get(9).setText(inventorySheet.getTotalEndingInventoryInKilo() + "");
-		totalInventoryLabel.get(10).setText(inventorySheet.getTotalOfftakesInSack() + "");
-		totalInventoryLabel.get(11).setText(inventorySheet.getTotalOfftakesInKilo() + "");
-		totalInventoryLabel.get(12).setText(inventorySheet.getTotalPricesInSack() + "");
-		totalInventoryLabel.get(13).setText(inventorySheet.getTotalPricesInKilo() + "");
-		totalInventoryLabel.get(14).setText(inventorySheet.getCombinedSalesInSack() + "");
-		totalInventoryLabel.get(15).setText(inventorySheet.getCombinedSalesInKilo() + "");
+		totalInventoryLabel.get(0).setText(String.format("%.2f", inventorySheet.getTotalBeginningInventoryInSack()));
+		totalInventoryLabel.get(1).setText(String.format("%.2f", inventorySheet.getTotalBeginningInventoryInKilo()));
+		totalInventoryLabel.get(2).setText(String.format("%.2f", inventorySheet.getTotalOnDisplayInSack()));
+		totalInventoryLabel.get(3).setText(String.format("%.2f", inventorySheet.getTotalOnDisplayInKilo()));
+		totalInventoryLabel.get(4).setText(String.format("%.2f", inventorySheet.getTotalDeliveriesInSack()));
+		totalInventoryLabel.get(5).setText(String.format("%.2f", inventorySheet.getTotalDeliveriesInKilo()));
+		totalInventoryLabel.get(6).setText(String.format("%.2f", inventorySheet.getTotalPulloutsInSack()));
+		totalInventoryLabel.get(7).setText(String.format("%.2f", inventorySheet.getTotalPulloutsInKilo()));
+		totalInventoryLabel.get(8).setText(String.format("%.2f", inventorySheet.getTotalEndingInventoryInSack()));
+		totalInventoryLabel.get(9).setText(String.format("%.2f", inventorySheet.getTotalEndingInventoryInKilo()));
+		totalInventoryLabel.get(10).setText(String.format("%.2f", inventorySheet.getTotalOfftakesInSack()));
+		totalInventoryLabel.get(11).setText(String.format("%.2f", inventorySheet.getTotalOfftakesInKilo()));
+		totalInventoryLabel.get(12).setText(String.format("%.2f", inventorySheet.getTotalPricesInSack()));
+		totalInventoryLabel.get(13).setText(String.format("%.2f", inventorySheet.getTotalPricesInKilo()));
+		totalInventoryLabel.get(14).setText(String.format("%.2f", inventorySheet.getCombinedSalesInSack()));
+		totalInventoryLabel.get(15).setText(String.format("%.2f", inventorySheet.getCombinedSalesInKilo()));
 	}
 
 	private void fillSales(List<Sales> sales) {
@@ -995,7 +995,11 @@ public class InventorySheetForm extends SimplePanel {
 			salesPanel.revalidate();
 			i++;
 		}
-
 		alternateRows(salesInventory);
+
+		// total sales
+
+		formsOverall.get(0).setText(String.format("%.2f", inventorySheet.getOverallCashAndCheckSales()));
+
 	}
 }

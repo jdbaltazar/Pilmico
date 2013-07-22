@@ -90,34 +90,24 @@ public class ISRowPanel extends JPanel {
 			formField.get(i).setBounds(999 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
 		}
 
-		// if (isd == null) {
-		// System.out.println("isd is null!!");
-		// } else {
-		// if (isd.getProduct() == null) {
-		// System.out.println("product is null");
-		// }
-		// }
-
-		// formField.get(0).setText(isd.getProduct().getName());
-
 		InventorySheetDetail isd = (InventorySheetDetail) object;
 		formField.get(0).setText(isd.getProduct().getName());
-		formField.get(1).setText(isd.getBeginningInventoryInSack() + "");
-		formField.get(2).setText(isd.getBeginningInventoryInKilo() + "");
-		formField.get(3).setText(isd.getOnDisplayInSack() + "");
-		formField.get(4).setText(isd.getOnDisplayInKilo() + "");
-		formField.get(5).setText(isd.getDeliveriesInSack() + "");
-		formField.get(6).setText(isd.getDeliveriesInKilo() + "");
-		formField.get(7).setText(isd.getPullOutsInSack() + "");
-		formField.get(8).setText(isd.getPullOutsInKilo() + "");
-		formField.get(9).setText(isd.getEndingInventoryInSack() + "");
-		formField.get(10).setText(isd.getEndingInventoryInKilo() + "");
-		formField.get(11).setText(isd.getOffTakeInSack() + "");
-		formField.get(12).setText(isd.getOffTakeInKilo() + "");
-		formField.get(13).setText(isd.getPricePerSack() + "");
-		formField.get(14).setText(isd.getPricePerKilo() + "");
-		formField.get(15).setText(isd.getSalesAmountForSack() + "");
-		formField.get(16).setText(isd.getSalesAmountForKilo() + "");
+		formField.get(1).setText(String.format("%.2f", isd.getBeginningInventoryInSack()));
+		formField.get(2).setText(String.format("%.2f", isd.getBeginningInventoryInKilo()));
+		formField.get(3).setText(String.format("%.2f", isd.getOnDisplayInSack()));
+		formField.get(4).setText(String.format("%.2f", isd.getOnDisplayInKilo()));
+		formField.get(5).setText(String.format("%.2f", isd.getDeliveriesInSack()));
+		formField.get(6).setText(String.format("%.2f", isd.getDeliveriesInKilo()));
+		formField.get(7).setText(String.format("%.2f", isd.getPullOutsInSack()));
+		formField.get(8).setText(String.format("%.2f", isd.getPullOutsInKilo()));
+		formField.get(9).setText(String.format("%.2f", isd.getEndingInventoryInSack()));
+		formField.get(10).setText(String.format("%.2f", isd.getEndingInventoryInKilo()));
+		formField.get(11).setText(String.format("%.2f", isd.getOffTakeInSack()));
+		formField.get(12).setText(String.format("%.2f", isd.getOffTakeInKilo()));
+		formField.get(13).setText(String.format("%.2f", isd.getPricePerSack()));
+		formField.get(14).setText(String.format("%.2f", isd.getPricePerKilo()));
+		formField.get(15).setText(String.format("%.2f", isd.getSalesAmountForSack()));
+		formField.get(16).setText(String.format("%.2f", isd.getSalesAmountForKilo()));
 
 		for (ViewFormField vff : formField) {
 			row.add(vff);
@@ -135,10 +125,9 @@ public class ISRowPanel extends JPanel {
 		Sales sales = (Sales) object;
 		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate())));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
-		formField.add(new ViewFormField("Baltazar, John David S."));
+		formField.add(new ViewFormField(sales.getCashier().getFirstPlusLastName()));
 		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH, 0, InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
-
-		formField.add(new ViewFormField("1560.00"));
+		formField.add(new ViewFormField(String.format("%.2f",sales.getSalesAmount())));
 		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH + InventorySheetForm.ISSUED_BY_LABEL_WIDTH, 0,
 				InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
 

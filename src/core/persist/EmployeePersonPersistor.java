@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.profile.Account;
 import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
@@ -140,6 +141,47 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 			}
 		}
 		return employees;
+	}
+
+	@Override
+	public void addDesignation(Designation designation) throws Exception {
+		add(designation);
+	}
+
+	@Override
+	public Designation getDesignation(int id) throws Exception {
+		return (Designation) get(Designation.class, id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Designation> getDesignations() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Designation.class);
+		List<Designation> designations = new ArrayList<Designation>();
+		try {
+			designations = criteria.add(Restrictions.ne("id", new Integer(1))).addOrder(Order.asc("name")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return designations;
+	}
+
+	@Override
+	public List<Designation> getAllDesignations() throws Exception {
+		return getAll(Designation.class);
+	}
+
+	@Override
+	public void updateDesignation(Designation designation) throws Exception {
+		update(designation);
+	}
+
+	@Override
+	public void deleteDesignation(Designation designation) throws Exception {
+		remove(designation);
 	}
 
 }
