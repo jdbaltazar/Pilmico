@@ -59,10 +59,10 @@ public class SalesForm extends SimplePanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel productsPanel, row, p;
 	private JScrollPane productsPane;
-	private JComboBox itemCombo, customerCombo;
+	private JComboBox customerCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
 	private Object[] array = {};
-	private JTextField itemComboField, customerComboField;
+	private JTextField customerComboField;
 	private JScrollBar sb;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
@@ -144,8 +144,10 @@ public class SalesForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		model = new DefaultComboBoxModel(array);
-		customerCombo = new JComboBox(model);
+		customerCombo = new JComboBox();
+		refreshCustomer();
+		
+		customerCombo.setUI(ColorArrowUI.createUI(this));
 		customerCombo.setEditable(true);
 		customerCombo.setSelectedIndex(-1);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
@@ -154,8 +156,7 @@ public class SalesForm extends SimplePanel {
 		customerComboField.setBorder(BorderFactory.createEmptyBorder());
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
-		customerCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		customerCombo.setUI(ColorArrowUI.createUI(this));
+		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
 
@@ -203,8 +204,8 @@ public class SalesForm extends SimplePanel {
 		issueDate.setBounds(460, 32, 150, 20);
 
 		customerLabel.setBounds(15, 58, 70, 20);
-		customerCombo.setBounds(85, 56, 220, 20);
-		customerFwd.setBounds(308, 58, 16, 16);
+		customerCombo.setBounds(85, 58, 220, 20);
+		customerFwd.setBounds(308, 60, 16, 16);
 
 		customerFwd.addActionListener(new ActionListener() {
 
@@ -262,16 +263,7 @@ public class SalesForm extends SimplePanel {
 
 		showUnrequired(false);
 
-		try {
-			List<Person> customrs = Manager.employeePersonManager.getCustomersOnly();
-			for (Person p : customrs) {
-				customerCombo.addItem(p);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 		add(showRequired);
 
 		panel.add(dateLabel);
@@ -579,12 +571,10 @@ public class SalesForm extends SimplePanel {
 		date.setValue(new Date());
 	}
 
-	public void refreshAccount() {
+	public void refreshCustomer() {
 
 		try {
-			// model = new
-			// DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
-
+			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
 			customerCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

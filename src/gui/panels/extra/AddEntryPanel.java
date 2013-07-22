@@ -219,7 +219,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		cashAdvanceForm.setBounds(230, 60, 300, 345);
 		caPayment.setBounds(240, 50, 300, 380);
 
-		salary.setBounds(86, 75, 638, 330);
+		salary.setBounds(51, 75, 708, 330);
 
 		accountReceivables.setBounds(70, 55, 670, 365);
 		arPayment.setBounds(240, 50, 300, 380);

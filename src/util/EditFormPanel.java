@@ -1,5 +1,7 @@
 package util;
 
+import gui.forms.util.ViewFormLabel;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -7,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class EditFormPanel extends JPanel {
@@ -16,6 +19,10 @@ public class EditFormPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	protected GradientPaint gradient;
 	protected GradientPaint gradient1;
+	
+	public ViewFormLabel remarks;
+	
+	public JLabel status;
 
 	private String label = "";
 

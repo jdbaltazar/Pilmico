@@ -15,6 +15,7 @@ import gui.forms.edit.ViewDepositForm;
 import gui.forms.edit.ViewDiscountForm;
 import gui.forms.edit.ViewExpensesForm;
 import gui.forms.edit.ViewPulloutForm;
+import gui.forms.edit.ViewSalaryForm;
 import gui.forms.edit.ViewSalesForm;
 import gui.forms.util.FormField;
 
@@ -225,7 +226,14 @@ public class EditPanel extends SoyPanel implements Runnable {
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CUSTOMERS)) {
 			add(new EditCustomerForm(), BorderLayout.CENTER);
-//			add(new EditBankForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
+			add(new EditBankForm(), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
+			add(new ViewSalaryForm(), BorderLayout.CENTER);
 		}
 
 	}

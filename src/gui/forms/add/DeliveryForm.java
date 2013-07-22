@@ -150,8 +150,9 @@ public class DeliveryForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		model = new DefaultComboBoxModel(array);
-		supplierCombo = new JComboBox(model);
+		supplierCombo = new JComboBox();
+		refreshSupplier();
+		supplierCombo.setUI(ColorArrowUI.createUI(this));
 		supplierCombo.setEditable(true);
 		supplierCombo.setSelectedIndex(-1);
 		supplierComboField = (JTextField) supplierCombo.getEditor().getEditorComponent();
@@ -160,8 +161,7 @@ public class DeliveryForm extends SimplePanel {
 		supplierComboField.setBorder(BorderFactory.createEmptyBorder());
 		supplierComboField.addKeyListener(new ComboKeyHandler(supplierCombo));
 
-		supplierCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		supplierCombo.setUI(ColorArrowUI.createUI(this));
+		supplierCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		supplierCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		supplierCombo.setOpaque(false);
 
@@ -442,12 +442,11 @@ public class DeliveryForm extends SimplePanel {
 		date.setValue(new Date());
 	}
 
-	public void refreshAccount() {
+	public void refreshSupplier() {
 
 		try {
-			// model = new
-			// DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
-
+			 model = new
+			 DefaultComboBoxModel(Manager.supplierManager.getSuppliers().toArray());
 			supplierCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
