@@ -54,22 +54,22 @@ public class InventorySheetData {
 	@Column
 	private String remarks;
 
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<InventorySheetDataDetail> inventoryDataSheetDetails = new HashSet<InventorySheetDataDetail>();
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<InventorySheetDataDetail> inventorySheetDataDetails = new HashSet<InventorySheetDataDetail>();
 
 	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.EAGER)
 	private Breakdown breakdown;
 
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Delivery> deliveries = new HashSet<Delivery>();
 
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PullOut> pullouts = new HashSet<PullOut>();
 
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Sales> sales = new HashSet<Sales>();
 
-	@OneToMany(mappedBy = "inventorySheet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<AccountReceivable> accountReceivables = new HashSet<AccountReceivable>();
 
 	// cash advance, ca payments, salary release, daily expenses, pulloout,
@@ -80,7 +80,7 @@ public class InventorySheetData {
 	}
 
 	public InventorySheetData(Date date, double previousAcoh, double overAmount, double shortAmount, Account issuedBy, String remarks,
-			Breakdown breakdown, Set<InventorySheetDataDetail> inventoryDataSheetDetails) {
+			Breakdown breakdown, Set<InventorySheetDataDetail> inventorySheetDataDetails) {
 		super();
 		this.date = date;
 		this.previousAcoh = previousAcoh;
@@ -88,7 +88,7 @@ public class InventorySheetData {
 		this.shortAmount = shortAmount;
 		this.issuedBy = issuedBy;
 		this.remarks = remarks;
-		this.inventoryDataSheetDetails = inventoryDataSheetDetails;
+		this.inventorySheetDataDetails = inventorySheetDataDetails;
 	}
 
 	public InventorySheetData(Date date, double previousAcoh, double overAmount, double shortAmount, Account issuedBy, String remarks) {
@@ -166,12 +166,12 @@ public class InventorySheetData {
 		this.remarks = remarks;
 	}
 
-	public Set<InventorySheetDataDetail> getInventorySheetDetails() {
-		return inventoryDataSheetDetails;
+	public Set<InventorySheetDataDetail> getInventorySheetDataDetails() {
+		return inventorySheetDataDetails;
 	}
 
-	public void setInventorySheetDetails(Set<InventorySheetDataDetail> inventoryDataSheetDetails) {
-		this.inventoryDataSheetDetails = inventoryDataSheetDetails;
+	public void setInventorySheetDataDetails(Set<InventorySheetDataDetail> inventorySheetDataDetails) {
+		this.inventorySheetDataDetails = inventorySheetDataDetails;
 	}
 
 	public Set<Delivery> getDeliveries() {

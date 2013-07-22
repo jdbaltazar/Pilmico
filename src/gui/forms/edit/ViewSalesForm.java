@@ -232,7 +232,7 @@ public class ViewSalesForm extends EditFormPanel {
 	private void colorTable(){
 
 		String s = "";
-		if (sales.getInventorySheet() != null) {
+		if (sales.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 			status.setForeground(Color.GREEN.darker());
@@ -342,7 +342,7 @@ public class ViewSalesForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(sales.getInventorySheet() != null ? false : sales.isValid());
+		voidBtn.setVisible(sales.getInventorySheetData() != null ? false : sales.isValid());
 
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
 		cashier.setText(sales.getCashier().getFirstPlusLastName());

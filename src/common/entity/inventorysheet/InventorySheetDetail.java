@@ -4,7 +4,7 @@ import common.entity.product.Product;
 
 public class InventorySheetDetail {
 
-	private InventorySheetDataDetail inventorySheetDetail;
+	private InventorySheetDataDetail inventorySheetDataDetail;
 
 	private double deliveriesInSack;
 
@@ -20,9 +20,9 @@ public class InventorySheetDetail {
 	// sales + account receivables
 	private double offTakeInKilo;
 
-	public InventorySheetDetail(InventorySheetDataDetail inventorySheetDetail) {
+	public InventorySheetDetail(InventorySheetDataDetail inventorySheetDataDetail) {
 		super();
-		this.inventorySheetDetail = inventorySheetDetail;
+		this.inventorySheetDataDetail = inventorySheetDataDetail;
 		this.deliveriesInSack = 0;
 		this.deliveriesInKilo = 0;
 		this.pulloutsInSack = 0;
@@ -79,43 +79,43 @@ public class InventorySheetDetail {
 		this.offTakeInKilo = offTakeInKilo;
 	}
 
-	public InventorySheetDataDetail getInventorySheetDetail() {
-		return inventorySheetDetail;
+	public InventorySheetDataDetail getInventoryDataSheetDetail() {
+		return inventorySheetDataDetail;
 	}
 
 	public int getId() {
-		return inventorySheetDetail.getId();
+		return inventorySheetDataDetail.getId();
 	}
 
 	public InventorySheetData getInventorySheet() {
-		return inventorySheetDetail.getInventorySheet();
+		return inventorySheetDataDetail.getInventorySheetData();
 	}
 
 	public Product getProduct() {
-		return inventorySheetDetail.getProduct();
+		return inventorySheetDataDetail.getProduct();
 	}
 
 	public double getBeginningInventoryInSack() {
-		return inventorySheetDetail.getBeginningInventoryInSack();
+		return inventorySheetDataDetail.getBeginningInventoryInSack();
 	}
 
 	public double getBeginningInventoryInKilo() {
-		return inventorySheetDetail.getBeginningInventoryInKilo();
+		return inventorySheetDataDetail.getBeginningInventoryInKilo();
 	}
 
 	public double getOnDisplayInSack() {
-		return inventorySheetDetail.getOnDisplayInSack();
+		return inventorySheetDataDetail.getOnDisplayInSack();
 	}
 
 	public double getOnDisplayInKilo() {
-		return inventorySheetDetail.getOnDisplayInKilo();
+		return inventorySheetDataDetail.getOnDisplayInKilo();
 	}
 
 	public double getPricePerSack() {
-		return inventorySheetDetail.getPricePerSack();
+		return inventorySheetDataDetail.getPricePerSack();
 	}
 
 	public double getPricePerKilo() {
-		return inventorySheetDetail.getPricePerKilo();
+		return inventorySheetDataDetail.getPricePerKilo();
 	}
 }

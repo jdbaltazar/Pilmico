@@ -10,10 +10,12 @@ import core.persist.DeliveryPersistor;
 import core.persist.DepositPersistor;
 import core.persist.DiscountIssuePersistor;
 import core.persist.EmployeePersonPersistor;
+import core.persist.InventorySheetDataPersistor;
 import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
 import core.persist.NotePersistor;
 import core.persist.PullOutPersistor;
+import core.persist.SalaryReleasePersistor;
 import core.persist.SalesPersistor;
 import core.persist.StorePersistor;
 import core.persist.SupplierPersistor;
@@ -38,6 +40,8 @@ public class Manager {
 
 	public static EmployeePersonManager employeePersonManager = new EmployeePersonPersistor();
 
+	public static InventorySheetDataManager inventorySheetDataManager = new InventorySheetDataPersistor();
+
 	public static LogManager logManager = new LogPersistor();
 
 	public static NoteManager noteManager = new NotePersistor();
@@ -47,6 +51,8 @@ public class Manager {
 	public static PullOutManager pullOutManager = new PullOutPersistor();
 
 	public static SalesManager salesManager = new SalesPersistor();
+
+	public static SalaryReleaseManager salaryReleaseManager = new SalaryReleasePersistor();
 
 	public static StoreManager storeManager = new StorePersistor();
 

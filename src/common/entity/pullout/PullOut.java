@@ -47,7 +47,7 @@ public class PullOut {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheetData inventorySheet;
+	private InventorySheetData inventorySheetData;
 
 	public PullOut() {
 		super();
@@ -155,11 +155,11 @@ public class PullOut {
 		return "" + id;
 	}
 
-	public InventorySheetData getInventorySheet() {
-		return inventorySheet;
+	public InventorySheetData getInventorySheetData() {
+		return inventorySheetData;
 	}
 
-	public void setInventorySheet(InventorySheetData inventorySheet) {
-		this.inventorySheet = inventorySheet;
+	public void setInventorySheetData(InventorySheetData inventorySheetData) {
+		this.inventorySheetData = inventorySheetData;
 	}
 }

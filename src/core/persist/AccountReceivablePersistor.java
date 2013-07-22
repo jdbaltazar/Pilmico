@@ -83,6 +83,26 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		return accountReceivables;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getPendingAccountReceivables() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+
+			accountReceivables = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData"))
+					.addOrder(Order.desc("date")).list();
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
 	@Override
 	public void updateAccountReceivable(AccountReceivable accountReceivable) throws Exception {
 		update(accountReceivable);
@@ -158,6 +178,23 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		List<ARPayment> arPayments = new ArrayList<ARPayment>();
 		try {
 			arPayments = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getPendingARPayments() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			arPayments = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

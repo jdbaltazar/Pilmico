@@ -260,10 +260,10 @@ public class ViewPulloutForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(pullOut.getInventorySheet() != null ? false : pullOut.isValid());
+		voidBtn.setVisible(pullOut.getInventorySheetData() != null ? false : pullOut.isValid());
 
 		String s = "";
-		if (pullOut.getInventorySheet() != null) {
+		if (pullOut.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

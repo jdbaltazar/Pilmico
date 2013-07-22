@@ -72,6 +72,23 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 		return discounts;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DiscountIssue> getPendingDiscountIssues() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DiscountIssue.class);
+		List<DiscountIssue> discounts = new ArrayList<DiscountIssue>();
+		try {
+			discounts = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return discounts;
+	}
+
 	@Override
 	public void updateDiscountIssue(DiscountIssue discountIssue) throws Exception {
 		update(discountIssue);

@@ -301,10 +301,10 @@ public class ViewARForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(accountReceivable.getInventorySheet() != null ? false : accountReceivable.isValid());
+		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
 
 		String s = "";
-		if (accountReceivable.getInventorySheet() != null) {
+		if (accountReceivable.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

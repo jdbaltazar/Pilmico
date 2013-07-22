@@ -15,6 +15,8 @@ public interface PullOutManager {
 	public List<PullOut> getValidPullOuts() throws Exception;
 
 	public List<PullOut> getInvalidPullOuts() throws Exception;
+	
+	public List<PullOut> getPendingPullOuts() throws Exception;
 
 	public void updatePullOut(PullOut pullOut) throws Exception;
 

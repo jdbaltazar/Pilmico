@@ -236,10 +236,10 @@ public class ViewExpensesForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(dailyExpenses.getInventorySheet() != null ? false : dailyExpenses.isValid());
+		voidBtn.setVisible(dailyExpenses.getInventorySheetData() != null ? false : dailyExpenses.isValid());
 
 		String s = "";
-		if (dailyExpenses.getInventorySheet() != null) {
+		if (dailyExpenses.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

@@ -183,10 +183,10 @@ public class ViewARPaymentForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(arPayment.getInventorySheet() != null ? false : arPayment.isValid());
+		voidBtn.setVisible(arPayment.getInventorySheetData() != null ? false : arPayment.isValid());
 
 		String s = "";
-		if (arPayment.getInventorySheet() != null) {
+		if (arPayment.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

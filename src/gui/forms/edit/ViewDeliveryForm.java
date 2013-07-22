@@ -333,10 +333,10 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(delivery.getInventorySheet() != null ? false : delivery.isValid());
+		voidBtn.setVisible(delivery.getInventorySheetData() != null ? false : delivery.isValid());
 
 		String s = "";
-		if (delivery.getInventorySheet() != null) {
+		if (delivery.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

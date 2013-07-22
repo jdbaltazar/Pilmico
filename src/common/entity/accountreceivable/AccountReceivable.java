@@ -58,7 +58,7 @@ public class AccountReceivable {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "is_id")
-	private InventorySheetData inventorySheet;
+	private InventorySheetData inventorySheetData;
 
 	public AccountReceivable() {
 		super();
@@ -235,12 +235,12 @@ public class AccountReceivable {
 		}
 	}
 
-	public InventorySheetData getInventorySheet() {
-		return inventorySheet;
+	public InventorySheetData getInventorySheetData() {
+		return inventorySheetData;
 	}
 
-	public void setInventorySheet(InventorySheetData inventorySheet) {
-		this.inventorySheet = inventorySheet;
+	public void setInventorySheetData(InventorySheetData inventorySheetData) {
+		this.inventorySheetData = inventorySheetData;
 	}
 
 	public String toString() {

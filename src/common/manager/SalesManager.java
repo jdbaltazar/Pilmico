@@ -16,6 +16,8 @@ public interface SalesManager {
 
 	public List<Sales> getInvalidSales() throws Exception;
 
+	public List<Sales> getPendingSales() throws Exception;
+
 	public void updateSales(Sales sales) throws Exception;
 
 	public void deleteSales(Sales sales) throws Exception;

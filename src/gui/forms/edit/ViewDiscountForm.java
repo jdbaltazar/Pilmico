@@ -203,10 +203,10 @@ public class ViewDiscountForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(discountIssue.getInventorySheet() != null ? false : discountIssue.isValid());
+		voidBtn.setVisible(discountIssue.getInventorySheetData() != null ? false : discountIssue.isValid());
 
 		String s = "";
-		if (discountIssue.getInventorySheet() != null) {
+		if (discountIssue.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

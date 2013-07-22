@@ -197,10 +197,10 @@ public class ViewCAForm extends EditFormPanel {
 
 	private void fillEntries() {
 
-		voidBtn.setVisible(cashAdvance.getInventorySheet() != null ? false : cashAdvance.isValid());
+		voidBtn.setVisible(cashAdvance.getInventorySheetData() != null ? false : cashAdvance.isValid());
 
 		String s = "";
-		if (cashAdvance.getInventorySheet() != null) {
+		if (cashAdvance.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 		} else {

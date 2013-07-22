@@ -28,25 +28,6 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		return (DailyExpenses) get(DailyExpenses.class, id);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public DailyExpensesType getExpenseType(String name) throws Exception {
-		DailyExpensesType det = null;
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(DailyExpensesType.class);
-		List<DailyExpensesType> dets = new ArrayList<DailyExpensesType>();
-		try {
-			dets = criteria.add(Restrictions.like("name", name)).list();
-			if (dets.size() > 0)
-				det = dets.get(0);
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return det;
-	}
-
 	// @Override
 	// public List<DailyExpenses> getDailyExpenses() throws Exception {
 	// return getAll(DailyExpenses.class);
@@ -95,6 +76,23 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
 		try {
 			expense = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return expense;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getPendingDailyExpenses() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DailyExpenses> expense = new ArrayList<DailyExpenses>();
+		try {
+			expense = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -192,6 +190,25 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 			session.close();
 		}
 		return expenses;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public DailyExpensesType getExpenseType(String name) throws Exception {
+		DailyExpensesType det = null;
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpensesType.class);
+		List<DailyExpensesType> dets = new ArrayList<DailyExpensesType>();
+		try {
+			dets = criteria.add(Restrictions.like("name", name)).list();
+			if (dets.size() > 0)
+				det = dets.get(0);
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return det;
 	}
 
 	@Override

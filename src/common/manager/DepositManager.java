@@ -20,6 +20,8 @@ public interface DepositManager {
 
 	public List<Deposit> getInvalidDeposits() throws Exception;
 
+	public List<Deposit> getPendingDeposits() throws Exception;
+
 	public void updateDeposit(Deposit deposit) throws Exception;
 
 	public void deleteDeposit(Deposit deposit) throws Exception;
