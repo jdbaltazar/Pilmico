@@ -9,7 +9,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -17,12 +16,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import util.DateFormatter;
+import util.Utility;
 import util.Values;
+
+import common.entity.inventorysheet.InventorySheetDetail;
+import common.entity.sales.Sales;
 
 public class ISRowPanel extends JPanel {
 
-	private String[] moneyString = { "1000", "500", "200", "100", "50", "20",
-			"coins" };
+	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins" };
 	private JTextField field;
 	private JPanel row;
 	private JPanel panel = new JPanel();
@@ -37,7 +40,6 @@ public class ISRowPanel extends JPanel {
 		this.object = object;
 		this.panel = panel;
 		this.table = table;
-
 		init();
 	}
 
@@ -51,102 +53,126 @@ public class ISRowPanel extends JPanel {
 		row.setOpaque(false);
 		row.setLayout(null);
 		row.setBackground(Color.decode("#FFFFE6"));
-		
+
 		switch (table) {
 
 		case Values.PRODUCTS:
 			drawProductInventory();
-//			System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
+			// System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
 			setBounds(0, y, InventorySheetForm.PRODUCT_ROW_WIDTH, ROW_HEIGHT);
 			break;
-			
+
 		case Values.SALES:
 			drawSalesRow();
-//			System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
+			// System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
 			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH, ROW_HEIGHT);
 			break;
-			
+
 		default:
 			drawCashBreakDown();
 			setBounds(0, y, panel.getWidth(), ROW_HEIGHT);
 			break;
 		}
 
-//		System.out.println("y: "+y+ " panel width: "+panel.getWidth());
+		// System.out.println("y: "+y+ " panel width: "+panel.getWidth());
 	}
-	
-	private void drawProductInventory(){
+
+	private void drawProductInventory() {
 		ROW_HEIGHT = 35;
-		
 		formField.add(new ViewFormField("PELLETS"));
-		formField.get(formField.size()-1).setBounds(0,0,InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
-		
-		for(int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x+=InventorySheetForm.SACK_LABEL_WIDTH){
+		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
+		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
 			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(0 + x,1,InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
+			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
 		}
-		
-		for(int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 3, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL + 1; i++, x+=InventorySheetForm.SALES_KG_WIDTH){
+		for (int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 3, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL + 1; i++, x += InventorySheetForm.SALES_KG_WIDTH) {
 			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(999 + x,
-			1,
-			InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
+			formField.get(i).setBounds(999 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
 		}
-		
-		for(int i = 0; i<formField.size();i++){
-//			System.out.println("formfield size: "+formField.size()+ " formField.get(i).getX(): "+formField.get(i).getX());
-			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
-			row.add(formField.get(i));
+
+		// if (isd == null) {
+		// System.out.println("isd is null!!");
+		// } else {
+		// if (isd.getProduct() == null) {
+		// System.out.println("product is null");
+		// }
+		// }
+
+		// formField.get(0).setText(isd.getProduct().getName());
+
+		InventorySheetDetail isd = (InventorySheetDetail) object;
+		formField.get(0).setText(isd.getProduct().getName());
+		formField.get(1).setText(isd.getBeginningInventoryInSack() + "");
+		formField.get(2).setText(isd.getBeginningInventoryInKilo() + "");
+		formField.get(3).setText(isd.getOnDisplayInSack() + "");
+		formField.get(4).setText(isd.getOnDisplayInKilo() + "");
+		formField.get(5).setText(isd.getDeliveriesInSack() + "");
+		formField.get(6).setText(isd.getDeliveriesInKilo() + "");
+		formField.get(7).setText(isd.getPullOutsInSack() + "");
+		formField.get(8).setText(isd.getPullOutsInKilo() + "");
+		formField.get(9).setText(isd.getEndingInventoryInSack() + "");
+		formField.get(10).setText(isd.getEndingInventoryInKilo() + "");
+		formField.get(11).setText(isd.getOffTakeInSack() + "");
+		formField.get(12).setText(isd.getOffTakeInKilo() + "");
+		formField.get(13).setText(isd.getPricePerSack() + "");
+		formField.get(14).setText(isd.getPricePerKilo() + "");
+		formField.get(15).setText(isd.getSalesAmountForSack() + "");
+		formField.get(16).setText(isd.getSalesAmountForKilo() + "");
+
+		for (ViewFormField vff : formField) {
+			row.add(vff);
 		}
-		
+
 		row.setOpaque(true);
-		//row.setBorder(BorderFactory.createEtchedBorder());
+		// row.setBorder(BorderFactory.createEtchedBorder());
 		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 		add(row);
-		
+
 	}
-	
-	private void drawSalesRow(){
-		
-		formField.add(new ViewFormField("20 December 2011"));
-		formField.get(formField.size()-1).setBounds(0,0,InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
-		
+
+	private void drawSalesRow() {
+
+		Sales sales = (Sales) object;
+		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate())));
+		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
 		formField.add(new ViewFormField("Baltazar, John David S."));
-		formField.get(formField.size()-1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH,0,InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
-		
+		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH, 0, InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
+
 		formField.add(new ViewFormField("1560.00"));
-		formField.get(formField.size()-1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH + InventorySheetForm.ISSUED_BY_LABEL_WIDTH,0,InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
-		
-		for(int i = 0; i<formField.size();i++){
-//			System.out.println("formfield size: "+formField.size()+ " formField.get(i).getX(): "+formField.get(i).getX());
+		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH + InventorySheetForm.ISSUED_BY_LABEL_WIDTH, 0,
+				InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
+
+		for (int i = 0; i < formField.size(); i++) {
+			// System.out.println("formfield size: "+formField.size()+
+			// " formField.get(i).getX(): "+formField.get(i).getX());
 			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
 			formField.get(i).addMouseListener(new MouseAdapter() {
-				
+
 				@Override
 				public void mouseExited(MouseEvent arg0) {
 					// TODO Auto-generated method stub
 					row.setBackground(rowBkgrndColor);
 				}
-				
+
 				@Override
 				public void mouseEntered(MouseEvent arg0) {
 					// TODO Auto-generated method stub
 					rowBkgrndColor = row.getBackground();
 					row.setBackground(Color.decode("#B2FFFF"));
 				}
-				
+
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 					// TODO Auto-generated method stub
-					
+
 				}
 			});
 			row.add(formField.get(i));
 		}
-		
+
 		row.setOpaque(true);
 		add(row);
-		
+
 	}
 
 	private void drawCashBreakDown() {
@@ -178,9 +204,7 @@ public class ISRowPanel extends JPanel {
 
 				if (!field.getText().equals("")) {
 					if (componentCount != moneyString.length - 1)
-						totalLabel.setText(""
-								+ Integer.parseInt(field.getText())
-								* Integer.parseInt(moneyString[componentCount]));
+						totalLabel.setText("" + Integer.parseInt(field.getText()) * Integer.parseInt(moneyString[componentCount]));
 					else
 						totalLabel.setText(field.getText());
 				} else
@@ -214,7 +238,18 @@ public class ISRowPanel extends JPanel {
 
 		return label;
 	}
-	
+
+	public void fillEntries() {
+
+		for (int i = 0; i < formField.size(); i++) {
+			// System.out.println("formfield size: "+formField.size()+
+			// " formField.get(i).getX(): "+formField.get(i).getX());
+			formField.get(i).setText("blabla");
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
+			row.add(formField.get(i));
+		}
+	}
+
 	public JPanel getRow() {
 		return row;
 	}

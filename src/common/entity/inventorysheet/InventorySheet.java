@@ -17,6 +17,8 @@ import common.entity.sales.SalesDetail;
 
 public class InventorySheet implements InventorySheetManager {
 
+	// include all is related transactions here!!
+
 	private InventorySheetData inventorySheetData;
 	private Map<Integer, InventorySheetDetail> productInventories = new HashMap<Integer, InventorySheetDetail>();
 	private int maxId = 0;
@@ -29,15 +31,12 @@ public class InventorySheet implements InventorySheetManager {
 		super();
 		this.inventorySheetData = inventorySheetData;
 		init(initInventorySheetDetails());
-		addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
-		addPullOutsToProductInventory(inventorySheetData.getPullouts());
-		addSalesToProductInventory(inventorySheetData.getSales());
-		addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
+		// build();
 	}
 
 	private List<InventorySheetDetail> initInventorySheetDetails() {
-		List<InventorySheetDetail> inventorySheetDetails = new ArrayList<InventorySheetDetail>();
 		Set<InventorySheetDataDetail> inventorySheetDataDetails = inventorySheetData.getInventorySheetDataDetails();
+		List<InventorySheetDetail> inventorySheetDetails = new ArrayList<InventorySheetDetail>();
 		for (InventorySheetDataDetail isdd : inventorySheetDataDetails) {
 			inventorySheetDetails.add(new InventorySheetDetail(isdd));
 		}
@@ -46,10 +45,25 @@ public class InventorySheet implements InventorySheetManager {
 
 	private void init(List<InventorySheetDetail> inventorySheetDetails) {
 		for (InventorySheetDetail pi : inventorySheetDetails) {
-			this.productInventories.put(pi.getId(), pi);
+			this.productInventories.put(pi.getProduct().getId(), pi);
 			if (pi.getProduct().getId() > maxId)
 				maxId = pi.getProduct().getId();
 		}
+		System.out.println("size: " + inventorySheetDetails.size());
+	}
+
+	public void build() {
+		addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
+		addPullOutsToProductInventory(inventorySheetData.getPullouts());
+		addSalesToProductInventory(inventorySheetData.getSales());
+		addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
+	}
+
+	public void build(Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales, Set<AccountReceivable> accountReceivables) {
+		addDeliveriesToProductInventory(deliveries);
+		addPullOutsToProductInventory(pullOuts);
+		addSalesToProductInventory(sales);
+		addAccountReceivablesToProductInventory(accountReceivables);
 	}
 
 	private void addDeliveriesToProductInventory(Set<Delivery> deliveries) {
@@ -472,6 +486,18 @@ public class InventorySheet implements InventorySheetManager {
 	@Override
 	public Breakdown getBreakdown() {
 		return inventorySheetData.getBreakdown();
+	}
+
+	public Map<Integer, InventorySheetDetail> getProductInventories() {
+		return productInventories;
+	}
+
+	public InventorySheetDetail getInventorySheetDetail(int productId) {
+		return productInventories.get(productId);
+	}
+
+	public void setProductInventories(Map<Integer, InventorySheetDetail> productInventories) {
+		this.productInventories = productInventories;
 	}
 
 }

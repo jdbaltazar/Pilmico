@@ -118,4 +118,20 @@ public class InventorySheetDetail {
 	public double getPricePerKilo() {
 		return inventorySheetDataDetail.getPricePerKilo();
 	}
+
+	public double getEndingInventoryInSack() {
+		return 0d;
+	}
+
+	public double getEndingInventoryInKilo() {
+		return 0d;
+	}
+
+	public double getSalesAmountForSack() {
+		return 0d;
+	}
+
+	public double getSalesAmountForKilo() {
+		return 0d;
+	}
 }
