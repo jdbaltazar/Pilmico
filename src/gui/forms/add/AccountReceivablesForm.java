@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -143,16 +144,10 @@ public class AccountReceivablesForm extends SimplePanel {
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
-
-		List<Person> customers = new ArrayList<Person>();
-		try {
-			customers = Manager.employeePersonManager.getCustomersOnly();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
-//		model = new DefaultComboBoxModel(array);
-		customerCombo = new JComboBox(customers.toArray());
+		customerCombo = new JComboBox();
+		refreshCustomer();
+		customerCombo.setUI(ColorArrowUI.createUI(this));
 		customerCombo.setEditable(true);
 		customerCombo.setSelectedIndex(-1);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
@@ -161,8 +156,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		customerComboField.setBorder(BorderFactory.createEmptyBorder());
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
-		customerCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		customerCombo.setUI(ColorArrowUI.createUI(this));
+		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
 
@@ -316,7 +310,9 @@ public class AccountReceivablesForm extends SimplePanel {
 
 				try {
 					Manager.accountReceivableManager.addAccountReceivable(ar);
-					System.out.println("ar saved!");
+					Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -364,11 +360,10 @@ public class AccountReceivablesForm extends SimplePanel {
 		date.setValue(new Date());
 	}
 
-	public void refreshAccount() {
+	public void refreshCustomer() {
 
 		try {
-			// model = new
-			// DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
+			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
 
 			customerCombo.setModel(model);
 		} catch (Exception e) {

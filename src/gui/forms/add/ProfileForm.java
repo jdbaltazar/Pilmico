@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -82,7 +83,9 @@ public class ProfileForm extends SimplePanel {
 						.getText(), true);
 				try {
 					Manager.employeePersonManager.addPerson(p);
-					System.out.println("person added!");
+					Values.centerPanel.changeTable(Values.CUSTOMERS);
+					new SuccessPopup("Add").setVisible(true);
+					clearFields();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

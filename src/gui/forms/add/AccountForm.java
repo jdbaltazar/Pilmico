@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -139,7 +140,9 @@ public class AccountForm extends SimplePanel {
 						(Employee) employeeCombo.getSelectedItem());
 				try {
 					Manager.accountManager.addAccount(acc);
-					System.out.println("acount saved");
+					Values.centerPanel.changeTable(Values.ACCOUNTS);
+					new SuccessPopup("Add").setVisible(true);
+					clearFields();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -157,15 +160,7 @@ public class AccountForm extends SimplePanel {
 			acctType.addItem(at);
 		}
 
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = Manager.employeePersonManager.getEmployeesWithoutAccounts();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		for (Employee emp : employees) {
-			employeeCombo.addItem(emp);
-		}
+		refreshEmployee();
 
 		add(fwd);
 		add(employee);
@@ -192,11 +187,10 @@ public class AccountForm extends SimplePanel {
 		return false;
 	}
 
-	public void refreshDropdown() {
+	public void refreshEmployee() {
 		try {
-			model = new DefaultComboBoxModel();
-			acctType = new FormDropdown();
-			acctType.setModel(model);
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesWithoutAccounts().toArray());
+			employeeCombo.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}

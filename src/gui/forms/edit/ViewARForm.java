@@ -67,11 +67,11 @@ public class ViewARForm extends EditFormPanel {
 	private JTextField customerComboField;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
-	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
+	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel;
 	private ImageIcon icon;
 	private SoyButton save;
-	private ViewFormField balance, issuedBy, date, customer;;
-	private ViewFormLabel issuedByLabel, balanceLabel, dateLabel, customerLabel, remarks;
+	private ViewFormField balance, issuedBy, date, customer, amount;
+	private ViewFormLabel issuedByLabel, balanceLabel, dateLabel, customerLabel, remarks, amountLabel;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -103,7 +103,7 @@ public class ViewARForm extends EditFormPanel {
 
 		scrollPane = new JScrollPane();
 
-		payBtn = new SBButton("invalidate.png", "invalidate.png", "Pay");
+		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
@@ -115,6 +115,7 @@ public class ViewARForm extends EditFormPanel {
 
 		issuedByLabel = new ViewFormLabel("Issued by:");
 		balanceLabel = new ViewFormLabel("Balance:");
+		amountLabel = new ViewFormLabel("Amount:");
 		dateLabel = new ViewFormLabel("Date:");
 
 		customerLabel = new ViewFormLabel("Customer:");
@@ -122,13 +123,13 @@ public class ViewARForm extends EditFormPanel {
 		issuedBy = new ViewFormField("");
 
 		balance = new ViewFormField("");
+		amount = new ViewFormField("");
 
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
-		deleteLabel = new TableHeaderLabel(icon);
 
 		customer = new ViewFormField("");
 
@@ -151,11 +152,13 @@ public class ViewARForm extends EditFormPanel {
 
 		customerLabel.setBounds(20, 50, 70, 20);
 		customer.setBounds(95, 48, 200, 20);
+		
+		amountLabel.setBounds(305, 50, 70, 20);
+		amount.setBounds(380, 48, 80, 20);
 
-		balanceLabel.setBounds(305, 50, 70, 20);
-		balance.setBounds(380, 48, 150, 20);
 
-		payBtn.setBounds(535, 51, 16, 16);
+		balanceLabel.setBounds(465, 50, 70, 20);
+		balance.setBounds(540, 48, 80, 20);
 
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
@@ -203,6 +206,9 @@ public class ViewARForm extends EditFormPanel {
 		panel.add(balanceLabel);
 		panel.add(balance);
 
+		panel.add(amountLabel);
+		panel.add(amount);
+
 		panel.add(payBtn);
 		// panel.add(addRow);
 
@@ -224,6 +230,8 @@ public class ViewARForm extends EditFormPanel {
 		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane.setBounds(83, 63, 638, 280);
+		
+		payBtn.setBounds(616, 7, 16, 16);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);

@@ -55,7 +55,7 @@ public class Tables {
 	
 	public static String[] discountFormLabel = {"Date", "Issued By", "Product", "Customer", "Amount"};
 	
-	public static String[] depositFormLabel = {"Date", "Issued By", "Depositor", "Bank Account", "Amount"};
+	public static String[] depositFormLabel = {"Date*", "Bank*", "Bank Account*", "Depositor", "Amount*", "Issued by", "Remarks"};
 	
 	public static String[] ARPaymentFormLabel = {"AR ID", "Date", "Issued By", "Customer Representative", "Amount"};
 	

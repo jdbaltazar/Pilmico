@@ -1,8 +1,11 @@
-package gui.forms.add;
+package gui.forms.edit;
 
 import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.RowPanel;
+import gui.forms.util.ViewFormBorder;
+import gui.forms.util.ViewFormField;
+import gui.forms.util.ViewFormLabel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,19 +35,18 @@ import javax.swing.ScrollPaneConstants;
 import common.entity.profile.Employee;
 import common.manager.Manager;
 
+import util.EditFormPanel;
 import util.ErrorLabel;
 import util.MainFormField;
 import util.MainFormLabel;
 import util.SBButton;
-import util.SimplePanel;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class SalaryReleaseForm extends SimplePanel {
-
+public class ViewSalaryForm extends EditFormPanel{
 	/**
 	 * 
 	 */
@@ -53,19 +55,14 @@ public class SalaryReleaseForm extends SimplePanel {
 	private JScrollPane feesPane;
 	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
 	private Object[] array = {};
-	private JScrollBar sb;
 
 	private ArrayList<RowPanel> feesRowPanel = new ArrayList<RowPanel>();
 	private ArrayList<RowPanel> caRowPanel = new ArrayList<RowPanel>();
-	private JTextField quantity;
-	private JButton deleteRow, addRow;
-	private TableHeaderLabel deleteLabel, feesLabel, amountLabel;
-	private SpinnerDate date;
+	private TableHeaderLabel feesLabel, amountLabel;
 	private ImageIcon icon;
 	private SoyButton save;
-	private DefaultEntryLabel issuedBy, grossPay, netPay;
-	private FormDropdown issuedFor;
-	private MainFormLabel issuedByLabel, issuedForLabel, dateLabel, salaryLabel, payLabel;
+	private ViewFormField issuedBy, grossPay, netPay, date, issuedFor;
+	private ViewFormLabel issuedByLabel, issuedForLabel, dateLabel, salaryLabel, payLabel;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -73,21 +70,15 @@ public class SalaryReleaseForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg = "";
-	private SBButton fwd, fwd2;
 
-	public SalaryReleaseForm() {
-		super("Add Salary Release Form");
+	public ViewSalaryForm() {
+		super("View Salary Release Form");
 		init();
 		addComponents();
 
-		Values.salaryReleaseForm = this;
 	}
 
 	private void init() {
-
-		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
-		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
-		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -95,26 +86,30 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		scrollPane = new JScrollPane();
 
-		issuedFor = new FormDropdown();
+		issuedFor = new ViewFormField("");
 
 		icon = new ImageIcon("images/util.png");
-
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
-
-		dateLabel = new MainFormLabel("Date:");
-		issuedByLabel = new MainFormLabel("Issued by:");
-		issuedForLabel = new MainFormLabel("Issued for:");
-		salaryLabel = new MainFormLabel("Gross Pay:");
-		payLabel = new MainFormLabel("Net Pay:");
-
-		netPay = new DefaultEntryLabel("");
-		grossPay = new DefaultEntryLabel("");
 		
-		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
+		status = new JLabel("", null, JLabel.LEADING);
+		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
+		
+		remarks = new ViewFormLabel("", true);
+
+		date = new ViewFormField("15 Jul 2010 9:15 AM");
+
+		dateLabel = new ViewFormLabel("Date:");
+		issuedByLabel = new ViewFormLabel("Issued by:");
+		issuedForLabel = new ViewFormLabel("Issued for:");
+		salaryLabel = new ViewFormLabel("Gross Pay:");
+		payLabel = new ViewFormLabel("Net Pay:");
+
+		netPay = new ViewFormField("");
+		grossPay = new ViewFormField("");
+		
+		issuedBy  = new ViewFormField("");
 
 		feesLabel = new TableHeaderLabel("Fees");
 		amountLabel = new TableHeaderLabel("Amount");
-		deleteLabel = new TableHeaderLabel(icon);
 
 		model = new DefaultComboBoxModel(array);
 
@@ -127,39 +122,28 @@ public class SalaryReleaseForm extends SimplePanel {
 		feesPane.setOpaque(false);
 		feesPane.getViewport().setOpaque(false);
 
-		dateLabel.setBounds(70, 50, 40, 20);
-		date.setBounds(115, 50, 180, 20);
+		dateLabel.setBounds(42, 15, 70, 20);
+		date.setBounds(115, 15, 190, 20);
 
-		issuedByLabel.setBounds(42, 90, 70, 20);
-		issuedBy.setBounds(115, 90, 180, 20);
+		issuedByLabel.setBounds(42, 55, 70, 20);
+		issuedBy.setBounds(115, 55, 190, 20);
 
-		issuedForLabel.setBounds(40, 130, 80, 20);
-		issuedFor.setBounds(115, 130, 180, 20);
+		issuedForLabel.setBounds(42, 95, 70, 20);
+		issuedFor.setBounds(115, 95, 190, 20);
 
-		salaryLabel.setBounds(40, 170, 70, 20);
-		grossPay.setBounds(115, 170, 180, 20);
+		salaryLabel.setBounds(42, 135, 70, 20);
+		grossPay.setBounds(115, 135, 190, 20);
 
-		payLabel.setBounds(52, 210, 65, 20);
-		netPay.setBounds(115, 210, 180, 20);
+		payLabel.setBounds(42, 175, 70, 20);
+		netPay.setBounds(115, 175, 190, 20);
 
-		addRow.setBounds(320, 65, 16, 16);
+		feesLabel.setBounds(340, 25, 170, 25);
+		amountLabel.setBounds(510, 25, 100, 25);
+		feesPane.setBounds(341, 50, 286, 140);
 
-		feesLabel.setBounds(340, 60, 170, 25);
-		amountLabel.setBounds(510, 60, 100, 25);
-		deleteLabel.setBounds(610, 60, 46, 25);
-		feesPane.setBounds(341, 85, 332, 150);
+//		fwd.setBounds(300, 130, 16, 16);
 
-		fwd.setBounds(300, 130, 16, 16);
-		fwd.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
-			}
-		});
-
-		addRow.addActionListener(new ActionListener() {
+		/*addRow.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -174,19 +158,7 @@ public class SalaryReleaseForm extends SimplePanel {
 				Rectangle rect = new Rectangle(0, (int) feesPanel.getPreferredSize().getHeight(), 10, 10);
 				feesPanel.scrollRectToVisible(rect);
 			}
-		});
-
-		issuedFor = new FormDropdown();
-		refreshEmployee();
-
-		issuedFor.addItemListener(new ItemListener() {
-
-			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				Employee emp = (Employee) issuedFor.getSelectedItem();
-				grossPay.setText(emp.getSalary() + "");
-			}
-		});
+		});*/
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -203,28 +175,27 @@ public class SalaryReleaseForm extends SimplePanel {
 		panel.add(payLabel);
 		panel.add(netPay);
 
-		panel.add(fwd);
-
 		/*
 		 * panel.add(caDeductions); panel.add(dateHeaderLabel);
 		 * panel.add(amountLabel); panel.add(cashAdvancesPane);
 		 */
 
-		panel.add(addRow);
-
 		panel.add(feesLabel);
 		panel.add(amountLabel);
-		panel.add(deleteLabel);
 		panel.add(feesPane);
 
 		scrollPane.setViewportView(panel);
-		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 
-		scrollPane.setBounds(0, 0, 708, 360);
+		scrollPane.setBounds(66, 88, 665, 220);
+
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
+		add(status);
+		add(remarks);
 	}
 
 	private void alternateRows(boolean isForFees) {
@@ -285,7 +256,7 @@ public class SalaryReleaseForm extends SimplePanel {
 			}
 		});
 
-		panel.add(save);
+//		panel.add(save);
 		add(error);
 
 	}
@@ -306,28 +277,13 @@ public class SalaryReleaseForm extends SimplePanel {
 	private void clearForm() {
 		feesPanel.removeAll();
 		feesRowPanel.clear();
-		refreshDate();
 
 		error.setText("");
 
 	}
 
-	public void refreshDate() {
-		date.setValue(new Date());
-	}
-
-	public void refreshEmployee() {
-		
-		try {
-			 model = new
-			 DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
-			issuedFor.setModel(model);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		//issuedFor.setSelectedIndex(-1);
+	public void refreshAccount() {
 
 	}
+
 }

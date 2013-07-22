@@ -1,6 +1,7 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,6 +31,7 @@ import util.JNumericField;
 import util.SBButton;
 import util.SimplePanel;
 import util.Tables;
+import util.Values;
 import util.soy.SoyButton;
 
 import common.entity.accountreceivable.ARPayment;
@@ -188,7 +190,9 @@ public class ARPaymentForm extends SimplePanel {
 					accountReceivable.addARPayment(arPayment);
 					accountReceivable.setBalance(accountReceivable.getBalance() - arPayment.getAmount());
 					Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
-					System.out.println("ar payment saved, balance updated");
+
+					Values.centerPanel.changeTable(Values.AR_PAYMENTS);
+					new SuccessPopup("Add").setVisible(true);
 					clearFields();
 				} catch (Exception e1) {
 					e1.printStackTrace();

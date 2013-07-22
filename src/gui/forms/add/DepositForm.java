@@ -1,6 +1,8 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.DefaultEntryLabel;
+import gui.forms.util.FormField;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -42,15 +44,16 @@ public class DepositForm extends SimplePanel {
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
 	private ArrayList<JNumericField> fields = new ArrayList<JNumericField>();
+	private FormField remarks;
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private JSpinner date;
-	private JLabel issuedBy;
+	private DefaultEntryLabel depositor, issuedBy;
 	private int initY = 26;
-	private DropdownLabel dateLabel, issuedByLabel, depositorLabel, bankAcctLabel;
+	private DropdownLabel dateLabel, issuedByLabel, depositorLabel, bankAcctLabel, bankLabel;
 	private SBButton fwd, fwd2;
-	private JComboBox depositorCombo, bankAcctCombo;
-	private JTextField depositorComboField, bankAcctComboField;
+	private JComboBox bankCombo, bankAcctCombo;
+	private JTextField bankComboField, bankAcctComboField;
 
 	private ErrorLabel error;
 	private String username, password, firstName, lastName, address;
@@ -77,7 +80,7 @@ public class DepositForm extends SimplePanel {
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
-		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
+		fwd = new SBButton("forward.png", "forward.png", "Add new bank");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new bank account");
 		fwd.addActionListener(new ActionListener() {
 
@@ -91,15 +94,14 @@ public class DepositForm extends SimplePanel {
 
 		dateLabel = new DropdownLabel("Date");
 		issuedByLabel = new DropdownLabel("Issued by");
-		depositorLabel = new DropdownLabel("Depositor*");
+		depositorLabel = new DropdownLabel("Depositor");
 		bankAcctLabel = new DropdownLabel("Bank Account*");
+		bankLabel = new DropdownLabel("Bank*");
+		
 
 		// issuedBy = new FormDropdown();
-		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
-		issuedBy.setOpaque(false);
-		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
-		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		issuedBy.setHorizontalAlignment(JLabel.CENTER);
+		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
+		depositor = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
 
 		date = new JSpinner(new SpinnerDateModel());
 		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
@@ -126,20 +128,20 @@ public class DepositForm extends SimplePanel {
 		bankAcctComboField.setOpaque(false);
 		bankAcctComboField.addKeyListener(new ComboKeyHandler(bankAcctCombo));
 		
-		depositorCombo = new JComboBox();
-		depositorCombo.setEditable(true);
-		depositorCombo.setSelectedIndex(-1);
-		depositorComboField = (JTextField) depositorCombo.getEditor().getEditorComponent();
-		depositorComboField.setText("");
-		depositorComboField.setOpaque(false);
-		depositorComboField.addKeyListener(new ComboKeyHandler(depositorCombo));
+		bankCombo = new JComboBox();
+		bankCombo.setEditable(true);
+		bankCombo.setSelectedIndex(-1);
+		bankComboField = (JTextField) bankCombo.getEditor().getEditorComponent();
+		bankComboField.setText("");
+		bankComboField.setOpaque(false);
+		bankComboField.addKeyListener(new ComboKeyHandler(bankCombo));
 
 		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 53) {
+		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 63) {
 
 			if (i == 4) {
 
-				fields.add(new JNumericField(Tables.depositFormLabel[i]+"*"));
+				fields.add(new JNumericField(Tables.depositFormLabel[i]));
 				fields.get(ctr).setMaxLength(10);
 				fields.get(ctr).setBounds(x1, initY + y, 200, 25);
 				panel.add(fields.get(ctr));
@@ -151,26 +153,39 @@ public class DepositForm extends SimplePanel {
 				dateLabel.setBounds(x1, initY + y - 7, 200, 11);
 				date.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			if (i == 1) {
+			if (i == 5) {
 				issuedByLabel.setBounds(x1, initY + y - 7, 200, 11);
 				issuedBy.setBounds(x1, initY + y + 5, 200, 20);
 			}
 
-			if (i == 2) {
-				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
-				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
-				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
+			if (i == 1) {
+				fwd.setBounds(x1 + 32, initY + y - 11, 16, 16);
+				bankLabel.setBounds(x1, initY + y - 7, 200, 11);
+				bankCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
 			
-			if (i == 3) {
+			if (i == 2) {
 				fwd2.setBounds(x1 + 76, initY + y - 11, 16, 16);
 				bankAcctLabel.setBounds(x1, initY + y - 7, 200, 11);
 				bankAcctCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
+			
+			if(i == 3){
+				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
+				depositor.setBounds(x1, initY + y + 5, 200, 20);
+				
+				x1+= 250;
+				y = -63;
+			}
+			
+			if(i == 6){
+				remarks = new FormField(Tables.depositFormLabel[i], 100, Color.white, Color.gray);
+				remarks.setBounds(x1, initY + y, 200, 25);
+			}
 		}
 
-		clear.setBounds(157, 298, 80, 30);
-		save.setBounds(48, 298, 80, 30);
+		clear.setBounds(289, 258, 80, 30);
+		save.setBounds(180, 258, 80, 30); //48
 
 		error.setBounds(160, 290, 230, 25);
 
@@ -199,18 +214,23 @@ public class DepositForm extends SimplePanel {
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
 		
-		panel.add(depositorCombo);
+		panel.add(bankCombo);
+		panel.add(bankLabel);
+		
+		panel.add(depositor);
 		panel.add(depositorLabel);
 		
 		panel.add(bankAcctCombo);
 		panel.add(bankAcctLabel);
+		
+		panel.add(remarks);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		
-		scrollPane.setBounds(10, 25, 280, 340);
+		scrollPane.setBounds(10, 38, 520, 310);
 		
 		
 		add(scrollPane);
@@ -232,7 +252,7 @@ public class DepositForm extends SimplePanel {
 		return false;
 	}
 
-	public void refreshDropdown() {
+	public void refreshDropdowns() {
 		try {
 			model = new DefaultComboBoxModel();
 			// issuedBy = new FormDropdown();

@@ -77,10 +77,9 @@ public class ViewSalesForm extends EditFormPanel {
 
 	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private JTextField quantity;
-	private JLabel status;
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
 	private ImageIcon icon;
-	private ViewFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel, remarks;
+	private ViewFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;

@@ -4,6 +4,7 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -59,10 +60,10 @@ public class SalesForm extends SimplePanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel productsPanel, row, p;
 	private JScrollPane productsPane;
-	private JComboBox itemCombo, customerCombo;
+	private JComboBox customerCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
 	private Object[] array = {};
-	private JTextField itemComboField, customerComboField;
+	private JTextField customerComboField;
 	private JScrollBar sb;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
@@ -144,8 +145,10 @@ public class SalesForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		model = new DefaultComboBoxModel(array);
-		customerCombo = new JComboBox(model);
+		customerCombo = new JComboBox();
+		refreshCustomer();
+		
+		customerCombo.setUI(ColorArrowUI.createUI(this));
 		customerCombo.setEditable(true);
 		customerCombo.setSelectedIndex(-1);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
@@ -154,8 +157,7 @@ public class SalesForm extends SimplePanel {
 		customerComboField.setBorder(BorderFactory.createEmptyBorder());
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
-		customerCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		customerCombo.setUI(ColorArrowUI.createUI(this));
+		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
 
@@ -203,8 +205,8 @@ public class SalesForm extends SimplePanel {
 		issueDate.setBounds(460, 32, 150, 20);
 
 		customerLabel.setBounds(15, 58, 70, 20);
-		customerCombo.setBounds(85, 56, 220, 20);
-		customerFwd.setBounds(308, 58, 16, 16);
+		customerCombo.setBounds(85, 58, 220, 20);
+		customerFwd.setBounds(308, 60, 16, 16);
 
 		customerFwd.addActionListener(new ActionListener() {
 
@@ -262,16 +264,7 @@ public class SalesForm extends SimplePanel {
 
 		showUnrequired(false);
 
-		try {
-			List<Person> customrs = Manager.employeePersonManager.getCustomersOnly();
-			for (Person p : customrs) {
-				customerCombo.addItem(p);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 		add(showRequired);
 
 		panel.add(dateLabel);
@@ -462,80 +455,13 @@ public class SalesForm extends SimplePanel {
 
 				try {
 					Manager.salesManager.addSales(s);
-
-					System.out.println("sales saved!");
+					Values.centerPanel.changeTable(Values.SALES);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
-				// Sales s = new Sales(d, customer, rcNo, issuedAt, issuedOn,
-				// receiptNo, cashier, valid, remarks, accounted);
-
-				// Sales s = new Sales(date, customer, rcNo, issuedAt, issuedOn,
-				// receiptNo, cashier, valid, remarks, accounted)
-
-				/*
-				 * if (isValidated()) { try { Date d = ((SpinnerDateModel)
-				 * date.getModel()).getDate(); Account acc = (Account)
-				 * accountCombo.getSelectedItem(); SalesOrder so = new SalesOrder(d,
-				 * acc);
-				 * 
-				 * boolean valid = true;
-				 * 
-				 * // error-trapping here int i = 0; for (RowPanel sor : rowPanel) {
-				 * i++; Item item = (Item) sor.getSelectedItem(); if
-				 * (sor.getQuantity() > item.getUnitsOnStock()) {
-				 * Toolkit.getDefaultToolkit().beep();
-				 * 
-				 * JOptionPane.showMessageDialog(null, "Error in row " + i +
-				 * ": only " + item.getUnitsOnStock() +" "+ item.getUnit().getName()
-				 * + " of item \n" + item.getName() +
-				 * " left. Purchase new stocks\nor update quantity of item",
-				 * "System Error", JOptionPane.ERROR_MESSAGE);
-				 * 
-				 * valid = false; } }
-				 * 
-				 * if (valid) {
-				 * 
-				 * for (RowPanel sor : rowPanel) { so.addSalesOrderDetail(new
-				 * SalesOrderDetail(so, sor.getQuantity(), (Item)
-				 * sor.getSelectedItem())); }
-				 * 
-				 * Manager.salesOrderManager.addSalesOrder(so);
-				 * 
-				 * // update quantity of items Set<SalesOrderDetail> sods =
-				 * so.getSalesOrderDetails(); for (SalesOrderDetail sod : sods) {
-				 * Item item = sod.getItem();
-				 * item.setUnitsOnStock(item.getUnitsOnStock() - sod.getQuantity());
-				 * Manager.itemManager.updateItem(item); }
-				 * 
-				 * Account ac = Manager.loggedInAccount; String str =
-				 * ac.getAccountType() + " " + ac.getFirstAndLAstName() +
-				 * " added sales order no " + so.getId() + " for account " +
-				 * so.getAccount().getId() + ": " +
-				 * so.getAccount().getFirstAndLAstName() + " with " +
-				 * so.getSalesOrderDetails().size() + " lines.";
-				 * 
-				 * String str2 = ""; Set<SalesOrderDetail> ds =
-				 * so.getSalesOrderDetails(); if (ds.size() > 0) { str2 =
-				 * " Quantity of item(s): "; int total = ds.size(); for
-				 * (SalesOrderDetail sod : ds) { total--; str2 = str2 +
-				 * sod.getItem().getId(); if (total > 0) { str2 = str2 + ", "; }
-				 * else { str2 = str2 + " updated"; } }
-				 * 
-				 * } str = str + str2; Log log = new Log(str);
-				 * Manager.logManager.addLog(log);
-				 * 
-				 * new SuccessPopup("Add").setVisible(true); clearForm();
-				 * Values.centerPanel.changeTable(Values.SALES_ORDER);
-				 * Values.topPanel.refreshStockCost();
-				 * 
-				 * } else { System.out.println("Cannot add sales order! "); }
-				 * 
-				 * } catch (Exception e1) { // TODO Auto-generated catch block
-				 * e1.printStackTrace(); } } else error.setText(msg);
-				 */
 			}
 		});
 
@@ -570,21 +496,23 @@ public class SalesForm extends SimplePanel {
 		rowPanel.clear();
 		refreshDate();
 
+		rc_no.setText("");
+		receipt_no.setText("");
+		issuedAt.setText("");
+		
 		error.setText("");
 
-		customerCombo.setSelectedIndex(-1);
+		refreshCustomer();
 	}
 
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
 
-	public void refreshAccount() {
+	public void refreshCustomer() {
 
 		try {
-			// model = new
-			// DefaultComboBoxModel(Manager.accountManager.getAccounts().toArray());
-
+			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
 			customerCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

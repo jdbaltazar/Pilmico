@@ -113,6 +113,9 @@ public class ISRowPanel extends JPanel {
 			row.add(vff);
 		}
 
+		for(int i = 0; i < formField.size(); i++)
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
+		
 		row.setOpaque(true);
 		// row.setBorder(BorderFactory.createEtchedBorder());
 		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));

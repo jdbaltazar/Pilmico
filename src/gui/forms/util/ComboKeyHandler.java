@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -18,6 +19,7 @@ public class ComboKeyHandler extends KeyAdapter {
 
 	public ComboKeyHandler(JComboBox combo) {
 		this.comboBox = combo;
+		comboBox.setBorder(BorderFactory.createEmptyBorder());
 		for (int i = 0; i < comboBox.getModel().getSize(); i++) {
 			list.addElement(comboBox.getItemAt(i));
 		}
