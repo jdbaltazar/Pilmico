@@ -1,37 +1,35 @@
 package gui.forms.add;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewportDragScrollListener;
 
-import javax.sound.midi.Receiver;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
+
+import util.MainFormLabel;
+import util.SimplePanel;
+import util.SpinnerDate;
+import util.TableHeaderLabel;
+import util.Values;
+import util.soy.SoyButton;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -41,20 +39,15 @@ import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
+import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
+import common.entity.inventorysheet.InventorySheetDataDetail;
+import common.entity.inventorysheet.InventorySheetDetail;
 import common.entity.product.Product;
-import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
-
-import util.MainFormLabel;
-import util.SBButton;
-import util.SimplePanel;
-import util.SpinnerDate;
-import util.TableHeaderLabel;
-import util.Values;
-import util.soy.SoyButton;
 
 public class InventorySheetForm extends SimplePanel {
 
@@ -77,7 +70,7 @@ public class InventorySheetForm extends SimplePanel {
 	private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
 	private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
 	private ArrayList<ISRowPanel> productsInventory = new ArrayList<ISRowPanel>();
-	private ArrayList<ISRowPanel> sales = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> salesInventory = new ArrayList<ISRowPanel>();
 
 	private ArrayList<JLabel> sectionLabel = new ArrayList<JLabel>();
 	private ArrayList<JLabel> totalInventoryLabel = new ArrayList<JLabel>();
@@ -96,6 +89,8 @@ public class InventorySheetForm extends SimplePanel {
 	private SpinnerDate date;
 
 	private SoyButton save;
+
+	private InventorySheet inventorySheet;
 
 	private TableHeaderLabel productLabel, sack1Label, kg1Label, sack2Label, kg2Label, sack3Label, kg3Label, sack4Label, kg4Label, sack5Label,
 			kg5Label, sack6Label, kg6Label, sack7Label, kg7Label, sack8Label, kg8Label, productTotalLabel, dateSaleslabel, cashierLabel,
@@ -512,7 +507,7 @@ public class InventorySheetForm extends SimplePanel {
 
 		productTotalLabel.setBounds(startX, productsPane.getY() + productsPane.getHeight(), productLabel.getWidth(), 20);
 
-		fillTables();
+		// fillTables();
 		for (int i = 0, x = 0; i < TOTAL_INVENTORY_LABEL - 4; i++, x += sack1Label.getWidth())
 			totalInventoryLabel.get(i).setBounds(productTotalLabel.getX() + productTotalLabel.getWidth() + x - 1, productTotalLabel.getY(),
 					sack1Label.getWidth(), 20);
@@ -895,15 +890,15 @@ public class InventorySheetForm extends SimplePanel {
 		// System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
 
 		for (int i = 0; i < 3; i++) {
-			sales.add(new ISRowPanel(null, salesPanel, Values.SALES));
-			salesPanel.add(sales.get(i));
+			salesInventory.add(new ISRowPanel(null, salesPanel, Values.SALES));
+			salesPanel.add(salesInventory.get(i));
 
 			salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(), salesPanel.getComponentCount() * ROW_HEIGHT));
 			salesPanel.updateUI();
 			salesPanel.revalidate();
 		}
 
-		alternateRows(sales);
+		alternateRows(salesInventory);
 
 	}
 
@@ -917,6 +912,7 @@ public class InventorySheetForm extends SimplePanel {
 		// discounts
 		// deposits
 		// generate acoh
+
 		List<Product> products = Manager.productManager.getProducts();
 		List<Delivery> deliveries = Manager.deliveryManager.getPendingDeliveries();
 		List<PullOut> pullOuts = Manager.pullOutManager.getPendingPullOuts();
@@ -929,14 +925,26 @@ public class InventorySheetForm extends SimplePanel {
 		List<SalaryRelease> salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
 		List<DiscountIssue> discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
 		List<Deposit> deposits = Manager.depositManager.getPendingDeposits();
-		double previousAcoh = Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
+		// double previousAcoh =
+		// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
-		// fill the entries of the 
+		InventorySheetData inventorySheetData = new InventorySheetData();
+		for (Product p : products) {
+			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, 0d, 0d, p.getDisplayInSack(), p
+					.getDisplayInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
+		}
+
+		inventorySheet = new InventorySheet(inventorySheetData);
+		inventorySheet.build(new HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new HashSet<Sales>(sales),
+				new HashSet<AccountReceivable>(accountReceivables));
+
+		fillProductInventories(products);
+		fillProductInventoresTotal();
+		fillSales(sales);
 
 	}
 
 	private void alternateRows(ArrayList<ISRowPanel> rowPanel) {
-
 		for (int i = 0; i < rowPanel.size(); i++)
 			if (i % 2 == 0)
 				rowPanel.get(i).getRow().setBackground(Values.row1);
@@ -944,4 +952,50 @@ public class InventorySheetForm extends SimplePanel {
 				rowPanel.get(i).getRow().setBackground(Values.row2);
 	}
 
+	private void fillProductInventories(List<Product> products) {
+		int i = 0;
+		for (Product p : products) {
+			InventorySheetDetail isd = inventorySheet.getInventorySheetDetail(p.getId());
+			productsInventory.add(new ISRowPanel(isd, productsPanel, Values.PRODUCTS));
+			productsPanel.add(productsInventory.get(i));
+			productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(), productsPanel.getComponentCount() * ROW_HEIGHT));
+			productsPanel.updateUI();
+			productsPanel.revalidate();
+			i++;
+		}
+		alternateRows(productsInventory);
+	}
+
+	private void fillProductInventoresTotal() {
+		totalInventoryLabel.get(0).setText(inventorySheet.getTotalBeginningInventoryInSack() + "");
+		totalInventoryLabel.get(1).setText(inventorySheet.getTotalBeginningInventoryInKilo() + "");
+		totalInventoryLabel.get(2).setText(inventorySheet.getTotalOnDisplayInSack() + "");
+		totalInventoryLabel.get(3).setText(inventorySheet.getTotalOnDisplayInKilo() + "");
+		totalInventoryLabel.get(4).setText(inventorySheet.getTotalDeliveriesInSack() + "");
+		totalInventoryLabel.get(5).setText(inventorySheet.getTotalDeliveriesInKilo() + "");
+		totalInventoryLabel.get(6).setText(inventorySheet.getTotalPulloutsInSack() + "");
+		totalInventoryLabel.get(7).setText(inventorySheet.getTotalPulloutsInKilo() + "");
+		totalInventoryLabel.get(8).setText(inventorySheet.getTotalEndingInventoryInSack() + "");
+		totalInventoryLabel.get(9).setText(inventorySheet.getTotalEndingInventoryInKilo() + "");
+		totalInventoryLabel.get(10).setText(inventorySheet.getTotalOfftakesInSack() + "");
+		totalInventoryLabel.get(11).setText(inventorySheet.getTotalOfftakesInKilo() + "");
+		totalInventoryLabel.get(12).setText(inventorySheet.getTotalPricesInSack() + "");
+		totalInventoryLabel.get(13).setText(inventorySheet.getTotalPricesInKilo() + "");
+		totalInventoryLabel.get(14).setText(inventorySheet.getCombinedSalesInSack() + "");
+		totalInventoryLabel.get(15).setText(inventorySheet.getCombinedSalesInKilo() + "");
+	}
+
+	private void fillSales(List<Sales> sales) {
+		int i = 0;
+		for (Sales s : sales) {
+			salesInventory.add(new ISRowPanel(s, salesPanel, Values.SALES));
+			salesPanel.add(salesInventory.get(i));
+			salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(), salesPanel.getComponentCount() * ROW_HEIGHT));
+			salesPanel.updateUI();
+			salesPanel.revalidate();
+			i++;
+		}
+
+		alternateRows(salesInventory);
+	}
 }

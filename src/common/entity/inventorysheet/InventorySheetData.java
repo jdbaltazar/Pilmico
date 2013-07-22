@@ -24,6 +24,7 @@ import common.entity.delivery.Delivery;
 import common.entity.profile.Account;
 import common.entity.pullout.PullOut;
 import common.entity.sales.Sales;
+import common.entity.sales.SalesDetail;
 
 @Entity
 @Table(name = "InventorySheet")
@@ -172,6 +173,24 @@ public class InventorySheetData {
 
 	public void setInventorySheetDataDetails(Set<InventorySheetDataDetail> inventorySheetDataDetails) {
 		this.inventorySheetDataDetails = inventorySheetDataDetails;
+	}
+
+	public void addInventorySheetDataDetail(InventorySheetDataDetail inventorySheetDataDetail) {
+		inventorySheetDataDetail.setInventorySheetData(this);
+		inventorySheetDataDetails.add(inventorySheetDataDetail);
+	}
+
+	public void removeInventorySheetDataDetail(InventorySheetDataDetail inventorySheetDataDetail) {
+		removeInventorySheetDataDetail(inventorySheetDataDetail.getId());
+	}
+
+	public void removeInventorySheetDataDetail(int inventorySheetDataDetailId) {
+		for (InventorySheetDataDetail isdd : inventorySheetDataDetails) {
+			if (isdd.getId() == inventorySheetDataDetailId) {
+				inventorySheetDataDetails.remove(isdd);
+				break;
+			}
+		}
 	}
 
 	public Set<Delivery> getDeliveries() {

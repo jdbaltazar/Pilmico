@@ -85,7 +85,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 	@Override
 	public List<PullOut> getPendingPullOuts() throws Exception {
 		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Delivery.class);
+		Criteria criteria = session.createCriteria(PullOut.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
