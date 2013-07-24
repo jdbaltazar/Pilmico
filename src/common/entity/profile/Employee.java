@@ -93,6 +93,30 @@ public class Employee {
 		this.person = person;
 	}
 
+	public void setFirstName(String firstName) {
+		person.setFirstName(firstName);
+	}
+
+	public void setMiddleName(String middleName) {
+		person.setMiddleName(middleName);
+	}
+
+	public void setLastName(String lastName) {
+		person.setLastName(lastName);
+	}
+
+	public void setAddress(String address) {
+		person.setAddress(address);
+	}
+
+	public void setContactNo(String contactNo) {
+		person.setContactNo(contactNo);
+	}
+
+	public void setCustomer(boolean customer) {
+		person.setCustomer(customer);
+	}
+
 	public String getFirstName() {
 		return person.getFirstName();
 	}

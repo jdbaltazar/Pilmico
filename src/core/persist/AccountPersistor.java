@@ -78,6 +78,25 @@ public class AccountPersistor extends Persistor implements AccountManager {
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<Account> getActiveAccounts() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Account.class);
+		List<Account> accounts = new ArrayList<Account>();
+		try {
+			accounts = criteria.add(Restrictions.ne("id", new Integer(1))).add(Restrictions.eq("active", true)).addOrder(Order.asc("username")).list();
+			for (Account acc : accounts) {
+				decryptAccount(acc);
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accounts;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<Account> getAccounts() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Account.class);

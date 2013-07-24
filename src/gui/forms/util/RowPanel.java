@@ -148,7 +148,7 @@ public class RowPanel extends JPanel {
 		quantityKG = new JNumericField(10, JNumericField.DECIMAL, true);
 		priceSack = new JNumericField(10, JNumericField.DECIMAL, true);
 		priceKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		
+
 		feeAmount = new JNumericField(10, JNumericField.DECIMAL, true);
 
 		amountOfExpense = new JNumericField(10, JNumericField.DECIMAL, true);
@@ -234,7 +234,7 @@ public class RowPanel extends JPanel {
 
 		feesCombo.setBounds(11, 7, 148, 20);
 		feeAmount.setBounds(181, 7, 74, 20);
-		deleteRow.setBounds(284, 9, 16, 16); //+33
+		deleteRow.setBounds(284, 9, 16, 16); // +33
 
 		row.add(feesCombo);
 		row.add(feeAmount);
@@ -413,6 +413,10 @@ public class RowPanel extends JPanel {
 		// return (Expense) expensesCombo.getSelectedItem();
 		// }
 	}
+	
+	public String getSelectedFee(){
+		return feesComboField.getText();
+	}
 
 	public double getQuantityInSack() {
 		return Double.parseDouble(quantitySack.getText());
@@ -429,6 +433,10 @@ public class RowPanel extends JPanel {
 
 	public String getAccountNo() {
 		return bankAccount.getText();
+	}
+
+	public double getFeeAmout() {
+		return Double.parseDouble(feeAmount.getText());
 	}
 
 }

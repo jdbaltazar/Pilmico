@@ -27,7 +27,9 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
 import common.entity.profile.Designation;
+import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
+import common.entity.profile.Person;
 import common.manager.Manager;
 
 import util.DropdownLabel;
@@ -142,6 +144,7 @@ public class EmployeeForm extends SimplePanel {
 				endD.setBounds(x1, initY + y - 7, 100, 11);
 				endDate.setBounds(x1, initY + y + 5, 170, 20);
 				endDate.setVisible(false);
+				endD.setVisible(false);
 			}
 
 		}
@@ -160,6 +163,26 @@ public class EmployeeForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				try {
+
+				Person person = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3)
+						.getText(), fields.get(4).getText(), false);
+				
+				Manager.employeePersonManager.addPerson(person);
+				
+				
+				Employee employee = new Employee(person, (Designation) designation.getSelectedItem(), (EmploymentStatus) employmentStatus
+						.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double.parseDouble(fields.get(5).getText()), fields.get(6)
+						.getText(), null);
+					
+					
+					Manager.employeePersonManager.addEmployee(employee);
+					System.out.println("employee saved!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});

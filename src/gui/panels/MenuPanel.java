@@ -21,11 +21,11 @@ public class MenuPanel extends JPanel implements ActionListener {
 	private JPanel menu;
 	private ArrayList<MenuButton> options;
 	private String[] btn = { "product.png", "sales.png", "expenses.png", "delivery.png",
-			"accountreceivable.png",  "cashadvance.png", "discount.png", "deposit.png",
+			"accountreceivable.png",  "cashadvance.png", "percent.png", "deposit.png",
 			"superform.png", "person.png", "log.png" };
 	
 	private String[] btn2 = { "product2.png", "sales2.png", "expenses2.png", "delivery2.png",
-			"accountreceivable2.png",  "cashadvance2.png", "discount2.png", "deposit2.png",
+			"accountreceivable2.png",  "cashadvance2.png", "percent2.png", "deposit2.png",
 			"superform2.png", "person2.png", "log2.png" };
 	
 	private String[] hover = { "Products", "Sales", "Expenses", "Deliveries",

@@ -35,6 +35,7 @@ import common.entity.profile.Account;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
@@ -409,12 +410,31 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillSalary() {
 		try {
-			String[] headers = { "ID", "Date", "Issued by", "Issued for", "Amount" };
-			String[][] entries = { { "1", "June 20, 2011", "Juan dela Cruz", "John David S. Baltazar", "16000" },
-					{ "2", "December 18, 2010", "Maria Clara", "Juan dela Cruz", "12000" } };
+
+			String[] headers = { "ID", "IS No", "Date", "Employee", "Amount", "Cashier", "Valid?", "Remarks" };
+			// String[][] entries = { { "1", "June 20, 2011", "Juan dela Cruz",
+			// "John David S. Baltazar", "16000" },
+			// { "2", "December 18, 2010", "Maria Clara", "Juan dela Cruz", "12000"
+			// } };
 			// String[][] entries = new String[1][headers.length];
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.SALARY), BorderLayout.CENTER);
+			List<SalaryRelease> salaryReleases = Manager.salaryReleaseManager.getAllSalaryReleases();
+			String[][] entries = new String[salaryReleases.size()][headers.length];
+
+			int i = 0;
+			for (SalaryRelease sr : salaryReleases) {
+				entries[i][0] = sr.getId() + "";
+				entries[i][1] = sr.getInventorySheetData() == null ? "-" : sr.getInventorySheetData().getId() + "";
+				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sr.getDate());
+				entries[i][3] = sr.getIssuedFor().getFirstPlusLastName();
+				entries[i][4] = String.format("%.2f", sr.getAmount());
+				entries[i][5] = sr.getIssuedBy().getFirstPlusLastName();
+				entries[i][7] = sr.isValid() ? "Yes" : "No";
+				entries[i][8] = sr.getRemarks();
+				i++;
+			}
+
+			add(new TableUtilPanel(new TablePanel(entries, headers, salaryReleases), Tables.SALARY), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();

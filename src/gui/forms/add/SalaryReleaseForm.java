@@ -28,8 +28,16 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
 
+import common.entity.dailyexpenses.DailyExpensesDetail;
+import common.entity.dailyexpenses.Expense;
+import common.entity.product.Product;
 import common.entity.profile.Employee;
+import common.entity.salary.Fee;
+import common.entity.salary.FeeDeduction;
+import common.entity.salary.SalaryRelease;
+import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.ErrorLabel;
@@ -56,7 +64,6 @@ public class SalaryReleaseForm extends SimplePanel {
 	private JScrollBar sb;
 
 	private ArrayList<RowPanel> feesRowPanel = new ArrayList<RowPanel>();
-	private ArrayList<RowPanel> caRowPanel = new ArrayList<RowPanel>();
 	private JTextField quantity;
 	private JButton deleteRow, addRow;
 	private TableHeaderLabel deleteLabel, feesLabel, amountLabel;
@@ -79,7 +86,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		super("Add Salary Release Form");
 		init();
 		addComponents();
-
+		fillEntries();
 		Values.salaryReleaseForm = this;
 	}
 
@@ -95,8 +102,6 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		scrollPane = new JScrollPane();
 
-		issuedFor = new FormDropdown();
-
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
@@ -109,8 +114,9 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		netPay = new DefaultEntryLabel("");
 		grossPay = new DefaultEntryLabel("");
-		
-		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
+
+		issuedBy = new DefaultEntryLabel("");
+		issuedFor = new FormDropdown();
 
 		feesLabel = new TableHeaderLabel("Fees");
 		amountLabel = new TableHeaderLabel("Amount");
@@ -176,7 +182,6 @@ public class SalaryReleaseForm extends SimplePanel {
 			}
 		});
 
-		issuedFor = new FormDropdown();
 		refreshEmployee();
 
 		issuedFor.addItemListener(new ItemListener() {
@@ -184,7 +189,9 @@ public class SalaryReleaseForm extends SimplePanel {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				Employee emp = (Employee) issuedFor.getSelectedItem();
-				grossPay.setText(emp.getSalary() + "");
+				grossPay.setText(String.format("%.2f", emp.getSalary()));
+
+				System.out.println("aaaaaaaaaaaa");
 			}
 		});
 
@@ -235,23 +242,15 @@ public class SalaryReleaseForm extends SimplePanel {
 					feesRowPanel.get(i).getRow().setBackground(Values.row1);
 				else
 					feesRowPanel.get(i).getRow().setBackground(Values.row2);
-		} else
-			for (int i = 0; i < caRowPanel.size(); i++)
-				if (i % 2 == 0)
-					caRowPanel.get(i).getRow().setBackground(Values.row1);
-				else
-					caRowPanel.get(i).getRow().setBackground(Values.row2);
+		}
 	}
 
 	public void removeRow(int rowNum) {
 		feesPanel.remove(rowNum);
 		feesPanel.updateUI();
 		feesPanel.revalidate();
-
 		feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
-
 		updateList(rowNum);
-
 		alternateRows(true);
 	}
 
@@ -275,12 +274,61 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		error = new ErrorLabel();
 
-		save.setBounds(280, LABEL_Y + 270, 80, 30);
+		save.setBounds(310, LABEL_Y + 270, 80, 30);
 
 		error.setBounds(305, 340, 200, 30);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				Employee emp = (Employee) issuedFor.getSelectedItem();
+				SalaryRelease salaryRelease = new SalaryRelease(d, emp, emp.getSalary(), Manager.loggedInAccount, true, "");
+
+				for (RowPanel rp : feesRowPanel) {
+					// String f = rp.getSelectedFee();
+					// Fee fee = null;
+					//
+					//
+					// FeeDeduction feeDeduction = new FeeDeduction(ro.g,
+					// salaryRelease, rp.getFeeAmout());
+					// salaryRelease.addFeeDeduction();
+					// }
+				}
+				// for (RowPanel rp : rowPanel) {
+				// String exp = rp.getSelectedExpense();
+				// Expense expense = null;
+				// try {
+				// expense = Manager.dailyExpenseManager.searchExpense(exp);
+				// } catch (Exception e1) {
+				// e1.printStackTrace();
+				// }
+				// if (expense == null) {
+				// try {
+				// expense = new Expense(exp);
+				// Manager.dailyExpenseManager.addExpenses(expense);
+				// } catch (Exception e1) {
+				// e1.printStackTrace();
+				// }
+				// }
+				// de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense,
+				// rp.getExpenseAmount()));
+				// }
+				// for (RowPanel rp : ) {
+				// Product product = rp.getSelectedProduct();
+				// s.addSalesDetail(new SalesDetail(s, product,
+				// product.getCurrentPricePerKilo(),
+				// product.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp
+				// .getQuantityInSack()));
+				// }
+
+				System.out.println("salary release lacks entries");
+
+				try {
+					Manager.salaryReleaseManager.addSalaryRelease(salaryRelease);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+				}
 
 			}
 		});
@@ -288,6 +336,13 @@ public class SalaryReleaseForm extends SimplePanel {
 		panel.add(save);
 		add(error);
 
+	}
+
+	private void fillEntries() {
+
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		refreshDate();
+		refreshEmployee();
 	}
 
 	private boolean isValidated() {
@@ -317,17 +372,17 @@ public class SalaryReleaseForm extends SimplePanel {
 	}
 
 	public void refreshEmployee() {
-		
+
 		try {
-			 model = new
-			 DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
 			issuedFor.setModel(model);
+			if (issuedFor.getItemCount() > 0)
+				issuedFor.setSelectedIndex(0);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		//issuedFor.setSelectedIndex(-1);
 
 	}
 }

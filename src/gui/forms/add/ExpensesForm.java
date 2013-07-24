@@ -91,7 +91,6 @@ public class ExpensesForm extends SimplePanel {
 		super("Add Daily Expenses Form");
 		init();
 		addComponents();
-
 		Values.expensesForm = this;
 	};
 

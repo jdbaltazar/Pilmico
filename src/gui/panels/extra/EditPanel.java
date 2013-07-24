@@ -40,6 +40,8 @@ import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
+import common.entity.profile.Employee;
+import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
@@ -219,19 +221,19 @@ public class EditPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.AR_PAYMENTS)) {
 			add(new ViewARPaymentForm((ARPayment) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)) {
-			add(new EditEmployeeForm(), BorderLayout.CENTER);
+			add(new EditEmployeeForm((Employee) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CUSTOMERS)) {
-			add(new EditCustomerForm(), BorderLayout.CENTER);
+			add(new EditCustomerForm((Person) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
 			add(new EditBankForm(), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
 			add(new ViewSalaryForm(), BorderLayout.CENTER);
 		}

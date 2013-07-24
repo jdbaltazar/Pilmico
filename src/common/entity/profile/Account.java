@@ -34,6 +34,9 @@ public class Account {
 	@JoinColumn(name = "account_type")
 	private AccountType accountType;
 
+	@Column
+	private boolean active;
+
 	public Account() {
 		super();
 	}
@@ -44,6 +47,7 @@ public class Account {
 		this.password = password;
 		this.accountType = accountType;
 		this.employee = employee;
+		this.active = true;
 	}
 
 	public int getId() {
@@ -115,6 +119,14 @@ public class Account {
 			return employee.getFirstPlusLastName();
 		}
 		return accountType.getName();
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public String toString() {
