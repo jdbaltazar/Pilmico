@@ -10,15 +10,14 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import common.entity.dailyexpenses.Expense;
 import common.entity.product.Product;
+import common.entity.salary.Fee;
 import common.manager.Manager;
 
 import util.JNumericField;
@@ -28,6 +27,10 @@ import util.Values;
 
 public class RowPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5134097254205041741L;
 	private int y;
 	private String command = "none";
 
@@ -120,8 +123,22 @@ public class RowPanel extends JPanel {
 
 			productsCombo = new JComboBox(products.toArray());
 
-			feesCombo = new JComboBox();
-			expensesCombo = new JComboBox();
+			List<Fee> fees = new ArrayList<Fee>();
+			try {
+				fees = Manager.salaryReleaseManager.getFees();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+			feesCombo = new JComboBox(fees.toArray());
+
+			List<Expense> expenses = new ArrayList<Expense>();
+			try {
+				expenses = Manager.dailyExpenseManager.getExpenses();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			expensesCombo = new JComboBox(expenses.toArray());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +153,7 @@ public class RowPanel extends JPanel {
 		feesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		feesCombo.setEditable(true);
 		feesComboField = (JTextField) feesCombo.getEditor().getEditorComponent();
-		feesComboField.setText("");
+		feesComboField.setText("0");
 		feesComboField.addKeyListener(new ComboKeyHandler(feesCombo));
 
 		expensesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
@@ -164,7 +181,6 @@ public class RowPanel extends JPanel {
 		quantityKG.setText("0");
 
 		bankAccount = new FormField("Account Number", 100);
-
 		productsCombo.addItemListener(new ItemListener() {
 
 			@Override
@@ -274,18 +290,6 @@ public class RowPanel extends JPanel {
 		amountOfExpense.setBounds(10, 7, 52, 20);
 		expensesCombo.setBounds(87, 7, 145, 20);
 		deleteRow.setBounds(257, 9, 16, 16);
-
-		List<Expense> expenses = new ArrayList<Expense>();
-		try {
-			expenses = Manager.dailyExpenseManager.getExpenses();
-
-			System.out.println("size of expenseS: " + expenses.size());
-			for (Expense e : expenses) {
-				expensesCombo.addItem(e);
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 
 		row.add(amountOfExpense);
 		row.add(expensesCombo);
@@ -411,8 +415,8 @@ public class RowPanel extends JPanel {
 		// return (Expense) expensesCombo.getSelectedItem();
 		// }
 	}
-	
-	public String getSelectedFee(){
+
+	public String getSelectedFee() {
 		return feesComboField.getText();
 	}
 

@@ -1,39 +1,30 @@
 package gui.forms.edit;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 
-import util.DropdownLabel;
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
-import util.JNumericField;
 import util.SBButton;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -46,7 +37,6 @@ public class ViewDepositForm extends EditFormPanel {
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
 	private SoyButton clear, save;
-	private DefaultComboBoxModel model;
 	private int initY = 32;
 	private ViewFormLabel dateLabel, issuedByLabel, depositorLabel, bankAcctLabel, amountLabel;
 	private ViewFormField depositor, bankAcct, issuedBy, date, amount;
@@ -59,12 +49,44 @@ public class ViewDepositForm extends EditFormPanel {
 	private JLabel status;
 	private ImageIcon icon;
 
+	private SBButton voidBtn;
+
 	private Deposit deposit;
 
 	public ViewDepositForm(Deposit deposit) {
 		super("View Deposit");
 		this.deposit = deposit;
 		addComponents();
+		fillEntries();
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(deposit.getInventorySheetData() != null ? false : deposit.isValid());
+
+		String s = "";
+		if (deposit.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (deposit.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				remarks.setText(deposit.getRemarks());
+			}
+		}
+
+		status.setText(s);
+		status.setIcon(icon);
+
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(deposit.getDate()));
+		issuedBy.setText(deposit.getIssuedBy().getFirstPlusLastName());
+		depositor.setText(deposit.getDepositor().getFirstPlusLastName());
+		bankAcct.setText(deposit.getBankAccount().getBank() + ":  " + deposit.getBankAccount().getAccountNo());
+		amount.setText(String.format("%.2f", deposit.getAmount()));
 
 	}
 
@@ -93,11 +115,11 @@ public class ViewDepositForm extends EditFormPanel {
 		bankAcctLabel = new ViewFormLabel("Bank Acct.:");
 		amountLabel = new ViewFormLabel("Amount:");
 
-		issuedBy = new ViewFormField(Manager.loggedInAccount.getFirstPlusLastName());
-		date = new ViewFormField("17 Jul 2013 10:15 PM");
-		bankAcct = new ViewFormField("14562227189");
-		depositor = new ViewFormField("John David S. Baltazar");
-		amount = new ViewFormField("2500.00");
+		issuedBy = new ViewFormField("");
+		date = new ViewFormField("");
+		bankAcct = new ViewFormField("");
+		depositor = new ViewFormField("");
+		amount = new ViewFormField("");
 
 		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 53) {
 
@@ -137,11 +159,17 @@ public class ViewDepositForm extends EditFormPanel {
 			}
 		});
 
-		save.addMouseListener(new MouseAdapter() {
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
+		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, deposit).setVisible(true);
 			}
 		});
+
+		add(voidBtn);
 
 		panel.add(issuedBy);
 		panel.add(date);

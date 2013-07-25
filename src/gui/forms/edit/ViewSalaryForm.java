@@ -1,52 +1,43 @@
 package gui.forms.edit;
 
-import gui.forms.util.DefaultEntryLabel;
-import gui.forms.util.FormDropdown;
+import gui.forms.util.EditRowPanel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.UtilityPopup;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import common.entity.profile.Employee;
-import common.manager.Manager;
+import common.entity.salary.FeeDeduction;
+import common.entity.salary.SalaryRelease;
+import common.entity.sales.SalesDetail;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
-import util.MainFormField;
-import util.MainFormLabel;
 import util.SBButton;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
-import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ViewSalaryForm extends EditFormPanel{
+public class ViewSalaryForm extends EditFormPanel {
 	/**
 	 * 
 	 */
@@ -57,7 +48,6 @@ public class ViewSalaryForm extends EditFormPanel{
 	private Object[] array = {};
 
 	private ArrayList<RowPanel> feesRowPanel = new ArrayList<RowPanel>();
-	private ArrayList<RowPanel> caRowPanel = new ArrayList<RowPanel>();
 	private TableHeaderLabel feesLabel, amountLabel;
 	private ImageIcon icon;
 	private SoyButton save;
@@ -71,11 +61,16 @@ public class ViewSalaryForm extends EditFormPanel{
 	private ErrorLabel error;
 	private String msg = "";
 
-	public ViewSalaryForm() {
+	private SalaryRelease salaryRelease;
+
+	private SBButton voidBtn;
+
+	public ViewSalaryForm(SalaryRelease salaryRelease) {
 		super("View Salary Release Form");
+		this.salaryRelease = salaryRelease;
 		init();
 		addComponents();
-
+		fillEntries();
 	}
 
 	private void init() {
@@ -89,13 +84,13 @@ public class ViewSalaryForm extends EditFormPanel{
 		issuedFor = new ViewFormField("");
 
 		icon = new ImageIcon("images/util.png");
-		
+
 		status = new JLabel("", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
-		
+
 		remarks = new ViewFormLabel("", true);
 
-		date = new ViewFormField("15 Jul 2010 9:15 AM");
+		date = new ViewFormField("");
 
 		dateLabel = new ViewFormLabel("Date:");
 		issuedByLabel = new ViewFormLabel("Issued by:");
@@ -105,8 +100,8 @@ public class ViewSalaryForm extends EditFormPanel{
 
 		netPay = new ViewFormField("");
 		grossPay = new ViewFormField("");
-		
-		issuedBy  = new ViewFormField("");
+
+		issuedBy = new ViewFormField("");
 
 		feesLabel = new TableHeaderLabel("Fees");
 		amountLabel = new TableHeaderLabel("Amount");
@@ -141,24 +136,24 @@ public class ViewSalaryForm extends EditFormPanel{
 		amountLabel.setBounds(510, 25, 100, 25);
 		feesPane.setBounds(341, 50, 286, 140);
 
-//		fwd.setBounds(300, 130, 16, 16);
+		// fwd.setBounds(300, 130, 16, 16);
 
-		/*addRow.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				feesRowPanel.add(new RowPanel(feesPanel, Tables.SALARY));
-				feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
-				alternateRows(true);
-
-				feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
-				feesPanel.updateUI();
-				feesPanel.revalidate();
-
-				Rectangle rect = new Rectangle(0, (int) feesPanel.getPreferredSize().getHeight(), 10, 10);
-				feesPanel.scrollRectToVisible(rect);
-			}
-		});*/
+		/*
+		 * addRow.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) {
+		 * feesRowPanel.add(new RowPanel(feesPanel, Tables.SALARY));
+		 * feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
+		 * alternateRows(true);
+		 * 
+		 * feesPanel.setPreferredSize(new Dimension(237,
+		 * feesPanel.getComponentCount() * ROW_HEIGHT)); feesPanel.updateUI();
+		 * feesPanel.revalidate();
+		 * 
+		 * Rectangle rect = new Rectangle(0, (int)
+		 * feesPanel.getPreferredSize().getHeight(), 10, 10);
+		 * feesPanel.scrollRectToVisible(rect); } });
+		 */
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -206,23 +201,58 @@ public class ViewSalaryForm extends EditFormPanel{
 					feesRowPanel.get(i).getRow().setBackground(Values.row1);
 				else
 					feesRowPanel.get(i).getRow().setBackground(Values.row2);
-		} else
-			for (int i = 0; i < caRowPanel.size(); i++)
-				if (i % 2 == 0)
-					caRowPanel.get(i).getRow().setBackground(Values.row1);
-				else
-					caRowPanel.get(i).getRow().setBackground(Values.row2);
+		}
+	}
+
+	public void fillEntries() {
+
+		voidBtn.setVisible(salaryRelease.getInventorySheetData() != null ? false : salaryRelease.isValid());
+
+		String s = "";
+		if (salaryRelease.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (salaryRelease.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				remarks.setText(salaryRelease.getRemarks());
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(salaryRelease.getDate()));
+		issuedBy.setText(salaryRelease.getIssuedBy().getFirstPlusLastName());
+		issuedFor.setText(salaryRelease.getIssuedFor().getFirstPlusLastName());
+		grossPay.setText(String.format("%.2f", salaryRelease.getGrossAmount()));
+		netPay.setText(String.format("%.2f", salaryRelease.getNetAmount()));
+
+		Set<FeeDeduction> feeDeductions = salaryRelease.getFeeDeductions();
+		for (FeeDeduction fd : feeDeductions) {
+			// feesRowPanel.add(new RowPanel(fd, feesPanel, ""));
+			//
+			// rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
+			// productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+			// alternateRows();
+			//
+			// productsPanel.setPreferredSize(new Dimension(330,
+			// productsPanel.getComponentCount() * ROW_HEIGHT));
+			// productsPanel.updateUI();
+			// productsPanel.revalidate();
+		}
+
 	}
 
 	public void removeRow(int rowNum) {
 		feesPanel.remove(rowNum);
 		feesPanel.updateUI();
 		feesPanel.revalidate();
-
 		feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
-
 		updateList(rowNum);
-
 		alternateRows(true);
 	}
 
@@ -256,7 +286,22 @@ public class ViewSalaryForm extends EditFormPanel{
 			}
 		});
 
-//		panel.add(save);
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
+
+		voidBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, salaryRelease).setVisible(true);
+
+			}
+		});
+
+		add(voidBtn);
+
+		// panel.add(save);
 		add(error);
 
 	}

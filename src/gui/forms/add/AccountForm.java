@@ -61,7 +61,7 @@ public class AccountForm extends SimplePanel {
 	private void addComponents() {
 		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
 		fwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -107,12 +107,11 @@ public class AccountForm extends SimplePanel {
 
 				ctr++;
 			}
-			
+
 			if (i == 0) {
 				acctT.setBounds(x1, initY + y - 7, 100, 11);
 				acctType.setBounds(x1, initY + y + 5, 200, 20);
 			}
-
 
 			if (i == 1) {
 				fwd.setBounds(x1 + 56, initY + y - 11, 16, 16);
@@ -189,7 +188,7 @@ public class AccountForm extends SimplePanel {
 
 	public void refreshEmployee() {
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesWithoutAccounts().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts().toArray());
 			employeeCombo.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();

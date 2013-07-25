@@ -5,20 +5,12 @@ import common.entity.product.Product;
 public class InventorySheetDetail {
 
 	private InventorySheetDataDetail inventorySheetDataDetail;
-
 	private double deliveriesInSack;
-
 	private double deliveriesInKilo;
-
 	private double pulloutsInSack;
-
 	private double pulloutsInKilo;
-
-	// sales + account receivables
-	private double offTakeInSack;
-
-	// sales + account receivables
-	private double offTakeInKilo;
+	private double offTakeInSack; // sales + account receivables
+	private double offTakeInKilo; // sales + account receivables
 
 	public InventorySheetDetail(InventorySheetDataDetail inventorySheetDataDetail) {
 		super();

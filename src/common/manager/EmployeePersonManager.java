@@ -27,11 +27,19 @@ public interface EmployeePersonManager {
 
 	public Employee getEmployee(int id) throws Exception;
 
-	public List<Employee> getEmployees() throws Exception;
+	public List<Employee> getAllEmployees() throws Exception;
 
-	public List<Employee> getEmployeesExcludeManagers() throws Exception;
+	public List<Employee> getEmployedEmployees() throws Exception;
 
-	public List<Employee> getEmployeesWithoutAccounts() throws Exception;
+	public List<Employee> getTerminatedEmployees() throws Exception;
+
+	public List<Employee> getEmployedEmployeesWithAccounts() throws Exception;
+
+	public List<Employee> getEmployedEmployeesWithoutAccounts() throws Exception;
+
+	public List<Employee> getEmployedEmployees(Designation designation) throws Exception;
+
+	public List<Employee> getEmployedEmployeesExcept(Designation designation) throws Exception;
 
 	public void updateEmployee(Employee employee) throws Exception;
 

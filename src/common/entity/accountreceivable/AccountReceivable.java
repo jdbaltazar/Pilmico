@@ -171,7 +171,6 @@ public class AccountReceivable {
 			total += ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
 		}
 		return total;
-
 	}
 
 	// public void setAccountReceivableDetails(Set<AccountReceivableDetail>
@@ -206,8 +205,28 @@ public class AccountReceivable {
 
 	}
 
-	public Set<ARPayment> getArPayments() {
+	public Set<ARPayment> getAllArPayments() {
 		return arPayments;
+	}
+
+	public Set<ARPayment> getValidArPayments() {
+		Set<ARPayment> validArPayments = new HashSet<ARPayment>();
+		for (ARPayment arp : arPayments) {
+			if (arp.isValid()) {
+				validArPayments.add(arp);
+			}
+		}
+		return validArPayments;
+	}
+
+	Set<ARPayment> getInvalidArPayment() {
+		Set<ARPayment> inValidArPayments = new HashSet<ARPayment>();
+		for (ARPayment arp : inValidArPayments) {
+			if (!arp.isValid()) {
+				inValidArPayments.add(arp);
+			}
+		}
+		return inValidArPayments;
 	}
 
 	//

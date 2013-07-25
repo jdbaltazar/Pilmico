@@ -241,6 +241,14 @@ public class Product {
 		this.soldTodayInKilo = soldTodayInKilo;
 	}
 
+	public double getBeginningInventoryInSack() {
+		return quantityInSack + soldTodayInSack;
+	}
+
+	public double getBeginningInventoryInKilo() {
+		return quantityInKilo + soldTodayInKilo;
+	}
+
 	public Category getCategory() {
 		return category;
 	}

@@ -159,13 +159,33 @@ public class CashAdvance {
 		this.remarks = remarks;
 	}
 
-	public Set<CAPayment> getCaPayments() {
+	public Set<CAPayment> getAllCaPayments() {
 		return caPayments;
 	}
 
-	public void setCaPayments(Set<CAPayment> caPayments) {
-		this.caPayments = caPayments;
+	public Set<CAPayment> getValidCaPayments() {
+		Set<CAPayment> validCaPayments = new HashSet<CAPayment>();
+		for (CAPayment cap : caPayments) {
+			if (cap.isValid()) {
+				validCaPayments.add(cap);
+			}
+		}
+		return validCaPayments;
 	}
+
+	Set<CAPayment> getInvalidCaPayments() {
+		Set<CAPayment> inValidCaPayments = new HashSet<CAPayment>();
+		for (CAPayment cap : caPayments) {
+			if (!cap.isValid()) {
+				inValidCaPayments.add(cap);
+			}
+		}
+		return inValidCaPayments;
+	}
+
+	// public void setAllCaPayments(Set<CAPayment> caPayments) {
+	// this.caPayments = caPayments;
+	// }
 
 	public void addCAPayment(CAPayment caPayment) {
 		caPayment.setCashAdvance(this);

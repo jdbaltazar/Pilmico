@@ -1,41 +1,29 @@
 package gui.forms.add;
 
-import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import util.ErrorLabel;
-import util.JNumericField;
-import util.MainFormField;
-import util.MainFormLabel;
 import util.SBButton;
 import util.SimplePanel;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Tables;
 import util.Values;
@@ -43,7 +31,6 @@ import util.soy.SoyButton;
 
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
-import common.entity.profile.Employee;
 import common.manager.Manager;
 
 public class BankForm extends SimplePanel {
@@ -76,7 +63,6 @@ public class BankForm extends SimplePanel {
 		super("Add Bank Account");
 		init();
 		addComponents();
-
 		Values.bankForm = this;
 	}
 

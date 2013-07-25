@@ -76,9 +76,13 @@ public class EditProductPanel extends EditFormPanel {
 		this.product = product;
 		init();
 		addComponents();
-		fillValues();
+//<<<<<<< HEAD
+//		fillValues();
 		
+//=======
+		fillEntries();
 		Values.editProductPanel = this;
+//>>>>>>> refs/remotes/origin/master
 	}
 
 	private void init() {
@@ -220,7 +224,7 @@ public class EditProductPanel extends EditFormPanel {
 
 				try {
 					Manager.productManager.updateProduct(product);
-					
+
 					System.out.println("Edit successful!!");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -284,18 +288,18 @@ public class EditProductPanel extends EditFormPanel {
 		});
 	}
 
-	private void fillValues() {
+	private void fillEntries() {
 
 		fields.get(0).setText(product.getName());
 		fields.get(1).setText(product.getDescription());
-		fields.get(2).setText(product.getKilosPerSack() + "");
-		fields.get(3).setText(product.getQuantityInSack() + "");
-		fields.get(4).setText(product.getQuantityInKilo() + "");
-		fields.get(5).setText(product.getDisplayInSack() + "");
-		fields.get(6).setText(product.getDisplayInKilo() + "");
-		fields.get(7).setText(product.getCurrentPricePerSack() + "");
-		fields.get(8).setText(product.getCurrentPricePerKilo() + "");
-		fields.get(fields.size() - 1).setText(product.getAlertOnQuantity() + "");
+		fields.get(2).setText(String.format("%.2f", product.getKilosPerSack()));
+		fields.get(3).setText(String.format("%.2f", product.getQuantityInSack()));
+		fields.get(4).setText(String.format("%.2f", product.getQuantityInKilo()));
+		fields.get(5).setText(String.format("%.2f", product.getDisplayInSack()));
+		fields.get(6).setText(String.format("%.2f", product.getDisplayInKilo()));
+		fields.get(7).setText(String.format("%.2f", product.getCurrentPricePerSack()));
+		fields.get(8).setText(String.format("%.2f", product.getCurrentPricePerKilo()));
+		fields.get(fields.size() - 1).setText(String.format("%.2f", product.getAlertOnQuantity()));
 
 		cbox1.setSelected(product.isAvailable());
 		cbox2.setSelected(product.alertUsingSack());

@@ -12,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -35,6 +37,9 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.deposit.Bank;
+import common.entity.deposit.BankAccount;
+import common.entity.deposit.Deposit;
 import common.manager.Manager;
 
 public class DepositForm extends SimplePanel {
@@ -65,18 +70,48 @@ public class DepositForm extends SimplePanel {
 	public DepositForm() {
 		super("Add Deposit");
 		addComponents();
+		fillEntries();
+	}
+
+	public void fillEntries() {
+		date.setValue(new Date());
+
+		List<Bank> banks = new ArrayList<Bank>();
+		try {
+			banks = Manager.depositManager.getBanks();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		for (Bank b : banks) {
+			bankCombo.addItem(b);
+		}
+
+		if (banks.size() > 0) {
+			bankCombo.setSelectedIndex(0);
+			Bank b = (Bank) bankCombo.getItemAt(0);
+			Set<BankAccount> bankAccounts = b.getBankAccounts();
+			for (BankAccount ba : bankAccounts) {
+				bankAcctCombo.addItem(ba);
+			}
+		}
+
+		// portion to fill depositor entries (dropdown)
+//		depositor.setText(Manager.loggedInAccount.getFirstPlusLastName());
+
+		fields.get(0).setText("0");
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 
 	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -99,10 +134,13 @@ public class DepositForm extends SimplePanel {
 		depositorLabel = new DropdownLabel("Depositor*");
 		bankAcctLabel = new DropdownLabel("Bank Account*");
 		bankLabel = new DropdownLabel("Bank*");
-		
 
 		// issuedBy = new FormDropdown();
 		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
+//=======
+//		issuedBy = new DefaultEntryLabel("");
+//		depositor = new DefaultEntryLabel("");
+//>>>>>>> refs/remotes/origin/master
 
 		date = new JSpinner(new SpinnerDateModel());
 		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
@@ -120,7 +158,7 @@ public class DepositForm extends SimplePanel {
 				tf.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
-		
+
 		bankAcctCombo = new JComboBox();
 		bankAcctCombo.setEditable(true);
 		bankAcctCombo.setSelectedIndex(-1);
@@ -128,7 +166,7 @@ public class DepositForm extends SimplePanel {
 		bankAcctComboField.setText("");
 		bankAcctComboField.setOpaque(false);
 		bankAcctComboField.addKeyListener(new ComboKeyHandler(bankAcctCombo));
-		
+
 		bankCombo = new JComboBox();
 		bankCombo.setEditable(true);
 		bankCombo.setSelectedIndex(-1);
@@ -172,7 +210,7 @@ public class DepositForm extends SimplePanel {
 				bankLabel.setBounds(x1, initY + y - 7, 200, 11);
 				bankCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
-			
+
 			if (i == 2) {
 				fwd2.setBounds(x1 + 76, initY + y - 11, 16, 16);
 				bankAcctLabel.setBounds(x1, initY + y - 7, 200, 11);
@@ -181,21 +219,23 @@ public class DepositForm extends SimplePanel {
 			
 			if(i == 3){
 				fwd3.setBounds(x1 + 57, initY + y - 11, 16, 16);
+
 				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
 				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
 				
 				x1+= 250;
+
 				y = -63;
 			}
-			
-			if(i == 6){
+
+			if (i == 6) {
 				remarks = new FormField(Tables.depositFormLabel[i], 100, Color.white, Color.gray);
 				remarks.setBounds(x1, initY + y, 200, 25);
 			}
 		}
 
 		clear.setBounds(289, 258, 80, 30);
-		save.setBounds(180, 258, 80, 30); //48
+		save.setBounds(180, 258, 80, 30); // 48
 
 		error.setBounds(160, 290, 230, 25);
 
@@ -209,6 +249,18 @@ public class DepositForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				Deposit deposit = new Deposit(d, (BankAccount) bankAcctCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
+						Manager.loggedInAccount.getEmployee(), Manager.loggedInAccount, true);
+
+				try {
+					Manager.depositManager.addDeposit(deposit);
+
+					System.out.println("deposit saved!!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -222,9 +274,10 @@ public class DepositForm extends SimplePanel {
 		panel.add(fwd2);
 		panel.add(fwd3);
 		
+
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
-		
+
 		panel.add(bankCombo);
 		panel.add(bankLabel);
 		
@@ -233,17 +286,16 @@ public class DepositForm extends SimplePanel {
 		
 		panel.add(bankAcctCombo);
 		panel.add(bankAcctLabel);
-		
+
 		panel.add(remarks);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		scrollPane.setBounds(10, 38, 520, 310);
-		
-		
+
 		add(scrollPane);
 
 	}

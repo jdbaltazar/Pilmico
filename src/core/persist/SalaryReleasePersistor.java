@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.dailyexpenses.Expense;
+import common.entity.salary.Fee;
 import common.entity.salary.SalaryRelease;
 import common.manager.SalaryReleaseManager;
 
@@ -102,6 +104,56 @@ public class SalaryReleasePersistor extends Persistor implements SalaryReleaseMa
 	@Override
 	public void deleteSalaryRelease(SalaryRelease salaryRelease) throws Exception {
 		remove(salaryRelease);
+	}
+
+	@Override
+	public void addFees(Fee fee) throws Exception {
+		add(fee);
+	}
+
+	@Override
+	public Fee getFee(int id) throws Exception {
+		return (Fee) get(Fee.class, id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Fee searchFee(String name) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Fee.class);
+		List<Fee> fees = new ArrayList<Fee>();
+		Fee fee = null;
+		try {
+			fees = criteria.add(Restrictions.eq("name", name)).list();
+			if (fees.size() > 0) {
+				fee = fees.get(0);
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return fee;
+	}
+
+	@Override
+	public List<Fee> getFees() throws Exception {
+		return getAll(Fee.class);
+	}
+
+	@Override
+	public void updateFees(Fee fee) throws Exception {
+		update(fee);
+	}
+
+	@Override
+	public void deleteFee(Fee fee) throws Exception {
+		remove(fee);
+	}
+
+	@Override
+	public void deleteFee(int id) throws Exception {
+		remove(getFee(id));
 	}
 
 }

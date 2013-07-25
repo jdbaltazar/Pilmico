@@ -411,12 +411,14 @@ public class CenterPanel extends SoyPanel {
 	private void fillSalary() {
 		try {
 
-			String[] headers = { "ID", "IS No", "Date", "Employee", "Amount", "Cashier", "Valid?", "Remarks" };
+			String[] headers = { "ID", "IS No", "Date", "Employee", "Net Pay", "Cashier", "Valid?", "Remarks" };
 			// String[][] entries = { { "1", "June 20, 2011", "Juan dela Cruz",
 			// "John David S. Baltazar", "16000" },
 			// { "2", "December 18, 2010", "Maria Clara", "Juan dela Cruz", "12000"
 			// } };
 			// String[][] entries = new String[1][headers.length];
+
+			// include in one of the columns: grosspay, deductions, net pay
 
 			List<SalaryRelease> salaryReleases = Manager.salaryReleaseManager.getAllSalaryReleases();
 			String[][] entries = new String[salaryReleases.size()][headers.length];
@@ -427,10 +429,10 @@ public class CenterPanel extends SoyPanel {
 				entries[i][1] = sr.getInventorySheetData() == null ? "-" : sr.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sr.getDate());
 				entries[i][3] = sr.getIssuedFor().getFirstPlusLastName();
-				entries[i][4] = String.format("%.2f", sr.getAmount());
+				entries[i][4] = String.format("%.2f", sr.getNetAmount());
 				entries[i][5] = sr.getIssuedBy().getFirstPlusLastName();
-				entries[i][7] = sr.isValid() ? "Yes" : "No";
-				entries[i][8] = sr.getRemarks();
+				entries[i][6] = sr.isValid() ? "Yes" : "No";
+				entries[i][7] = sr.getRemarks();
 				i++;
 			}
 
@@ -607,7 +609,7 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Designation", "Name", "Contact No", "Salary", "Status" };
 
-			List<Employee> employees = Manager.employeePersonManager.getEmployees();
+			List<Employee> employees = Manager.employeePersonManager.getAllEmployees();
 			String[][] entries = new String[employees.size()][headers.length];
 			// String[][] entries = { { "1", "John David Baltazar", "Janitor",
 			// "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk",
