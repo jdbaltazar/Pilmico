@@ -28,19 +28,114 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 		return (Employee) get(Employee.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Employee> getEmployees() throws Exception {
-		return getAll(Employee.class);
+	public List<Employee> getAllEmployees() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Employee> getEmployeesWithoutAccounts() throws Exception {
-		List<Employee> all = getAll(Employee.class);
+	public List<Employee> getEmployedEmployees() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
 		List<Employee> employees = new ArrayList<Employee>();
-		for (Employee e : all) {
-			if (e.getAccount() == null) {
-				employees.add(e);
-			}
+		try {
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Employee> getTerminatedEmployees() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.add(Restrictions.ne("status.id", new Integer("2"))).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Employee> getEmployedEmployeesWithAccounts() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.isNotNull("account")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Employee> getEmployedEmployeesWithoutAccounts() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.isNull("account")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Employee> getEmployedEmployees(Designation designation) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.eq("designation.id", new Integer(2))).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Employee> getEmployedEmployeesExcept(Designation designation) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.ne("designation.id", new Integer(2))).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return employees;
 	}
@@ -59,6 +154,8 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	public void deleteEmployee(int id) throws Exception {
 		remove(getEmployee(id));
 	}
+
+	// persons and customers
 
 	@Override
 	public void addPerson(Person person) throws Exception {
@@ -129,18 +226,6 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	@Override
 	public void deleteEmploymentStatus(EmploymentStatus empStatus) throws Exception {
 		remove(empStatus);
-	}
-
-	@Override
-	public List<Employee> getEmployeesExcludeManagers() throws Exception {
-		List<Employee> all = getAll(Employee.class);
-		List<Employee> employees = new ArrayList<Employee>();
-		for (Employee e : all) {
-			if (e.getDesignation().getName().equalsIgnoreCase(Designation.CASHIER) || e.getDesignation().getName().equalsIgnoreCase(Designation.BOY)) {
-				employees.add(e);
-			}
-		}
-		return employees;
 	}
 
 	@Override

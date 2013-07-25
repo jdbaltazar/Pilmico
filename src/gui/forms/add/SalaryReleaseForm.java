@@ -33,6 +33,7 @@ import javax.swing.SpinnerDateModel;
 import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.Expense;
 import common.entity.product.Product;
+import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.salary.Fee;
 import common.entity.salary.FeeDeduction;
@@ -353,7 +354,7 @@ public class SalaryReleaseForm extends SimplePanel {
 	public void refreshEmployee() {
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExcept(new Designation(Designation.MANAGER)).toArray());
 			issuedFor.setModel(model);
 			if (issuedFor.getItemCount() > 0) {
 				issuedFor.setSelectedIndex(0);

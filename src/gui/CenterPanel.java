@@ -609,7 +609,7 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Designation", "Name", "Contact No", "Salary", "Status" };
 
-			List<Employee> employees = Manager.employeePersonManager.getEmployees();
+			List<Employee> employees = Manager.employeePersonManager.getAllEmployees();
 			String[][] entries = new String[employees.size()][headers.length];
 			// String[][] entries = { { "1", "John David Baltazar", "Janitor",
 			// "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk",

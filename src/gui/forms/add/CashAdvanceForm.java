@@ -28,6 +28,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
 import common.entity.cashadvance.CashAdvance;
+import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.manager.Manager;
 
@@ -113,8 +114,8 @@ public class CashAdvanceForm extends SimplePanel {
 			}
 		}
 
-			issuedFor = new FormDropdown();
-			refreshEmployee();
+		issuedFor = new FormDropdown();
+		refreshEmployee();
 		/*
 		 * model = new DefaultComboBoxModel(); employeeCombo = new
 		 * JComboBox(model);
@@ -179,7 +180,7 @@ public class CashAdvanceForm extends SimplePanel {
 					Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
 					Values.centerPanel.changeTable(Values.CASH_ADVANCE);
 					new SuccessPopup("Add").setVisible(true);
-					
+
 					clearFields();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -221,10 +222,9 @@ public class CashAdvanceForm extends SimplePanel {
 	}
 
 	public void refreshEmployee() {
-		
+
 		try {
-			 model = new
-			 DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExcept(new Designation(Designation.MANAGER)).toArray());
 			issuedFor.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

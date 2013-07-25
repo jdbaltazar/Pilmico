@@ -49,7 +49,6 @@ public class InventorySheet implements InventorySheetManager {
 			if (pi.getProduct().getId() > maxId)
 				maxId = pi.getProduct().getId();
 		}
-		System.out.println("size: " + inventorySheetDetails.size());
 	}
 
 	public void build() {

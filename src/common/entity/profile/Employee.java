@@ -149,16 +149,24 @@ public class Employee {
 		this.designation = designation;
 	}
 
+	// public EmploymentStatus getStatus() {
+	// return status;
+	// }
+	//
+	// public void setStatus(EmploymentStatus status) {
+	// this.status = status;
+	// }
+
+	public Date getStartingDate() {
+		return startingDate;
+	}
+
 	public EmploymentStatus getStatus() {
 		return status;
 	}
 
 	public void setStatus(EmploymentStatus status) {
 		this.status = status;
-	}
-
-	public Date getStartingDate() {
-		return startingDate;
 	}
 
 	public void setStartingDate(Date startingDate) {

@@ -930,8 +930,8 @@ public class InventorySheetForm extends SimplePanel {
 
 		InventorySheetData inventorySheetData = new InventorySheetData();
 		for (Product p : products) {
-			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, 0d, 0d, p.getDisplayInSack(), p
-					.getDisplayInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
+			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, p.getBeginningInventoryInSack(), p
+					.getBeginningInventoryInKilo(), p.getDisplayInSack(), p.getDisplayInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
 		}
 
 		inventorySheet = new InventorySheet(inventorySheetData);

@@ -9,13 +9,16 @@ import javax.persistence.Id;
 @Entity(name = "EmploymentStatus")
 public class EmploymentStatus {
 
+	public static final String EMPLOYED = "Employed";
+	public static final String TERMINATED = "Terminated";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private int id;
 
-	@Column
-	private String status;
+	@Column(name = "status")
+	public String status;
 
 	public EmploymentStatus() {
 		super();
