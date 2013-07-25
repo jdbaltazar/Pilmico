@@ -2,6 +2,7 @@ package common.manager;
 
 import java.util.List;
 
+import common.entity.profile.Designation;
 import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
@@ -53,5 +54,19 @@ public interface EmployeePersonManager {
 	public void deletePerson(Person person) throws Exception;
 
 	public void deletePerson(int id) throws Exception;
+
+	// designations
+
+	public void addDesignation(Designation designation) throws Exception;
+
+	public Designation getDesignation(int id) throws Exception;
+
+	public List<Designation> getAllDesignations() throws Exception;
+
+	public List<Designation> getDesignations() throws Exception;
+
+	public void updateDesignation(Designation designation) throws Exception;
+
+	public void deleteDesignation(Designation designation) throws Exception;
 
 }

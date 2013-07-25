@@ -23,7 +23,7 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class EditCustomerForm extends EditFormPanel{
+public class EditCustomerForm extends EditFormPanel {
 
 	/**
 	 * 
@@ -43,11 +43,22 @@ public class EditCustomerForm extends EditFormPanel{
 
 	private final int num = Tables.profileFormLabel.length;
 
-	public EditCustomerForm() {
-		super("View / Edit Customer");
-		addComponents();
+	private Person customer;
 
+	public EditCustomerForm(Person customer) {
+		super("View / Edit Customer");
+		this.customer = customer;
+		addComponents();
+		fillEntries();
 		// Values.accountForm = this;
+	}
+
+	private void fillEntries() {
+		fields.get(0).setText(customer.getLastName());
+		fields.get(1).setText(customer.getFirstName());
+		fields.get(2).setText(customer.getMiddleName());
+		fields.get(3).setText(customer.getAddress());
+		fields.get(4).setText(customer.getContactNo());
 	}
 
 	private void addComponents() {
@@ -58,15 +69,14 @@ public class EditCustomerForm extends EditFormPanel{
 
 		for (int i = 0, y = 0, x1 = 290; i < num; i++, y += 65) {
 
-				fields.add(new EditFormField(100));
-				labels.add(new FormLabel(Tables.profileFormLabel[i]));
-				
-				fields.get(i).setBounds(x1, 40 + y, 200, 25);
-				labels.get(i).setBounds(x1, 25 + y, 200, 15);
-				
-				
-				add(fields.get(i));
-				add(labels.get(i));
+			fields.add(new EditFormField(100));
+			labels.add(new FormLabel(Tables.profileFormLabel[i]));
+
+			fields.get(i).setBounds(x1, 40 + y, 200, 25);
+			labels.get(i).setBounds(x1, 25 + y, 200, 15);
+
+			add(fields.get(i));
+			add(labels.get(i));
 		}
 
 		edit.setBounds(360, 355, 80, 30);
@@ -76,11 +86,15 @@ public class EditCustomerForm extends EditFormPanel{
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields.get(4)
-						.getText(), true);
+				customer.setLastName(fields.get(0).getText());
+				customer.setFirstName(fields.get(1).getText());
+				customer.setMiddleName(fields.get(2).getText());
+				customer.setAddress(fields.get(3).getText());
+				customer.setContactNo(fields.get(4).getText());
+
 				try {
-					Manager.employeePersonManager.addPerson(p);
-					System.out.println("person added!");
+					Manager.employeePersonManager.updatePerson(customer);
+					System.out.println("customer updated!");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

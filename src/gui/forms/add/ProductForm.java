@@ -212,7 +212,8 @@ public class ProductForm extends SimplePanel {
 				double alertOnQuantity = Double.parseDouble(numfields.get(7).getText());
 
 				Product p = new Product(name, description, new Date(), pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(), quantityInSack,
-						quantityInKilo, displayInSack, displayInKilo, (Category) category.getSelectedItem(), true, cbox2.isSelected(), alertOnQuantity);
+						quantityInKilo, displayInSack, displayInKilo, 0d, 0d, (Category) category.getSelectedItem(), true, cbox2.isSelected(),
+						alertOnQuantity);
 
 				try {
 					Manager.productManager.addProduct(p);

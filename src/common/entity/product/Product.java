@@ -50,6 +50,12 @@ public class Product {
 	@Column(name = "display_in_kilo")
 	private double displayInKilo;
 
+	@Column(name = "sold_today_in_sack")
+	private double soldTodayInSack;
+
+	@Column(name = "sold_today_in_kilo")
+	private double soldTodayInKilo;
+
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category")
 	private Category category;
@@ -67,8 +73,9 @@ public class Product {
 		super();
 	}
 
-	public Product(String name, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available, double quantityInSack, double quantityInKilo,
-			double displayInSack, double displayInKilo, Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
+	public Product(String name, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available,
+			double quantityInSack, double quantityInKilo, double displayInSack, double displayInKilo, double soldTodayInSack, double soldTodayInKilo,
+			Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
 		super();
 		this.name = name;
 		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
@@ -78,14 +85,17 @@ public class Product {
 		this.quantityInKilo = quantityInKilo;
 		this.displayInSack = displayInSack;
 		this.displayInKilo = displayInKilo;
+		this.soldTodayInSack = soldTodayInSack;
+		this.soldTodayInKilo = soldTodayInKilo;
 		this.category = category;
 		this.allowAllert = allowAllert;
 		this.alertUsingSack = alertUsingSack;
 		this.alertOnQuantity = alertOnQuantity;
 	}
 
-	public Product(String name, String description, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available, double quantityInSack, double quantityInKilo,
-			double displayInSack, double displayInKilo, Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
+	public Product(String name, String description, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack,
+			boolean available, double quantityInSack, double quantityInKilo, double displayInSack, double displayInKilo, double soldTodayInSack,
+			double soldTodayInKilo, Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -96,6 +106,8 @@ public class Product {
 		this.quantityInKilo = quantityInKilo;
 		this.displayInSack = displayInSack;
 		this.displayInKilo = displayInKilo;
+		this.soldTodayInSack = soldTodayInSack;
+		this.soldTodayInKilo = soldTodayInKilo;
 		this.category = category;
 		this.allowAllert = allowAllert;
 		this.alertUsingSack = alertUsingSack;
@@ -211,6 +223,22 @@ public class Product {
 
 	public void setDisplayInKilo(double displayInKilo) {
 		this.displayInKilo = displayInKilo;
+	}
+
+	public double getSoldTodayInSack() {
+		return soldTodayInSack;
+	}
+
+	public void setSoldTodayInSack(double soldTodayInSack) {
+		this.soldTodayInSack = soldTodayInSack;
+	}
+
+	public double getSoldTodayInKilo() {
+		return soldTodayInKilo;
+	}
+
+	public void setSoldTodayInKilo(double soldTodayInKilo) {
+		this.soldTodayInKilo = soldTodayInKilo;
 	}
 
 	public Category getCategory() {

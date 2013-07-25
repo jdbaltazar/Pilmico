@@ -27,6 +27,8 @@ public interface AccountManager {
 
 	public Account getAccount(int id) throws Exception;
 
+	public List<Account> getActiveAccounts() throws Exception;
+	
 	public List<Account> getAccounts() throws Exception;
 
 	public void updateAccount(Account acc) throws Exception;

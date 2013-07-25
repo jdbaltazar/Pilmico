@@ -44,8 +44,12 @@ public class EditAccountPanel extends EditFormPanel {
 	public EditAccountPanel() {
 		super("View / Edit Account");
 		init();
-
 		addComponents();
+		fillEntries();
+	}
+
+	private void fillEntries() {
+		
 	}
 
 	private void init() {

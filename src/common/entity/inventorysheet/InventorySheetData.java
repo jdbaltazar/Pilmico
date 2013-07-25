@@ -201,12 +201,48 @@ public class InventorySheetData {
 		this.deliveries = deliveries;
 	}
 
+	public void addDelivery(Delivery delivery) {
+		delivery.setInventorySheetData(this);
+		deliveries.add(delivery);
+	}
+
+	public void removeDelivery(Delivery delivery) {
+		removeSales(delivery.getId());
+	}
+
+	public void removeDelivery(int deliveryId) {
+		for (Delivery d : deliveries) {
+			if (d.getId() == deliveryId) {
+				deliveries.remove(d);
+				break;
+			}
+		}
+	}
+
 	public Set<PullOut> getPullouts() {
 		return pullouts;
 	}
 
 	public void setPullouts(Set<PullOut> pullouts) {
 		this.pullouts = pullouts;
+	}
+
+	public void addPullOut(PullOut pullOut) {
+		pullOut.setInventorySheetData(this);
+		pullouts.add(pullOut);
+	}
+
+	public void removePullOut(PullOut pullOut) {
+		removeSales(pullOut.getId());
+	}
+
+	public void removePullOut(int pullOutId) {
+		for (PullOut p : pullouts) {
+			if (p.getId() == pullOutId) {
+				pullouts.remove(p);
+				break;
+			}
+		}
 	}
 
 	public Set<Sales> getSales() {
@@ -217,12 +253,48 @@ public class InventorySheetData {
 		this.sales = sales;
 	}
 
+	public void addSales(Sales s) {
+		s.setInventorySheetData(this);
+		sales.add(s);
+	}
+
+	public void removeSales(Sales s) {
+		removeSales(s.getId());
+	}
+
+	public void removeSales(int salesId) {
+		for (Sales s : sales) {
+			if (s.getId() == salesId) {
+				sales.remove(s);
+				break;
+			}
+		}
+	}
+
 	public Set<AccountReceivable> getAccountReceivables() {
 		return accountReceivables;
 	}
 
 	public void setAccountReceivables(Set<AccountReceivable> accountReceivables) {
 		this.accountReceivables = accountReceivables;
+	}
+
+	public void addAccountReceivable(AccountReceivable accountReceivable) {
+		accountReceivable.setInventorySheetData(this);
+		accountReceivables.add(accountReceivable);
+	}
+
+	public void removeAccountReceivable(AccountReceivable accountReceivable) {
+		removeSales(accountReceivable.getId());
+	}
+
+	public void removeAccountReceivable(int accountReceivableId) {
+		for (AccountReceivable ar : accountReceivables) {
+			if (ar.getId() == accountReceivableId) {
+				accountReceivables.remove(ar);
+				break;
+			}
+		}
 	}
 
 	public Breakdown getBreakdown() {

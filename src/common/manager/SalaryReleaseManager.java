@@ -21,4 +21,8 @@ public interface SalaryReleaseManager {
 	public void updateSalaryRelease(SalaryRelease salaryRelease) throws Exception;
 
 	public void deleteSalaryRelease(SalaryRelease salaryRelease) throws Exception;
+
+
+	
+	// add portion for fees. include search
 }
