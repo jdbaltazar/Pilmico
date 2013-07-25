@@ -36,9 +36,8 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JButton log;
-	private JButton logout;
 	private JLabel welcome, acct;
-	private SBButton info, addNote;
+	private SBButton info, addNote, logout;
 	private JLabel newLabel, notesLabel, copyright, dateTime;
 
 	public FooterPanel() {

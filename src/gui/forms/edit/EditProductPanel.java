@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import common.entity.product.Category;
@@ -22,6 +25,7 @@ import common.manager.Manager;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.FormCheckbox;
+import util.SBButton;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
@@ -35,6 +39,10 @@ public class EditProductPanel extends EditFormPanel {
 	private ArrayList<EditFormField> fields = new ArrayList<EditFormField>();
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 	private SoyButton edit;
+	
+	private JPanel panel;
+	private JScrollPane scrollpane;
+	private SBButton priceHistory;
 
 	private int num = Tables.productFormLabel.length;
 
@@ -73,6 +81,16 @@ public class EditProductPanel extends EditFormPanel {
 		cbox1 = new FormCheckbox("Available?*", true);
 		cbox2 = new FormCheckbox("Alert using sack?*", true);
 
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setOpaque(false);
+		
+		scrollpane = new JScrollPane(panel);
+		scrollpane.setOpaque(false);
+		scrollpane.getViewport().setOpaque(false);
+		scrollpane.setBorder(BorderFactory.createEmptyBorder());
+		
+		priceHistory = new SBButton("pricehistory.png", "pricehistory2.png", "Price History");
 		/*
 		 * try { List<Unit> units = Manager.itemManager.getUnits(); List<Category>
 		 * categories = Manager.itemManager.getCategories(); List<ItemCondition>
@@ -148,7 +166,7 @@ public class EditProductPanel extends EditFormPanel {
 		for (int i = 0; i < labels.size(); i++) {
 			add(labels.get(i));
 		}
-
+		
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -195,8 +213,14 @@ public class EditProductPanel extends EditFormPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		priceHistory.setBounds(20, 12, 16, 16);
+		
+		panel.add(priceHistory);
+		scrollpane.setBounds(750, 365, 50, 35);
 
 		add(edit);
+		add(scrollpane);
 
 		add(cbox1);
 		add(cbox2);

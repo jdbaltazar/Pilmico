@@ -33,7 +33,7 @@ public class TableUtilPanel extends SoyPanel {
 
 	private static final long serialVersionUID = 9077704680088367571L;
 	private JPanel searchPanel;
-	private SBButton addbtn, exportbtn, graphBtn;
+	private SBButton addbtn, exportbtn, graphBtn, onDisplayBtn;
 	private JLabel search;
 	public static FormField searchField;
 	private ImageIcon icon;
@@ -129,6 +129,9 @@ public class TableUtilPanel extends SoyPanel {
 			}
 		});
 		
+		onDisplayBtn = new SBButton("on_display.png", "on_display2.png", "Show On-Display Products");
+		onDisplayBtn.setBounds(130, 10, 20, 20);
+		
 		search = new JLabel(icon);
 
 		search.setBounds(565, 12, 24, 24);
@@ -139,6 +142,9 @@ public class TableUtilPanel extends SoyPanel {
 
 		if(label.equals(Tables.SALES))
 			searchPanel.add(graphBtn);
+		
+		if(label.equals(Tables.PRODUCTS))
+			searchPanel.add(onDisplayBtn);
 		
 		if (!label.equals(Tables.LOGS)) {// && !label.equals("ACCOUNTS")) {
 			tableLabel.setBounds(40, 11, 200, 20);

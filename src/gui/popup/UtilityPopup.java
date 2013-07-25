@@ -10,6 +10,9 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import gui.forms.util.FormField;
 
@@ -33,7 +36,7 @@ public class UtilityPopup extends JDialog {
 	private Point p;
 	private int utility;
 	private JPanel panel;
-	private SBButton close;
+	private SBButton close, backup, recover;
 	private ErrorLabel error;
 	private Object object;
 
@@ -58,6 +61,8 @@ public class UtilityPopup extends JDialog {
 
 		if (utility == Values.CATEGORY)
 			setSize(WIDTH, HEIGHT);
+		else if (utility == Values.DATABASE)
+			setSize(90, 50);
 		else
 			setSize(300, HEIGHT);
 	}
@@ -86,20 +91,45 @@ public class UtilityPopup extends JDialog {
 
 		field = new FormField(label, 100, Color.white, Color.gray);
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
+		backup = new SBButton("backup.png", "backup2.png", "Backup Database");
+		recover = new SBButton("recover.png", "recover2.png", "Database Recovery");
+		
 		error = new ErrorLabel();
 
 		if (utility == Values.CATEGORY) {
 			field.setBounds(5, 20, 140, 20);
 			close.setBounds(132, 2, 16, 16);
-		} else {
+		} 
+		else if(utility == Values.DATABASE){
+			backup.setBounds(15, 19, 20, 20);
+			recover.setBounds(55, 19, 20, 20);
+			close.setBounds(72, 2, 16, 16);
+			
+			panel.add(backup);
+			panel.add(recover);
+		}
+		else {
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
 		}
 
 		error.setBounds(7, 3, 120, 15);
 
-		panel.add(field);
+		if(utility != Values.DATABASE)
+			panel.add(field);
+		
 		panel.add(error);
+		
+		field.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent k) {
+				// TODO Auto-generated method stub
+				if(k.getKeyCode() ==KeyEvent.VK_ESCAPE){
+					Values.mainFrame.dimScreen(false);
+					dispose();
+				}
+			}
+		});
 
 		field.addActionListener(new ActionListener() {
 
@@ -177,6 +207,17 @@ public class UtilityPopup extends JDialog {
 				// TODO Auto-generated method stub
 				Values.mainFrame.dimScreen(false);
 				dispose();
+			}
+		});
+		
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent k) {
+				// TODO Auto-generated method stub
+				if(k.getKeyCode() ==KeyEvent.VK_ESCAPE){
+					Values.mainFrame.dimScreen(false);
+					dispose();
+				}
 			}
 		});
 

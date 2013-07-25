@@ -5,7 +5,9 @@ import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewportDragScrollListener;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.AdjustmentEvent;
@@ -53,24 +55,35 @@ public class InventorySheetForm extends SimplePanel {
 
 	// 780x430
 	private int startX = 15, startY = 17, PANE_WIDTH = 750, PANE_HEIGHT = 380, TOTAL_LABEL_WIDTH = 100, TABLE_GAP = 50, TAB = 150, SECTION_GAP = 120,
-			LABEL_GAP = 30, TOTAL_FORMS_OVERALL = 12, SCROLLBAR_WIDTH = 16, ROW_HEIGHT = 30;
+			LABEL_GAP = 30, TOTAL_FORMS_OVERALL = 12;
+	private int ROW_HEIGHT = 35;
 	/*
 	 * private int startX = 15, startY = 17, PANE_WIDTH = 750, PANE_HEIGHT = 380,
 	 * TOTAL_LABEL_WIDTH = 100, TABLE_GAP = 50, TAB = 150, SECTION_GAP = 120,
 	 * LABEL_GAP = 30, TOTAL_INVENTORY_LABEL = 16, TOTAL_FORMS_OVERALL = 12,
 	 * SCROLLBAR_WIDTH = 16;
 	 */
-	public static int PRODUCT_LABEL_WIDTH = 160, SACK_LABEL_WIDTH = 70, SALES_KG_WIDTH = 90, TOTAL_INVENTORY_LABEL = 16, PRODUCT_ROW_WIDTH = 1360,
+	public static int SCROLLBAR_WIDTH = 16, PRODUCT_LABEL_WIDTH = 160, SACK_LABEL_WIDTH = 70, SALES_KG_WIDTH = 90, TOTAL_INVENTORY_LABEL = 16, PRODUCT_ROW_WIDTH = 1360,
 			DATE_LABEL_WIDTH = 150, ISSUED_BY_LABEL_WIDTH = 200, GROSS_LABEL_WIDTH = 100, TRANSACTIONS_ROW_WIDTH = 450;
 	private JPanel navigationPanel;
 
-	private ViewportDragScrollListener v1, v2;
+	private ViewportDragScrollListener v1;
 	private JViewport view;
 
 	private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
 	private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
 	private ArrayList<ISRowPanel> productsInventory = new ArrayList<ISRowPanel>();
 	private ArrayList<ISRowPanel> salesInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> deliveryInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> arInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> arPaymentInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> caPaymentInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> pullOutInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> expensesInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> caInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> discountInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> salaryInventory = new ArrayList<ISRowPanel>();
+	private ArrayList<ISRowPanel> depositInventory = new ArrayList<ISRowPanel>();
 
 	private ArrayList<JLabel> sectionLabel = new ArrayList<JLabel>();
 	private ArrayList<JLabel> totalInventoryLabel = new ArrayList<JLabel>();
@@ -79,10 +92,10 @@ public class InventorySheetForm extends SimplePanel {
 
 	private JPanel isPanel, productsPanel, salesPanel, delPanel, arPanel, arPaymentPanel, caPaymentPanel, pulloutPanel, expensesPanel, CAPanel,
 			discountPanel, ar2Panel, salaryPanel, depositPanel, cashBreakdownPanel;
-	private JScrollPane isPane, salesPane, delPane, arPane, arPaymentPane, caPaymentPane, pulloutPane, expensesPane, CAPane, discountPane, ar2Pane,
-			salaryPane, depositPane;
+	private PDControlScrollPane productsPane, salesPane, delPane , arPane, arPaymentPane, caPaymentPane, pulloutPane, expensesPane, CAPane, discountPane, ar2Pane,
+	salaryPane, depositPane;
 
-	private PDControlScrollPane productsPane;
+	private JScrollPane isPane;
 	private JLabel actualCashCount;
 
 	private MainFormLabel dateLabel;
@@ -194,7 +207,7 @@ public class InventorySheetForm extends SimplePanel {
 
 		productsPane.getVerticalScrollBar().setUnitIncrement(20);
 
-		productsPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+		/*productsPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent ae) {
 				int extent = productsPane.getVerticalScrollBar().getModel().getExtent();
@@ -206,32 +219,11 @@ public class InventorySheetForm extends SimplePanel {
 				else
 					isPane.setWheelScrollingEnabled(false);
 
-				// System.out.println("Value: " +
-				// (productsPane.getVerticalScrollBar().getValue()+extent)
-				// + " Max: " +
-				// productsPane.getVerticalScrollBar().getMaximum());
 			}
-		});
+		});*/
 
-		/*
-		 * productsPane.addMouseWheelListener(new MouseWheelListener() {
-		 * 
-		 * @Override public void mouseWheelMoved(MouseWheelEvent e) {
-		 * productsPane.getParent().dispatchEvent(e); } });
-		 */
 
-		v2 = new ViewportDragScrollListener(isPanel);
-
-		// productsPane.setOpaque(false);
-		// productsPane.getViewport().setOpaque(false);
-		// productsPane.setBorder(BorderFactory.createEmptyBorder());
-		/*
-		 * view2 = productsPane.getViewport(); view2.addMouseMotionListener(v2);
-		 * view2.addMouseListener(v2); view2.addHierarchyListener(v2);
-		 *//*
-			 * view2 = productsPane.getViewport(); view2.addMouseListener(v1);
-			 * view2.addHierarchyListener(v1);
-			 */
+//		v2 = new ViewportDragScrollListener(isPanel);
 
 		productTotalLabel = new TableHeaderLabel("TOTAL");
 
@@ -246,9 +238,6 @@ public class InventorySheetForm extends SimplePanel {
 
 		salesPane = new PDControlScrollPane();
 		salesPane.setViewportView(salesPanel);
-		salesPane.setOpaque(false);
-		salesPane.getViewport().setOpaque(false);
-		salesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		overallSalesLabel = new SubTableHeaderLabel("OVERALL");
 
@@ -259,8 +248,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallDelLabel = new SubTableHeaderLabel("OVERALL");
 
 		delPanel = new JPanel();
+		delPanel.setOpaque(false);
+		delPanel.setLayout(null);
 
-		delPane = new JScrollPane(delPanel);
+		delPane = new PDControlScrollPane();
+		delPane.setViewportView(delPanel);
 
 		arFormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", Color.green.darker());
 		dateARlabel = new TableHeaderLabel("Date");
@@ -269,17 +261,24 @@ public class InventorySheetForm extends SimplePanel {
 		overallARLabel = new SubTableHeaderLabel("OVERALL");
 
 		arPanel = new JPanel();
+		arPanel.setOpaque(false);
+		arPanel.setLayout(null);
 
-		arPane = new JScrollPane(arPanel);
+		arPane = new PDControlScrollPane();
+		arPane.setViewportView(arPanel);
 
 		arPaymentFormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES PAYMENTS", Color.green.darker());
 		dateARPaymentlabel = new TableHeaderLabel("Date");
 		arPaymentIssuedByLabel = new TableHeaderLabel("Issued by");
 		grossARPaymentLabel = new TableHeaderLabel("Amount");
 		overallARPaymentLabel = new SubTableHeaderLabel("OVERALL");
+		
 		arPaymentPanel = new JPanel();
+		arPaymentPanel.setOpaque(false);
+		arPaymentPanel.setLayout(null);
 
-		arPaymentPane = new JScrollPane(arPaymentPanel);
+		arPaymentPane = new PDControlScrollPane();
+		arPaymentPane.setViewportView(arPaymentPanel);
 
 		caPaymentFormLabel = new SubTableHeaderLabel("CASH ADVANCE PAYMENTS", Color.green.darker());
 		dateCAPaymentlabel = new TableHeaderLabel("Date");
@@ -288,9 +287,12 @@ public class InventorySheetForm extends SimplePanel {
 		overallCAPaymentLabel = new SubTableHeaderLabel("OVERALL");
 
 		caPaymentPanel = new JPanel();
+		caPaymentPanel.setOpaque(false);
+		caPaymentPanel.setLayout(null);
 
-		caPaymentPane = new JScrollPane(caPaymentPanel);
-
+		caPaymentPane = new PDControlScrollPane();
+		caPaymentPane.setViewportView(caPaymentPanel);
+		
 		pullOutFormLabel = new SubTableHeaderLabel("PRODUCT PULLOUTS", Color.red.brighter());
 		datePulloutlabel = new TableHeaderLabel("Date");
 		pulloutIssuedByLabel = new TableHeaderLabel("Issued by");
@@ -298,8 +300,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallPulloutLabel = new SubTableHeaderLabel("OVERALL");
 
 		pulloutPanel = new JPanel();
+		pulloutPanel.setOpaque(false);
+		pulloutPanel.setLayout(null);
 
-		pulloutPane = new JScrollPane(pulloutPanel);
+		pulloutPane = new PDControlScrollPane();
+		pulloutPane.setViewportView(pulloutPanel);
 
 		expensesFormLabel = new SubTableHeaderLabel("EXPENSES", Color.red.brighter());
 		dateExpenseslabel = new TableHeaderLabel("Date");
@@ -308,8 +313,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallExpensesLabel = new SubTableHeaderLabel("OVERALL");
 
 		expensesPanel = new JPanel();
+		expensesPanel.setOpaque(false);
+		expensesPanel.setLayout(null);
 
-		expensesPane = new JScrollPane(expensesPanel);
+		expensesPane = new PDControlScrollPane();
+		expensesPane.setViewportView(expensesPanel);
 
 		caFormLabel = new SubTableHeaderLabel("CASH ADVANCES", Color.red.brighter());
 		dateCAlabel = new TableHeaderLabel("Date");
@@ -318,8 +326,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallCALabel = new SubTableHeaderLabel("OVERALL");
 
 		CAPanel = new JPanel();
+		CAPanel.setOpaque(false);
+		CAPanel.setLayout(null);
 
-		CAPane = new JScrollPane(CAPanel);
+		CAPane = new PDControlScrollPane();
+		CAPane.setViewportView(CAPanel);
 
 		discountFormLabel = new SubTableHeaderLabel("DISCOUNTS", Color.red.brighter());
 		dateDiscountlabel = new TableHeaderLabel("Date");
@@ -327,8 +338,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallDiscountLabel = new SubTableHeaderLabel("OVERALL");
 
 		discountPanel = new JPanel();
+		discountPanel.setOpaque(false);
+		discountPanel.setLayout(null);
 
-		discountPane = new JScrollPane(discountPanel);
+		discountPane = new PDControlScrollPane();
+		discountPane.setViewportView(discountPanel);
 
 		ar2FormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", Color.red.brighter());
 		dateAR2label = new TableHeaderLabel("Date");
@@ -337,8 +351,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallAR2Label = new SubTableHeaderLabel("OVERALL");
 
 		ar2Panel = new JPanel();
+		ar2Panel.setOpaque(false);
+		ar2Panel.setLayout(null);
 
-		ar2Pane = new JScrollPane(ar2Panel);
+		ar2Pane = new PDControlScrollPane();
+		ar2Pane.setViewportView(ar2Panel);
 
 		salaryFormLabel = new SubTableHeaderLabel("SALARY RELEASE", Color.red.brighter());
 		dateSalarylabel = new TableHeaderLabel("Date");
@@ -347,8 +364,12 @@ public class InventorySheetForm extends SimplePanel {
 		overallSalaryLabel = new SubTableHeaderLabel("OVERALL");
 
 		salaryPanel = new JPanel();
+		salaryPanel.setOpaque(false);
+		salaryPanel.setLayout(null);
 
-		salaryPane = new JScrollPane(salaryPanel);
+		salaryPane = new PDControlScrollPane();
+		salaryPane.setViewportView(salaryPanel);
+
 
 		depositFormLabel = new SubTableHeaderLabel("DEPOSITS", Color.red.brighter());
 		dateDepositlabel = new TableHeaderLabel("Date");
@@ -357,8 +378,11 @@ public class InventorySheetForm extends SimplePanel {
 		overallDepositLabel = new SubTableHeaderLabel("OVERALL");
 
 		depositPanel = new JPanel();
+		depositPanel.setOpaque(false);
+		depositPanel.setLayout(null);
 
-		depositPane = new JScrollPane(depositPanel);
+		depositPane = new PDControlScrollPane();
+		depositPane.setViewportView(depositPanel);
 
 		pcohLabel = new SubTableHeaderLabel("PREVIOUS COH", Color.CYAN.darker());
 		assetsLabel = new SubTableHeaderLabel("ASSETS", Color.GREEN.darker());
@@ -538,7 +562,7 @@ public class InventorySheetForm extends SimplePanel {
 				deliveryFormLabel.getY() + deliveryFormLabel.getHeight(),
 				deliveryFormLabel.getWidth() - (dateDellabel.getWidth() + delReceivedByLabel.getWidth()) + 4, 20);
 		delPane.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP, dateDellabel.getY() + dateDellabel.getHeight() - 1,
-				salesFormLabel.getWidth(), 105);
+				salesFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallDelLabel.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP, delPane.getY() + delPane.getHeight(), 200, 15);
 		formsOverall.get(1).setBounds(overallDelLabel.getX() + overallDelLabel.getWidth(), overallDelLabel.getY(),
 				delPane.getWidth() - overallDelLabel.getWidth(), 15);
@@ -550,7 +574,7 @@ public class InventorySheetForm extends SimplePanel {
 		grossARLabel.setBounds(arIssuedByLabel.getX() + arIssuedByLabel.getWidth() - 1, arFormLabel.getY() + arFormLabel.getHeight(),
 				arFormLabel.getWidth() - (dateARlabel.getWidth() + arIssuedByLabel.getWidth()) + 4, 20);
 		arPane.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth() + TABLE_GAP, dateARlabel.getY() + dateARlabel.getHeight() - 1,
-				arFormLabel.getWidth(), 105);
+				arFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallARLabel.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth() + TABLE_GAP, delPane.getY() + delPane.getHeight(), 200, 15);
 		formsOverall.get(2).setBounds(overallARLabel.getX() + overallARLabel.getWidth(), overallARLabel.getY(),
 				arPane.getWidth() - overallARLabel.getWidth(), 15);
@@ -563,7 +587,7 @@ public class InventorySheetForm extends SimplePanel {
 		grossARPaymentLabel.setBounds(arPaymentIssuedByLabel.getX() + arPaymentIssuedByLabel.getWidth() - 1, arPaymentFormLabel.getY()
 				+ arPaymentFormLabel.getHeight(),
 				arPaymentFormLabel.getWidth() - (dateARPaymentlabel.getWidth() + arPaymentIssuedByLabel.getWidth()) + 4, 20);
-		arPaymentPane.setBounds(startX + TAB, dateARPaymentlabel.getY() + dateARPaymentlabel.getHeight() - 1, arPaymentFormLabel.getWidth(), 105);
+		arPaymentPane.setBounds(startX + TAB, dateARPaymentlabel.getY() + dateARPaymentlabel.getHeight() - 1, arPaymentFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallARPaymentLabel.setBounds(startX + TAB, arPaymentPane.getY() + arPaymentPane.getHeight(), 200, 15);
 		formsOverall.get(3).setBounds(overallARPaymentLabel.getX() + overallARPaymentLabel.getWidth(), overallARPaymentLabel.getY(),
 				arPaymentPane.getWidth() - overallARPaymentLabel.getWidth(), 15);
@@ -577,7 +601,7 @@ public class InventorySheetForm extends SimplePanel {
 				+ arPaymentFormLabel.getHeight(),
 				caPaymentFormLabel.getWidth() - (dateCAPaymentlabel.getWidth() + caPaymentIssuedByLabel.getWidth()) + 4, 20);
 		caPaymentPane.setBounds(caPaymentFormLabel.getX(), dateCAPaymentlabel.getY() + dateCAPaymentlabel.getHeight() - 1,
-				caPaymentFormLabel.getWidth(), 105);
+				caPaymentFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallCAPaymentLabel.setBounds(caPaymentFormLabel.getX(), caPaymentPane.getY() + caPaymentPane.getHeight(), 200, 15);
 		formsOverall.get(4).setBounds(overallCAPaymentLabel.getX() + overallCAPaymentLabel.getWidth(), overallCAPaymentLabel.getY(),
 				caPaymentPane.getWidth() - overallCAPaymentLabel.getWidth(), 15);
@@ -593,7 +617,7 @@ public class InventorySheetForm extends SimplePanel {
 		grossPulloutLabel.setBounds(pulloutIssuedByLabel.getX() + pulloutIssuedByLabel.getWidth() - 1,
 				pullOutFormLabel.getY() + pullOutFormLabel.getHeight(),
 				pullOutFormLabel.getWidth() - (datePulloutlabel.getWidth() + pulloutIssuedByLabel.getWidth()) + 4, 20);
-		pulloutPane.setBounds(pullOutFormLabel.getX(), datePulloutlabel.getY() + datePulloutlabel.getHeight() - 1, pullOutFormLabel.getWidth(), 105);
+		pulloutPane.setBounds(pullOutFormLabel.getX(), datePulloutlabel.getY() + datePulloutlabel.getHeight() - 1, pullOutFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallPulloutLabel.setBounds(pullOutFormLabel.getX(), pulloutPane.getY() + pulloutPane.getHeight(), 200, 15);
 		formsOverall.get(5).setBounds(overallPulloutLabel.getX() + overallPulloutLabel.getWidth(), overallPulloutLabel.getY(),
 				pulloutPane.getWidth() - overallPulloutLabel.getWidth(), 15);
@@ -606,7 +630,7 @@ public class InventorySheetForm extends SimplePanel {
 		grossExpensesLabel.setBounds(expensesIssuedByLabel.getX() + expensesIssuedByLabel.getWidth() - 1,
 				expensesFormLabel.getY() + expensesFormLabel.getHeight(), expensesFormLabel.getWidth()
 						- (dateExpenseslabel.getWidth() + expensesIssuedByLabel.getWidth()) + 4, 20);
-		expensesPane.setBounds(expensesFormLabel.getX(), dateExpenseslabel.getY() + dateExpenseslabel.getHeight() - 1, expensesFormLabel.getWidth(),
+		expensesPane.setBounds(expensesFormLabel.getX(), dateExpenseslabel.getY() + dateExpenseslabel.getHeight() - 1, expensesFormLabel.getWidth()+ SCROLLBAR_WIDTH,
 				105);
 		overallExpensesLabel.setBounds(expensesFormLabel.getX(), expensesPane.getY() + expensesPane.getHeight(), 200, 15);
 		formsOverall.get(6).setBounds(overallExpensesLabel.getX() + overallExpensesLabel.getWidth(), overallExpensesLabel.getY(),
@@ -618,7 +642,7 @@ public class InventorySheetForm extends SimplePanel {
 				- dateCAlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
 		grossCALabel.setBounds(CAIssuedByLabel.getX() + CAIssuedByLabel.getWidth() - 1, caFormLabel.getY() + caFormLabel.getHeight(),
 				caFormLabel.getWidth() - (dateCAlabel.getWidth() + CAIssuedByLabel.getWidth()) + 4, 20);
-		CAPane.setBounds(caFormLabel.getX(), dateCAlabel.getY() + dateCAlabel.getHeight() - 1, caFormLabel.getWidth(), 105);
+		CAPane.setBounds(caFormLabel.getX(), dateCAlabel.getY() + dateCAlabel.getHeight() - 1, caFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallCALabel.setBounds(caFormLabel.getX(), CAPane.getY() + CAPane.getHeight(), 200, 15);
 		formsOverall.get(7).setBounds(overallCALabel.getX() + overallCALabel.getWidth(), overallCALabel.getY(),
 				CAPane.getWidth() - overallCALabel.getWidth(), 15);
@@ -628,7 +652,7 @@ public class InventorySheetForm extends SimplePanel {
 		dateDiscountlabel.setBounds(discountFormLabel.getX() - 1, discountFormLabel.getY() + discountFormLabel.getHeight(), 150, 20);
 		discountAmountLabel.setBounds(discountFormLabel.getX() + dateDiscountlabel.getWidth() - 2,
 				discountFormLabel.getY() + discountFormLabel.getHeight(), discountFormLabel.getWidth() - dateDiscountlabel.getWidth() + 3, 20);
-		discountPane.setBounds(discountFormLabel.getX(), dateDiscountlabel.getY() + dateDiscountlabel.getHeight() - 1, discountFormLabel.getWidth(),
+		discountPane.setBounds(discountFormLabel.getX(), dateDiscountlabel.getY() + dateDiscountlabel.getHeight() - 1, discountFormLabel.getWidth()+ SCROLLBAR_WIDTH,
 				105);
 		overallDiscountLabel.setBounds(discountFormLabel.getX(), discountPane.getY() + discountPane.getHeight(), 100, 15);
 		formsOverall.get(8).setBounds(overallDiscountLabel.getX() + overallDiscountLabel.getWidth(), overallDiscountLabel.getY(),
@@ -652,7 +676,7 @@ public class InventorySheetForm extends SimplePanel {
 		salaryAmountLabel.setBounds(salaryIssuedForLabel.getX() + salaryIssuedForLabel.getWidth() - 1,
 				salaryFormLabel.getY() + salaryFormLabel.getHeight(),
 				salaryFormLabel.getWidth() - (dateSalarylabel.getWidth() + salaryIssuedForLabel.getWidth()) + 4, 20);
-		salaryPane.setBounds(salaryFormLabel.getX(), dateSalarylabel.getY() + dateSalarylabel.getHeight() - 1, salaryFormLabel.getWidth(), 105);
+		salaryPane.setBounds(salaryFormLabel.getX(), dateSalarylabel.getY() + dateSalarylabel.getHeight() - 1, salaryFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallSalaryLabel.setBounds(salaryFormLabel.getX(), salaryPane.getY() + salaryPane.getHeight(), 200, 15);
 		formsOverall.get(10).setBounds(overallSalaryLabel.getX() + overallSalaryLabel.getWidth(), overallSalaryLabel.getY(),
 				salaryPane.getWidth() - overallSalaryLabel.getWidth(), 15);
@@ -663,7 +687,7 @@ public class InventorySheetForm extends SimplePanel {
 				depositFormLabel.getWidth() - dateDepositlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
 		depositAmountLabel.setBounds(depositorLabel.getX() + depositorLabel.getWidth() - 1, depositFormLabel.getY() + depositFormLabel.getHeight(),
 				depositFormLabel.getWidth() - (dateExpenseslabel.getWidth() + depositorLabel.getWidth()) + 4, 20);
-		depositPane.setBounds(depositFormLabel.getX(), dateDepositlabel.getY() + dateDepositlabel.getHeight() - 1, depositFormLabel.getWidth(), 105);
+		depositPane.setBounds(depositFormLabel.getX(), dateDepositlabel.getY() + dateDepositlabel.getHeight() - 1, depositFormLabel.getWidth()+ SCROLLBAR_WIDTH, 105);
 		overallDepositLabel.setBounds(depositFormLabel.getX(), depositPane.getY() + depositPane.getHeight(), 200, 15);
 		formsOverall.get(11).setBounds(overallDepositLabel.getX() + overallDepositLabel.getWidth(), overallDepositLabel.getY(),
 				depositPane.getWidth() - overallDepositLabel.getWidth(), 15);
@@ -689,7 +713,7 @@ public class InventorySheetForm extends SimplePanel {
 				20);
 
 		for (int i = 0; i < 7; i++) {
-			cashBreakdown.add(new ISRowPanel(null, cashBreakdownPanel, -1));
+			cashBreakdown.add(new ISRowPanel(null, cashBreakdownPanel, Values.OTHERS));
 			cashBreakdownPanel.add(cashBreakdown.get(i));
 
 			cashBreakdownPanel.updateUI();
@@ -709,6 +733,7 @@ public class InventorySheetForm extends SimplePanel {
 		for (int i = 0, x = 0; i < 3; i++, x += summary1Label.getWidth())
 			summaryValues.get(i).setBounds(summary1Label.getX() + x, summary1Label.getY() + summary1Label.getHeight(), 201, 30);
 
+		
 		isPanel.add(dateLabel);
 		isPanel.add(date);
 
@@ -912,6 +937,19 @@ public class InventorySheetForm extends SimplePanel {
 		// discounts
 		// deposits
 		// generate acoh
+		Component[] components = isPanel.getComponents();
+		for (Component component : components) {
+            
+            if(component instanceof PDControlScrollPane){
+            	
+            	((PDControlScrollPane) component).setOpaque(false);
+            	((PDControlScrollPane) component).getViewport().setOpaque(false);
+            	((PDControlScrollPane) component).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            	((PDControlScrollPane) component).setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            	
+            }
+            
+        }
 
 		List<Product> products = Manager.productManager.getProducts();
 		List<Delivery> deliveries = Manager.deliveryManager.getPendingDeliveries();
@@ -941,7 +979,9 @@ public class InventorySheetForm extends SimplePanel {
 		fillProductInventories(products);
 		fillProductInventoresTotal();
 		fillSales(sales);
-
+		fillDeliveries(deliveries);
+		fillDiscount(discountIssues);
+	
 	}
 
 	private void alternateRows(ArrayList<ISRowPanel> rowPanel) {
@@ -990,7 +1030,7 @@ public class InventorySheetForm extends SimplePanel {
 		for (Sales s : sales) {
 			salesInventory.add(new ISRowPanel(s, salesPanel, Values.SALES));
 			salesPanel.add(salesInventory.get(i));
-			salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(), salesPanel.getComponentCount() * ROW_HEIGHT));
+			salesPanel.setPreferredSize(new Dimension(TRANSACTIONS_ROW_WIDTH, salesPanel.getComponentCount() * ROW_HEIGHT));
 			salesPanel.updateUI();
 			salesPanel.revalidate();
 			i++;
@@ -1001,5 +1041,61 @@ public class InventorySheetForm extends SimplePanel {
 
 		formsOverall.get(0).setText(String.format("%.2f", inventorySheet.getOverallCashAndCheckSales()));
 
+	}
+	
+	private void fillDeliveries(List<Delivery> deliveries) {
+		int i = 0;
+		for (Delivery d : deliveries) {
+			deliveryInventory.add(new ISRowPanel(d, delPanel, Values.DELIVERY));
+			delPanel.add(deliveryInventory.get(i));
+			delPanel.setPreferredSize(new Dimension(TRANSACTIONS_ROW_WIDTH, delPanel.getComponentCount() * ROW_HEIGHT));
+			delPanel.updateUI();
+			delPanel.revalidate();
+			i++;
+		}
+
+		alternateRows(deliveryInventory);
+	}
+	
+	private void fillAR(List<AccountReceivable> ar) {
+		int i = 0;
+		for (AccountReceivable a_r : ar) {
+			arInventory.add(new ISRowPanel(a_r, arPanel, Values.ACCOUNT_RECEIVABLES));
+			arPanel.add(arInventory.get(i));
+			arPanel.setPreferredSize(new Dimension(TRANSACTIONS_ROW_WIDTH, arPanel.getComponentCount() * ROW_HEIGHT));
+			arPanel.updateUI();
+			arPanel.revalidate();
+			i++;
+		}
+
+		alternateRows(arInventory);
+	}
+	
+	private void fillARPayment(List<ARPayment> arP) {
+		int i = 0;
+		for (ARPayment arp : arP) {
+			arPaymentInventory.add(new ISRowPanel(arp, arPaymentPanel, Values.AR_PAYMENTS));
+			arPaymentPanel.add(arPaymentInventory.get(i));
+			arPaymentPanel.setPreferredSize(new Dimension(TRANSACTIONS_ROW_WIDTH, arPaymentPanel.getComponentCount() * ROW_HEIGHT));
+			arPaymentPanel.updateUI();
+			arPaymentPanel.revalidate();
+			i++;
+		}
+
+		alternateRows(arPaymentInventory);
+	}
+	
+	private void fillDiscount(List<DiscountIssue> discount) {
+		int i = 0;
+		for (DiscountIssue disc : discount) {
+			discountInventory.add(new ISRowPanel(disc, discountPanel, Values.DISCOUNTS));
+			discountPanel.add(discountInventory.get(i));
+			discountPanel.setPreferredSize(new Dimension(250, discountPanel.getComponentCount() * ROW_HEIGHT));
+			discountPanel.updateUI();
+			discountPanel.revalidate();
+			i++;
+		}
+
+		alternateRows(discountInventory);
 	}
 }

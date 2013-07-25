@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.4.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/balloontip-1.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
