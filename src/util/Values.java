@@ -15,6 +15,8 @@ import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
+import gui.forms.edit.EditEmployeeForm;
+import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSalesOrder;
 import gui.forms.edit.EditStockPurchase;
 import gui.list.AccountTypeList;
@@ -63,6 +65,9 @@ public class Values {
 	public static ExpensesForm expensesForm;
 	public static SalaryReleaseForm salaryReleaseForm;
 	public static BankForm bankForm;
+	
+	public static EditProductPanel editProductPanel;
+	public static EditEmployeeForm editEmployeeForm;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
@@ -131,7 +136,7 @@ public class Values {
 			"Display (in kg)*", "Category*", "Allow Alert?*",
 			"Alert on Quantity*" };
 
-	public static String[] accountFormLabel = { "Employee*","Account Type*","Username*", "Password*"};
+	public static String[] accountFormLabel = { "Account Type*","Employee", "Username*", "Password*"};
 	
 	public static String[] employeeFormLabel = { "Last Name*", "First Name*",
 		"Middle Name", "Designation*",

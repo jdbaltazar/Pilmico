@@ -1,6 +1,7 @@
 package gui.panels;
 
 import gui.forms.util.FormField;
+import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -131,6 +132,15 @@ public class TableUtilPanel extends SoyPanel {
 		
 		onDisplayBtn = new SBButton("on_display.png", "on_display2.png", "Show On-Display Products");
 		onDisplayBtn.setBounds(130, 10, 20, 20);
+		
+		onDisplayBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new ProductOnDisplayPopup().setVisible(true);
+			}
+		});
 		
 		search = new JLabel(icon);
 

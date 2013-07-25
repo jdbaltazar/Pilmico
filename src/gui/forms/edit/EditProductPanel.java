@@ -3,8 +3,13 @@ package gui.forms.edit;
 import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
+import gui.forms.util.HistoryTable;
+import gui.popup.DatabaseToolPanel;
 import gui.popup.SuccessPopup;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -16,6 +21,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 
 import common.entity.product.Category;
 import common.entity.product.Price;
@@ -49,6 +57,8 @@ public class EditProductPanel extends EditFormPanel {
 	private FormDropdown category;
 	private JCheckBox cbox1, cbox2;
 	private ErrorLabel error;
+	
+	private BalloonTip balloonTip;
 
 	private int y1 = 50, y2 = 35, y3 = 62;
 
@@ -67,13 +77,15 @@ public class EditProductPanel extends EditFormPanel {
 		init();
 		addComponents();
 		fillValues();
+		
+		Values.editProductPanel = this;
 	}
 
 	private void init() {
 		// TODO Auto-generated method stub
 
 		setLayout(null);
-
+		
 		error = new ErrorLabel();
 
 		category = new FormDropdown(true);
@@ -91,6 +103,21 @@ public class EditProductPanel extends EditFormPanel {
 		scrollpane.setBorder(BorderFactory.createEmptyBorder());
 		
 		priceHistory = new SBButton("pricehistory.png", "pricehistory2.png", "Price History");
+		
+		priceHistory.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				initBalloonTip();
+				
+				balloonTip.setVisible(true);
+				priceHistory.setEnabled(false);
+			
+			}
+
+		});
 		/*
 		 * try { List<Unit> units = Manager.itemManager.getUnits(); List<Category>
 		 * categories = Manager.itemManager.getCategories(); List<ItemCondition>
@@ -228,6 +255,34 @@ public class EditProductPanel extends EditFormPanel {
 
 		add(error);
 	}
+	
+	private void initBalloonTip(){
+		
+		String[] priceHistoryheaders = { "Date", "Price (sack)", "Price (kg)" };
+		String[][] entries = { { "21 Jun 2013 10:47 AM", "101.50", "46.25" }};
+		
+		balloonTip = new BalloonTip(
+				priceHistory,
+				new HistoryTable(priceHistoryheaders, entries),
+				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.RIGHT_ABOVE,
+				BalloonTip.AttachLocation.NORTH,
+				7, 12,
+				false
+			);
+		balloonTip.setPadding(5);
+		balloonTip.setVisible(false);
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
+		
+		balloonTip.getCloseButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				priceHistory.setEnabled(true);
+			}
+		});
+	}
 
 	private void fillValues() {
 
@@ -282,6 +337,10 @@ public class EditProductPanel extends EditFormPanel {
 			return true;
 
 		return false;
+	}
+	
+	public void closeBubblePanel(){
+		balloonTip.setVisible(false);
 	}
 
 }

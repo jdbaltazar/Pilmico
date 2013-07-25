@@ -48,12 +48,12 @@ public class DepositForm extends SimplePanel {
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private JSpinner date;
-	private DefaultEntryLabel depositor, issuedBy;
-	private int initY = 26;
+	private DefaultEntryLabel issuedBy;
+	private int initY = 18;
 	private DropdownLabel dateLabel, issuedByLabel, depositorLabel, bankAcctLabel, bankLabel;
-	private SBButton fwd, fwd2;
-	private JComboBox bankCombo, bankAcctCombo;
-	private JTextField bankComboField, bankAcctComboField;
+	private SBButton fwd, fwd2, fwd3;
+	private JComboBox bankCombo, bankAcctCombo, depositorCombo;
+	private JTextField bankComboField, bankAcctComboField, depositorComboField;
 
 	private ErrorLabel error;
 	private String username, password, firstName, lastName, address;
@@ -82,6 +82,8 @@ public class DepositForm extends SimplePanel {
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new bank");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new bank account");
+		fwd3 = new SBButton("forward.png", "forward.png", "Add new employee");
+		
 		fwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -94,14 +96,13 @@ public class DepositForm extends SimplePanel {
 
 		dateLabel = new DropdownLabel("Date");
 		issuedByLabel = new DropdownLabel("Issued by");
-		depositorLabel = new DropdownLabel("Depositor");
+		depositorLabel = new DropdownLabel("Depositor*");
 		bankAcctLabel = new DropdownLabel("Bank Account*");
 		bankLabel = new DropdownLabel("Bank*");
 		
 
 		// issuedBy = new FormDropdown();
 		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
-		depositor = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
 
 		date = new JSpinner(new SpinnerDateModel());
 		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
@@ -135,6 +136,14 @@ public class DepositForm extends SimplePanel {
 		bankComboField.setText("");
 		bankComboField.setOpaque(false);
 		bankComboField.addKeyListener(new ComboKeyHandler(bankCombo));
+		
+		depositorCombo = new JComboBox();
+		depositorCombo.setEditable(true);
+		depositorCombo.setSelectedIndex(-1);
+		depositorComboField = (JTextField) depositorCombo.getEditor().getEditorComponent();
+		depositorComboField.setText("");
+		depositorComboField.setOpaque(false);
+		depositorComboField.addKeyListener(new ComboKeyHandler(depositorCombo));
 
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 63) {
@@ -159,7 +168,7 @@ public class DepositForm extends SimplePanel {
 			}
 
 			if (i == 1) {
-				fwd.setBounds(x1 + 32, initY + y - 11, 16, 16);
+				fwd.setBounds(x1 + 34, initY + y - 11, 16, 16);
 				bankLabel.setBounds(x1, initY + y - 7, 200, 11);
 				bankCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
@@ -171,8 +180,9 @@ public class DepositForm extends SimplePanel {
 			}
 			
 			if(i == 3){
+				fwd3.setBounds(x1 + 57, initY + y - 11, 16, 16);
 				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
-				depositor.setBounds(x1, initY + y + 5, 200, 20);
+				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
 				
 				x1+= 250;
 				y = -63;
@@ -210,6 +220,7 @@ public class DepositForm extends SimplePanel {
 
 		panel.add(fwd);
 		panel.add(fwd2);
+		panel.add(fwd3);
 		
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
@@ -217,8 +228,8 @@ public class DepositForm extends SimplePanel {
 		panel.add(bankCombo);
 		panel.add(bankLabel);
 		
-		panel.add(depositor);
 		panel.add(depositorLabel);
+		panel.add(depositorCombo);
 		
 		panel.add(bankAcctCombo);
 		panel.add(bankAcctLabel);

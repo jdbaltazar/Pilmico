@@ -4,8 +4,11 @@ import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.forms.util.FormLabel;
+import gui.forms.util.HistoryTable;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -19,6 +22,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
+
 import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
@@ -27,8 +33,10 @@ import common.manager.Manager;
 import util.DropdownLabel;
 import util.EditFormPanel;
 import util.ErrorLabel;
+import util.SBButton;
 import util.SpinnerDate;
 import util.Tables;
+import util.Values;
 import util.soy.SoyButton;
 
 public class EditEmployeeForm extends EditFormPanel {
@@ -55,12 +63,17 @@ public class EditEmployeeForm extends EditFormPanel {
 	private JScrollPane scrollPane;
 
 	private Employee employee;
+	private SBButton employmentHistory;
+	
+	private BalloonTip balloonTip;
 
 	public EditEmployeeForm(Employee employee) {
 		super("View / Edit Employee");
 		this.employee = employee;
 		addComponents();
 		fillEntries();
+		
+		Values.editEmployeeForm = this;
 	}
 
 	private void fillEntries() {
@@ -114,6 +127,23 @@ public class EditEmployeeForm extends EditFormPanel {
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
+		
+		employmentHistory = new SBButton("employmenthistory.png", "employmenthistory2.png", "Employment History");
+		
+		employmentHistory.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				initBalloonTip();
+				
+				balloonTip.setVisible(true);
+				employmentHistory.setEnabled(false);
+			
+			}
+
+		});
 
 		edit = new SoyButton("Edit");
 
@@ -175,7 +205,8 @@ public class EditEmployeeForm extends EditFormPanel {
 				employmentStatus.setBounds(x1, initY + y, 170, 25);
 				labels.add(new FormLabel(Tables.employeeFormLabel[i]));
 				labels.get(labelsCtr).setBounds(x1, y2 + y, 170, 15);
-
+				employmentHistory.setBounds(x1 + 110, y2 + y - 4, 16, 16);
+				
 				labelsCtr++;
 			}
 
@@ -251,6 +282,8 @@ public class EditEmployeeForm extends EditFormPanel {
 		panel.add(employmentStatus);
 		panel.add(endDate);
 		panel.add(startDate);
+		
+		panel.add(employmentHistory);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
@@ -263,6 +296,34 @@ public class EditEmployeeForm extends EditFormPanel {
 
 	}
 
+	private void initBalloonTip(){
+		
+		String[] employmentHeaders = { "Starting Date", "Designation" };
+		String[][] entries = { { "21 Jun 2013 10:47 AM", "Company Driver" }};
+		
+		balloonTip = new BalloonTip(
+				employmentHistory,
+				new HistoryTable(employmentHeaders, entries),
+				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.LEFT_BELOW,
+				BalloonTip.AttachLocation.SOUTH,
+				7, 12,
+				false
+			);
+		balloonTip.setPadding(5);
+		balloonTip.setVisible(false);
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
+		
+		balloonTip.getCloseButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				employmentHistory.setEnabled(true);
+			}
+		});
+	}
+	
 	private boolean isValidated() {
 
 		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
@@ -279,5 +340,9 @@ public class EditEmployeeForm extends EditFormPanel {
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+	}
+	
+	public void closeBalloonPanel(){
+		balloonTip.setVisible(false);
 	}
 }

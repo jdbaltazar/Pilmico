@@ -120,6 +120,8 @@ public class EditPanel extends SoyPanel implements Runnable {
 	}
 
 	public void startAnimation() {
+		
+		
 		isRunning = true;
 		thread = new Thread(this);
 		thread.start();
@@ -139,6 +141,13 @@ public class EditPanel extends SoyPanel implements Runnable {
 	}
 
 	private void hidePanel() {
+		
+		if(Values.editProductPanel != null)
+			Values.editProductPanel.closeBubblePanel();
+		
+		if(Values.editEmployeeForm != null)
+			Values.editEmployeeForm.closeBalloonPanel();
+		
 		if (currWidth <= minWidth)
 			isRunning = false;
 

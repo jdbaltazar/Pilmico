@@ -2,6 +2,7 @@ package gui;
 
 import gui.forms.util.FormField;
 import gui.panels.TablePanel;
+import gui.popup.DatabaseToolPanel;
 import gui.popup.EditStoreInfoPopup;
 import gui.popup.UtilityPopup;
 
@@ -15,11 +16,14 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.RenderingHints;
+import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -30,9 +34,16 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
+import net.java.balloontip.styles.TexturedBalloonStyle;
+import net.java.balloontip.utils.TimingUtils;
+import net.java.balloontip.utils.ToolTipUtils;
+
 import common.entity.product.Category;
 
 import util.SBButton;
+import util.SimpleTipPositioner;
 import util.Values;
 import util.soy.SoyPanel;
 
@@ -40,11 +51,12 @@ public class TopPanel extends SoyPanel {
 
 	private BufferedImage image, image1;
 	private ImageIcon icon;
-	private JButton close, minimize;
+	private JButton close, minimize, close2;
 	private JLabel totalSales, salesLabel;
 	public static FormField searchField;
 	
 	public SBButton store_info, tools;
+	private BalloonTip balloonTip;
 
 	private int logoY = 10;
 
@@ -64,10 +76,11 @@ public class TopPanel extends SoyPanel {
 
 		icon = new ImageIcon("images/search.png");
 
+		close2 = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		close = new SBButton("exit.png", "exit2.png", "Close");
 		minimize = new SBButton("min.png", "min2.png", "Minimize");
 		store_info = new SBButton("header_2.png", "header_2.png", "");
-		tools = new SBButton("tools.png", "tools.png", "Backup / Recover");
+		tools = new SBButton("tools_3.png", "tools_3.png", "Backup / Recover");
 
 		try {
 			totalSales = new JLabel("P 24560.50" );
@@ -91,6 +104,25 @@ public class TopPanel extends SoyPanel {
 	}
 
 	private void addDashPanel() {
+		
+		close2.setBounds(72, 2, 16, 16);
+		
+			balloonTip = new BalloonTip(
+					tools,
+					new DatabaseToolPanel(),
+					new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.LIGHT_GRAY),//, Color.decode("#B2CCCC")),
+					BalloonTip.Orientation.LEFT_ABOVE,
+					BalloonTip.AttachLocation.SOUTH,
+					7, 12,
+					false
+				);
+		
+		balloonTip.setPadding(0);
+		balloonTip.setVisible(false);
+		balloonTip.setOpacity(0.95f);
+		
+		
+//		balloonTip.getCloseButton().setSize(16, 16);
 
 		close.setBounds(800 - 32, 0, 32, 32);
 		minimize.setBounds(800 - 64, 0, 32, 32);
@@ -112,12 +144,12 @@ public class TopPanel extends SoyPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
 				
-				new UtilityPopup(b, "", Values.DATABASE, null).setVisible(true);
+				balloonTip.setVisible(!balloonTip.isVisible());
 			}
 		});
+		
+		
 
 		close.addActionListener(new ActionListener() {
 
