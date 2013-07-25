@@ -37,12 +37,14 @@ import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Bank;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 
@@ -231,11 +233,11 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
-			add(new EditBankForm(), BorderLayout.CENTER);
+			add(new EditBankForm((Bank) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
-			add(new ViewSalaryForm(), BorderLayout.CENTER);
+			add(new ViewSalaryForm((SalaryRelease) o), BorderLayout.CENTER);
 		}
 
 	}

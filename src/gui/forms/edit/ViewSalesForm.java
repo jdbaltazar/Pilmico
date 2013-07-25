@@ -301,13 +301,14 @@ public class ViewSalesForm extends EditFormPanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
 
 		error = new ErrorLabel();
 
-		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
 
 		error.setBounds(305, 340, 200, 30);
+
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
 
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -356,7 +357,6 @@ public class ViewSalesForm extends EditFormPanel {
 			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
 			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 			alternateRows();
-
 			productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 			productsPanel.updateUI();
 			productsPanel.revalidate();

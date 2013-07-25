@@ -2,6 +2,7 @@ package common.manager;
 
 import java.util.List;
 
+import common.entity.salary.Fee;
 import common.entity.salary.SalaryRelease;
 
 public interface SalaryReleaseManager {
@@ -22,7 +23,20 @@ public interface SalaryReleaseManager {
 
 	public void deleteSalaryRelease(SalaryRelease salaryRelease) throws Exception;
 
+	// fee
 
-	
-	// add portion for fees. include search
+	public void addFees(Fee fee) throws Exception;
+
+	public Fee getFee(int id) throws Exception;
+
+	public Fee searchFee(String name) throws Exception;
+
+	public List<Fee> getFees() throws Exception;
+
+	public void updateFees(Fee fee) throws Exception;
+
+	public void deleteFee(Fee fee) throws Exception;
+
+	public void deleteFee(int id) throws Exception;
+
 }

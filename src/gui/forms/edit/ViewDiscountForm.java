@@ -94,7 +94,7 @@ public class ViewDiscountForm extends EditFormPanel {
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		remarks = new ViewFormLabel("", true);
 
 		panel = new JPanel();
@@ -191,9 +191,7 @@ public class ViewDiscountForm extends EditFormPanel {
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
-		
-		
-		
+
 		add(voidBtn);
 		add(scrollPane);
 		add(status);
@@ -226,7 +224,7 @@ public class ViewDiscountForm extends EditFormPanel {
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 		product.setText(discountIssue.getProduct().getName());
-		customer.setText(discountIssue.getCustomer().getFirstPlusLastName());
+		customer.setText(discountIssue.getCustomer() != null ? discountIssue.getCustomer().getFirstPlusLastName() : "");
 		amount.setText(discountIssue.getAmount() + "");
 	}
 

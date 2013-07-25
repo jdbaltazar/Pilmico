@@ -190,8 +190,6 @@ public class SalaryReleaseForm extends SimplePanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				Employee emp = (Employee) issuedFor.getSelectedItem();
 				grossPay.setText(String.format("%.2f", emp.getSalary()));
-
-				System.out.println("aaaaaaaaaaaa");
 			}
 		});
 
@@ -207,8 +205,8 @@ public class SalaryReleaseForm extends SimplePanel {
 		panel.add(salaryLabel);
 		panel.add(grossPay);
 
-		panel.add(payLabel);
-		panel.add(netPay);
+		// panel.add(payLabel);
+		// panel.add(netPay);
 
 		panel.add(fwd);
 
@@ -286,46 +284,28 @@ public class SalaryReleaseForm extends SimplePanel {
 				SalaryRelease salaryRelease = new SalaryRelease(d, emp, emp.getSalary(), Manager.loggedInAccount, true, "");
 
 				for (RowPanel rp : feesRowPanel) {
-					// String f = rp.getSelectedFee();
-					// Fee fee = null;
-					//
-					//
-					// FeeDeduction feeDeduction = new FeeDeduction(ro.g,
-					// salaryRelease, rp.getFeeAmout());
-					// salaryRelease.addFeeDeduction();
-					// }
+					String f = rp.getSelectedFee();
+					Fee fee = null;
+					try {
+						fee = Manager.salaryReleaseManager.searchFee(f);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					if (fee == null) {
+						try {
+							fee = new Fee(f);
+							Manager.salaryReleaseManager.addFees(fee);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					salaryRelease.addFeeDeduction(new FeeDeduction(fee, salaryRelease, rp.getFeeAmout()));
 				}
-				// for (RowPanel rp : rowPanel) {
-				// String exp = rp.getSelectedExpense();
-				// Expense expense = null;
-				// try {
-				// expense = Manager.dailyExpenseManager.searchExpense(exp);
-				// } catch (Exception e1) {
-				// e1.printStackTrace();
-				// }
-				// if (expense == null) {
-				// try {
-				// expense = new Expense(exp);
-				// Manager.dailyExpenseManager.addExpenses(expense);
-				// } catch (Exception e1) {
-				// e1.printStackTrace();
-				// }
-				// }
-				// de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense,
-				// rp.getExpenseAmount()));
-				// }
-				// for (RowPanel rp : ) {
-				// Product product = rp.getSelectedProduct();
-				// s.addSalesDetail(new SalesDetail(s, product,
-				// product.getCurrentPricePerKilo(),
-				// product.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp
-				// .getQuantityInSack()));
-				// }
-
-				System.out.println("salary release lacks entries");
 
 				try {
 					Manager.salaryReleaseManager.addSalaryRelease(salaryRelease);
+
+					System.out.println("salary release added!");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 				}
@@ -339,7 +319,6 @@ public class SalaryReleaseForm extends SimplePanel {
 	}
 
 	private void fillEntries() {
-
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 		refreshDate();
 		refreshEmployee();
@@ -376,8 +355,10 @@ public class SalaryReleaseForm extends SimplePanel {
 		try {
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployeesExcludeManagers().toArray());
 			issuedFor.setModel(model);
-			if (issuedFor.getItemCount() > 0)
+			if (issuedFor.getItemCount() > 0) {
 				issuedFor.setSelectedIndex(0);
+				grossPay.setText(String.format("%.2f", ((Employee) issuedFor.getSelectedItem()).getSalary()));
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

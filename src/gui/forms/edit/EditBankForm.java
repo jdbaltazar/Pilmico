@@ -35,7 +35,7 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class EditBankForm extends EditFormPanel{
+public class EditBankForm extends EditFormPanel {
 
 	/**
 	 * 
@@ -62,10 +62,22 @@ public class EditBankForm extends EditFormPanel{
 	private ErrorLabel error;
 	private String msg = "";
 
-	public EditBankForm() {
+	private Bank bank;
+
+	public EditBankForm(Bank bank) {
 		super("View / Edit Bank");
+		this.bank = bank;
 		init();
 		addComponents();
+		fillEntries();
+	}
+
+	public void fillEntries() {
+		fields.get(0).setText(bank.getName());
+		fields.get(1).setText(bank.getAddress());
+		fields.get(2).setText(bank.getContactNo());
+
+		// populate accounte portion here
 	}
 
 	private void init() {
@@ -97,10 +109,10 @@ public class EditBankForm extends EditFormPanel{
 		for (int i = 0, y = 15; i < Tables.bankFormLabel.length; i++, y += 55) {
 			fields.add(new EditFormField(100));
 			labels.add(new FormLabel(Tables.bankFormLabel[i]));
-			
+
 			fields.get(i).setBounds(24, y, 200, 25);// 115
 			labels.get(i).setBounds(24, y - 15, 200, 15);
-			
+
 			panel.add(fields.get(i));
 			panel.add(labels.get(i));
 		}
@@ -109,7 +121,7 @@ public class EditBankForm extends EditFormPanel{
 
 		bankAccountLabel.setBounds(265, 5, 200, 25);
 		deleteLabel.setBounds(465, 5, 46, 25);
-		bankAccountPane.setBounds(266, 30, 262, 140);//+25
+		bankAccountPane.setBounds(266, 30, 262, 140);// +25
 
 		addRow.addActionListener(new ActionListener() {
 
@@ -191,7 +203,7 @@ public class EditBankForm extends EditFormPanel{
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
+
 			}
 		});
 

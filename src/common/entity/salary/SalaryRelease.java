@@ -38,8 +38,8 @@ public class SalaryRelease {
 	@JoinColumn(name = "issued_for")
 	private Employee issuedFor;
 
-	@Column
-	private double amount;
+	@Column(name = "amount")
+	private double grossAmount;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "issued_by")
@@ -62,42 +62,42 @@ public class SalaryRelease {
 		super();
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks,
+	public SalaryRelease(Date date, Employee issuedFor, double grossAmount, Account issuedBy, boolean valid, String remarks,
 			Set<FeeDeduction> feeDeductions, Set<CAPayment> caDeductions) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
-		this.amount = amount;
+		this.grossAmount = grossAmount;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
 		this.feeDeductions = feeDeductions;
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid, String remarks) {
+	public SalaryRelease(Date date, Employee issuedFor, double grossAmount, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
-		this.amount = amount;
+		this.grossAmount = grossAmount;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy, boolean valid) {
+	public SalaryRelease(Date date, Employee issuedFor, double grossAmount, Account issuedBy, boolean valid) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
-		this.amount = amount;
+		this.grossAmount = grossAmount;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 	}
 
-	public SalaryRelease(Date date, Employee issuedFor, double amount, Account issuedBy) {
+	public SalaryRelease(Date date, Employee issuedFor, double grossAmount, Account issuedBy) {
 		super();
 		this.date = date;
 		this.issuedFor = issuedFor;
-		this.amount = amount;
+		this.grossAmount = grossAmount;
 		this.issuedBy = issuedBy;
 		this.valid = true;
 	}
@@ -126,12 +126,24 @@ public class SalaryRelease {
 		this.issuedFor = issuedFor;
 	}
 
-	public double getAmount() {
-		return amount;
+	public double getGrossAmount() {
+		return grossAmount;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public double getNetAmount() {
+		return grossAmount - getTotalDeductions();
+	}
+
+	public double getTotalDeductions() {
+		double total = 0d;
+		for (FeeDeduction fd : feeDeductions) {
+			total += fd.getAmount();
+		}
+		return total;
+	}
+
+	public void setAmount(double grossAmount) {
+		this.grossAmount = grossAmount;
 	}
 
 	public Account getIssuedBy() {
