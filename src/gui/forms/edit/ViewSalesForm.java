@@ -95,6 +95,7 @@ public class ViewSalesForm extends EditFormPanel {
 		// TODO Auto-generated constructor stub
 		super("View Sales Form");
 		this.sales = sales;
+		initLabelEntries();
 		init();
 		addComponents();
 		colorTable();
@@ -116,9 +117,6 @@ public class ViewSalesForm extends EditFormPanel {
 		
 		remarks = new ViewFormLabel("", true);
 
-		date = new ViewFormField("");
-		issueDate = new ViewFormField(new Date().toString());
-
 		issuedaTLabel = new ViewFormLabel("Issued at:");
 		issuedOnLabel = new ViewFormLabel("Issued on:");
 		rcnumLabel = new ViewFormLabel("RC_No:");
@@ -128,21 +126,12 @@ public class ViewSalesForm extends EditFormPanel {
 		cashierLabel = new ViewFormLabel("Cashier:");
 		customerLabel = new ViewFormLabel("Customer:");
 
-		cashier = new ViewFormField("");
-
-		issuedAt = new ViewFormField("");
-		rc_no = new ViewFormField("");
-		receipt_no = new ViewFormField("");
-
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
-
-		model = new DefaultComboBoxModel(array);
-		customerCombo = new ViewFormField("");
 
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
@@ -338,18 +327,22 @@ public class ViewSalesForm extends EditFormPanel {
 		}
 
 	}
+	
+	private void initLabelEntries(){
+		
+		date = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
+		cashier = new ViewFormField(sales.getCashier().getFirstPlusLastName());
+		rc_no = new ViewFormField(sales.getRcNo());
+		receipt_no = new ViewFormField(sales.getReceiptNo());
+		issueDate = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
+		customerCombo = new ViewFormField(sales.getCustomerFirstPlusLastName());
+		issuedAt = new ViewFormField(sales.getIssuedAt());
+	}
 
 	private void fillEntries() {
 
 		voidBtn.setVisible(sales.getInventorySheetData() != null ? false : sales.isValid());
 
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
-		cashier.setText(sales.getCashier().getFirstPlusLastName());
-		rc_no.setText(sales.getRcNo());
-		receipt_no.setText(sales.getReceiptNo());
-		issueDate.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
-		customerCombo.setText(sales.getCustomerFirstPlusLastName());
-		issuedAt.setText(sales.getIssuedAt());
 
 		Set<SalesDetail> salesDetails = sales.getSalesDetails();
 		for (SalesDetail sd : salesDetails) {

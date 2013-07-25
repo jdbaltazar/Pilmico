@@ -66,6 +66,8 @@ public class Values {
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
+	
+	public static final int OTHERS = -100;
 
 	public static final int HOME = -1;
 
@@ -91,6 +93,7 @@ public class Values {
 	public static final int LOGS = 18;
 	
 	public static final int SALES_GRAPH = 19;
+	public static final int DATABASE = 20;
 	
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;

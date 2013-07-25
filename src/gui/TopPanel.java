@@ -3,6 +3,7 @@ package gui;
 import gui.forms.util.FormField;
 import gui.panels.TablePanel;
 import gui.popup.EditStoreInfoPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +11,9 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +30,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import common.entity.product.Category;
+
 import util.SBButton;
 import util.Values;
 import util.soy.SoyPanel;
@@ -38,7 +44,7 @@ public class TopPanel extends SoyPanel {
 	private JLabel totalSales, salesLabel;
 	public static FormField searchField;
 	
-	public SBButton store_info;
+	public SBButton store_info, tools;
 
 	private int logoY = 10;
 
@@ -61,6 +67,7 @@ public class TopPanel extends SoyPanel {
 		close = new SBButton("exit.png", "exit2.png", "Close");
 		minimize = new SBButton("min.png", "min2.png", "Minimize");
 		store_info = new SBButton("header_2.png", "header_2.png", "");
+		tools = new SBButton("tools.png", "tools.png", "Backup / Recover");
 
 		try {
 			totalSales = new JLabel("P 24560.50" );
@@ -87,7 +94,8 @@ public class TopPanel extends SoyPanel {
 
 		close.setBounds(800 - 32, 0, 32, 32);
 		minimize.setBounds(800 - 64, 0, 32, 32);
-		store_info.setBounds(30, logoY, 220, 80);
+		store_info.setBounds(32, logoY, 220, 80);
+		tools.setBounds(5, 5, 16, 16);
 		
 		store_info.addActionListener(new ActionListener() {
 			
@@ -96,6 +104,18 @@ public class TopPanel extends SoyPanel {
 				// TODO Auto-generated method stub
 				Values.mainFrame.dimScreen(true);
 				new EditStoreInfoPopup().setVisible(true);
+			}
+		});
+		
+		tools.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				
+				new UtilityPopup(b, "", Values.DATABASE, null).setVisible(true);
 			}
 		});
 
@@ -164,6 +184,7 @@ public class TopPanel extends SoyPanel {
 	public void addMenuButtons() {
 
 		add(store_info);
+		add(tools);
 		
 		add(close);
 		add(minimize);

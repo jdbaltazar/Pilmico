@@ -20,12 +20,15 @@ import util.DateFormatter;
 import util.Utility;
 import util.Values;
 
+import common.entity.delivery.Delivery;
+import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.InventorySheetDetail;
 import common.entity.sales.Sales;
 
 public class ISRowPanel extends JPanel {
 
-	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins" };
+	private String[] moneyString = { "1000", "500", "200", "100", "50", "20",
+			"coins" };
 	private JTextField field;
 	private JPanel row;
 	private JPanel panel = new JPanel();
@@ -54,51 +57,122 @@ public class ISRowPanel extends JPanel {
 		row.setLayout(null);
 		row.setBackground(Color.decode("#FFFFE6"));
 
+		selectTable();
+
+		if (table == Values.PRODUCTS)
+			setBounds(0, y, InventorySheetForm.PRODUCT_ROW_WIDTH, ROW_HEIGHT);
+		else if (table == Values.DISCOUNTS)
+			setBounds(0, y, 250, ROW_HEIGHT);
+		else if (table == Values.OTHERS)
+			setBounds(0, y, panel.getWidth(), ROW_HEIGHT);
+		else
+			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH,
+					ROW_HEIGHT);
+	}
+
+	private void selectTable() {
+
 		switch (table) {
 
 		case Values.PRODUCTS:
 			drawProductInventory();
-			// System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
-			setBounds(0, y, InventorySheetForm.PRODUCT_ROW_WIDTH, ROW_HEIGHT);
 			break;
 
 		case Values.SALES:
-			drawSalesRow();
-			// System.out.println("ROW_HEIGHT: "+ROW_HEIGHT);
-			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH, ROW_HEIGHT);
+			Sales sales = (Sales) object;
+			
+			fillRow(sales,
+					DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat)
+							.format(sales.getDate()), sales.getCashier()
+							.getFirstPlusLastName(), sales.getSalesAmount()
+							+ "");
+			break;
+			
+		case Values.DELIVERY:
+			Delivery del = (Delivery) object;
+			
+			fillRow(del,
+					DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat)
+							.format(del.getDate()), del.getReceivedBy()
+							.getFirstPlusLastName(), del.getDeliveryAmount()
+							+ "");
+			break;
+			
+		case Values.DISCOUNTS:
+			drawDiscountRow();
 			break;
 
 		default:
 			drawCashBreakDown();
-			setBounds(0, y, panel.getWidth(), ROW_HEIGHT);
 			break;
 		}
 
-		// System.out.println("y: "+y+ " panel width: "+panel.getWidth());
+	}
+
+	private void fillRow(Object object, String column1, String column2,
+			String column3) {
+
+		formField.add(new ViewFormField(column1));
+		formField.get(formField.size() - 1).setBounds(0, 0,
+				InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
+		formField.add(new ViewFormField(column2));
+		formField.get(formField.size() - 1).setBounds(
+				InventorySheetForm.DATE_LABEL_WIDTH, 0,
+				InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
+
+		formField.add(new ViewFormField(column3));
+		formField.get(formField.size() - 1).setBounds(
+				InventorySheetForm.DATE_LABEL_WIDTH
+						+ InventorySheetForm.ISSUED_BY_LABEL_WIDTH, 0,
+				InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
+
+		for (int i = 0; i < formField.size(); i++) {
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
+			formField.get(i).addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					row.setBackground(rowBkgrndColor);
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					rowBkgrndColor = row.getBackground();
+					row.setBackground(Color.decode("#B2FFFF"));
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+			row.add(formField.get(i));
+		}
+
+		row.setOpaque(true);
+		add(row);
+
 	}
 
 	private void drawProductInventory() {
 		ROW_HEIGHT = 35;
 		formField.add(new ViewFormField("PELLETS"));
-		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
-		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
+		formField.get(formField.size() - 1).setBounds(0, 0,
+				InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
+		for (int i = 1, x = formField.get(0).getX()
+				+ formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
 			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
+			formField.get(i).setBounds(0 + x, 1,
+					InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
 		}
 		for (int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 3, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL + 1; i++, x += InventorySheetForm.SALES_KG_WIDTH) {
 			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(999 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
+			formField.get(i).setBounds(999 + x, 1,
+					InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
 		}
-
-		// if (isd == null) {
-		// System.out.println("isd is null!!");
-		// } else {
-		// if (isd.getProduct() == null) {
-		// System.out.println("product is null");
-		// }
-		// }
-
-		// formField.get(0).setText(isd.getProduct().getName());
 
 		InventorySheetDetail isd = (InventorySheetDetail) object;
 		formField.get(0).setText(isd.getProduct().getName());
@@ -123,31 +197,31 @@ public class ISRowPanel extends JPanel {
 			row.add(vff);
 		}
 
-		for(int i = 0; i < formField.size(); i++)
+		for (int i = 0; i < formField.size(); i++)
 			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
-		
+
 		row.setOpaque(true);
-		// row.setBorder(BorderFactory.createEtchedBorder());
-		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+				Color.LIGHT_GRAY));
 		add(row);
 
 	}
 
-	private void drawSalesRow() {
+	private void drawDiscountRow() {
 
-		Sales sales = (Sales) object;
-		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate())));
-		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
-		formField.add(new ViewFormField("Baltazar, John David S."));
-		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH, 0, InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
-
-		formField.add(new ViewFormField("1560.00"));
-		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH + InventorySheetForm.ISSUED_BY_LABEL_WIDTH, 0,
-				InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
+		DiscountIssue discount = (DiscountIssue) object;
+		formField.add(new ViewFormField(DateFormatter.getInstance()
+				.getFormat(Utility.DMYHMAFormat).format(discount.getDate())));
+		formField.get(formField.size() - 1).setBounds(0, 0,
+				InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
+		
+		formField.add(new ViewFormField(discount.getAmount()+""));
+		formField.get(formField.size() - 1).setBounds(
+				InventorySheetForm.DATE_LABEL_WIDTH, 0,
+				102, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
-			// System.out.println("formfield size: "+formField.size()+
-			// " formField.get(i).getX(): "+formField.get(i).getX());
+			
 			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
 			formField.get(i).addMouseListener(new MouseAdapter() {
 
@@ -207,7 +281,9 @@ public class ISRowPanel extends JPanel {
 
 				if (!field.getText().equals("")) {
 					if (componentCount != moneyString.length - 1)
-						totalLabel.setText("" + Integer.parseInt(field.getText()) * Integer.parseInt(moneyString[componentCount]));
+						totalLabel.setText(""
+								+ Integer.parseInt(field.getText())
+								* Integer.parseInt(moneyString[componentCount]));
 					else
 						totalLabel.setText(field.getText());
 				} else
