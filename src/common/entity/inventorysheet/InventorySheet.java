@@ -447,6 +447,26 @@ public class InventorySheet implements InventorySheetManager {
 	}
 
 	@Override
+	public double getOverallDeposits() {
+		return 0;
+	}
+
+	@Override
+	public double getPreviousCashOnHand() {
+		return 0;
+	}
+
+	@Override
+	public double getTotalAssets() {
+		return 0;
+	}
+
+	@Override
+	public double getTotalLiabilities() {
+		return 0;
+	}
+
+	@Override
 	public double getActualCashOnHand() {
 		return 0;
 	}

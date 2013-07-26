@@ -20,15 +20,22 @@ import util.DateFormatter;
 import util.Utility;
 import util.Values;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.InventorySheetDetail;
+import common.entity.pullout.PullOut;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 
 public class ISRowPanel extends JPanel {
 
-	private String[] moneyString = { "1000", "500", "200", "100", "50", "20",
-			"coins" };
+	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins" };
 	private JTextField field;
 	private JPanel row;
 	private JPanel panel = new JPanel();
@@ -66,8 +73,7 @@ public class ISRowPanel extends JPanel {
 		else if (table == Values.OTHERS)
 			setBounds(0, y, panel.getWidth(), ROW_HEIGHT);
 		else
-			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH,
-					ROW_HEIGHT);
+			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH, ROW_HEIGHT);
 	}
 
 	private void selectTable() {
@@ -80,26 +86,71 @@ public class ISRowPanel extends JPanel {
 
 		case Values.SALES:
 			Sales sales = (Sales) object;
-			
-			fillRow(sales,
-					DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat)
-							.format(sales.getDate()), sales.getCashier()
-							.getFirstPlusLastName(), sales.getSalesAmount()
-							+ "");
+
+			fillRow(sales, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()), sales.getCashier()
+					.getFirstPlusLastName(), String.format("%.2f", sales.getSalesAmount()));
 			break;
-			
+
 		case Values.DELIVERY:
 			Delivery del = (Delivery) object;
-			
-			fillRow(del,
-					DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat)
-							.format(del.getDate()), del.getReceivedBy()
-							.getFirstPlusLastName(), del.getDeliveryAmount()
-							+ "");
+
+			fillRow(del, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(del.getDate()), del.getReceivedBy().getFirstPlusLastName(),
+					String.format("%.2f", del.getDeliveryAmount()));
 			break;
-			
+
+		case Values.ACCOUNT_RECEIVABLES:
+
+			AccountReceivable ar = (AccountReceivable) object;
+			fillRow(ar, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ar.getDate()), ar.getCustomer().getFirstPlusLastName(),
+					String.format("%.2f", ar.getAccountReceivablesAmount()));
+			break;
+
+		case Values.AR_PAYMENTS:
+
+			ARPayment arp = (ARPayment) object;
+			fillRow(arp, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arp.getDate()), arp.getIssuedBy().getFirstPlusLastName(),
+					String.format("%.2f", arp.getAmount()));
+			break;
+
+		case Values.CA_PAYMENTS:
+			CAPayment cap = (CAPayment) object;
+			fillRow(cap, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cap.getDate()), cap.getIssuedBy().getFirstPlusLastName(),
+					String.format("%.2f", cap.getAmount()));
+			break;
+
+		case Values.PULLOUT:
+			PullOut po = (PullOut) object;
+			fillRow(po, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(po.getDate()), po.getIssuedBy().getFirstPlusLastName(),
+					String.format("%.2f", po.getPulloutAmount()));
+			break;
+
+		case Values.EXPENSES:
+			DailyExpenses de = (DailyExpenses) object;
+			fillRow(de, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(de.getDate()), de.getExpenseType().getName(),
+					String.format("%.2f", de.getDailyExpensesAmount()));
+			break;
+
+		case Values.CASH_ADVANCE:
+			CashAdvance ca = (CashAdvance) object;
+			fillRow(ca, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ca.getDate()), ca.getEmployee().getFirstPlusLastName(),
+					String.format("%.2f", ca.getAmount()));
+			break;
+
 		case Values.DISCOUNTS:
 			drawDiscountRow();
+			break;
+
+		case Values.SALARY:
+			SalaryRelease sr = (SalaryRelease) object;
+			fillRow(sr, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sr.getDate()), sr.getIssuedFor().getFirstPlusLastName(),
+					String.format("%.2f", sr.getNetAmount()));
+			break;
+
+		case Values.DEPOSITS:
+
+			Deposit d = (Deposit) object;
+			fillRow(d, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate()), d.getBankAccount().getBank().getName(),
+					String.format("%.2f", d.getAmount()));
 			break;
 
 		default:
@@ -109,21 +160,15 @@ public class ISRowPanel extends JPanel {
 
 	}
 
-	private void fillRow(Object object, String column1, String column2,
-			String column3) {
+	private void fillRow(Object object, String column1, String column2, String column3) {
 
 		formField.add(new ViewFormField(column1));
-		formField.get(formField.size() - 1).setBounds(0, 0,
-				InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
+		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
 		formField.add(new ViewFormField(column2));
-		formField.get(formField.size() - 1).setBounds(
-				InventorySheetForm.DATE_LABEL_WIDTH, 0,
-				InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
+		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH, 0, InventorySheetForm.ISSUED_BY_LABEL_WIDTH, ROW_HEIGHT);
 
 		formField.add(new ViewFormField(column3));
-		formField.get(formField.size() - 1).setBounds(
-				InventorySheetForm.DATE_LABEL_WIDTH
-						+ InventorySheetForm.ISSUED_BY_LABEL_WIDTH, 0,
+		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH + InventorySheetForm.ISSUED_BY_LABEL_WIDTH, 0,
 				InventorySheetForm.GROSS_LABEL_WIDTH, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
@@ -160,18 +205,14 @@ public class ISRowPanel extends JPanel {
 	private void drawProductInventory() {
 		ROW_HEIGHT = 35;
 		formField.add(new ViewFormField("PELLETS"));
-		formField.get(formField.size() - 1).setBounds(0, 0,
-				InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
-		for (int i = 1, x = formField.get(0).getX()
-				+ formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
+		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
+		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
 			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(0 + x, 1,
-					InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
+			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
 		}
 		for (int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 3, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL + 1; i++, x += InventorySheetForm.SALES_KG_WIDTH) {
 			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(999 + x, 1,
-					InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
+			formField.get(i).setBounds(999 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
 		}
 
 		InventorySheetDetail isd = (InventorySheetDetail) object;
@@ -201,8 +242,7 @@ public class ISRowPanel extends JPanel {
 			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
 
 		row.setOpaque(true);
-		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-				Color.LIGHT_GRAY));
+		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 		add(row);
 
 	}
@@ -210,18 +250,14 @@ public class ISRowPanel extends JPanel {
 	private void drawDiscountRow() {
 
 		DiscountIssue discount = (DiscountIssue) object;
-		formField.add(new ViewFormField(DateFormatter.getInstance()
-				.getFormat(Utility.DMYHMAFormat).format(discount.getDate())));
-		formField.get(formField.size() - 1).setBounds(0, 0,
-				InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
-		
-		formField.add(new ViewFormField(discount.getAmount()+""));
-		formField.get(formField.size() - 1).setBounds(
-				InventorySheetForm.DATE_LABEL_WIDTH, 0,
-				102, ROW_HEIGHT);
+		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discount.getDate())));
+		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
+
+		formField.add(new ViewFormField(String.format("%.2f", discount.getAmount())));
+		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH, 0, 102, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
-			
+
 			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
 			formField.get(i).addMouseListener(new MouseAdapter() {
 
@@ -256,10 +292,10 @@ public class ISRowPanel extends JPanel {
 
 		JLabel money, x, eq;
 
-		field = new JTextField();
+		field = new JTextField("0");
 		field.setHorizontalAlignment(JTextField.CENTER);
 
-		totalLabel = new JLabel();
+		totalLabel = new JLabel("0");
 		totalLabel.setHorizontalAlignment(JLabel.CENTER);
 		totalLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 
@@ -281,9 +317,7 @@ public class ISRowPanel extends JPanel {
 
 				if (!field.getText().equals("")) {
 					if (componentCount != moneyString.length - 1)
-						totalLabel.setText(""
-								+ Integer.parseInt(field.getText())
-								* Integer.parseInt(moneyString[componentCount]));
+						totalLabel.setText("" + Integer.parseInt(field.getText()) * Integer.parseInt(moneyString[componentCount]));
 					else
 						totalLabel.setText(field.getText());
 				} else
