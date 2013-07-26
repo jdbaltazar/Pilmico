@@ -18,6 +18,7 @@ import net.java.balloontip.utils.ToolTipUtils;
 public class ViewFormField extends JLabel{
 	
 	private String label;
+	private BalloonTip balloonTip;
 	
 	public ViewFormField(String label){
 		super(label);
@@ -35,7 +36,8 @@ public class ViewFormField extends JLabel{
 //		MinimalBalloonStyle style  = new MinimalBalloonStyle(Color.blue, 5);
 	//	BalloonTip = new Ball
 		
-		final BalloonTip balloonTip = new BalloonTip(
+//		BalloonTip sdas = new Ball
+		balloonTip = new BalloonTip(
 				this,
 				new JLabel(this.getText()),
 				style,

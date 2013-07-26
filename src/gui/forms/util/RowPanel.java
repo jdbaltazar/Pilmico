@@ -37,8 +37,9 @@ public class RowPanel extends JPanel {
 	private JComboBox productsCombo, feesCombo, expensesCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
 	private JTextField productsComboField, expensesComboField, feesComboField;
-	private JNumericField priceSack, priceKG, quantitySack, quantityKG, amountOfExpense, feeAmount;
+	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount;
 
+	private ViewFormField priceSack, priceKG;
 	private JButton deleteRow, addRow;
 	private JPanel row;
 	private FormField bankAccount;
@@ -163,8 +164,9 @@ public class RowPanel extends JPanel {
 
 		quantitySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		quantityKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		priceSack = new JNumericField(10, JNumericField.DECIMAL, true);
-		priceKG = new JNumericField(10, JNumericField.DECIMAL, true);
+		
+		priceKG = new ViewFormField("");
+		priceSack = new ViewFormField("");
 
 		feeAmount = new JNumericField(10, JNumericField.DECIMAL, true);
 
@@ -174,11 +176,6 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setPrecision(2);
 		quantityKG.setPrecision(2);
-		priceSack.setPrecision(2);
-		priceKG.setPrecision(2);
-
-		priceSack.setEditable(false);
-		priceKG.setEditable(false);
 
 		quantitySack.setText("0");
 		quantityKG.setText("0");
@@ -349,6 +346,7 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setBounds(10, 7, 52, 20);
 		quantityKG.setBounds(87, 7, 52, 20);
+		
 		priceSack.setBounds(167, 7, 57, 20);
 		priceKG.setBounds(249, 7, 57, 20);
 

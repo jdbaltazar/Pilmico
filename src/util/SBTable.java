@@ -47,14 +47,33 @@ public class SBTable extends JTable implements MouseListener {
 	private TableRowSorter<MyTableModel> sorter;
 	private MyTableModel model;
 	private List objects;
+	private Object[][] data;
+	private String[] header;
 
 	public SBTable(Object[][] data, String[] header, List objects) {
 		// TODO Auto-generated constructor stub
 
+		this.data = data;
+		this.header = header;
 		this.objects = objects;
 		// gradientTableHeader.setColumnModel(this.getColumnModel());
 		// setTableHeader(gradientTableHeader);
 
+		init();
+		addMouseListener(this);
+	}
+	
+	public SBTable(Object[][] data, String[] header) {
+		// TODO Auto-generated constructor stub
+
+		this.data = data;
+		this.header = header;
+
+		init();
+	}
+
+	private void init() {
+		// TODO Auto-generated method stub
 		getTableHeader().setDefaultRenderer(new MyCellRenderer());
 
 		model = new MyTableModel(data, header);
@@ -71,40 +90,7 @@ public class SBTable extends JTable implements MouseListener {
 		sorter = new TableRowSorter<MyTableModel>(model);
 		setRowSorter(sorter);
 
-		// setButtonGroup();
-
-		/*
-		 * getSelectionModel().addListSelectionListener( new
-		 * ListSelectionListener() { public void valueChanged(ListSelectionEvent
-		 * e) { // System.out.println(getSelectedRow()+"sbtable");
-		 * 
-		 * } });
-		 */
-
-		// addMouseListener(new MouseAdapter() {
-		// public void mouseClicked(MouseEvent e) {
-		// if (e.getClickCount() == 2) {
-		// JTable target = (JTable) e.getSource();
-		// int row = target.getSelectedRow();
-		// int column = target.getSelectedColumn();
-		//
-		// System.out.println("id: " + row);
-		// // do some action
-		//
-		// // System.out.println(getValueAt(row, column));
-		// // new EditItemPopup().setVisible(true);
-		// Values.editPanel.startAnimation();
-		// Values.editPanel.showComponent(objects.get(row));
-		//
-		// System.out.println("clicked!");
-		// }
-		// }
-		// });
-
-		addMouseListener(this);
-
 		setDefaultRenderer(Object.class, renderer);
-
 	}
 
 	public List getObjects() {

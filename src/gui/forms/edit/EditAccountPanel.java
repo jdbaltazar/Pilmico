@@ -1,5 +1,6 @@
 package gui.forms.edit;
 
+import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
@@ -14,8 +15,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import util.EditFormPanel;
 import util.ErrorLabel;
+import util.SBButton;
 import util.Values;
 import util.soy.SoyButton;
 import util.soy.SoyPanel;
@@ -30,7 +36,11 @@ public class EditAccountPanel extends EditFormPanel {
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 	private SoyButton edit;
 	private int num = Values.accountFormLabel.length;
-	private FormDropdown acctType, employee;
+	private FormDropdown acctType;
+	private DefaultEntryLabel employee;
+	
+	private JLabel status;
+	private SBButton deactivate;
 
 	private ErrorLabel error;
 
@@ -55,8 +65,11 @@ public class EditAccountPanel extends EditFormPanel {
 	private void init() {
 		setLayout(null);
 		acctType = new FormDropdown(true);
-		employee = new FormDropdown(true);
+		employee = new DefaultEntryLabel("", true);
 
+		status = new JLabel(new ImageIcon("images/active.png"));
+		deactivate = new SBButton("deactivate.png", "deactivate2.png", "Deactivate Account");
+		
 	/*	try {
 			List<AccountType> accountTypes = Manager.accountManager.getAccountTypes();
 			acctType = new FormDropdown(accountTypes.toArray());
@@ -71,17 +84,24 @@ public class EditAccountPanel extends EditFormPanel {
 		edit = new SoyButton("Edit");
 
 		error = new ErrorLabel();
+		
+		status.setBounds(200, 20, 32, 32);
+		status.setToolTipText("Active");
 
+		
 		int labelsCtr = 0, fieldCtr = 0;
 
 		for (int i = 0, x = 290, y = -5; i < num; i++, y += 73) {
 
-			if (i != 1 && i!=0) {
+			if (i != 0 && i != 1) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Values.accountFormLabel[i]));
 
 				fields.get(fieldCtr).setBounds(x, 65 + y, 200, 25);
 				labels.get(labelsCtr).setBounds(x, 50 + y, 100, 15);
+				
+				if(i == 2)
+					deactivate.setBounds(x + 67, 46 + y, 16, 16);
 
 				fieldCtr++;
 				labelsCtr++;
@@ -117,7 +137,7 @@ public class EditAccountPanel extends EditFormPanel {
 		for (int i = 0; i < labels.size(); i++) {
 			add(labels.get(i));
 		}
-
+		
 		/*try {
 
 			fields.get(0).setText(account.getUsername());
@@ -152,6 +172,9 @@ public class EditAccountPanel extends EditFormPanel {
 		add(acctType);
 		add(employee);
 		add(edit);
+		
+		add(status);
+		add(deactivate);
 
 		add(error);
 
