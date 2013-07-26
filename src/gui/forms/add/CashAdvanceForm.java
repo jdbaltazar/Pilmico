@@ -66,7 +66,12 @@ public class CashAdvanceForm extends SimplePanel {
 	public CashAdvanceForm() {
 		super("Add Cash Advance");
 		addComponents();
+		fillEntries();
 
+	}
+
+	private void fillEntries() {
+		fields.get(0).setText("0");
 	}
 
 	private void addComponents() {

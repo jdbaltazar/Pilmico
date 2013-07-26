@@ -41,6 +41,7 @@ import net.java.balloontip.utils.TimingUtils;
 import net.java.balloontip.utils.ToolTipUtils;
 
 import common.entity.product.Category;
+import common.manager.Manager;
 
 import util.SBButton;
 import util.SimpleTipPositioner;
@@ -54,7 +55,7 @@ public class TopPanel extends SoyPanel {
 	private JButton close, minimize, close2;
 	private JLabel totalSales, salesLabel;
 	public static FormField searchField;
-	
+
 	public SBButton store_info, tools;
 	private BalloonTip balloonTip;
 
@@ -83,89 +84,83 @@ public class TopPanel extends SoyPanel {
 		tools = new SBButton("tools_3.png", "tools_3.png", "Backup / Recover");
 
 		try {
-			totalSales = new JLabel("P 24560.50" );
+			totalSales = new JLabel("P 24560.50");
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		totalSales.setForeground(new Color(107,142,35));
+		totalSales.setForeground(new Color(107, 142, 35));
 		totalSales.setHorizontalAlignment(SwingConstants.LEFT);
 		totalSales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		salesLabel = new JLabel("Sales of the day:");
-		salesLabel.setForeground(new Color(25,25,112));
+		salesLabel.setForeground(new Color(25, 25, 112));
 		salesLabel.setFont(new Font("Harabara", Font.PLAIN, 16));
 
-		/*try {
-			image = (BufferedImage) ImageIO.read(new File("images/header.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { image = (BufferedImage) ImageIO.read(new
+		 * File("images/header.png")); } catch (IOException e) {
+		 * e.printStackTrace(); }
+		 */
 	}
 
 	private void addDashPanel() {
-		
+
 		close2.setBounds(72, 2, 16, 16);
-		
-			balloonTip = new BalloonTip(
-					tools,
-					new DatabaseToolPanel(),
-					new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.LIGHT_GRAY),//, Color.decode("#B2CCCC")),
-					BalloonTip.Orientation.LEFT_ABOVE,
-					BalloonTip.AttachLocation.SOUTH,
-					7, 12,
-					false
-				);
-		
+
+		balloonTip = new BalloonTip(tools, new DatabaseToolPanel(), new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.LIGHT_GRAY),// ,
+																																															// Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.SOUTH, 7, 12, false);
+
 		balloonTip.setPadding(0);
 		balloonTip.setVisible(false);
 		balloonTip.setOpacity(0.95f);
-		
-		
-//		balloonTip.getCloseButton().setSize(16, 16);
+
+		// balloonTip.getCloseButton().setSize(16, 16);
 
 		close.setBounds(800 - 32, 0, 32, 32);
 		minimize.setBounds(800 - 64, 0, 32, 32);
 		store_info.setBounds(32, logoY, 220, 80);
 		tools.setBounds(5, 5, 16, 16);
-		
+
 		store_info.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				Values.mainFrame.dimScreen(true);
-				new EditStoreInfoPopup().setVisible(true);
+				if (Manager.loggedInAccount != null) {
+					Values.mainFrame.dimScreen(true);
+					new EditStoreInfoPopup().setVisible(true);
+				}
 			}
 		});
-		
+
 		tools.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
-				balloonTip.setVisible(!balloonTip.isVisible());
+
+				if (Manager.loggedInAccount == null) {
+					balloonTip.setVisible(!balloonTip.isVisible());
+				}
 			}
 		});
-		
-		
 
 		close.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
-				/*int option = JOptionPane.showConfirmDialog(
-					    null,
-					    "Are you sure you want to exit?",
-					    "Confirm",
-					    JOptionPane.YES_NO_OPTION);
-				
-				if(option == JOptionPane.YES_OPTION){*/
-					Values.mainFrame.closeFrame();
-//				}
+
+				/*
+				 * int option = JOptionPane.showConfirmDialog( null,
+				 * "Are you sure you want to exit?", "Confirm",
+				 * JOptionPane.YES_NO_OPTION);
+				 * 
+				 * if(option == JOptionPane.YES_OPTION){
+				 */
+				Values.mainFrame.closeFrame();
+				// }
 			}
 		});
 
@@ -188,16 +183,17 @@ public class TopPanel extends SoyPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-//		gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0, getHeight(), new Color(5, 5, 5));
-		
+		// gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0,
+		// getHeight(), new Color(5, 5, 5));
+
 		gradient = new GradientPaint(0, 0, Values.gradient1, 0, getHeight(), Values.gradient2);
 		g2.setPaint(gradient);
 		g2.fillRect(0, 0, getWidth(), getHeight() - 1);
 
-		//g2.setColor(new Color(50, 50, 50));
+		// g2.setColor(new Color(50, 50, 50));
 		g2.fillRect(0, getHeight() - 1, getWidth(), 1);
 
-	//	drawLogo(g2);
+		// drawLogo(g2);
 
 		paintChildren(g2);
 
@@ -217,7 +213,7 @@ public class TopPanel extends SoyPanel {
 
 		add(store_info);
 		add(tools);
-		
+
 		add(close);
 		add(minimize);
 
@@ -228,7 +224,7 @@ public class TopPanel extends SoyPanel {
 
 	public void refreshStockCost() {
 		try {
-			totalSales.setText("P " );
+			totalSales.setText("P ");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -250,6 +246,10 @@ public class TopPanel extends SoyPanel {
 
 	public void setLogoY(int logoY) {
 		this.logoY = logoY;
+	}
+
+	public BalloonTip getBalloonTip() {
+		return balloonTip;
 	}
 
 }

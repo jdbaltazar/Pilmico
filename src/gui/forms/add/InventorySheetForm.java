@@ -992,11 +992,28 @@ public class InventorySheetForm extends SimplePanel {
 		fillSalaryRelease(salaryReleases);
 		fillDeposit(deposits);
 
+		actualCashCount.setText(String.format("%.2f", new Double(0)));
+
 		computationLabel.get(0).setText(String.format("%.2f", inventorySheet.getPreviousCashOnHand()));
 		computationLabel.get(1).setText(String.format("%.2f", inventorySheet.getTotalAssets()));
 		computationLabel.get(2).setText(String.format("%.2f", inventorySheet.getTotalLiabilities()));
 		computationLabel.get(3).setText(String.format("%.2f", inventorySheet.getActualCashOnHand()));
 
+		summaryValues.get(0).setText(String.format("%.2f", inventorySheet.getActualCashOnHand()));
+		summaryValues.get(1).setText(String.format("%.2f", inventorySheet.getActualCashCount()));
+
+		if (inventorySheet.getShortAmount() > 0) {
+			summary3Label.setText("SHORT");
+			summaryValues.get(2).setText(String.format("%.2f", inventorySheet.getShortAmount()));
+		} else {
+			if (inventorySheet.getOverAmount() > 0) {
+				summary3Label.setText("OVER");
+				summaryValues.get(2).setText(String.format("%.2f", inventorySheet.getOverAmount()));
+			} else {
+				summary3Label.setText("OVER/SHORT");
+				summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
+			}
+		}
 	}
 
 	private void alternateRows(ArrayList<ISRowPanel> rowPanel) {

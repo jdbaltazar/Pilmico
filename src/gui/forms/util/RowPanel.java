@@ -153,7 +153,7 @@ public class RowPanel extends JPanel {
 		feesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		feesCombo.setEditable(true);
 		feesComboField = (JTextField) feesCombo.getEditor().getEditorComponent();
-		feesComboField.setText("0");
+		feesComboField.setText("");
 		feesComboField.addKeyListener(new ComboKeyHandler(feesCombo));
 
 		expensesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
@@ -164,11 +164,12 @@ public class RowPanel extends JPanel {
 
 		quantitySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		quantityKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		
+
 		priceKG = new ViewFormField("");
 		priceSack = new ViewFormField("");
 
 		feeAmount = new JNumericField(10, JNumericField.DECIMAL, true);
+		feeAmount.setText("0");
 
 		amountOfExpense = new JNumericField(10, JNumericField.DECIMAL, true);
 		amountOfExpense.setPrecision(2);
@@ -346,7 +347,7 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setBounds(10, 7, 52, 20);
 		quantityKG.setBounds(87, 7, 52, 20);
-		
+
 		priceSack.setBounds(167, 7, 57, 20);
 		priceKG.setBounds(249, 7, 57, 20);
 

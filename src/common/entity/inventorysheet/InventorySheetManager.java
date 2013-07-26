@@ -173,7 +173,7 @@ public interface InventorySheetManager {
 
 	// over amount
 
-	public double getOverAmount();
+	public double getOverAmount(); 
 
 	// short amount
 

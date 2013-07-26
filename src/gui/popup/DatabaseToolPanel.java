@@ -12,6 +12,10 @@ import net.java.balloontip.styles.RoundedBalloonStyle;
 
 public class DatabaseToolPanel extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3477930157370335456L;
 	private SBButton close, backup, recover;
 	private JPanel panel;
 	
