@@ -3,6 +3,7 @@ package gui.forms.edit;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.forms.util.HistoryTable;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
@@ -35,6 +36,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
@@ -80,11 +84,12 @@ public class ViewARForm extends EditFormPanel {
 	private ErrorLabel error;
 	private String msg = "";
 
-	private SBButton voidBtn, payBtn;
+	private SBButton voidBtn, payBtn, paymentHistory;
 
 	private JLabel status;
 
 	private AccountReceivable accountReceivable;
+	private BalloonTip balloonTip;
 
 	public ViewARForm(AccountReceivable accountReceivable) {
 		// TODO Auto-generated constructor stub
@@ -93,6 +98,8 @@ public class ViewARForm extends EditFormPanel {
 		init();
 		addComponents();
 		fillEntries();
+		
+		Values.viewARForm = this;
 	};
 
 	private void init() {
@@ -104,6 +111,22 @@ public class ViewARForm extends EditFormPanel {
 		scrollPane = new JScrollPane();
 
 		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
+		paymentHistory = new SBButton("payment_history.png", "payment_history2.png", "Payment History");
+		
+		paymentHistory.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				initBalloonTip();
+				
+				balloonTip.setVisible(true);
+				paymentHistory.setEnabled(false);
+			
+			}
+
+		});
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
@@ -145,13 +168,15 @@ public class ViewARForm extends EditFormPanel {
 		productsPane.getViewport().setOpaque(false);
 
 		dateLabel.setBounds(20, 20, 70, 20);// 15x,12y//50
-		date.setBounds(95, 20, 160, 20);
+		date.setBounds(95, 20, 180, 20);
 
 		issuedByLabel.setBounds(305, 20, 70, 20);
 		issuedBy.setBounds(380, 20, 200, 20);
 
 		customerLabel.setBounds(20, 50, 70, 20);
-		customer.setBounds(95, 48, 200, 20);
+		customer.setBounds(95, 48, 180, 20);
+		
+		paymentHistory.setBounds(310, 50, 16, 16);
 		
 		amountLabel.setBounds(305, 50, 70, 20);
 		amount.setBounds(380, 48, 80, 20);
@@ -206,6 +231,7 @@ public class ViewARForm extends EditFormPanel {
 		panel.add(balanceLabel);
 		panel.add(balance);
 
+		panel.add(paymentHistory);
 		panel.add(amountLabel);
 		panel.add(amount);
 
@@ -307,6 +333,34 @@ public class ViewARForm extends EditFormPanel {
 
 	}
 
+	private void initBalloonTip(){
+		
+		String[] employmentHeaders = { "Date", "Amount Paid" };
+		String[][] entries = { { "21 Jun 2013 10:47 AM", "1800.00" }};
+		
+		balloonTip = new BalloonTip(
+				paymentHistory,
+				new HistoryTable(employmentHeaders, entries),
+				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.RIGHT_BELOW,
+				BalloonTip.AttachLocation.WEST,
+				7, 12,
+				false
+			);
+		balloonTip.setPadding(5);
+		balloonTip.setVisible(false);
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
+		
+		balloonTip.getCloseButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				paymentHistory.setEnabled(true);
+			}
+		});
+	}
+	
 	private void fillEntries() {
 
 		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
@@ -349,6 +403,11 @@ public class ViewARForm extends EditFormPanel {
 		// // productsPanel.revalidate();
 		// }
 
+	}
+	
+	public void closeBalloonPanel(){
+		if(balloonTip!=null)
+			balloonTip.setVisible(false);
 	}
 
 }

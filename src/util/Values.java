@@ -7,7 +7,9 @@ import gui.TopPanel;
 import gui.forms.add.AccountForm;
 import gui.forms.add.AccountReceivablesForm;
 import gui.forms.add.BankForm;
+import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.DeliveryForm;
+import gui.forms.add.DiscountForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.ProductForm;
 import gui.forms.add.PulloutForm;
@@ -15,10 +17,13 @@ import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
+import gui.forms.add.SupplierForm;
 import gui.forms.edit.EditEmployeeForm;
 import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSalesOrder;
 import gui.forms.edit.EditStockPurchase;
+import gui.forms.edit.ViewARForm;
+import gui.forms.edit.ViewCAForm;
 import gui.list.AccountTypeList;
 import gui.list.CategoryList;
 import gui.list.ConditionList;
@@ -65,9 +70,14 @@ public class Values {
 	public static ExpensesForm expensesForm;
 	public static SalaryReleaseForm salaryReleaseForm;
 	public static BankForm bankForm;
+	public static SupplierForm supplierForm;
+	public static CashAdvanceForm cashAdvanceForm;
+	public static DiscountForm discountForm;
 	
 	public static EditProductPanel editProductPanel;
 	public static EditEmployeeForm editEmployeeForm;
+	public static ViewCAForm viewCAForm;
+	public static ViewARForm viewARForm;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;

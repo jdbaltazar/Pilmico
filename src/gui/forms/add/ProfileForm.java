@@ -86,6 +86,11 @@ public class ProfileForm extends SimplePanel {
 					Values.centerPanel.changeTable(Values.CUSTOMERS);
 					new SuccessPopup("Add").setVisible(true);
 					clearFields();
+					
+					Values.salesForm.refreshCustomer(true);
+					Values.supplierForm.refreshCustomer(true);
+					Values.accountReceivablesForm.refreshCustomer(true);
+					Values.discountForm.refreshDropdown(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

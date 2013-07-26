@@ -145,10 +145,16 @@ public class EditPanel extends SoyPanel implements Runnable {
 	private void hidePanel() {
 		
 		if(Values.editProductPanel != null)
-			Values.editProductPanel.closeBubblePanel();
+			Values.editProductPanel.closeBalloonPanel();
 		
 		if(Values.editEmployeeForm != null)
 			Values.editEmployeeForm.closeBalloonPanel();
+		
+		if(Values.viewCAForm != null)
+			Values.viewCAForm.closeBalloonPanel();
+		
+		if(Values.viewARForm != null)
+			Values.viewARForm.closeBalloonPanel();
 		
 		if (currWidth <= minWidth)
 			isRunning = false;

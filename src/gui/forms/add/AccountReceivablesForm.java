@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.forms.util.ViewFormField;
 import gui.popup.SuccessPopup;
 
 import java.awt.Color;
@@ -70,8 +71,8 @@ public class AccountReceivablesForm extends SimplePanel {
 	private ImageIcon icon;
 	private SoyButton save;
 	private JLabel issuedBy;
-	private MainFormField balance;
-	private MainFormLabel issuedByLabel, balanceLabel, dateLabel, customerLabel;
+	private MainFormLabel issuedByLabel, amountLabel, dateLabel, customerLabel;
+	private ViewFormField amount;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -125,18 +126,18 @@ public class AccountReceivablesForm extends SimplePanel {
 		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
 
 		issuedByLabel = new MainFormLabel("Issued by:");
-		balanceLabel = new MainFormLabel("Balance:");
+		amountLabel = new MainFormLabel("Amount:");
 		dateLabel = new MainFormLabel("Date:");
+		
+		amount = new ViewFormField("");
 
-		customerLabel = new MainFormLabel("Customer:");
+		customerLabel = new MainFormLabel("*Customer:");
 
 		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
 		issuedBy.setOpaque(false);
 		issuedBy.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		issuedBy.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		issuedBy.setHorizontalAlignment(JLabel.CENTER);
-
-		balance = new MainFormField(200);
 
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
@@ -145,16 +146,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 		
-		customerCombo = new JComboBox();
-		refreshCustomer();
-		customerCombo.setUI(ColorArrowUI.createUI(this));
-		customerCombo.setEditable(true);
-		customerCombo.setSelectedIndex(-1);
-		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
-		customerComboField.setText("");
-		customerComboField.setOpaque(false);
-		customerComboField.setBorder(BorderFactory.createEmptyBorder());
-		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
+		refreshCustomer(false);
 
 		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
@@ -171,18 +163,18 @@ public class AccountReceivablesForm extends SimplePanel {
 		productsPane.setOpaque(false);
 		productsPane.getViewport().setOpaque(false);
 
-		dateLabel.setBounds(40, 50, 40, 20);// 15x,12y
-		date.setBounds(85, 50, 150, 20);
+		dateLabel.setBounds(75, 50, 40, 20);// 15x,12y //40
+		date.setBounds(115, 50, 180, 20);//85
 
-		issuedByLabel.setBounds(300, 50, 70, 20);
-		issuedBy.setBounds(375, 50, 180, 20);
+		issuedByLabel.setBounds(350, 50, 70, 20);
+		issuedBy.setBounds(425, 50, 170, 20);
 
 		customerLabel.setBounds(40, 80, 70, 20);
-		customerCombo.setBounds(115, 78, 200, 20);
-		fwdCustomer.setBounds(318, 82, 16, 16);
+		
+		fwdCustomer.setBounds(298, 82, 16, 16);
 
-		balanceLabel.setBounds(350, 80, 60, 20);
-		balance.setBounds(415, 78, 100, 20);
+		amountLabel.setBounds(359, 80, 60, 20);
+		amount.setBounds(424, 78, 170, 20);
 
 		addRow.setBounds(32, LABEL_Y + 5, 16, 16);
 
@@ -224,8 +216,8 @@ public class AccountReceivablesForm extends SimplePanel {
 		panel.add(customerLabel);
 		panel.add(customerCombo);
 
-//		panel.add(balanceLabel);
-//		panel.add(balance);
+		panel.add(amountLabel);
+		panel.add(amount);
 
 		panel.add(addRow);
 
@@ -360,18 +352,33 @@ public class AccountReceivablesForm extends SimplePanel {
 		date.setValue(new Date());
 	}
 
-	public void refreshCustomer() {
+	public void refreshCustomer(boolean remove) {
+		
+		if(remove)
+			panel.remove(customerCombo);
 
 		try {
 			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-
-			customerCombo.setModel(model);
+			 customerCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		customerCombo.setUI(ColorArrowUI.createUI(this));
+		customerCombo.setEditable(true);
+		customerCombo.setSelectedIndex(-1);
+		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
+		customerComboField.setText("");
+		customerComboField.setOpaque(false);
+		customerComboField.setBorder(BorderFactory.createEmptyBorder());
+		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
 		customerCombo.setSelectedIndex(-1);
+		
+		customerCombo.setBounds(115, 78, 180, 20);
+		
+		panel.add(customerCombo);
 	}
 
 }

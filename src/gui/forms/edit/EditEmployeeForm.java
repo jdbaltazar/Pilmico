@@ -305,8 +305,8 @@ public class EditEmployeeForm extends EditFormPanel {
 				employmentHistory,
 				new HistoryTable(employmentHeaders, entries),
 				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
-				BalloonTip.Orientation.LEFT_BELOW,
-				BalloonTip.AttachLocation.SOUTH,
+				BalloonTip.Orientation.RIGHT_ABOVE,
+				BalloonTip.AttachLocation.WEST,
 				7, 12,
 				false
 			);
@@ -343,6 +343,7 @@ public class EditEmployeeForm extends EditFormPanel {
 	}
 	
 	public void closeBalloonPanel(){
-		balloonTip.setVisible(false);
+		if(balloonTip!=null)
+			balloonTip.setVisible(false);
 	}
 }

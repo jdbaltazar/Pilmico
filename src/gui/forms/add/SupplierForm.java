@@ -48,6 +48,8 @@ public class SupplierForm extends SimplePanel {
 	public SupplierForm() {
 		super("Add Supplier");
 		addComponents();
+		
+		Values.supplierForm = this;
 	}
 
 	private void addComponents() {
@@ -69,17 +71,7 @@ public class SupplierForm extends SimplePanel {
 		
 		contactPerson = new DropdownLabel("Contact Person");
 		
-		personCombo = new JComboBox();
-
-		refreshCustomer();
-		
-		personCombo.setSelectedIndex(-1);
-
-		personCombo.setEditable(true);
-		personField = (JTextField) personCombo.getEditor()
-				.getEditorComponent();
-		personField.setText("");
-		personField.addKeyListener(new ComboKeyHandler(personCombo));
+		refreshCustomer(false);
 
 		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 70) {
 			
@@ -97,7 +89,6 @@ public class SupplierForm extends SimplePanel {
 			if(i == 4){
 				fwd.setBounds(x1 + 78, 49 + y, 16, 16);
 				contactPerson.setBounds(x1, 60 + y - 7, 100, 11);
-				personCombo.setBounds(x1, 65 + y, 170, 20);
 			}
 
 			add(fields.get(i));
@@ -166,23 +157,38 @@ public class SupplierForm extends SimplePanel {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
 		
-		refreshCustomer();
+		refreshCustomer(true);
 
 		error.setText("");
 	}
 
-	public void refreshCustomer() {
+	public void refreshCustomer(boolean remove) {
+		
+		if(remove)
+			remove(personCombo);
 		
 		try {
 			 model = new
 			 DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			personCombo.setModel(model);
+			 personCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		personCombo.setSelectedIndex(-1);
+
+		personCombo.setEditable(true);
+		personField = (JTextField) personCombo.getEditor()
+				.getEditorComponent();
+		personField.setText("");
+		personField.addKeyListener(new ComboKeyHandler(personCombo));
+
+		personCombo.setSelectedIndex(-1);
+		
+		personCombo.setBounds(215, 135, 170, 20);
+		
+		add(personCombo);
 
 	}
 }

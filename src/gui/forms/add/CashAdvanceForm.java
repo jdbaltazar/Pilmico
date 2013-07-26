@@ -67,6 +67,7 @@ public class CashAdvanceForm extends SimplePanel {
 		super("Add Cash Advance");
 		addComponents();
 
+		Values.cashAdvanceForm = this;
 	}
 
 	private void addComponents() {
