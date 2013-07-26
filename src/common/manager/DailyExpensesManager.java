@@ -37,7 +37,7 @@ public interface DailyExpensesManager {
 	public List<DailyExpenses> getInvalidDailyExpenses() throws Exception;
 
 	public List<DailyExpenses> getPendingDailyExpenses() throws Exception;
-	
+
 	public void updateDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
 
 	public void deleteDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
@@ -59,5 +59,7 @@ public interface DailyExpensesManager {
 	public void deleteExpense(Expense expense) throws Exception;
 
 	public void deleteExpense(int id) throws Exception;
+
+	public double getMostRecentAmountForExpense(int expenseId) throws Exception;
 
 }

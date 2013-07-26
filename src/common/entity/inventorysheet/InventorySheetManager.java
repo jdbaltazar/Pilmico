@@ -143,9 +143,25 @@ public interface InventorySheetManager {
 
 	public double getOverallDiscounts();
 
+	// deposits
+
+	public double getOverallDeposits();
+
 	// breakdown
 
 	public Breakdown getBreakdown();
+
+	// previous coh
+
+	public double getPreviousCashOnHand();
+
+	// assets
+
+	public double getTotalAssets();
+
+	// liabilities
+
+	public double getTotalLiabilities();
 
 	// acoh
 
@@ -157,7 +173,7 @@ public interface InventorySheetManager {
 
 	// over amount
 
-	public double getOverAmount();
+	public double getOverAmount(); 
 
 	// short amount
 

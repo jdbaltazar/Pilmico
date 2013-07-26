@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -30,11 +31,13 @@ import common.entity.product.Price;
 import common.entity.product.Product;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.FormCheckbox;
 import util.SBButton;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -47,7 +50,7 @@ public class EditProductPanel extends EditFormPanel {
 	private ArrayList<EditFormField> fields = new ArrayList<EditFormField>();
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 	private SoyButton edit;
-	
+
 	private JPanel panel;
 	private JScrollPane scrollpane;
 	private SBButton priceHistory;
@@ -57,7 +60,7 @@ public class EditProductPanel extends EditFormPanel {
 	private FormDropdown category;
 	private JCheckBox cbox1, cbox2;
 	private ErrorLabel error;
-	
+
 	private BalloonTip balloonTip;
 
 	private int y1 = 50, y2 = 35, y3 = 62;
@@ -76,20 +79,15 @@ public class EditProductPanel extends EditFormPanel {
 		this.product = product;
 		init();
 		addComponents();
-//<<<<<<< HEAD
-//		fillValues();
-		
-//=======
 		fillEntries();
 		Values.editProductPanel = this;
-//>>>>>>> refs/remotes/origin/master
 	}
 
 	private void init() {
 		// TODO Auto-generated method stub
 
 		setLayout(null);
-		
+
 		error = new ErrorLabel();
 
 		category = new FormDropdown(true);
@@ -100,25 +98,25 @@ public class EditProductPanel extends EditFormPanel {
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		
+
 		scrollpane = new JScrollPane(panel);
 		scrollpane.setOpaque(false);
 		scrollpane.getViewport().setOpaque(false);
 		scrollpane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		priceHistory = new SBButton("pricehistory.png", "pricehistory2.png", "Price History");
-		
+
 		priceHistory.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 				initBalloonTip();
-				
+
 				balloonTip.setVisible(true);
 				priceHistory.setEnabled(false);
-			
+
 			}
 
 		});
@@ -197,7 +195,7 @@ public class EditProductPanel extends EditFormPanel {
 		for (int i = 0; i < labels.size(); i++) {
 			add(labels.get(i));
 		}
-		
+
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -244,9 +242,9 @@ public class EditProductPanel extends EditFormPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		priceHistory.setBounds(20, 12, 16, 16);
-		
+
 		panel.add(priceHistory);
 		scrollpane.setBounds(750, 365, 50, 35);
 
@@ -259,27 +257,33 @@ public class EditProductPanel extends EditFormPanel {
 
 		add(error);
 	}
-	
-	private void initBalloonTip(){
-		
-		String[] priceHistoryheaders = { "Date", "Price (sack)", "Price (kg)" };
-		String[][] entries = { { "21 Jun 2013 10:47 AM", "101.50", "46.25" }};
-		
-		balloonTip = new BalloonTip(
-				priceHistory,
-				new HistoryTable(priceHistoryheaders, entries),
-				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
-				BalloonTip.Orientation.RIGHT_ABOVE,
-				BalloonTip.AttachLocation.NORTH,
-				7, 12,
-				false
-			);
+
+	private void initBalloonTip() {
+
+		String[] priceHistoryheaders = { "Updated on", "Price (sack)", "Price (kg)" };
+		List<Price> prices = product.getPriceHistory();
+
+		String[][] entries = new String[prices.size()][priceHistoryheaders.length];
+		// String[][] entries = { { "21 Jun 2013 10:47 AM", "101.50", "46.25" } };
+
+		int i = 0;
+		for (Price p : prices) {
+			entries[i][0] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(p.getDateUpdated());
+			entries[i][1] = String.format("%.2f", p.getPricePerSack());
+			entries[i][2] = String.format("%.2f", p.getPricePerKilo());
+			i++;
+		}
+
+		balloonTip = new BalloonTip(priceHistory, new HistoryTable(priceHistoryheaders, entries), new RoundedBalloonStyle(7, 7,
+				Color.decode("#F5FFFA"), Color.decode("#BDFF59")),// ,
+																					// Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.NORTH, 7, 12, false);
 		balloonTip.setPadding(5);
 		balloonTip.setVisible(false);
-		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
-		
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), false, false);
+
 		balloonTip.getCloseButton().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -298,7 +302,11 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(5).setText(String.format("%.2f", product.getDisplayInSack()));
 		fields.get(6).setText(String.format("%.2f", product.getDisplayInKilo()));
 		fields.get(7).setText(String.format("%.2f", product.getCurrentPricePerSack()));
+		fields.get(7).setToolTipText(
+				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
 		fields.get(8).setText(String.format("%.2f", product.getCurrentPricePerKilo()));
+		fields.get(8).setToolTipText(
+				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
 		fields.get(fields.size() - 1).setText(String.format("%.2f", product.getAlertOnQuantity()));
 
 		cbox1.setSelected(product.isAvailable());

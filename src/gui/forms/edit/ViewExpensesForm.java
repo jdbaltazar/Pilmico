@@ -6,10 +6,14 @@ import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,13 +68,14 @@ public class ViewExpensesForm extends EditFormPanel {
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private TableHeaderLabel amountLabel, expenseLabel;
 	private ImageIcon icon;
-	private SoyButton voidBtn;
 	private ViewFormField type, issuedBy, date;
 	private ViewFormLabel issuedByLabel, typeLabel, dateLabel;
 
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JLabel status;
+
+	private SBButton voidBtn;
 
 	private ErrorLabel error;
 
@@ -214,22 +219,22 @@ public class ViewExpensesForm extends EditFormPanel {
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
-		voidBtn = new SoyButton("Void");
 
-		error = new ErrorLabel();
-
-		voidBtn.setBounds(417, LABEL_Y + 135, 80, 30);
-
-		error.setBounds(305, 340, 200, 30);
-
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, dailyExpenses).setVisible(true);
 			}
 		});
 
-		panel.add(voidBtn);
+		error = new ErrorLabel();
+
+		error.setBounds(305, 340, 200, 30);
+
+		add(voidBtn);
 		add(error);
 
 	}

@@ -104,7 +104,7 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 				new NotesPopup().setVisible(true);
 			}
 		});
-		
+
 		updateNotes();
 
 		info = new SBButton("storeinfo1.png", "storeinfo2.png", "Store Info");
@@ -206,6 +206,11 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 			showMenuButtons(false);
 			Values.topPanel.showMenuButtons(false);
 			Values.centerPanel.logout();
+			try {
+				Manager.getInstance().logout();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		} else if (e.getSource().equals(info)) {
 			Values.mainFrame.dimScreen(true);
 			new EditStoreInfoPopup().setVisible(true);

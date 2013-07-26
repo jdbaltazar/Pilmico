@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
 import common.entity.product.Product;
 import common.entity.salary.Fee;
@@ -153,22 +154,80 @@ public class RowPanel extends JPanel {
 		feesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		feesCombo.setEditable(true);
 		feesComboField = (JTextField) feesCombo.getEditor().getEditorComponent();
-		feesComboField.setText("0");
+		feesComboField.setText("");
 		feesComboField.addKeyListener(new ComboKeyHandler(feesCombo));
+		feesCombo.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (feesCombo.getSelectedItem() != null) {
+
+					Fee fee = null;
+					try {
+						fee = (Fee) feesCombo.getSelectedItem();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (fee != null) {
+						double val = 0d;
+						try {
+							val = Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						feeAmount.setText(String.format("%.2f", val));
+					} else {
+						feeAmount.setText("0");
+					}
+				} else {
+					feeAmount.setText("0");
+				}
+			}
+		});
 
 		expensesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		expensesCombo.setEditable(true);
 		expensesComboField = (JTextField) expensesCombo.getEditor().getEditorComponent();
 		expensesComboField.setText("");
 		expensesComboField.addKeyListener(new ComboKeyHandler(expensesCombo));
+		expensesCombo.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (expensesCombo.getSelectedItem() != null) {
+
+					Expense expense = null;
+
+					try {
+						expense = (Expense) expensesCombo.getSelectedItem();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (expense != null) {
+						double val = 0d;
+						try {
+							val = Manager.dailyExpenseManager.getMostRecentAmountForExpense(expense.getId());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						amountOfExpense.setText(String.format("%.2f", val));
+					} else {
+						amountOfExpense.setText("0");
+					}
+				} else {
+					amountOfExpense.setText("0");
+				}
+			}
+		});
 
 		quantitySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		quantityKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		
+
 		priceKG = new ViewFormField("");
 		priceSack = new ViewFormField("");
 
 		feeAmount = new JNumericField(10, JNumericField.DECIMAL, true);
+		feeAmount.setText("0");
 
 		amountOfExpense = new JNumericField(10, JNumericField.DECIMAL, true);
 		amountOfExpense.setPrecision(2);
@@ -185,7 +244,6 @@ public class RowPanel extends JPanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				// TODO Auto-generated method stub
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
 					priceSack.setText(p.getCurrentPricePerSack() + "");
@@ -346,7 +404,7 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setBounds(10, 7, 52, 20);
 		quantityKG.setBounds(87, 7, 52, 20);
-		
+
 		priceSack.setBounds(167, 7, 57, 20);
 		priceKG.setBounds(249, 7, 57, 20);
 

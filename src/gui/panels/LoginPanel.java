@@ -187,7 +187,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 				Account acc = Manager.getInstance().getLoggedInAccount();
 				Values.footerPanel.setUserName(acc.getUsername() + "!");
-
+				Values.topPanel.getBalloonTip().setVisible(false);
 				Values.topPanel.showMenuButtons(true);
 				Values.footerPanel.showMenuButtons(true);
 				Values.centerPanel.changeTable(Values.HOME);

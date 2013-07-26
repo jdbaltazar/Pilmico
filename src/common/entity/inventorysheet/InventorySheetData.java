@@ -24,7 +24,6 @@ import common.entity.delivery.Delivery;
 import common.entity.profile.Account;
 import common.entity.pullout.PullOut;
 import common.entity.sales.Sales;
-import common.entity.sales.SalesDetail;
 
 @Entity
 @Table(name = "InventorySheet")

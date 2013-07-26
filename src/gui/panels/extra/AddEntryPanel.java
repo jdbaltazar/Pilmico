@@ -17,6 +17,7 @@ import gui.forms.add.ProfileForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
+import gui.forms.add.SalesGraphForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
@@ -89,6 +90,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private DepositForm deposit;
 	private ARPaymentForm arPayment;
 	private CAPaymentForm caPayment;
+	private SalesGraphForm salesGraphForm;
 
 	private JPanel dummy;
 	private JScrollPane dummyPane;
@@ -159,6 +161,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		bank = new BankForm();
 
 		inventorySheetForm = new InventorySheetForm();
+
+		salesGraphForm = new SalesGraphForm();
 
 		checkBox = new JCheckBox("Close after saving");
 		checkBox.setOpaque(false);
@@ -437,12 +441,24 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			}
 		}
 
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
+			// Values.salesOrderForm.refreshDate();
+			sales.setVisible(true);
+			motherPanel = sales;
+		}
+
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES_GRAPH)) {
+			// Values.salesOrderForm.refreshDate();
+			salesGraphForm.setVisible(true);
+			motherPanel = salesGraphForm;
+		}
+
 	}
 
 	public void showPaymentForm(int form, Object parentTransation) {
 
 		Values.menuPanel.setVisible(false);
-		
+
 		switch (form) {
 
 		case Values.CA_PAYMENTS:

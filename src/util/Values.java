@@ -15,6 +15,7 @@ import gui.forms.add.ProductForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
+import gui.forms.add.SalesGraphForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
@@ -78,15 +79,16 @@ public class Values {
 	public static EditEmployeeForm editEmployeeForm;
 	public static ViewCAForm viewCAForm;
 	public static ViewARForm viewARForm;
+	
+	public static SalesGraphForm salesGraphForm;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
-	
+
 	public static final int OTHERS = -100;
 
 	public static final int HOME = -1;
 
-	
 	public static final int EXPENSES = 0;
 	public static final int SALARY = 1;
 	public static final int DELIVERY = 2;
@@ -106,13 +108,13 @@ public class Values {
 	public static final int DISCOUNTS = 16;
 	public static final int INVENTORY_SHEET = 17;
 	public static final int LOGS = 18;
-	
+
 	public static final int SALES_GRAPH = 19;
 	public static final int DATABASE = 20;
-	
+
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;
-	
+
 	public static final int CATEGORY = 0;
 	public static final int ACCOUNT_TYPE = 3;
 	public static final int LOG_TYPE = 4;
@@ -122,43 +124,33 @@ public class Values {
 	public static final int ADD = 0;
 	public static final int EDIT = 1;
 
-	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit()
-			.getScreenSize().width;
-	public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit()
-			.getScreenSize().height;
+	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+	public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 
 	// public static Color gradient1 = new Color(249,255,249);
 	// public static Color gradient2 = new Color(240,255,240);
 
 	public static Color gradient1 = new Color(245, 245, 253);
 	public static Color gradient2 = new Color(230, 230, 250);
-	
+
 	public static Color row1 = Color.decode("#F5FFF5");
 	public static Color row2 = Color.decode("#E6FFE6");
-	
+
 	public static Color PENDING_COLOR = Color.decode("#FFFFE6");
-	public static Color ACCOUNTED_COLOR = new Color(236,254,236);
-	public static Color INVALIDATED_COLOR = new Color(255,245,245);
+	public static Color ACCOUNTED_COLOR = new Color(236, 254, 236);
+	public static Color INVALIDATED_COLOR = new Color(255, 245, 245);
 
-	public static String[] productFormLabel = { "Name*", "Description",
-			"For Sale?*", "Unit*", "Selling Price (per kilo)*",
-			"Selling Price (per sack)*", "Quantity (in kg)*",
-			"Display (in kg)*", "Category*", "Allow Alert?*",
-			"Alert on Quantity*" };
+	public static String[] productFormLabel = { "Name*", "Description", "For Sale?*", "Unit*", "Selling Price (per kilo)*",
+			"Selling Price (per sack)*", "Quantity (in kg)*", "Display (in kg)*", "Category*", "Allow Alert?*", "Alert on Quantity*" };
 
-	public static String[] accountFormLabel = { "Account Type*","Employee", "Username*", "Password*"};
-	
-	public static String[] employeeFormLabel = { "Last Name*", "First Name*",
-		"Middle Name", "Designation*",
-		"Address", "Contact No.", };
+	public static String[] accountFormLabel = { "Account Type*", "Employee", "Username*", "Password*" };
 
-	public static String[] supplierFormLabel = { "Name*", "Address", "TIN", "Contact No.",
-			"Contact Person", "Remarks" };
-	
-	public static String[] stockHeader = { "Stock Number", "Name", "Category",
-			"Brand", "Selling Price", " " };
+	public static String[] employeeFormLabel = { "Last Name*", "First Name*", "Middle Name", "Designation*", "Address", "Contact No.", };
 
-	public static String[] stockPurchaseHeader = { "Stock Purchased",
-			"Quantity", "Purchase Price", "Date Purchased", };
+	public static String[] supplierFormLabel = { "Name*", "Address", "TIN", "Contact No.", "Contact Person", "Remarks" };
+
+	public static String[] stockHeader = { "Stock Number", "Name", "Category", "Brand", "Selling Price", " " };
+
+	public static String[] stockPurchaseHeader = { "Stock Purchased", "Quantity", "Purchase Price", "Date Purchased", };
 
 }

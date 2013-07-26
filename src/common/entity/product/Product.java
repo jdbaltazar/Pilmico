@@ -1,7 +1,9 @@
 package common.entity.product;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -138,13 +140,47 @@ public class Product {
 		this.description = description;
 	}
 
-	public Set<Price> getPriceHistory() {
-		return prices;
+	public List<Price> getPriceHistory() {
+		return orderPriceHistory(copyPrices(prices));
 	}
 
-	public void setPriceHistory(Set<Price> prices) {
-		this.prices = prices;
+	private List<Price> copyPrices(Set<Price> orig) {
+		List<Price> copy = new ArrayList<Price>();
+		for (Price p : orig) {
+			Price p2 = new Price(p.getProduct(), p.getDateUpdated(), p.getPricePerSack(), p.getPricePerKilo());
+			p2.setId(p.getId());
+			copy.add(p2);
+		}
+		return copy;
 	}
+
+	private List<Price> orderPriceHistory(List<Price> prices) {
+		List<Price> ordered = new ArrayList<Price>();
+		int origSize = prices.size();
+		for (int i = 0; i < origSize; i++) {
+			Price temp = getMostRecentPriceIn(prices);
+			ordered.add(temp);
+			prices.remove(prices.indexOf(temp));
+		}
+		return ordered;
+	}
+
+	private Price getMostRecentPriceIn(List<Price> prices) {
+		Price mostRecent = null;
+		for (Price p : prices) {
+			if (mostRecent == null)
+				mostRecent = p;
+			else {
+				if (p.getDateUpdated().after(mostRecent.getDateUpdated()))
+					mostRecent = p;
+			}
+		}
+		return mostRecent;
+	}
+
+	// public void setPriceHistory(Set<Price> prices) {
+	// this.prices = prices;
+	// }
 
 	public void addPrice(Price price) {
 		prices.add(price);

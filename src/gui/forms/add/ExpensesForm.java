@@ -1,9 +1,6 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
-import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.FormDropdown;
-import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
 
@@ -23,28 +20,21 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
-import common.entity.product.Product;
-import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.ErrorLabel;
-import util.FormCheckbox;
-import util.MainFormField;
 import util.MainFormLabel;
 import util.SBButton;
 import util.SimplePanel;
