@@ -1,5 +1,6 @@
 package gui;
 
+import gui.forms.add.SalesGraphForm;
 import gui.graph.LinePlot;
 import gui.panels.LoginPanel;
 import gui.panels.MenuPanel;
@@ -174,6 +175,10 @@ public class CenterPanel extends SoyPanel {
 
 		case Values.SALES_GRAPH:
 			add(linePlot, BorderLayout.CENTER);
+
+			// add(Values.salesGraphForm, BorderLayout.CENTER);
+			// // add(new TableUtilPanel(new TablePanel(null, null, null),
+			// // Tables.SALES_GRAPH));
 			break;
 
 		default:
@@ -545,7 +550,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
 				entries[i][3] = d.getBankAccount().getAccountNo() + ", " + d.getBankAccount().getBank().getName();
 				entries[i][4] = String.format("%.2f", d.getAmount());
-				entries[i][4] = d.getDepositor().getFirstPlusLastName();
+				entries[i][5] = d.getDepositor().getFirstPlusLastName();
 				entries[i][6] = d.getIssuedBy().getFirstPlusLastName();
 				entries[i][7] = d.isValid() ? "Yes" : "No";
 				entries[i][8] = d.getRemarks();

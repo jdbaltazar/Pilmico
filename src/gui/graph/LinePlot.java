@@ -38,12 +38,15 @@ import de.erichseifert.gral.graphics.Layout;
 import de.erichseifert.gral.graphics.TableLayout;
 import de.erichseifert.gral.plots.Plot;
 import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.areas.AreaRenderer;
+import de.erichseifert.gral.plots.areas.DefaultAreaRenderer2D;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.legends.Legend;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import de.erichseifert.gral.plots.lines.LineRenderer;
 import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
+import de.erichseifert.gral.util.GraphicsUtils;
 import de.erichseifert.gral.util.Insets2D;
 import de.erichseifert.gral.util.Orientation;
 
@@ -97,7 +100,13 @@ public class LinePlot extends ExamplePanel {
 		pointRenderer.setSetting(PointRenderer.SHAPE, circle);
 		// pointRenderer.setSetting(PointRenderer.VALUE_DISPLAYED, true);
 
-		plotLower.setSetting(Plot.TITLE, "Pilmico Sales");
+		AreaRenderer areaUpper = new DefaultAreaRenderer2D();
+		areaUpper.setSetting(AreaRenderer.COLOR, GraphicsUtils.deriveWithAlpha(colorLower, 64));
+		plotLower.setAreaRenderer(data, areaUpper);
+		plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
+
+		plotLower.setSetting(Plot.TITLE, "Pilmico Daily Sales");
+		
 		// insert Pilmico Font here
 		// plotLower.setSetting(Plot.TITLE_FONT, n);
 		// plotLower.setSetting(Plot.LEGEND, true);
@@ -106,7 +115,6 @@ public class LinePlot extends ExamplePanel {
 		plotLower.getAxis(XYPlot.AXIS_Y).setMin(0d);
 		AxisRenderer rendererY = plotLower.getAxisRenderer(XYPlot.AXIS_Y);
 
-		
 		// rendererY.setSetting(AxisRenderer., arg1);
 		// rendererY.
 		Column col1 = data.getColumn(0);

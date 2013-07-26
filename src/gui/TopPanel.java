@@ -86,9 +86,9 @@ public class TopPanel extends SoyPanel {
 		try {
 			totalSales = new JLabel("P 24560.50");
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
 		totalSales.setForeground(new Color(107, 142, 35));
 		totalSales.setHorizontalAlignment(SwingConstants.LEFT);
 		totalSales.setFont(new Font("Lucida Grande", Font.PLAIN, 14));

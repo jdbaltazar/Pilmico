@@ -10,8 +10,10 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
+import common.entity.salary.FeeDeduction;
 import common.manager.DailyExpensesManager;
 
 public class DailyExpensePersistor extends Persistor implements DailyExpensesManager {
@@ -224,6 +226,26 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	@Override
 	public void deleteExpense(int id) throws Exception {
 		remove(getExpense(id));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public double getMostRecentAmountForExpense(int expenseId) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpensesDetail.class);
+		List<DailyExpensesDetail> deDetails = new ArrayList<DailyExpensesDetail>();
+		try {
+			deDetails = criteria.add(Restrictions.eq("dailyExpenses.id", expenseId)).addOrder(Order.desc("id")).list();
+			if (deDetails.size() > 0) {
+				return deDetails.get(0).getAmount();
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+
+		return 0d;
 	}
 
 }

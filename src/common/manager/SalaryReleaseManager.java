@@ -39,4 +39,6 @@ public interface SalaryReleaseManager {
 
 	public void deleteFee(int id) throws Exception;
 
+	public double getMostRecentAmountForFee(int feeId) throws Exception;
+
 }

@@ -26,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
+import common.entity.store.Store;
+import common.manager.Manager;
+
 import util.ErrorLabel;
 import util.SBButton;
 import util.Values;
@@ -47,24 +50,36 @@ public class EditStoreInfoPopup extends JDialog {
 	private ArrayList<JTextField> fields = new ArrayList<JTextField>();
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 
-	private String[] storeFormLabel = { "Name*", "Description", "Address*",
-			"TIN", "Opening Date", "Operating Hours", "Landline No.",
-			"Mobile No.", "Email", "Website", "Manager", "Proprietor" };
+	private String[] storeFormLabel = { "Name*", "Description", "Address*", "TIN", "Opening Date", "Operating Hours", "Landline No.", "Mobile No.",
+			"Email", "Website", "Manager", "Proprietor" };
 
 	private SoyButton edit;
 
 	private ErrorLabel error;
 
-	/*public EditStoreInfoPopup(StoreInfo storeInfo) {
-		this.storeInfo = storeInfo;
-		init();
-		addComponents();
+	/*
+	 * public EditStoreInfoPopup(StoreInfo storeInfo) { this.storeInfo =
+	 * storeInfo; init(); addComponents();
+	 * 
+	 * }
+	 */
 
-	}*/
-	
 	public EditStoreInfoPopup() {
 		init();
 		addComponents();
+		fillEntries();
+
+	}
+
+	public void fillEntries() {
+
+		try {
+			Store store = Manager.storeManager.getStore();
+			fields.get(0).setText(store.getName());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -76,21 +91,20 @@ public class EditStoreInfoPopup extends JDialog {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+
 	}
 
 	private void addComponents() {
-		
+
 		error = new ErrorLabel();
-		
+
 		date = new JSpinner(new SpinnerDateModel());
-		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date,
-				"MMMM dd, yyyy");
+		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy");
 		date.setEditor(timeEditor2);
 		Date d = new Date();
 		date.setValue(d != null ? d : new Date());
 		date.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
-		date.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0,
-				Color.GRAY.darker()));
+		date.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.GRAY.darker()));
 
 		JComponent editor = date.getEditor();
 		if (editor instanceof JSpinner.DefaultEditor) {
@@ -112,8 +126,7 @@ public class EditStoreInfoPopup extends JDialog {
 			public void paintComponent(Graphics g) {
 				// TODO Auto-generated method stub
 				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-						RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 				Color ppColor = new Color(0, 96, 96, 30); // r,g,b,alpha
 				g2.setColor(ppColor);
@@ -126,8 +139,8 @@ public class EditStoreInfoPopup extends JDialog {
 				g2.draw3DRect(14, 320, 10, 10, true);
 				g2.fill3DRect(14, 320, 10, 10, true);
 				g2.setFont(new Font("TimeBurner", Font.PLAIN, 14));
-				
-					g2.drawString("View / Edit Store Info", 30, 330);
+
+				g2.drawString("View / Edit Store Info", 30, 330);
 
 				paintChildren(g2);
 
@@ -194,13 +207,11 @@ public class EditStoreInfoPopup extends JDialog {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				
-
 			}
 		});
 
-			panel.add(edit);
-		
+		panel.add(edit);
+
 		panel.add(date);
 		panel.add(error);
 
@@ -210,8 +221,7 @@ public class EditStoreInfoPopup extends JDialog {
 
 	private boolean isValidated() {
 
-		if (!fields.get(0).getText().equals("")
-				&& !fields.get(2).getText().equals(""))
+		if (!fields.get(0).getText().equals("") && !fields.get(2).getText().equals(""))
 			return true;
 
 		return false;

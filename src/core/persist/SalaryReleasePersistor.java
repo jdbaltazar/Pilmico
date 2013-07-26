@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import common.entity.dailyexpenses.Expense;
 import common.entity.salary.Fee;
+import common.entity.salary.FeeDeduction;
 import common.entity.salary.SalaryRelease;
 import common.manager.SalaryReleaseManager;
 
@@ -154,6 +155,26 @@ public class SalaryReleasePersistor extends Persistor implements SalaryReleaseMa
 	@Override
 	public void deleteFee(int id) throws Exception {
 		remove(getFee(id));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public double getMostRecentAmountForFee(int feeId) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(FeeDeduction.class);
+		List<FeeDeduction> fDeductions = new ArrayList<FeeDeduction>();
+		try {
+			fDeductions = criteria.add(Restrictions.eq("fee.id", feeId)).addOrder(Order.desc("id")).list();
+			if (fDeductions.size() > 0) {
+				return fDeductions.get(0).getAmount();
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+
+		return 0d;
 	}
 
 }
