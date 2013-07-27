@@ -71,6 +71,8 @@ public class DiscountForm extends SimplePanel {
 		super("Add Discount");
 		addComponents();
 		fillEntries();
+		
+		Values.discountForm = this;
 	}
 
 	private void addComponents() {
@@ -126,35 +128,6 @@ public class DiscountForm extends SimplePanel {
 			}
 		}
 		
-		 try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-		} catch (Exception e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
-		}
-
-		customerCombo = new JComboBox(model);
-		customerCombo.setEditable(true);
-		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
-		customerComboField.setText("");
-		customerComboField.setOpaque(false);
-		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
-
-		try {
-			model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
-		} catch (Exception e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-
-		productCombo = new JComboBox(model);
-		productCombo.setEditable(true);
-		productCombo.setSelectedIndex(-1);
-		productComboField = (JTextField) productCombo.getEditor().getEditorComponent();
-		productComboField.setText("");
-		productComboField.setOpaque(false);
-		productComboField.addKeyListener(new ComboKeyHandler(productCombo));
-
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 53) {
 
@@ -180,13 +153,12 @@ public class DiscountForm extends SimplePanel {
 			if (i == 2) {
 				fwd.setBounds(x1 + 43, initY + y - 11, 16, 16);
 				productLabel.setBounds(x1, initY + y - 7, 200, 11);
-				productCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
 
 			if (i == 3) {
 				fwd2.setBounds(x1 + 53, initY + y - 11, 16, 16);
 				customerLabel.setBounds(x1, initY + y - 7, 200, 11);
-				customerCombo.setBounds(x1, initY + y + 5, 200, 20);
+				
 			}
 		}
 
@@ -234,10 +206,8 @@ public class DiscountForm extends SimplePanel {
 		panel.add(dateLabel);
 		panel.add(issuedByLabel);
 
-		panel.add(productCombo);
 		panel.add(productLabel);
 
-		panel.add(customerCombo);
 		panel.add(customerLabel);
 
 		scrollPane.setViewportView(panel);
@@ -254,7 +224,7 @@ public class DiscountForm extends SimplePanel {
 	private void fillEntries() {
 
 		issuedBy.setText(Manager.loggedInAccount != null ? Manager.loggedInAccount.getFirstPlusLastName() : "");
-		refreshDropdown();
+		refreshDropdown(false);
 
 	}
 
@@ -262,7 +232,7 @@ public class DiscountForm extends SimplePanel {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
 
-		refreshDropdown();
+		refreshDropdown(true);
 		error.setText("");
 	}
 
@@ -274,19 +244,49 @@ public class DiscountForm extends SimplePanel {
 		return false;
 	}
 
-	public void refreshDropdown() {
-		try {
-			model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
-			 productCombo.setModel(model);
-			 
-			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			 customerCombo.setModel(model);
-			  
-		} catch (Exception e2) {
-			e2.printStackTrace();
+	public void refreshDropdown(boolean remove) {
+		
+		if(remove){
+			panel.remove(customerCombo);
+			panel.remove(productCombo);
 		}
 		
+		
+		 try {
+				model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			} catch (Exception e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			}
+
+			customerCombo = new JComboBox(model);
+			customerCombo.setEditable(true);
+			customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
+			customerComboField.setText("");
+			customerComboField.setOpaque(false);
+			customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
+
+			try {
+				model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
+			} catch (Exception e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+
+			productCombo = new JComboBox(model);
+			productCombo.setEditable(true);
+			productComboField = (JTextField) productCombo.getEditor().getEditorComponent();
+			productComboField.setText("");
+			productComboField.setOpaque(false);
+			productComboField.addKeyListener(new ComboKeyHandler(productCombo));
+			
 		productCombo.setSelectedIndex(-1);
 		customerCombo.setSelectedIndex(-1);
+		
+		productCombo.setBounds(40, 137, 200, 20);
+		customerCombo.setBounds(40, 190, 200, 20);
+		
+		panel.add(productCombo);
+		panel.add(customerCombo);
 	}
 }

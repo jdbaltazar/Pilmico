@@ -220,6 +220,8 @@ public class ProductForm extends SimplePanel {
 					Values.centerPanel.changeTable(Values.PRODUCTS);
 					new SuccessPopup("Add").setVisible(true);
 					clearFields();
+					
+					Values.discountForm.refreshDropdown(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -30,7 +30,7 @@ import util.Values;
 
 public class UtilityPopup extends JDialog {
 
-	private final int WIDTH = 150, HEIGHT = 50;
+	private final int WIDTH = 155, HEIGHT = 55;
 	private FormField field;
 	private String label;
 	private Point p;
@@ -63,29 +63,17 @@ public class UtilityPopup extends JDialog {
 			setSize(WIDTH, HEIGHT);
 		else if (utility == Values.DATABASE)
 			setSize(90, 50);
-		else
-			setSize(300, HEIGHT);
+		else{
+			setLocation(p.x - 300, p.y);
+			setSize(305, HEIGHT);
+		}
+		
+		setBackground(new Color(0,0,0,0));
 	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		panel = new SimplePanel("") {
-			@Override
-			public void paintComponent(Graphics g) {
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-				gradient = new GradientPaint(0, 0, new Color(245, 255, 250), 0, getHeight(), Color.white);
-				g2.setPaint(gradient);
-				g2.fill(g.getClipBounds());
-
-				paintChildren(g2);
-
-				g2.dispose();
-				g.dispose();
-			}
-
-		};
+		panel = new SimplePanel(""); 
 
 		panel.setOpaque(false);
 

@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -178,7 +179,14 @@ public class EmployeeForm extends SimplePanel {
 					
 					
 					Manager.employeePersonManager.addEmployee(employee);
-					System.out.println("employee saved!");
+					
+					Values.centerPanel.changeTable(Values.EMPLOYEES);
+					new SuccessPopup("Add").setVisible(true);
+					clearFields();
+					
+					Values.salaryReleaseForm.refreshEmployee();
+					Values.cashAdvanceForm.refreshEmployee();
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

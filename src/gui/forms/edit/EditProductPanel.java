@@ -350,9 +350,9 @@ public class EditProductPanel extends EditFormPanel {
 
 		return false;
 	}
-
-	public void closeBubblePanel() {
-		if (balloonTip != null)
+	
+	public void closeBalloonPanel(){
+		if(balloonTip!=null)
 			balloonTip.setVisible(false);
 	}
 

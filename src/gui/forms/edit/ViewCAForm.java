@@ -1,5 +1,6 @@
 package gui.forms.edit;
 
+import gui.forms.util.HistoryTable;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
@@ -20,6 +21,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 
 import common.entity.cashadvance.CashAdvance;
 import common.manager.Manager;
@@ -52,15 +56,18 @@ public class ViewCAForm extends EditFormPanel {
 	private JScrollPane scrollPane;
 	private JLabel status;
 	private ImageIcon icon;
-	private SBButton payBtn, voidBtn;
+	private SBButton payBtn, voidBtn, paymentHistory;
 
 	private CashAdvance cashAdvance;
+	private BalloonTip balloonTip;
 
 	public ViewCAForm(CashAdvance cashAdvance) {
 		super("View Cash Advance");
 		this.cashAdvance = cashAdvance;
 		addComponents();
 		fillEntries();
+		
+		Values.viewCAForm = this;
 	}
 
 	private void addComponents() {
@@ -80,6 +87,23 @@ public class ViewCAForm extends EditFormPanel {
 		status.setForeground(Color.orange);
 		
 		remarks = new ViewFormLabel("", true);
+		
+		paymentHistory = new SBButton("payment_history.png", "payment_history2.png", "Payment History");
+		
+		paymentHistory.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				initBalloonTip();
+				
+				balloonTip.setVisible(true);
+				paymentHistory.setEnabled(false);
+			
+			}
+
+		});
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -123,6 +147,7 @@ public class ViewCAForm extends EditFormPanel {
 			}
 
 			if (i == 3) {
+				paymentHistory.setBounds(x1 - 5, initY + y - 10, 16, 16);
 				amountLabel.setBounds(x1, initY + y - 7, 60, 11);
 				amount.setBounds(x1 + 65, initY + y - 14, 200, 20);
 				payBtn.setBounds(x1 + 256, initY + y - 11, 16, 16);
@@ -174,6 +199,7 @@ public class ViewCAForm extends EditFormPanel {
 		panel.add(balance);
 		panel.add(balanceLabel);
 
+		panel.add(paymentHistory);
 		panel.add(amount);
 		panel.add(amountLabel);
 		panel.add(payBtn);
@@ -193,6 +219,34 @@ public class ViewCAForm extends EditFormPanel {
 		add(remarks);
 		
 
+	}
+	
+	private void initBalloonTip(){
+		
+		String[] employmentHeaders = { "Date", "Amount Paid" };
+		String[][] entries = { { "21 Jun 2013 10:47 AM", "1800.00" }};
+		
+		balloonTip = new BalloonTip(
+				paymentHistory,
+				new HistoryTable(employmentHeaders, entries),
+				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.LEFT_ABOVE,
+				BalloonTip.AttachLocation.NORTHEAST,
+				7, 12,
+				false
+			);
+		balloonTip.setPadding(5);
+		balloonTip.setVisible(false);
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
+		
+		balloonTip.getCloseButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				paymentHistory.setEnabled(true);
+			}
+		});
 	}
 
 	private void fillEntries() {
@@ -223,5 +277,10 @@ public class ViewCAForm extends EditFormPanel {
 		amount.setText(cashAdvance.getAmount() + "");
 		balance.setText(cashAdvance.getBalance() + "");
 		payBtn.setVisible(cashAdvance.getBalance() > 0d);
+	}
+	
+	public void closeBalloonPanel(){
+		if(balloonTip!=null)
+			balloonTip.setVisible(false);
 	}
 }

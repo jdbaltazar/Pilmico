@@ -145,21 +145,7 @@ public class SalesForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		customerCombo = new JComboBox();
-		refreshCustomer();
-		
-		customerCombo.setUI(ColorArrowUI.createUI(this));
-		customerCombo.setEditable(true);
-		customerCombo.setSelectedIndex(-1);
-		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
-		customerComboField.setText("");
-		customerComboField.setOpaque(false);
-		customerComboField.setBorder(BorderFactory.createEmptyBorder());
-		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
-
-		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
-		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		customerCombo.setOpaque(false);
+		refreshCustomer(false);
 
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
@@ -205,7 +191,6 @@ public class SalesForm extends SimplePanel {
 		issueDate.setBounds(460, 32, 150, 20);
 
 		customerLabel.setBounds(15, 58, 70, 20);
-		customerCombo.setBounds(85, 58, 220, 20);
 		customerFwd.setBounds(308, 60, 16, 16);
 
 		customerFwd.addActionListener(new ActionListener() {
@@ -283,7 +268,7 @@ public class SalesForm extends SimplePanel {
 		panel.add(issueDate);
 
 		panel.add(customerLabel);
-		panel.add(customerCombo);
+		
 		panel.add(customerFwd);
 
 		panel.add(issuedaTLabel);
@@ -502,23 +487,45 @@ public class SalesForm extends SimplePanel {
 		
 		error.setText("");
 
-		refreshCustomer();
+		refreshCustomer(true);
 	}
 
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
 
-	public void refreshCustomer() {
-
+	public void refreshCustomer(boolean remove) {
+		
+		if(remove)
+			panel.remove(customerCombo);
+		
 		try {
-			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			customerCombo.setModel(model);
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			customerCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		customerCombo.setUI(ColorArrowUI.createUI(this));
+		customerCombo.setEditable(true);
+		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
+		customerComboField.setText("");
+		customerComboField.setOpaque(false);
+		customerComboField.setBorder(BorderFactory.createEmptyBorder());
+		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
+		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		customerCombo.setOpaque(false);
+		
 		customerCombo.setSelectedIndex(-1);
+		
+		customerCombo.setBounds(85, 58, 220, 20);
+		
+		panel.add(customerCombo);
+		
+		panel.revalidate();
+		panel.updateUI();
 	}
 }

@@ -68,6 +68,7 @@ public class CashAdvanceForm extends SimplePanel {
 		addComponents();
 		fillEntries();
 
+		Values.cashAdvanceForm = this;
 	}
 
 	private void fillEntries() {
