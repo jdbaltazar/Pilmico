@@ -199,6 +199,8 @@ public class ViewARForm extends EditFormPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				closeBalloonPanel();
+				
 				Values.addEntryPanel.startAnimation();
 				Values.addEntryPanel.showPaymentForm(Values.AR_PAYMENTS, accountReceivable);
 			}
@@ -386,6 +388,7 @@ public class ViewARForm extends EditFormPanel {
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate()));
 		issuedBy.setText(accountReceivable.getIssuedBy().getFirstPlusLastName());
 		customer.setText(accountReceivable.getCustomer().getFirstPlusLastName());
+		amount.setText(accountReceivable.getAccountReceivablesAmount() + "");
 		balance.setText(accountReceivable.getBalance() + "");
 
 		payBtn.setVisible(accountReceivable.getBalance() > 0d);

@@ -125,10 +125,10 @@ public class ViewCAForm extends EditFormPanel {
 		amountLabel = new ViewFormLabel("Amount:");
 
 		issuedBy = new ViewFormField("");
-		date = new ViewFormField("17 Jul 2013 10:15 PM");
-		balance = new ViewFormField("1990.00");
-		issuedFor = new ViewFormField("John David S. Baltazar");
-		amount = new ViewFormField("2500.00");
+		date = new ViewFormField("");
+		balance = new ViewFormField("");
+		issuedFor = new ViewFormField("");
+		amount = new ViewFormField("");
 
 		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 53) {
 
@@ -149,7 +149,7 @@ public class ViewCAForm extends EditFormPanel {
 			if (i == 3) {
 				paymentHistory.setBounds(x1 - 5, initY + y - 10, 16, 16);
 				amountLabel.setBounds(x1, initY + y - 7, 60, 11);
-				amount.setBounds(x1 + 65, initY + y - 14, 200, 20);
+				amount.setBounds(x1 + 65, initY + y - 14, 190, 20);
 				payBtn.setBounds(x1 + 256, initY + y - 11, 16, 16);
 			}
 
@@ -165,6 +165,8 @@ public class ViewCAForm extends EditFormPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				closeBalloonPanel();
+				
 				Values.addEntryPanel.startAnimation();
 				Values.addEntryPanel.showPaymentForm(Values.CA_PAYMENTS, cashAdvance);
 			}
@@ -271,11 +273,12 @@ public class ViewCAForm extends EditFormPanel {
 		status.setText(s);
 		status.setIcon(icon);
 
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cashAdvance.getDate()));
-		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
-		issuedFor.setText(cashAdvance.getEmployee().toString());
-		amount.setText(cashAdvance.getAmount() + "");
-		balance.setText(cashAdvance.getBalance() + "");
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cashAdvance.getDate()));
+		issuedBy.setToolTip(issuedBy,Manager.loggedInAccount.getFirstPlusLastName());
+		issuedFor.setToolTip(issuedFor, cashAdvance.getEmployee().toString());
+		amount.setToolTip(amount, cashAdvance.getAmount() + "");
+		balance.setToolTip(balance, cashAdvance.getBalance() + "");
+		
 		payBtn.setVisible(cashAdvance.getBalance() > 0d);
 	}
 	

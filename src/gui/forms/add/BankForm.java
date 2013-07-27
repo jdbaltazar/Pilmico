@@ -2,6 +2,7 @@ package gui.forms.add;
 
 import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -191,7 +192,13 @@ public class BankForm extends SimplePanel {
 
 				try {
 					Manager.depositManager.addBank(bank);
-					System.out.println("bank saved!");
+
+					Values.centerPanel.changeTable(Values.BANK);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
+					
+					Values.depositForm.refreshDropdowns(true);
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -219,15 +226,13 @@ public class BankForm extends SimplePanel {
 	}
 
 	private void clearForm() {
+		for (int i = 0; i < fields.size(); i++)
+			fields.get(i).setText("");
+		
 		bankAccountPanel.removeAll();
 		accountRowPanel.clear();
 
 		error.setText("");
-
-	}
-
-	public void refreshAccount() {
-
 	}
 
 }

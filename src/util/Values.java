@@ -9,6 +9,7 @@ import gui.forms.add.AccountReceivablesForm;
 import gui.forms.add.BankForm;
 import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.DeliveryForm;
+import gui.forms.add.DepositForm;
 import gui.forms.add.DiscountForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.ProductForm;
@@ -74,6 +75,7 @@ public class Values {
 	public static SupplierForm supplierForm;
 	public static CashAdvanceForm cashAdvanceForm;
 	public static DiscountForm discountForm;
+	public static DepositForm depositForm;
 	
 	public static EditProductPanel editProductPanel;
 	public static EditEmployeeForm editEmployeeForm;
