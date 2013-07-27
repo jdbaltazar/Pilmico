@@ -3,11 +3,16 @@ package gui.popup;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.SQLException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+import common.manager.Manager;
+
 import core.database.DatabaseTool;
+import core.test.FileChooserDemo;
 import core.test.Test;
 
 import util.SBButton;
@@ -53,11 +58,15 @@ public class DatabaseToolPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				System.out.println("backup!!");
-				// DatabaseTool.backup("root", "123456", "pilmico",
-				// "D:/backup.sql");
-				// Test t = new Test();
-				// t.tbBackup("pilmico", "root", "123456", "temp/backup.sql");
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showSaveDialog(null);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					// This is where a real application would save the file.
+				} else {
+				}
+				
 			}
 		});
 
