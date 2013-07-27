@@ -9,7 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import common.entity.profile.Account;
 import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.profile.EmploymentStatus;
@@ -46,12 +45,31 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<Employee> getAllEmployeesExceptManagers() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Employee.class);
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			employees = criteria.add(Restrictions.ne("designation.id", new Integer(1))).createAlias("person", "p").addOrder(Order.desc("p.firstName"))
+					.list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return employees;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<Employee> getEmployedEmployees() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Employee.class);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).list();
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).createAlias("person", "p").addOrder(Order.desc("p.firstName"))
+					.list();
+
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -67,7 +85,8 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 		Criteria criteria = session.createCriteria(Employee.class);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			employees = criteria.add(Restrictions.ne("status.id", new Integer("2"))).list();
+			employees = criteria.add(Restrictions.ne("status.id", new Integer("2"))).createAlias("person", "p").addOrder(Order.desc("p.firstName"))
+					.list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -76,62 +95,107 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 		return employees;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> getEmployedEmployeesWithAccounts() throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Employee.class);
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.isNotNull("account")).list();
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
+		List<Employee> allEmployed = getEmployedEmployees();
+		List<Employee> withAccounts = new ArrayList<Employee>();
+		for (Employee e : allEmployed) {
+			if (e.getAccount() != null)
+				withAccounts.add(e);
 		}
-		return employees;
+		return withAccounts;
+
+		// Session session = HibernateUtil.startSession();
+		// Criteria criteria = session.createCriteria(Employee.class);
+		// List<Employee> employees = new ArrayList<Employee>();
+		// try {
+		// employees = criteria.add(Restrictions.eq("status.id", new
+		// Integer("1"))).add(Restrictions.isNotNull("account")).createAlias("person",
+		// "p")
+		// .addOrder(Order.desc("p.firstName")).list();
+		// } catch (HibernateException ex) {
+		// ex.printStackTrace();
+		// } finally {
+		// session.close();
+		// }
+		// return employees;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> getEmployedEmployeesWithoutAccounts() throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Employee.class);
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.isNull("account")).list();
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
+
+		List<Employee> allEmployed = getEmployedEmployees();
+		List<Employee> withAccounts = new ArrayList<Employee>();
+		for (Employee e : allEmployed) {
+			if (e.getAccount() == null)
+				withAccounts.add(e);
 		}
-		return employees;
+		return withAccounts;
+		// Session session = HibernateUtil.startSession();
+		// Criteria criteria = session.createCriteria(Employee.class);
+		// List<Employee> employees = new ArrayList<Employee>();
+		// try {
+		// employees = criteria.add(Restrictions.eq("status.id", new
+		// Integer("1"))).add(Restrictions.isNull("account")).createAlias("person",
+		// "p")
+		// .addOrder(Order.desc("p.firstName")).list();
+		// } catch (HibernateException ex) {
+		// ex.printStackTrace();
+		// } finally {
+		// session.close();
+		// }
+		// return employees;
 	}
+
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// public List<Employee> getEmployedEmployees(Designation designation) throws
+	// Exception {
+	// Session session = HibernateUtil.startSession();
+	// Criteria criteria = session.createCriteria(Employee.class);
+	// List<Employee> employees = new ArrayList<Employee>();
+	// try {
+	// employees = criteria.add(Restrictions.eq("status.id", new
+	// Integer("1"))).add(Restrictions.eq("designation.id", new Integer(2)))
+	// .createAlias("person", "p").addOrder(Order.desc("p.firstName")).list();
+	// } catch (HibernateException ex) {
+	// ex.printStackTrace();
+	// } finally {
+	// session.close();
+	// }
+	// return employees;
+	// }
+
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// public List<Employee> getEmployedEmployeesExcept(Designation designation)
+	// throws Exception {
+	// Session session = HibernateUtil.startSession();
+	// Criteria criteria = session.createCriteria(Employee.class);
+	// List<Employee> employees = new ArrayList<Employee>();
+	// try {
+	// employees = criteria.add(Restrictions.eq("status.id", new
+	// Integer("1"))).add(Restrictions.ne("designation.id", new
+	// Integer(2))).createAlias("person",
+	// "p").addOrder(Order.desc("p.firstName"))
+	// .list();
+	// } catch (HibernateException ex) {
+	// ex.printStackTrace();
+	// } finally {
+	// session.close();
+	// }
+	// return employees;
+	// }
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Employee> getEmployedEmployees(Designation designation) throws Exception {
+	public List<Employee> getEmployedEmployeesExceptManagers() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Employee.class);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.eq("designation.id", new Integer(2))).list();
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return employees;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Employee> getEmployedEmployeesExcept(Designation designation) throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Employee.class);
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.ne("designation.id", new Integer(2))).list();
+			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.ne("designation.id", new Integer(1)))
+					.createAlias("person", "p").addOrder(Order.desc("p.firstName")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

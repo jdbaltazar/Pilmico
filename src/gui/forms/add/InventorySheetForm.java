@@ -5,19 +5,15 @@ import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewportDragScrollListener;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -103,8 +99,6 @@ public class InventorySheetForm extends SimplePanel {
 
 	private SoyButton save;
 
-	private InventorySheet inventorySheet;
-
 	private TableHeaderLabel productLabel, sack1Label, kg1Label, sack2Label, kg2Label, sack3Label, kg3Label, sack4Label, kg4Label, sack5Label,
 			kg5Label, sack6Label, kg6Label, sack7Label, kg7Label, sack8Label, kg8Label, productTotalLabel, dateSaleslabel, cashierLabel,
 			grossSalesLabel, dateDellabel, delReceivedByLabel, grossDelLabel, dateARlabel, arIssuedByLabel, grossARLabel, dateARPaymentlabel,
@@ -118,6 +112,24 @@ public class InventorySheetForm extends SimplePanel {
 			overallCALabel, discountFormLabel, overallDiscountLabel, ar2FormLabel, overallAR2Label, salaryFormLabel, overallSalaryLabel,
 			depositFormLabel, overallDepositLabel, assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label,
 			accLabel;
+
+	private List<Product> products;
+	private List<Delivery> deliveries;
+	private List<PullOut> pullOuts;
+	private List<Sales> sales;
+	private List<AccountReceivable> accountReceivables;
+	private List<ARPayment> arPayments;
+	private List<CashAdvance> cashAdvances;
+	private List<CAPayment> caPayments;
+	private List<DailyExpenses> dailyExpenses;
+	private List<SalaryRelease> salaryReleases;
+	private List<DiscountIssue> discountIssues;
+	private List<Deposit> deposits;
+	// double previousAcoh =
+	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
+
+	private InventorySheetData inventorySheetData = new InventorySheetData();
+	private InventorySheet inventorySheet;
 
 	public InventorySheetForm() {
 		super("Add Inventory Sheet");
@@ -941,9 +953,7 @@ public class InventorySheetForm extends SimplePanel {
 		// generate acoh
 		Component[] components = isPanel.getComponents();
 		for (Component component : components) {
-
 			if (component instanceof PDControlScrollPane) {
-
 				((PDControlScrollPane) component).setOpaque(false);
 				((PDControlScrollPane) component).getViewport().setOpaque(false);
 				((PDControlScrollPane) component).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -953,22 +963,22 @@ public class InventorySheetForm extends SimplePanel {
 
 		}
 
-		List<Product> products = Manager.productManager.getProducts();
-		List<Delivery> deliveries = Manager.deliveryManager.getPendingDeliveries();
-		List<PullOut> pullOuts = Manager.pullOutManager.getPendingPullOuts();
-		List<Sales> sales = Manager.salesManager.getPendingSales();
-		List<AccountReceivable> accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivables();
-		List<ARPayment> arPayments = Manager.accountReceivableManager.getPendingARPayments();
-		List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
-		List<CAPayment> caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
-		List<DailyExpenses> dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
-		List<SalaryRelease> salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
-		List<DiscountIssue> discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
-		List<Deposit> deposits = Manager.depositManager.getPendingDeposits();
+		products = Manager.productManager.getProducts();
+		deliveries = Manager.deliveryManager.getPendingDeliveries();
+		pullOuts = Manager.pullOutManager.getPendingPullOuts();
+		sales = Manager.salesManager.getPendingSales();
+		accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivables();
+		arPayments = Manager.accountReceivableManager.getPendingARPayments();
+		cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
+		caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
+		dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
+		salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
+		discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
+		deposits = Manager.depositManager.getPendingDeposits();
 		// double previousAcoh =
 		// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
-		InventorySheetData inventorySheetData = new InventorySheetData();
+		inventorySheetData = new InventorySheetData();
 		for (Product p : products) {
 			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, p.getBeginningInventoryInSack(), p
 					.getBeginningInventoryInKilo(), p.getDisplayInSack(), p.getDisplayInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
@@ -1036,7 +1046,6 @@ public class InventorySheetForm extends SimplePanel {
 			i++;
 		}
 		alternateRows(productsInventory);
-
 		fillProductInventoriesTotal();
 
 	}

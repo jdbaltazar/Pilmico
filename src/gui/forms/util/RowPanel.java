@@ -124,22 +124,44 @@ public class RowPanel extends JPanel {
 
 			productsCombo = new JComboBox(products.toArray());
 
+			// List<Fee> fees = new ArrayList<Fee>();
+			// try {
+			// fees = Manager.salaryReleaseManager.getFees();
+			// } catch (Exception e1) {
+			// e1.printStackTrace();
+			// }
+			//
+			// feesCombo = new JComboBox(fees.toArray());
+
+			feesCombo = new JComboBox();
+
 			List<Fee> fees = new ArrayList<Fee>();
 			try {
 				fees = Manager.salaryReleaseManager.getFees();
+				for (Fee f : fees) {
+					feesCombo.addItem(f.getName());
+				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 
-			feesCombo = new JComboBox(fees.toArray());
+			// List<Expense> expenses = new ArrayList<Expense>();
+			// try {
+			// expenses = Manager.dailyExpenseManager.getExpenses();
+			// } catch (Exception e1) {
+			// e1.printStackTrace();
+			// }
+			expensesCombo = new JComboBox();
 
 			List<Expense> expenses = new ArrayList<Expense>();
 			try {
 				expenses = Manager.dailyExpenseManager.getExpenses();
+				for (Expense expense : expenses) {
+					expensesCombo.addItem(expense.getName());
+				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			expensesCombo = new JComboBox(expenses.toArray());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,28 +182,59 @@ public class RowPanel extends JPanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				if (feesCombo.getSelectedItem() != null) {
 
+				String str = (String) feesCombo.getSelectedItem();
+
+				if (str != null && !str.equals("")) {
 					Fee fee = null;
 					try {
-						fee = (Fee) feesCombo.getSelectedItem();
+						fee = Manager.salaryReleaseManager.searchFee(str);
+						if (fee != null) {
+							feeAmount.setText(String.format("%.2f", Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId())));
+						} else {
+							feeAmount.setText("0");
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
-					}
-					if (fee != null) {
-						double val = 0d;
-						try {
-							val = Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						feeAmount.setText(String.format("%.2f", val));
-					} else {
-						feeAmount.setText("0");
 					}
 				} else {
 					feeAmount.setText("0");
 				}
+
+				// if (feesCombo.getSelectedItem() != null) {
+				//
+				// System.out.println("entered1");
+				//
+				// Fee fee = null;
+				// try {
+				// Object o = feesCombo.getSelectedItem();
+				// if (o instanceof Fee) {
+				// fee = (Fee) feesCombo.getSelectedItem();
+				// }else{
+				// System.out.println("not fee!");
+				// }
+				//
+				// } catch (Exception e) {
+				// e.printStackTrace();
+				// }
+				// if (fee != null) {
+				// double val = 0d;
+				// try {
+				// val =
+				// Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId());
+				// } catch (Exception e) {
+				// e.printStackTrace();
+				// }
+				// System.out.println("value: "+val);
+				// feeAmount.setText(String.format("%.2f", val));
+				// } else {
+				//
+				// System.out.println("fee was null");
+				// feeAmount.setText("0");
+				// }
+				// } else {
+				// feeAmount.setText("0");
+				// }
 			}
 		});
 
@@ -194,25 +247,20 @@ public class RowPanel extends JPanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				if (expensesCombo.getSelectedItem() != null) {
 
+				String str = (String) expensesCombo.getSelectedItem();
+
+				if (str != null && !str.equals("")) {
 					Expense expense = null;
-
 					try {
-						expense = (Expense) expensesCombo.getSelectedItem();
+						expense = Manager.dailyExpenseManager.searchExpense(str);
+						if (expense != null) {
+							amountOfExpense.setText(String.format("%.2f", Manager.dailyExpenseManager.getMostRecentAmountForExpense(expense.getId())));
+						} else {
+							amountOfExpense.setText("0");
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
-					}
-					if (expense != null) {
-						double val = 0d;
-						try {
-							val = Manager.dailyExpenseManager.getMostRecentAmountForExpense(expense.getId());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						amountOfExpense.setText(String.format("%.2f", val));
-					} else {
-						amountOfExpense.setText("0");
 					}
 				} else {
 					amountOfExpense.setText("0");

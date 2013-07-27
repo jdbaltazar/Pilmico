@@ -28,6 +28,8 @@ public interface EmployeePersonManager {
 	public Employee getEmployee(int id) throws Exception;
 
 	public List<Employee> getAllEmployees() throws Exception;
+	
+	public List<Employee> getAllEmployeesExceptManagers() throws Exception;
 
 	public List<Employee> getEmployedEmployees() throws Exception;
 
@@ -37,9 +39,10 @@ public interface EmployeePersonManager {
 
 	public List<Employee> getEmployedEmployeesWithoutAccounts() throws Exception;
 
-	public List<Employee> getEmployedEmployees(Designation designation) throws Exception;
+	// public List<Employee> getEmployedEmployees(Designation designation) throws
+	// Exception;
 
-	public List<Employee> getEmployedEmployeesExcept(Designation designation) throws Exception;
+	public List<Employee> getEmployedEmployeesExceptManagers() throws Exception;
 
 	public void updateEmployee(Employee employee) throws Exception;
 

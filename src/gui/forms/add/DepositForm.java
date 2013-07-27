@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -43,6 +45,8 @@ import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
 import common.entity.profile.Designation;
+import common.entity.profile.Account;
+import common.entity.profile.Employee;
 import common.manager.Manager;
 
 public class DepositForm extends SimplePanel {
@@ -82,9 +86,6 @@ public class DepositForm extends SimplePanel {
 	public void fillEntries() {
 		date.setValue(new Date());
 
-		// portion to fill depositor entries (dropdown)
-//		depositor.setText(Manager.loggedInAccount.getFirstPlusLastName());
-
 		fields.get(0).setText("0");
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 
@@ -104,7 +105,7 @@ public class DepositForm extends SimplePanel {
 		fwd = new SBButton("forward.png", "forward.png", "Add new bank");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new bank account");
 		fwd3 = new SBButton("forward.png", "forward.png", "Add new employee");
-		
+
 		fwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -121,12 +122,7 @@ public class DepositForm extends SimplePanel {
 		bankAcctLabel = new DropdownLabel("Bank Account*");
 		bankLabel = new DropdownLabel("Bank*");
 
-		// issuedBy = new FormDropdown();
 		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
-//=======
-//		issuedBy = new DefaultEntryLabel("");
-//		depositor = new DefaultEntryLabel("");
-//>>>>>>> refs/remotes/origin/master
 
 		date = new JSpinner(new SpinnerDateModel());
 		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
@@ -147,7 +143,6 @@ public class DepositForm extends SimplePanel {
 
 		depositorCombo = new FormDropdown();
 		refreshDropdowns(false);
-
 
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 63) {
@@ -180,14 +175,14 @@ public class DepositForm extends SimplePanel {
 				fwd2.setBounds(x1 + 76, initY + y - 11, 16, 16);
 				bankAcctLabel.setBounds(x1, initY + y - 7, 200, 11);
 			}
-			
-			if(i == 3){
+
+			if (i == 3) {
 				fwd3.setBounds(x1 + 57, initY + y - 11, 16, 16);
 
 				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
 				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
-				
-				x1+= 250;
+
+				x1 += 250;
 
 				y = -63;
 			}
@@ -213,9 +208,12 @@ public class DepositForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				// Date date, BankAccount bankAccount, double amount, Employee
+				// depositor, Account issuedBy, boolean valid, String remarks
+
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 				Deposit deposit = new Deposit(d, (BankAccount) bankAcctCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
-						Manager.loggedInAccount.getEmployee(), Manager.loggedInAccount, true);
+						(Employee) depositorCombo.getSelectedItem(), Manager.loggedInAccount, true, remarks.getText());
 
 				try {
 					Manager.depositManager.addDeposit(deposit);
@@ -244,10 +242,10 @@ public class DepositForm extends SimplePanel {
 		panel.add(issuedByLabel);
 
 		panel.add(bankLabel);
-		
+
 		panel.add(depositorLabel);
 		panel.add(depositorCombo);
-		
+
 		panel.add(bankAcctLabel);
 
 		panel.add(remarks);
@@ -287,20 +285,7 @@ public class DepositForm extends SimplePanel {
 			panel.remove(bankAcctCombo);
 		}
 		
-		List<Bank> banks = new ArrayList<Bank>();
-		try {
-			banks = Manager.depositManager.getBanks();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-
-		try {
-			model = new DefaultComboBoxModel(banks.toArray());
-			bankCombo = new JComboBox(model);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
+		bankCombo = new JComboBox();
 		
 		bankCombo.setEditable(true);
 		bankComboField = (JTextField) bankCombo.getEditor().getEditorComponent();
@@ -308,24 +293,7 @@ public class DepositForm extends SimplePanel {
 		bankComboField.setOpaque(false);
 		bankComboField.addKeyListener(new ComboKeyHandler(bankCombo));
 		
-		try {
-			model = new DefaultComboBoxModel();
-			
-			// issuedBy = new FormDropdown();
-			// issuedBy.setModel(model);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
 		bankAcctCombo = new JComboBox();
-		if (banks.size() > 0) {
-			bankCombo.setSelectedIndex(0);
-			Bank b = (Bank) bankCombo.getItemAt(0);
-			Set<BankAccount> bankAccounts = b.getBankAccounts();
-			for (BankAccount ba : bankAccounts) {
-				bankAcctCombo.addItem(ba);
-			}
-		}
-		
 		bankAcctCombo.setEditable(true);
 		bankAcctComboField = (JTextField) bankAcctCombo.getEditor().getEditorComponent();
 		bankAcctComboField.setText("");
@@ -333,10 +301,23 @@ public class DepositForm extends SimplePanel {
 		bankAcctComboField.addKeyListener(new ComboKeyHandler(bankAcctCombo));
 		
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExcept(new Designation(Designation.MANAGER)).toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
 			depositorCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			bankCombo.setModel(new DefaultComboBoxModel(Manager.depositManager.getBanks().toArray()));
+			if (bankCombo.getItemCount() > 0) {
+				bankCombo.setSelectedIndex(0);
+				Bank b = (Bank) bankCombo.getItemAt(0);
+				bankAcctCombo.setModel(new DefaultComboBoxModel((new ArrayList<BankAccount>(b.getBankAccounts()).toArray())));
+			}
+
+			depositorCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployees().toArray()));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		

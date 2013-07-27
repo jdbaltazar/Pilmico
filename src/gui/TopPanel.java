@@ -58,6 +58,10 @@ public class TopPanel extends SoyPanel {
 	public static FormField searchField;
 
 	public SBButton store_info, tools;
+	public SBButton getTools() {
+		return tools;
+	}
+
 	private BalloonTip balloonTip;
 
 	private int logoY = 10;
