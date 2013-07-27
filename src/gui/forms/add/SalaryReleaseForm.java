@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.RowPanel;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -134,20 +135,20 @@ public class SalaryReleaseForm extends SimplePanel {
 		feesPane.setOpaque(false);
 		feesPane.getViewport().setOpaque(false);
 
-		dateLabel.setBounds(70, 50, 40, 20);
-		date.setBounds(115, 50, 180, 20);
+		dateLabel.setBounds(70, 55, 40, 20);
+		date.setBounds(115, 55, 180, 20);
 
-		issuedByLabel.setBounds(42, 90, 70, 20);
-		issuedBy.setBounds(115, 90, 180, 20);
+		issuedByLabel.setBounds(42, 95, 70, 20);
+		issuedBy.setBounds(115, 95, 180, 20);
 
-		issuedForLabel.setBounds(40, 130, 80, 20);
-		issuedFor.setBounds(115, 130, 180, 20);
+		issuedForLabel.setBounds(40, 135, 80, 20);
+		issuedFor.setBounds(115, 135, 180, 20);
 
-		salaryLabel.setBounds(40, 170, 70, 20);
-		grossPay.setBounds(115, 170, 180, 20);
+		salaryLabel.setBounds(40, 175, 70, 20);
+		grossPay.setBounds(115, 175, 180, 20);
 
-		payLabel.setBounds(52, 210, 65, 20);
-		netPay.setBounds(115, 210, 180, 20);
+		payLabel.setBounds(52, 215, 65, 20);
+		netPay.setBounds(115, 215, 180, 20);
 
 		addRow.setBounds(320, 65, 16, 16);
 
@@ -156,7 +157,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		deleteLabel.setBounds(610, 60, 46, 25);
 		feesPane.setBounds(341, 85, 332, 150);
 
-		fwd.setBounds(300, 130, 16, 16);
+		fwd.setBounds(300, 135, 16, 16);
 		fwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -206,8 +207,8 @@ public class SalaryReleaseForm extends SimplePanel {
 		panel.add(salaryLabel);
 		panel.add(grossPay);
 
-		// panel.add(payLabel);
-		// panel.add(netPay);
+		panel.add(payLabel);
+		panel.add(netPay);
 
 		panel.add(fwd);
 
@@ -306,7 +307,9 @@ public class SalaryReleaseForm extends SimplePanel {
 				try {
 					Manager.salaryReleaseManager.addSalaryRelease(salaryRelease);
 
-					System.out.println("salary release added!");
+					Values.centerPanel.changeTable(Values.SALARY);
+					new SuccessPopup("Add").setVisible(true);
+					clearForm();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 				}
@@ -345,6 +348,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		error.setText("");
 
+		refreshEmployee();
 	}
 
 	public void refreshDate() {
@@ -356,6 +360,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		try {
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExcept(new Designation(Designation.MANAGER)).toArray());
 			issuedFor.setModel(model);
+			
 			if (issuedFor.getItemCount() > 0) {
 				issuedFor.setSelectedIndex(0);
 				grossPay.setText(String.format("%.2f", ((Employee) issuedFor.getSelectedItem()).getSalary()));

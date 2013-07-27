@@ -38,9 +38,7 @@ public class AccountForm extends SimplePanel {
 	private static final long serialVersionUID = -1337878469442864579L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
-	private FormDropdown acctType;
-	private JComboBox employeeCombo;
-	private JTextField employeesField;
+	private FormDropdown acctType, employeeCombo;
 	private DefaultComboBoxModel model;
 
 	private int initY = 70;
@@ -87,15 +85,8 @@ public class AccountForm extends SimplePanel {
 			e2.printStackTrace();
 		}
 
-		model = new DefaultComboBoxModel();
-		employeeCombo = new JComboBox(model);
-
-		employeeCombo.setSelectedIndex(-1);
-
-		employeeCombo.setEditable(true);
-		employeesField = (JTextField) employeeCombo.getEditor().getEditorComponent();
-		employeesField.setText("");
-		employeesField.addKeyListener(new ComboKeyHandler(employeeCombo));
+		employeeCombo = new FormDropdown();
+		refreshEmployee();
 
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 50; i < num; i++, y += 60) {

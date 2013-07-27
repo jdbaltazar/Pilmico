@@ -38,8 +38,8 @@ public class ViewDepositForm extends EditFormPanel {
 	private static final long serialVersionUID = -1337878469442864579L;
 	private SoyButton clear, save;
 	private int initY = 32;
-	private ViewFormLabel dateLabel, issuedByLabel, depositorLabel, bankAcctLabel, amountLabel;
-	private ViewFormField depositor, bankAcct, issuedBy, date, amount;
+	private ViewFormLabel dateLabel, issuedByLabel, depositorLabel, bankLabel, bankAcctLabel, amountLabel;
+	private ViewFormField depositor, bank, bankAcct, issuedBy, date, amount;
 
 	private ErrorLabel error;
 
@@ -85,7 +85,8 @@ public class ViewDepositForm extends EditFormPanel {
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(deposit.getDate()));
 		issuedBy.setText(deposit.getIssuedBy().getFirstPlusLastName());
 		depositor.setText(deposit.getDepositor().getFirstPlusLastName());
-		bankAcct.setText(deposit.getBankAccount().getBank() + ":  " + deposit.getBankAccount().getAccountNo());
+		bank.setText(deposit.getBankAccount().getBank()+"");
+		bankAcct.setText(deposit.getBankAccount().getAccountNo());
 		amount.setText(String.format("%.2f", deposit.getAmount()));
 
 	}
@@ -112,16 +113,18 @@ public class ViewDepositForm extends EditFormPanel {
 		dateLabel = new ViewFormLabel("Date:");
 		issuedByLabel = new ViewFormLabel("Issued by:");
 		depositorLabel = new ViewFormLabel("Depositor:");
+		bankLabel = new ViewFormLabel("Bank:");
 		bankAcctLabel = new ViewFormLabel("Bank Acct.:");
 		amountLabel = new ViewFormLabel("Amount:");
 
 		issuedBy = new ViewFormField("");
 		date = new ViewFormField("");
+		bank = new ViewFormField("");
 		bankAcct = new ViewFormField("");
 		depositor = new ViewFormField("");
 		amount = new ViewFormField("");
 
-		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 53) {
+		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 43) {
 
 			if (i == 0) {
 				dateLabel.setBounds(x1, initY + y - 7, 60, 11);
@@ -136,13 +139,18 @@ public class ViewDepositForm extends EditFormPanel {
 				depositorLabel.setBounds(x1, initY + y - 7, 60, 11);
 				depositor.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-
+			
 			if (i == 3) {
+				bankLabel.setBounds(x1, initY + y - 7, 60, 11);
+				bank.setBounds(x1 + 65, initY + y - 14, 200, 20);
+			}
+
+			if (i == 4) {
 				bankAcctLabel.setBounds(x1 - 10, initY + y - 7, 70, 11);
 				bankAcct.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
 
-			if (i == 4) {
+			if (i == 5) {
 				amountLabel.setBounds(x1, initY + y - 7, 60, 11);
 				amount.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
@@ -180,6 +188,9 @@ public class ViewDepositForm extends EditFormPanel {
 		panel.add(depositor);
 		panel.add(depositorLabel);
 
+		panel.add(bank);
+		panel.add(bankLabel);
+		
 		panel.add(bankAcct);
 		panel.add(bankAcctLabel);
 
