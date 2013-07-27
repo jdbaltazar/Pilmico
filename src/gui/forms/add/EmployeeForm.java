@@ -167,26 +167,20 @@ public class EmployeeForm extends SimplePanel {
 
 				try {
 
-				Person person = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3)
-						.getText(), fields.get(4).getText(), false);
-				
-				Manager.employeePersonManager.addPerson(person);
-				
-				
-				Employee employee = new Employee(person, (Designation) designation.getSelectedItem(), (EmploymentStatus) employmentStatus
-						.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double.parseDouble(fields.get(5).getText()), fields.get(6)
-						.getText(), null);
-					
-					
+					Employee employee = new Employee(new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3)
+							.getText(), fields.get(4).getText(), false), (Designation) designation.getSelectedItem(), (EmploymentStatus) employmentStatus
+							.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double.parseDouble(fields.get(5).getText()), fields
+							.get(6).getText(), null);
+
 					Manager.employeePersonManager.addEmployee(employee);
-					
+
 					Values.centerPanel.changeTable(Values.EMPLOYEES);
 					new SuccessPopup("Add").setVisible(true);
 					clearFields();
-					
+
 					Values.salaryReleaseForm.refreshEmployee();
 					Values.cashAdvanceForm.refreshEmployee();
-					
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

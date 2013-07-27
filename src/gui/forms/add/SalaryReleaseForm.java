@@ -354,7 +354,7 @@ public class SalaryReleaseForm extends SimplePanel {
 	public void refreshEmployee() {
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExcept(new Designation(Designation.MANAGER)).toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
 			issuedFor.setModel(model);
 			if (issuedFor.getItemCount() > 0) {
 				issuedFor.setSelectedIndex(0);

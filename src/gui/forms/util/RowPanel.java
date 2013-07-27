@@ -161,10 +161,18 @@ public class RowPanel extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (feesCombo.getSelectedItem() != null) {
+					
+					System.out.println("entered1");
 
 					Fee fee = null;
 					try {
-						fee = (Fee) feesCombo.getSelectedItem();
+						Object o = feesCombo.getSelectedItem();
+						if (o instanceof Fee) {
+							fee = (Fee) feesCombo.getSelectedItem();
+						}else{
+							System.out.println("not fee!");
+						}
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -175,8 +183,11 @@ public class RowPanel extends JPanel {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						System.out.println("value: "+val);
 						feeAmount.setText(String.format("%.2f", val));
 					} else {
+						
+						System.out.println("fee was null");
 						feeAmount.setText("0");
 					}
 				} else {

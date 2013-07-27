@@ -201,7 +201,6 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource().equals(logout)) {
 			showMenuButtons(false);
 			Values.topPanel.showMenuButtons(false);

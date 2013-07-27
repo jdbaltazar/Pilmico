@@ -1,6 +1,8 @@
 package common.entity.profile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import common.entity.product.Price;
 
 @Entity
 public class Person {
@@ -60,6 +64,16 @@ public class Person {
 		this.address = address;
 		this.contactNo = contactNo;
 		this.customer = customer;
+	}
+
+	public Person(Person p) {
+		super();
+		this.firstName = p.getFirstName();
+		this.middleName = p.getMiddleName();
+		this.lastName = p.getLastName();
+		this.address = p.getAddress();
+		this.contactNo = p.getContactNo();
+		this.customer = p.isCustomer();
 	}
 
 	public int getId() {
@@ -122,8 +136,53 @@ public class Person {
 		this.customer = customer;
 	}
 
-	public Set<Employee> getEmployments() {
-		return employments;
+	// public Set<Employee> getEmployments() {
+	// return employments;
+	// }
+
+	public List<Employee> getEmploymentHistory() {
+		return orderEmploymentHistory(copyEmployments(employments));
+	}
+
+	private List<Employee> copyEmployments(Set<Employee> orig) {
+		List<Employee> copy = new ArrayList<Employee>();
+		for (Employee emp : orig) {
+			Person person = new Person(emp.getPerson());
+			emp.setId(emp.getPerson().getId());
+			Designation designation = new Designation(emp.getDesignation().getName());
+			designation.setId(emp.getDesignation().getId());
+			EmploymentStatus employmentStatus = new EmploymentStatus(emp.getStatus().getStatus());
+			employmentStatus.setId(emp.getStatus().getId());
+			Employee emp2 = new Employee(person, designation, employmentStatus, emp.getStartingDate(), emp.getSalary(), emp.getRemarks(),
+					emp.getTerminationDate());
+			emp2.setId(emp.getId());
+			copy.add(emp2);
+		}
+		return copy;
+	}
+
+	private List<Employee> orderEmploymentHistory(List<Employee> employments) {
+		List<Employee> ordered = new ArrayList<Employee>();
+		int origSize = employments.size();
+		for (int i = 0; i < origSize; i++) {
+			Employee temp = getMostRecentEmploymentIn(employments);
+			ordered.add(temp);
+			employments.remove(employments.indexOf(temp));
+		}
+		return ordered;
+	}
+
+	private Employee getMostRecentEmploymentIn(List<Employee> employments) {
+		Employee mostRecent = null;
+		for (Employee e : employments) {
+			if (mostRecent == null)
+				mostRecent = e;
+			else {
+				if (e.getStartingDate().after(mostRecent.getStartingDate()))
+					mostRecent = e;
+			}
+		}
+		return mostRecent;
 	}
 
 	public String toString() {

@@ -1,18 +1,12 @@
 package core.test;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.List;
 import java.util.Scanner;
 
 import app.Credentials;
-
-import common.entity.dailyexpenses.Expense;
-import common.manager.Manager;
 import core.database.DatabaseTool;
 import core.security.SecurityTool;
 
@@ -69,6 +63,8 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
+
+		// DatabaseTool.backup(dbUserName, dbPassword, dbName, path);
 
 		// try {
 		// //

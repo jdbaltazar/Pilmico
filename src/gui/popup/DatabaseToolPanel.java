@@ -1,8 +1,14 @@
 package gui.popup;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JPanel;
+
+import core.database.DatabaseTool;
+import core.test.Test;
 
 import util.SBButton;
 
@@ -42,9 +48,37 @@ public class DatabaseToolPanel extends JPanel {
 		recover.setBounds(55, 5, 20, 20);
 		close.setBounds(72, 2, 16, 16);
 
+		backup.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				System.out.println("backup!!");
+				// DatabaseTool.backup("root", "123456", "pilmico",
+				// "D:/backup.sql");
+				// Test t = new Test();
+				// t.tbBackup("pilmico", "root", "123456", "temp/backup.sql");
+			}
+		});
+
+		recover.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				// try {
+				// DatabaseTool.decryptAndUpdate("root", "123456", "pilmico",
+				// "data/pilmico-create.sql");
+				// } catch (SQLException e1) {
+				// // TODO Auto-generated catch block
+				// e1.printStackTrace();
+				// }
+
+			}
+		});
+
 		add(backup);
 		add(recover);
 
 	}
-
 }

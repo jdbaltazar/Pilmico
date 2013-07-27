@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
+@Entity(name = "Employee")
 @Table(name = "Employment")
 public class Employee {
 
@@ -25,7 +25,7 @@ public class Employee {
 	@Column(name = "id")
 	private int id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "person_id")
 	private Person person;
 
