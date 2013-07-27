@@ -205,6 +205,7 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 		if (e.getSource().equals(logout)) {
 			showMenuButtons(false);
 			Values.topPanel.showMenuButtons(false);
+			Values.topPanel.getTools().setVisible(true);
 			Values.centerPanel.logout();
 			try {
 				Manager.getInstance().logout();
