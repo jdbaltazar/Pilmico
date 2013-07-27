@@ -320,6 +320,9 @@ public class SalaryReleaseForm extends SimplePanel {
 	}
 
 	private void fillEntries() {
+
+		Employee emp = (Employee) issuedFor.getSelectedItem();
+		salaryLabel.setToolTipText("To edit salary, go to: Profiles>Employees>" + emp.getFirstPlusLastName());
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 		refreshDate();
 		refreshEmployee();

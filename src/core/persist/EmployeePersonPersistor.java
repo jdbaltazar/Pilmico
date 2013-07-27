@@ -95,38 +95,56 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 		return employees;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> getEmployedEmployeesWithAccounts() throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Employee.class);
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.isNotNull("account")).createAlias("person", "p")
-					.addOrder(Order.desc("p.firstName")).list();
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
+		List<Employee> allEmployed = getEmployedEmployees();
+		List<Employee> withAccounts = new ArrayList<Employee>();
+		for (Employee e : allEmployed) {
+			if (e.getAccount() != null)
+				withAccounts.add(e);
 		}
-		return employees;
+		return withAccounts;
+
+		// Session session = HibernateUtil.startSession();
+		// Criteria criteria = session.createCriteria(Employee.class);
+		// List<Employee> employees = new ArrayList<Employee>();
+		// try {
+		// employees = criteria.add(Restrictions.eq("status.id", new
+		// Integer("1"))).add(Restrictions.isNotNull("account")).createAlias("person",
+		// "p")
+		// .addOrder(Order.desc("p.firstName")).list();
+		// } catch (HibernateException ex) {
+		// ex.printStackTrace();
+		// } finally {
+		// session.close();
+		// }
+		// return employees;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Employee> getEmployedEmployeesWithoutAccounts() throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(Employee.class);
-		List<Employee> employees = new ArrayList<Employee>();
-		try {
-			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).add(Restrictions.isNull("account")).createAlias("person", "p")
-					.addOrder(Order.desc("p.firstName")).list();
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
+
+		List<Employee> allEmployed = getEmployedEmployees();
+		List<Employee> withAccounts = new ArrayList<Employee>();
+		for (Employee e : allEmployed) {
+			if (e.getAccount() == null)
+				withAccounts.add(e);
 		}
-		return employees;
+		return withAccounts;
+		// Session session = HibernateUtil.startSession();
+		// Criteria criteria = session.createCriteria(Employee.class);
+		// List<Employee> employees = new ArrayList<Employee>();
+		// try {
+		// employees = criteria.add(Restrictions.eq("status.id", new
+		// Integer("1"))).add(Restrictions.isNull("account")).createAlias("person",
+		// "p")
+		// .addOrder(Order.desc("p.firstName")).list();
+		// } catch (HibernateException ex) {
+		// ex.printStackTrace();
+		// } finally {
+		// session.close();
+		// }
+		// return employees;
 	}
 
 	// @SuppressWarnings("unchecked")

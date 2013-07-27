@@ -403,6 +403,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
+			deposit.fillEntries();
 			deposit.setVisible(true);
 		}
 

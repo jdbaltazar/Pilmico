@@ -54,8 +54,20 @@ public class AccountForm extends SimplePanel {
 	public AccountForm() {
 		super("Add Account");
 		addComponents();
-
+		fillEntries();
 		Values.accountForm = this;
+	}
+
+	public void fillEntries() {
+		try {
+			List<AccountType> accountTypes = Manager.accountManager.getAccountTypes();
+			DefaultComboBoxModel model = new DefaultComboBoxModel(accountTypes.toArray());
+			employeeCombo.setModel(model);
+			refreshEmployee();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void addComponents() {
@@ -188,6 +200,10 @@ public class AccountForm extends SimplePanel {
 
 	public void refreshEmployee() {
 		try {
+
+			List<Employee> employees = Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts();
+
+			System.out.println("emps: " + employees.size());
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts().toArray());
 			employeeCombo.setModel(model);
 		} catch (Exception e2) {
