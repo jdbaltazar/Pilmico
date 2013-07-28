@@ -121,6 +121,13 @@ public class Account {
 		return accountType.getName();
 	}
 
+	public String getDesignationPlusFirstPlusLastName() {
+		if (!accountType.getName().equalsIgnoreCase(AccountType.systemAdmin)) {
+			return employee.getDesignation().getName() + " " + employee.getFirstPlusLastName();
+		}
+		return accountType.getName();
+	}
+
 	public boolean isActive() {
 		return active;
 	}

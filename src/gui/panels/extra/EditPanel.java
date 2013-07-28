@@ -41,6 +41,7 @@ import common.entity.deposit.Bank;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
+import common.entity.profile.Account;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
@@ -122,8 +123,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 	}
 
 	public void startAnimation() {
-		
-		
+
 		isRunning = true;
 		thread = new Thread(this);
 		thread.start();
@@ -143,19 +143,19 @@ public class EditPanel extends SoyPanel implements Runnable {
 	}
 
 	private void hidePanel() {
-		
-		if(Values.editProductPanel != null)
+
+		if (Values.editProductPanel != null)
 			Values.editProductPanel.closeBalloonPanel();
-		
-		if(Values.editEmployeeForm != null)
+
+		if (Values.editEmployeeForm != null)
 			Values.editEmployeeForm.closeBalloonPanel();
-		
-		if(Values.viewCAForm != null)
+
+		if (Values.viewCAForm != null)
 			Values.viewCAForm.closeBalloonPanel();
-		
-		if(Values.viewARForm != null)
+
+		if (Values.viewARForm != null)
 			Values.viewARForm.closeBalloonPanel();
-		
+
 		if (currWidth <= minWidth)
 			isRunning = false;
 
@@ -191,7 +191,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNTS)) {
-			add(new EditAccountPanel(), BorderLayout.CENTER);
+			add(new EditAccountPanel((Account) o), BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {

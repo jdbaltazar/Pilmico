@@ -2,7 +2,6 @@ package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.FormDropdown;
-import gui.forms.util.RemarksLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
@@ -88,7 +87,6 @@ public class ViewExpensesForm extends EditFormPanel {
 		this.dailyExpenses = dailyExpenses;
 		init();
 		addComponents();
-		colorTable();
 		fillEntries();
 
 	};
@@ -107,9 +105,8 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		status = new JLabel("", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
+		status.setForeground(Color.green.darker());
 
-		remarks = new RemarksLabel("");
-		
 		issuedByLabel = new ViewFormLabel("Issued by:");
 		typeLabel = new ViewFormLabel("Type:");
 		dateLabel = new ViewFormLabel("Date:");
@@ -127,7 +124,6 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		expensesPane.setOpaque(false);
 		expensesPane.getViewport().setOpaque(false);
-		expensesPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		amountLabel.setBounds(23, LABEL_Y, 77, LABEL_HEIGHT);
 		expenseLabel.setBounds(100, LABEL_Y, ROW_WIDTH - amountLabel.getWidth() - 15, LABEL_HEIGHT);
@@ -142,6 +138,23 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		issuedByLabel.setBounds(310, LABEL_Y + 95, 70, 20);// 350
 		issuedBy.setBounds(395, LABEL_Y + 95, 160, 20);
+
+		/*
+		 * addRow.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) {
+		 * 
+		 * rowPanel.add(new RowPanel(expensesPanel, Tables.EXPENSES));
+		 * expensesPanel.add(rowPanel.get(rowPanel.size() - 1)); alternateRows();
+		 * 
+		 * expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20,
+		 * expensesPanel.getComponentCount() * ROW_HEIGHT));
+		 * expensesPanel.updateUI(); expensesPanel.revalidate();
+		 * 
+		 * Rectangle rect = new Rectangle(0, (int) expensesPanel
+		 * .getPreferredSize().getHeight(), 10, 10);
+		 * expensesPanel.scrollRectToVisible(rect); } });
+		 */
 
 		panel.add(amountLabel);
 		panel.add(expenseLabel);
@@ -166,42 +179,11 @@ public class ViewExpensesForm extends EditFormPanel {
 				+ LABEL_Y + 3);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
-		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
 		add(status);
-		add(remarks);
 	}
 
-	private void colorTable(){
-
-		String s = "";
-		if (dailyExpenses.getInventorySheetData() != null) {
-			icon = new ImageIcon("images/accounted.png");
-			s = "ACCOUNTED";
-			status.setForeground(Color.GREEN.darker());
-			remarks.setForeground(Color.GREEN.darker());
-			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
-		} else {
-			if (dailyExpenses.isValid()) {
-				icon = new ImageIcon("images/pending.png");
-				s = "PENDING";
-				status.setForeground(Color.orange);
-				remarks.setForeground(Color.orange);
-				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
-			} else {
-				icon = new ImageIcon("images/invalidated.png");
-				s = "INVALIDATED";
-				status.setForeground(Color.RED);
-				remarks.setForeground(Color.RED);
-				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
-			}
-		}
-		status.setText(s);
-		status.setIcon(icon);
-		
-	}
-	
 	private void alternateRows() {
 
 		for (int i = 0; i < rowPanel.size(); i++)
@@ -211,6 +193,33 @@ public class ViewExpensesForm extends EditFormPanel {
 				rowPanel.get(i).getRow().setBackground(Values.row2);
 	}
 
+	public void removeRow(int rowNum) {
+		expensesPanel.remove(rowNum);
+		expensesPanel.updateUI();
+		expensesPanel.revalidate();
+
+		expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20, expensesPanel.getComponentCount() * ROW_HEIGHT));
+
+		// updateList(rowNum);
+
+		alternateRows();
+	}
+
+	// private void updateList(int removedRow) {
+	//
+	// for (int i = removedRow + 1; i < rowPanel.size(); i++) {
+	// rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT,
+	// ROW_WIDTH, ROW_HEIGHT);
+	// rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
+	// // System.out.println("command: "+rowPanel2.get(i).getCommand());
+	// rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
+	// rowPanel.get(i).updateUI();
+	// rowPanel.get(i).revalidate();
+	// }
+	//
+	// rowPanel.remove(removedRow);
+	// }
+
 	private void addComponents() {
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
@@ -219,16 +228,20 @@ public class ViewExpensesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
+				// <<<<<<< HEAD
+				// new UtilityPopup(b,
+				// "What's your reason for invalidating this form?", Values.REMARKS,
+				// dailyExpenses).setVisible(true);
+				// =======
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
-				
+
 				if (!uP.getReason().equals("")) {
 					dailyExpenses.setValid(false);
 					dailyExpenses.setRemarks(uP.getReason());
 
 					try {
-						Manager.dailyExpenseManager
-								.updateDailyExpenses(dailyExpenses);
+						Manager.dailyExpenseManager.updateDailyExpenses(dailyExpenses);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -238,6 +251,7 @@ public class ViewExpensesForm extends EditFormPanel {
 					new SuccessPopup("Invalidation").setVisible(true);
 					Values.centerPanel.changeTable(Values.EXPENSES);
 				}
+				// >>>>>>> refs/remotes/remote/master
 			}
 		});
 
@@ -254,22 +268,47 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		voidBtn.setVisible(dailyExpenses.getInventorySheetData() != null ? false : dailyExpenses.isValid());
 
+		// <<<<<<< HEAD
+		String s = "";
+		if (dailyExpenses.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+		} else {
+			if (dailyExpenses.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+		type.setText(dailyExpenses.getDailyExpensesType().toString());
+		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
+		issuedBy.setText(dailyExpenses.getAccount().getFirstPlusLastName());
+		// =======
 		type.setToolTip(type, dailyExpenses.getDailyExpensesType().toString());
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
-		issuedBy.setToolTip(issuedBy,dailyExpenses.getAccount().getFirstPlusLastName());
-		
-		if(dailyExpenses.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+dailyExpenses.getRemarks());
+		issuedBy.setToolTip(issuedBy, dailyExpenses.getAccount().getFirstPlusLastName());
+
+		if (dailyExpenses.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + dailyExpenses.getRemarks());
+		// >>>>>>> refs/remotes/remote/master
 
 		Set<DailyExpensesDetail> details = dailyExpenses.getDailyExpenseDetails();
+		System.out.println("size: " + details.size());
+
 		for (DailyExpensesDetail ded : details) {
-			 rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
-			 expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
-			 alternateRows();
-			
-			 expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH, expensesPanel.getComponentCount() * ROW_HEIGHT));
-			 expensesPanel.updateUI();
-			 expensesPanel.revalidate();
+			rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
+			expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
+			alternateRows();
+
+			expensesPanel.setPreferredSize(new Dimension(330, expensesPanel.getComponentCount() * ROW_HEIGHT));
+			expensesPanel.updateUI();
+			expensesPanel.revalidate();
 		}
+
 	}
 }

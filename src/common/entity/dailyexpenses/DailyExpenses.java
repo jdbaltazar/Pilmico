@@ -46,7 +46,7 @@ public class DailyExpenses {
 	@Column
 	private String remarks;
 
-	@OneToMany(mappedBy = "expense", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "dailyExpenses", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DailyExpensesDetail> dailyExpenseDetails = new HashSet<DailyExpensesDetail>();
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)

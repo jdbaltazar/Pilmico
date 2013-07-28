@@ -1,6 +1,7 @@
 package common.manager;
 
 import common.entity.profile.Account;
+import common.entity.profile.AccountType;
 
 import core.persist.AccountPersistor;
 import core.persist.AccountReceivablePersistor;
@@ -78,7 +79,7 @@ public class Manager {
 		try {
 			Account acc = accountManager.getAccount(username);
 
-			if (acc != null) {
+			if (acc != null && acc.isActive()) {
 				if (acc.comparePassword(input)) {
 					loggedInAccount = acc;
 					return "true";
@@ -97,6 +98,16 @@ public class Manager {
 			e1.printStackTrace();
 		}
 		return "false";
+	}
+
+	public static boolean isAuthorized() {
+		if (Manager.loggedInAccount != null) {
+			if (loggedInAccount.getAccountType().getName().equals(AccountType.systemAdmin)
+					|| loggedInAccount.getAccountType().getName().equals(AccountType.manager))
+				return true;
+		}
+
+		return false;
 	}
 
 	public void logout() throws Exception {

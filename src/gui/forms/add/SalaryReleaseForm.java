@@ -325,7 +325,8 @@ public class SalaryReleaseForm extends SimplePanel {
 	private void fillEntries() {
 
 		Employee emp = (Employee) issuedFor.getSelectedItem();
-		salaryLabel.setToolTipText("To edit salary, go to: Profiles>Employees>" + emp.getFirstPlusLastName());
+		if (emp != null)
+			salaryLabel.setToolTipText("To edit salary, go to: Profiles>Employees>" + emp.getFirstPlusLastName());
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 		refreshDate();
 		refreshEmployee();
@@ -363,7 +364,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		try {
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
 			issuedFor.setModel(model);
-			
+
 			if (issuedFor.getItemCount() > 0) {
 				issuedFor.setSelectedIndex(0);
 				grossPay.setText(String.format("%.2f", ((Employee) issuedFor.getSelectedItem()).getSalary()));

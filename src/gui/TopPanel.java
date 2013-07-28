@@ -58,6 +58,7 @@ public class TopPanel extends SoyPanel {
 	public static FormField searchField;
 
 	public SBButton store_info, tools;
+
 	public SBButton getTools() {
 		return tools;
 	}
@@ -87,22 +88,21 @@ public class TopPanel extends SoyPanel {
 		minimize = new SBButton("min.png", "min2.png", "Minimize");
 		store_info = new SBButton("header_2.png", "header_2.png", "");
 		tools = new SBButton("tools_3.png", "tools_3.png", "Backup / Recover");
-		
+
 		cashINLabel = new JLabel("Cash IN:");
 		cashINLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		cashINLabel.setForeground(new Color(25, 25, 112));
 		cashINLabel.setFont(new Font("Harabara", Font.PLAIN, 14));
 
 		try {
-			cashIN = new JLabel("P 24,560.50" );
+			cashIN = new JLabel("P 24,560.50");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		cashIN.setForeground(Color.decode("#009900"));
-//		cashIN.setBorder(BorderFactory.createEtchedBorder());
+		// cashIN.setBorder(BorderFactory.createEtchedBorder());
 		cashIN.setHorizontalAlignment(SwingConstants.CENTER);
 		cashIN.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
-
 
 		cashOUTLabel = new JLabel("Cash OUT:");
 		cashOUTLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -110,37 +110,29 @@ public class TopPanel extends SoyPanel {
 		cashOUTLabel.setFont(new Font("Harabara", Font.PLAIN, 14));
 
 		try {
-			cashOUT = new JLabel("P 9,655.50" );
+			cashOUT = new JLabel("P 9,655.50");
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		cashOUT.setForeground(Color.decode("#FFA280"));
 		cashOUT.setHorizontalAlignment(SwingConstants.CENTER);
-		cashOUT.setFont(new Font("Lucida Sans", Font.PLAIN, 12));		
+		cashOUT.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
 	}
 
 	private void addDashPanel() {
 
 		close2.setBounds(72, 2, 16, 16);
-		
-			balloonTip = new BalloonTip(
-					tools,
-					new DatabaseToolPanel(),
-					new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
-					BalloonTip.Orientation.LEFT_ABOVE,
-					BalloonTip.AttachLocation.SOUTH,
-					7, 12,
-					false
-				);
-		
+
+		balloonTip = new BalloonTip(tools, new DatabaseToolPanel(), new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),// ,
+																																																	// Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.SOUTH, 7, 12, false);
 
 		balloonTip.setPadding(0);
 		balloonTip.setVisible(false);
-//		balloonTip.setOpacity(0.95f);
-		
-		
-//		balloonTip.getCloseButton().setSize(16, 16);
+		// balloonTip.setOpacity(0.95f);
+
+		// balloonTip.getCloseButton().setSize(16, 16);
 
 		close.setBounds(800 - 32, 0, 32, 32);
 		minimize.setBounds(800 - 64, 0, 32, 32);
@@ -151,7 +143,7 @@ public class TopPanel extends SoyPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (Manager.loggedInAccount != null) {
+				if (Manager.loggedInAccount != null && Manager.isAuthorized()) {
 					Values.mainFrame.dimScreen(true);
 					new EditStoreInfoPopup().setVisible(true);
 				}
@@ -197,15 +189,15 @@ public class TopPanel extends SoyPanel {
 			}
 		});
 
-//		salesLabel.setBounds(550, 72, 200, 24);
-//		totalSales.setBounds(685, 70, 200, 25);
-		
+		// salesLabel.setBounds(550, 72, 200, 24);
+		// totalSales.setBounds(685, 70, 200, 25);
+
 		cashINLabel.setBounds(540, 63, 90, 15);
 		cashIN.setBounds(635, 62, 160, 16);
-		
-		cashOUTLabel.setBounds(540, 80, 90, 15);//72
+
+		cashOUTLabel.setBounds(540, 80, 90, 15);// 72
 		cashOUT.setBounds(635, 79, 160, 16);
-		
+
 	}
 
 	@Override
@@ -250,7 +242,7 @@ public class TopPanel extends SoyPanel {
 
 		add(cashINLabel);
 		add(cashIN);
-		
+
 		add(cashOUTLabel);
 		add(cashOUT);
 
@@ -258,7 +250,7 @@ public class TopPanel extends SoyPanel {
 
 	public void refreshStockCost() {
 		try {
-			cashIN.setText("P " );
+			cashIN.setText("P ");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -270,7 +262,7 @@ public class TopPanel extends SoyPanel {
 
 		cashINLabel.setVisible(show);
 		cashIN.setVisible(show);
-		
+
 		cashOUTLabel.setVisible(show);
 		cashOUT.setVisible(show);
 

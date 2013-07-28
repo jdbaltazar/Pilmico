@@ -32,6 +32,7 @@ import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
 import common.entity.profile.Account;
+import common.entity.profile.AccountType;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
@@ -62,22 +63,22 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		// add(new LoginPanel());
-		
-		 try {
-		 Manager.getInstance().login("manager", "pilmico".toCharArray());
-		 } catch (Exception e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		 changeTable(Values.HOME);
+		add(new LoginPanel());
+
+		// try {
+		// Manager.getInstance().login("manager", "pilmico".toCharArray());
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		if (val != Values.HOME)
-			remove(getComponent(getComponentCount() - 1));
+		// if (val != Values.HOME)
+		remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
@@ -613,7 +614,8 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Designation", "Name", "Contact No", "Salary", "Status" };
 
-			List<Employee> employees = Manager.employeePersonManager.getAllEmployees();
+			List<Employee> employees = Manager.isAuthorized() ? Manager.employeePersonManager.getAllEmployees() : Manager.employeePersonManager
+					.getAllEmployeesExceptManagers();
 			String[][] entries = new String[employees.size()][headers.length];
 			// String[][] entries = { { "1", "John David Baltazar", "Janitor",
 			// "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk",
@@ -638,7 +640,8 @@ public class CenterPanel extends SoyPanel {
 	private void fillAccounts() {
 		try {
 			String[] headers = { "ID", "Username", "Account Type", "Designation", "Name", "Status" };
-			List<Account> accounts = Manager.accountManager.getAccounts();
+			List<Account> accounts = Manager.isAuthorized() ? Manager.accountManager.getAccounts() : Manager.accountManager
+					.getAccountThenAddToList(Manager.loggedInAccount.getId());
 			String[][] entries = new String[accounts.size()][headers.length];
 			int i = 0;
 			for (Account a : accounts) {

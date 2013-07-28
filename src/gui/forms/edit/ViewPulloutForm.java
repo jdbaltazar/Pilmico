@@ -88,7 +88,7 @@ public class ViewPulloutForm extends EditFormPanel {
 		this.pullOut = pullOut;
 		init();
 		addComponents();
-		
+
 		colorTable();
 		fillEntries();
 
@@ -229,14 +229,13 @@ public class ViewPulloutForm extends EditFormPanel {
 				Point b = a.getLocation();
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
-				
+
 				if (!uP.getReason().equals("")) {
 					pullOut.setValid(false);
 					pullOut.setRemarks(uP.getReason());
 
 					try {
-						Manager.pullOutManager
-								.updatePullOut(pullOut);
+						Manager.pullOutManager.updatePullOut(pullOut);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -254,8 +253,8 @@ public class ViewPulloutForm extends EditFormPanel {
 		add(error);
 
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (pullOut.getInventorySheetData() != null) {
@@ -291,19 +290,18 @@ public class ViewPulloutForm extends EditFormPanel {
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(pullOut.getDate()));
 		issuedBy.setToolTip(issuedBy, pullOut.getIssuedBy().getFirstPlusLastName());
 
-		if(pullOut.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+pullOut.getRemarks());
+		if (pullOut.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + pullOut.getRemarks());
 
 		Set<PullOutDetail> pullOutDetails = pullOut.getPullOutDetails();
 		for (PullOutDetail sd : pullOutDetails) {
-			 rowPanel.add(new EditRowPanel(sd, productsPanel, Values.PULLOUT));
-			 productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-			 alternateRows();
-			
-			 productsPanel.setPreferredSize(new Dimension(330,
-			 productsPanel.getComponentCount() * ROW_HEIGHT));
-			 productsPanel.updateUI();
-			 productsPanel.revalidate();
+			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.PULLOUT));
+			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+			alternateRows();
+
+			productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
+			productsPanel.updateUI();
+			productsPanel.revalidate();
 		}
 
 	}

@@ -3,14 +3,23 @@ package gui.popup;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import common.manager.Manager;
 
 import core.database.DatabaseTool;
+import core.persist.HibernateUtil;
+import core.test.FileChooserDemo;
 import core.test.Test;
 
 import util.SBButton;
+import util.Values;
 
 public class DatabaseToolPanel extends JPanel {
 
@@ -53,11 +62,32 @@ public class DatabaseToolPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				System.out.println("backup!!");
-				// DatabaseTool.backup("root", "123456", "pilmico",
-				// "D:/backup.sql");
-				// Test t = new Test();
-				// t.tbBackup("pilmico", "root", "123456", "temp/backup.sql");
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogTitle("Backup Database");
+				fc.setSelectedFile(new File("backup.sql"));
+				fc.addChoosableFileFilter(new FileNameExtensionFilter("MySQL Files", "sql"));
+				int returnVal = fc.showSaveDialog(Values.mainFrame);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					// This is where a real application would save the file.
+					try {
+						// DatabaseTool.backup("root", "123456", "pilmico",
+						// file.getCanonicalPath());
+
+						// Test t = new Test();
+						// t.tbBackup("pilmico", "root", "123456",
+						// file.getCanonicalPath());
+
+						DatabaseTool.backup("root", "123456", "pilmico", file.getCanonicalPath());
+
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
 			}
 		});
 
@@ -66,13 +96,26 @@ public class DatabaseToolPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// try {
-				// DatabaseTool.decryptAndUpdate("root", "123456", "pilmico",
-				// "data/pilmico-create.sql");
-				// } catch (SQLException e1) {
-				// // TODO Auto-generated catch block
-				// e1.printStackTrace();
-				// }
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogTitle("Recover Database");
+				// fc.setSelectedFile(new File("backup.sql"));
+				fc.addChoosableFileFilter(new FileNameExtensionFilter("MySQL Files", "sql"));
+				int returnVal = fc.showOpenDialog(Values.mainFrame);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					// This is where a real application would save the file.
+
+					try {
+
+						DatabaseTool.decryptAndUpdate("root", "123456", "pilmico", file.getCanonicalPath());
+
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
 
 			}
 		});

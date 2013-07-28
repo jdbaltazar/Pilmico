@@ -29,11 +29,15 @@ import util.soy.SoyButton;
 
 public class SupplierForm extends SimplePanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4844447081011422390L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
 	private JComboBox personCombo;
 	private JTextField personField;
-	
+
 	private DropdownLabel contactPerson;
 	private DefaultComboBoxModel model;
 
@@ -48,8 +52,19 @@ public class SupplierForm extends SimplePanel {
 	public SupplierForm() {
 		super("Add Supplier");
 		addComponents();
-		
+		fillEntries();
 		Values.supplierForm = this;
+	}
+
+	public void fillEntries() {
+
+		try {
+			personCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
+			personCombo.setSelectedIndex(-1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void addComponents() {
@@ -58,23 +73,23 @@ public class SupplierForm extends SimplePanel {
 		save = new SoyButton("Save");
 
 		error = new ErrorLabel();
-		
+
 		fwd = new SBButton("forward.png", "forward.png", "Add new profile");
 		fwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.linkPanel(Values.CUSTOMERS);
 			}
 		});
-		
+
 		contactPerson = new DropdownLabel("Contact Person");
-		
+
 		refreshCustomer(false);
 
 		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 70) {
-			
+
 			fields.add(new FormField(Values.supplierFormLabel[i], 100, Color.white, Color.gray));
 
 			if (i == 3) {
@@ -83,10 +98,10 @@ public class SupplierForm extends SimplePanel {
 				y = 0;
 			}
 
-			if(i!=4)
-			fields.get(i).setBounds(x1, 60 + y, 170, 25);
-			
-			if(i == 4){
+			if (i != 4)
+				fields.get(i).setBounds(x1, 60 + y, 170, 25);
+
+			if (i == 4) {
 				fwd.setBounds(x1 + 78, 49 + y, 16, 16);
 				contactPerson.setBounds(x1, 60 + y - 7, 100, 11);
 			}
@@ -137,8 +152,7 @@ public class SupplierForm extends SimplePanel {
 		add(fwd);
 		add(contactPerson);
 		add(personCombo);
-		
-		
+
 		add(clear);
 		add(save);
 
@@ -156,21 +170,20 @@ public class SupplierForm extends SimplePanel {
 	private void clearFields() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
-		
+
 		refreshCustomer(true);
 
 		error.setText("");
 	}
 
 	public void refreshCustomer(boolean remove) {
-		
-		if(remove)
+
+		if (remove)
 			remove(personCombo);
-		
+
 		try {
-			 model = new
-			 DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			 personCombo = new JComboBox(model);
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			personCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,15 +192,14 @@ public class SupplierForm extends SimplePanel {
 		personCombo.setSelectedIndex(-1);
 
 		personCombo.setEditable(true);
-		personField = (JTextField) personCombo.getEditor()
-				.getEditorComponent();
+		personField = (JTextField) personCombo.getEditor().getEditorComponent();
 		personField.setText("");
 		personField.addKeyListener(new ComboKeyHandler(personCombo));
 
 		personCombo.setSelectedIndex(-1);
-		
+
 		personCombo.setBounds(215, 135, 170, 20);
-		
+
 		add(personCombo);
 
 	}
