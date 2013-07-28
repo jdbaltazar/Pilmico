@@ -114,6 +114,26 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		return accounts;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Account> getAccountsExcludeManagers() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Account.class);
+		List<Account> accounts = new ArrayList<Account>();
+		try {
+			accounts = criteria.add(Restrictions.ne("id", new Integer(1))).add(Restrictions.ne("id", new Integer(2))).addOrder(Order.asc("username"))
+					.list();
+			for (Account acc : accounts) {
+				decryptAccount(acc);
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accounts;
+	}
+
 	@Override
 	public void updateAccount(Account acc) throws Exception {
 		encryptAccount(acc);
@@ -180,6 +200,15 @@ public class AccountPersistor extends Persistor implements AccountManager {
 	private void decryptAccount(Account acc) throws Exception {
 		// acc.setUsername(SecurityTool.decrypt(acc.getUsername()));
 		acc.setPassword(SecurityTool.decryptString(acc.getPassword()));
+	}
+
+	@Override
+	public List<Account> getAccountThenAddToList(int id) throws Exception {
+		List<Account> account = new ArrayList<Account>();
+		Account acc = getAccount(id);
+		if (acc != null)
+			account.add(acc);
+		return account;
 	}
 
 }

@@ -1,5 +1,6 @@
 package core.security;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,20 +49,22 @@ public class SecurityTool {
 		return key;
 	}
 
-	public static CipherInputStream encryptFile(String inputFilePath) throws Exception {
+	public static CipherInputStream encryptFile(File file) throws Exception {
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.ENCRYPT_MODE, generateKey());
-		return new CipherInputStream(new FileInputStream(inputFilePath), cipher);
+
+		CipherInputStream cipherInputStream = new CipherInputStream(new FileInputStream(file), cipher);
+		return cipherInputStream;
 	}
 
-	public static CipherInputStream decryptFile(String inputFilePath) throws Exception {
+	public static CipherInputStream decryptFile(File file) throws Exception {
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, generateKey());
-		return new CipherInputStream(new FileInputStream(inputFilePath), cipher);
+		return new CipherInputStream(new FileInputStream(file), cipher);
 	}
 
-	public static void writeToFile(InputStream is, String outputFilePath) throws IOException {
-		OutputStream os = new FileOutputStream(outputFilePath);
+	public static File writeToFile(InputStream is, File file) throws IOException {
+		OutputStream os = new FileOutputStream(file);
 		byte[] bytes = new byte[64];
 		int numBytes;
 		while ((numBytes = is.read(bytes)) != -1) {
@@ -70,5 +73,7 @@ public class SecurityTool {
 		os.flush();
 		os.close();
 		is.close();
+
+		return file;
 	}
 }
