@@ -64,8 +64,6 @@ public class DatabaseToolPanel extends JPanel {
 				JFileChooser fc = new JFileChooser();
 				fc.setDialogTitle("Backup Database");
 				fc.setSelectedFile(new File("backup.sql"));
-				// fc.setFileFilter(new FileNameExtensionFilter("sql"));
-
 				fc.addChoosableFileFilter(new FileNameExtensionFilter("MySQL Files", "sql"));
 				int returnVal = fc.showSaveDialog(Values.mainFrame);
 
@@ -80,14 +78,13 @@ public class DatabaseToolPanel extends JPanel {
 						// t.tbBackup("pilmico", "root", "123456",
 						// file.getCanonicalPath());
 
-						DatabaseTool.backup("user", "123456", "pilmico", file.getCanonicalPath());
+						DatabaseTool.backup("root", "123456", "pilmico", file.getCanonicalPath());
 
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
-				} else {
 				}
 
 			}
@@ -98,13 +95,24 @@ public class DatabaseToolPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// try {
-				// DatabaseTool.decryptAndUpdate("root", "123456", "pilmico",
-				// "data/pilmico-create.sql");
-				// } catch (SQLException e1) {
-				// // TODO Auto-generated catch block
-				// e1.printStackTrace();
-				// }
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogTitle("Recover Database");
+				// fc.setSelectedFile(new File("backup.sql"));
+				fc.addChoosableFileFilter(new FileNameExtensionFilter("MySQL Files", "sql"));
+				int returnVal = fc.showOpenDialog(Values.mainFrame);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					// This is where a real application would save the file.
+
+					try {
+						DatabaseTool.decryptAndUpdate("root", "123456", "pilmico", file.getCanonicalPath());
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
 
 			}
 		});

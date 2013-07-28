@@ -236,8 +236,9 @@ public class CashAdvanceForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		issuedFor.setSelectedIndex(0);
+
+		if (issuedFor.getItemCount() > 0)
+			issuedFor.setSelectedIndex(0);
 
 	}
 

@@ -1,9 +1,11 @@
 package core.test;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import app.Credentials;
@@ -63,6 +65,12 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
+
+		try {
+			DatabaseTool.decryptAndUpdate("root", "123456", "pilmico", "pilmico-create.sql");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		// DatabaseTool.backup(dbUserName, dbPassword, dbName, path);
 
