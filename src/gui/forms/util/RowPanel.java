@@ -296,6 +296,9 @@ public class RowPanel extends JPanel {
 					Product p = (Product) productsCombo.getSelectedItem();
 					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack() + "");
 					priceKG.setToolTip(priceKG, p.getCurrentPricePerKilo() + "");
+					
+					if(Values.salesForm.hasMultipleProduct())
+						Values.salesForm.setErrorText("No multiple product entry allowed");
 				}
 			}
 		});
@@ -475,6 +478,18 @@ public class RowPanel extends JPanel {
 	public JPanel getRow() {
 		return row;
 	}
+	
+	public JComboBox getProductCombo(){
+		return productsCombo;
+	}
+	
+	/*public JNumericField getQuantitySack(){
+		return quantitySack;
+	}
+	
+	public JNumericField getQuantityKG(){
+		return quantityKG;
+	}*/
 
 	public JButton getDeleteRow() {
 		return deleteRow;
