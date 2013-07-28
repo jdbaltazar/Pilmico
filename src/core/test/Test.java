@@ -66,11 +66,12 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		try {
-			DatabaseTool.decryptAndUpdate("root", "123456", "pilmico", "pilmico-create.sql");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// DatabaseTool.decryptAndUpdate("root", "123456", "pilmico",
+		// "pilmico-create.sql");
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// }
 
 		// DatabaseTool.backup(dbUserName, dbPassword, dbName, path);
 

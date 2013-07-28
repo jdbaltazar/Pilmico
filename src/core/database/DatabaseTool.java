@@ -83,6 +83,8 @@ public class DatabaseTool {
 
 	private static void update(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
 
+		HibernateUtil.endSession();
+
 		String s = new String();
 		StringBuffer sb = new StringBuffer();
 
@@ -94,7 +96,7 @@ public class DatabaseTool {
 			BufferedReader br = new BufferedReader(fr);
 
 			while ((s = br.readLine()) != null) {
-				sb.append(s);
+				sb.append(s + "\n");
 			}
 			br.close();
 
@@ -123,6 +125,8 @@ public class DatabaseTool {
 			System.out.println("################################################");
 			System.out.println(sb.toString());
 		}
+
+		HibernateUtil.startSession();
 
 	}
 

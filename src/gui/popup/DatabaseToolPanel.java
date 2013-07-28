@@ -14,6 +14,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import common.manager.Manager;
 
 import core.database.DatabaseTool;
+import core.persist.HibernateUtil;
 import core.test.FileChooserDemo;
 import core.test.Test;
 
@@ -106,7 +107,9 @@ public class DatabaseToolPanel extends JPanel {
 					// This is where a real application would save the file.
 
 					try {
+
 						DatabaseTool.decryptAndUpdate("root", "123456", "pilmico", file.getCanonicalPath());
+
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					} catch (IOException e1) {

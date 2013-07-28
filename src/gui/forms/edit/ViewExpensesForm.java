@@ -66,7 +66,7 @@ public class ViewExpensesForm extends EditFormPanel {
 	private final int ROW_WIDTH = 280, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 25, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
 	private Object[] array = {};
 
-	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
+	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel amountLabel, expenseLabel;
 	private ImageIcon icon;
 	private ViewFormField type, issuedBy, date;
@@ -200,24 +200,25 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20, expensesPanel.getComponentCount() * ROW_HEIGHT));
 
-		updateList(rowNum);
+		// updateList(rowNum);
 
 		alternateRows();
 	}
 
-	private void updateList(int removedRow) {
-
-		for (int i = removedRow + 1; i < rowPanel.size(); i++) {
-			rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
-			rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
-			// System.out.println("command: "+rowPanel2.get(i).getCommand());
-			rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
-			rowPanel.get(i).updateUI();
-			rowPanel.get(i).revalidate();
-		}
-
-		rowPanel.remove(removedRow);
-	}
+	// private void updateList(int removedRow) {
+	//
+	// for (int i = removedRow + 1; i < rowPanel.size(); i++) {
+	// rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT,
+	// ROW_WIDTH, ROW_HEIGHT);
+	// rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
+	// // System.out.println("command: "+rowPanel2.get(i).getCommand());
+	// rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
+	// rowPanel.get(i).updateUI();
+	// rowPanel.get(i).revalidate();
+	// }
+	//
+	// rowPanel.remove(removedRow);
+	// }
 
 	private void addComponents() {
 
@@ -297,27 +298,17 @@ public class ViewExpensesForm extends EditFormPanel {
 		// >>>>>>> refs/remotes/remote/master
 
 		Set<DailyExpensesDetail> details = dailyExpenses.getDailyExpenseDetails();
+		System.out.println("size: " + details.size());
+
 		for (DailyExpensesDetail ded : details) {
-			// rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
-			// expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
-			// alternateRows();
-			//
-			// expensesPanel.setPreferredSize(new Dimension(330,
-			// expensesPanel.getComponentCount() * ROW_HEIGHT));
-			// expensesPanel.updateUI();
-			// expensesPanel.revalidate();
+			rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
+			expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
+			alternateRows();
+
+			expensesPanel.setPreferredSize(new Dimension(330, expensesPanel.getComponentCount() * ROW_HEIGHT));
+			expensesPanel.updateUI();
+			expensesPanel.revalidate();
 		}
 
-		// Set<DailyExpensesDetail> details =
-		// dailyExpenses.getDailyExpenseDetails();
-		// for (DailyExpensesDetail ded : details) {
-		// rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
-		// expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
-		// alternateRows();
-		// expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH,
-		// expensesPanel.getComponentCount() * ROW_HEIGHT));
-		// expensesPanel.updateUI();
-		// expensesPanel.revalidate();
-		// }
 	}
 }
