@@ -4,9 +4,11 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.EditRowPanel;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -70,12 +72,12 @@ public class ViewDeliveryForm extends EditFormPanel {
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
 	private Object[] array = {};
 
-	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
+	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel;
 	private ImageIcon icon;
 	private SoyButton save;
 	private ViewFormField terms, po_no, delivery_no, date, receivedBy, supplier;
-	private ViewFormLabel termsLabel, ponumLabel, deliveryNumLabel, dateLabel, receivedByLabel, supplierLabel, remarks;
+	private ViewFormLabel termsLabel, ponumLabel, deliveryNumLabel, dateLabel, receivedByLabel, supplierLabel;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -97,6 +99,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 		init();
 		addComponents();
 
+		colorTable();
 		fillEntries();
 	};
 
@@ -112,7 +115,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.RED);
 
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 
 		date = new ViewFormField("");
 		supplier = new ViewFormField("");
@@ -223,7 +226,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 		scrollPane.setBounds(85, 62, 630, 285);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
@@ -272,31 +275,6 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 	}
 
-	public void removeRow(int rowNum) {
-		productsPanel.remove(rowNum);
-		productsPanel.updateUI();
-		productsPanel.revalidate();
-
-		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-		updateList(rowNum);
-
-		alternateRows();
-	}
-
-	private void updateList(int removedRow) {
-
-		for (int i = removedRow + 1; i < rowPanel.size(); i++) {
-			rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
-			rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
-			// System.out.println("command: "+rowPanel2.get(i).getCommand());
-			rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
-			rowPanel.get(i).updateUI();
-			rowPanel.get(i).revalidate();
-		}
-
-		rowPanel.remove(removedRow);
-	}
-
 	private void addComponents() {
 		// TODO Auto-generated method stub
 
@@ -321,7 +299,25 @@ public class ViewDeliveryForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, delivery).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				if (!uP.getReason().equals("")) {
+					delivery.setValid(false);
+					delivery.setRemarks(uP.getReason());
+
+					try {
+						Manager.deliveryManager
+								.updateDelivery(delivery);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.DELIVERY);
+				}
 			}
 		});
 
@@ -330,45 +326,60 @@ public class ViewDeliveryForm extends EditFormPanel {
 		add(error);
 
 	}
-
-	private void fillEntries() {
-
-		voidBtn.setVisible(delivery.getInventorySheetData() != null ? false : delivery.isValid());
+	
+	private void colorTable(){
 
 		String s = "";
 		if (delivery.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 		} else {
 			if (delivery.isValid()) {
 				icon = new ImageIcon("images/pending.png");
 				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 			} else {
 				icon = new ImageIcon("images/invalidated.png");
 				s = "INVALIDATED";
-				remarks.setText(delivery.getRemarks());
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
 			}
 		}
 		status.setText(s);
 		status.setIcon(icon);
 
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(delivery.getDate()));
-		receivedBy.setText(delivery.getReceivedBy().getFirstPlusLastName());
-		po_no.setText(delivery.getPoNo());
-		delivery_no.setText(delivery.getDeliveryNo());
-		supplier.setText(delivery.getSupplier() != null ? delivery.getSupplier().getName() : "");
-		terms.setText(delivery.getTerms());
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(delivery.getInventorySheetData() != null ? false : delivery.isValid());
+
+		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(delivery.getDate()));
+		receivedBy.setToolTip(receivedBy, delivery.getReceivedBy().getFirstPlusLastName());
+		po_no.setToolTip(po_no,delivery.getPoNo());
+		delivery_no.setToolTip(delivery_no, delivery.getDeliveryNo());
+		supplier.setToolTip(supplier,delivery.getSupplier() != null ? delivery.getSupplier().getName() : "");
+		terms.setToolTip(terms,delivery.getTerms());
+
+		if(delivery.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+delivery.getRemarks());
 
 		Set<DeliveryDetail> deliveryDetails = delivery.getDeliveryDetails();
-		for (DeliveryDetail sd : deliveryDetails) {
-			// rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
-			// productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-			// alternateRows();
-			//
-			// productsPanel.setPreferredSize(new Dimension(330,
-			// productsPanel.getComponentCount() * ROW_HEIGHT));
-			// productsPanel.updateUI();
-			// productsPanel.revalidate();
+		for (DeliveryDetail dd : deliveryDetails) {
+			rowPanel.add(new EditRowPanel(dd, productsPanel, Values.DELIVERY));
+			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+			alternateRows();
+
+			productsPanel.setPreferredSize(new Dimension(330,
+					productsPanel.getComponentCount() * ROW_HEIGHT));
+			productsPanel.updateUI();
+			productsPanel.revalidate();
 		}
 
 	}

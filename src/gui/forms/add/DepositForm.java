@@ -169,6 +169,10 @@ public class DepositForm extends SimplePanel {
 			if (i == 2) {
 				fwd2.setBounds(x1 + 76, initY + y - 11, 16, 16);
 				bankAcctLabel.setBounds(x1, initY + y - 7, 200, 11);
+				
+				x1 += 250;
+
+				y = -63;
 			}
 
 			if (i == 3) {
@@ -176,20 +180,16 @@ public class DepositForm extends SimplePanel {
 
 				depositorLabel.setBounds(x1, initY + y - 7, 200, 11);
 				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
-
-				x1 += 250;
-
-				y = -63;
 			}
 
-			if (i == 6) {
-				remarks = new FormField(Tables.depositFormLabel[i], 100, Color.white, Color.gray);
-				remarks.setBounds(x1, initY + y, 200, 25);
-			}
+//			if (i == 6) {
+//				remarks = new FormField(Tables.depositFormLabel[i], 100, Color.white, Color.gray);
+//				remarks.setBounds(x1, initY + y, 200, 25);
+//			}
 		}
 
-		clear.setBounds(289, 258, 80, 30);
-		save.setBounds(180, 258, 80, 30); // 48
+		clear.setBounds(289, 208, 80, 30);//y258
+		save.setBounds(180, 208, 80, 30); // 48
 
 		error.setBounds(160, 290, 230, 25);
 
@@ -243,14 +243,14 @@ public class DepositForm extends SimplePanel {
 
 		panel.add(bankAcctLabel);
 
-		panel.add(remarks);
+//		panel.add(remarks);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(10, 38, 520, 310);
+		scrollPane.setBounds(10, 38, 520, 260);//310h
 
 		add(scrollPane);
 

@@ -6,6 +6,7 @@ import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -226,7 +227,30 @@ public class ViewExpensesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, dailyExpenses).setVisible(true);
+				// <<<<<<< HEAD
+				// new UtilityPopup(b,
+				// "What's your reason for invalidating this form?", Values.REMARKS,
+				// dailyExpenses).setVisible(true);
+				// =======
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+
+				if (!uP.getReason().equals("")) {
+					dailyExpenses.setValid(false);
+					dailyExpenses.setRemarks(uP.getReason());
+
+					try {
+						Manager.dailyExpenseManager.updateDailyExpenses(dailyExpenses);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.EXPENSES);
+				}
+				// >>>>>>> refs/remotes/remote/master
 			}
 		});
 
@@ -243,6 +267,7 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		voidBtn.setVisible(dailyExpenses.getInventorySheetData() != null ? false : dailyExpenses.isValid());
 
+		// <<<<<<< HEAD
 		String s = "";
 		if (dailyExpenses.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
@@ -262,6 +287,14 @@ public class ViewExpensesForm extends EditFormPanel {
 		type.setText(dailyExpenses.getDailyExpensesType().toString());
 		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
 		issuedBy.setText(dailyExpenses.getAccount().getFirstPlusLastName());
+		// =======
+		type.setToolTip(type, dailyExpenses.getDailyExpensesType().toString());
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
+		issuedBy.setToolTip(issuedBy, dailyExpenses.getAccount().getFirstPlusLastName());
+
+		if (dailyExpenses.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + dailyExpenses.getRemarks());
+		// >>>>>>> refs/remotes/remote/master
 
 		Set<DailyExpensesDetail> details = dailyExpenses.getDailyExpenseDetails();
 		for (DailyExpensesDetail ded : details) {

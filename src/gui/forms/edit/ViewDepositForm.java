@@ -1,8 +1,10 @@
 package gui.forms.edit;
 
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -57,37 +59,52 @@ public class ViewDepositForm extends EditFormPanel {
 		super("View Deposit");
 		this.deposit = deposit;
 		addComponents();
+		colorTable();
 		fillEntries();
+	}
+	
+	private void colorTable(){
+
+		String s = "";
+		if (deposit.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
+		} else {
+			if (deposit.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
 	}
 
 	private void fillEntries() {
 
 		voidBtn.setVisible(deposit.getInventorySheetData() != null ? false : deposit.isValid());
 
-		String s = "";
-		if (deposit.getInventorySheetData() != null) {
-			icon = new ImageIcon("images/accounted.png");
-			s = "ACCOUNTED";
-		} else {
-			if (deposit.isValid()) {
-				icon = new ImageIcon("images/pending.png");
-				s = "PENDING";
-			} else {
-				icon = new ImageIcon("images/invalidated.png");
-				s = "INVALIDATED";
-				remarks.setText(deposit.getRemarks());
-			}
-		}
-
-		status.setText(s);
-		status.setIcon(icon);
-
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(deposit.getDate()));
-		issuedBy.setText(deposit.getIssuedBy().getFirstPlusLastName());
-		depositor.setText(deposit.getDepositor().getFirstPlusLastName());
-		bank.setText(deposit.getBankAccount().getBank()+"");
-		bankAcct.setText(deposit.getBankAccount().getAccountNo());
-		amount.setText(String.format("%.2f", deposit.getAmount()));
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(deposit.getDate()));
+		issuedBy.setToolTip(issuedBy, deposit.getIssuedBy().getFirstPlusLastName());
+		depositor.setToolTip(depositor, deposit.getDepositor().getFirstPlusLastName());
+		bank.setToolTip(bank, deposit.getBankAccount().getBank()+"");
+		bankAcct.setToolTip(bankAcct, deposit.getBankAccount().getAccountNo());
+		amount.setToolTip(amount, String.format("%.2f", deposit.getAmount()));
+		
+		if(deposit.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+deposit.getRemarks());
 
 	}
 
@@ -98,6 +115,8 @@ public class ViewDepositForm extends EditFormPanel {
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
+		
+		remarks = new RemarksLabel("");
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -173,7 +192,25 @@ public class ViewDepositForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, deposit).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				if (!uP.getReason().equals("")) {
+					deposit.setValid(false);
+					deposit.setRemarks(uP.getReason());
+
+					try {
+						Manager.depositManager
+								.updateDeposit(deposit);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.DEPOSITS);
+				}
 			}
 		});
 
@@ -203,10 +240,12 @@ public class ViewDepositForm extends EditFormPanel {
 
 		scrollPane.setBounds(245, 63, 300, 275);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
 		add(status);
+		add(remarks);
 
 	}
 

@@ -4,6 +4,7 @@ import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.forms.util.FormLabel;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -94,7 +95,11 @@ public class EditCustomerForm extends EditFormPanel {
 
 				try {
 					Manager.employeePersonManager.updatePerson(customer);
-					System.out.println("customer updated!");
+					
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Edit").setVisible(true);
+					Values.centerPanel.changeTable(Values.CUSTOMERS);
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.dailyexpenses.DailyExpensesDetail;
+import common.entity.delivery.DeliveryDetail;
+import common.entity.pullout.PullOutDetail;
 import common.entity.salary.FeeDeduction;
 import common.entity.sales.SalesDetail;
 
@@ -48,8 +51,16 @@ public class EditRowPanel extends JPanel {
 				SalesDetail sd = (SalesDetail) object;
 				drawProductRow(sd.getQuantityInSack(), sd.getQuantityInKilo(), sd.getPricePerSack(), sd.getPricePerKilo(), sd.getProduct().getName());
 			}else if (table == Values.DELIVERY) {
-				// SalesDetail sd = (SalesDetail) object;
-				// drawProductRow(sd.getQuantityInSack(), sd.getQuantityInKilo(), sd.getPricePerSack(), sd.getPricePerKilo(), sd.getProduct().getName());
+				 DeliveryDetail dd = (DeliveryDetail) object;
+				 drawProductRow(dd.getQuantityInSack(), dd.getQuantityInKilo(), dd.getPricePerSack(), dd.getPricePerKilo(), dd.getProduct().getName());
+			}
+			else if (table == Values.PULLOUT) {
+				 PullOutDetail pd = (PullOutDetail) object;
+				 drawProductRow(pd.getQuantityInSack(), pd.getQuantityInKilo(), pd.getPricePerSack(), pd.getPricePerKilo(), pd.getProduct().getName());
+			}
+			else if (table == Values.ACCOUNT_RECEIVABLES) {
+				 AccountReceivableDetail ard = (AccountReceivableDetail) object;
+				 drawProductRow(ard.getQuantityInSack(), ard.getQuantityInKilo(), ard.getPricePerSack(), ard.getPricePerKilo(), ard.getProduct().getName());
 			}
 			
 			setBounds(0, y, 580, ROW_HEIGHT);

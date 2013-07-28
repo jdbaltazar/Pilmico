@@ -1,9 +1,11 @@
 package gui.forms.edit;
 
 import gui.forms.util.HistoryTable;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -46,7 +48,7 @@ public class ViewCAForm extends EditFormPanel {
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private int initY = 32;
-	private ViewFormLabel dateLabel, issuedByLabel, issuedForLabel, balanceLabel, amountLabel, remarks;
+	private ViewFormLabel dateLabel, issuedByLabel, issuedForLabel, balanceLabel, amountLabel;
 	private ViewFormField issuedFor, balance, issuedBy, date, amount;
 
 	private ErrorLabel error;
@@ -65,6 +67,7 @@ public class ViewCAForm extends EditFormPanel {
 		super("View Cash Advance");
 		this.cashAdvance = cashAdvance;
 		addComponents();
+		colorTable();
 		fillEntries();
 		
 		Values.viewCAForm = this;
@@ -78,7 +81,25 @@ public class ViewCAForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, cashAdvance).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				if (!uP.getReason().equals("")) {
+					cashAdvance.setValid(false);
+					cashAdvance.setRemarks(uP.getReason());
+
+					try {
+						Manager.cashAdvanceManager
+								.updateCashAdvance(cashAdvance);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.CASH_ADVANCE);
+				}
 			}
 		});
 
@@ -86,7 +107,7 @@ public class ViewCAForm extends EditFormPanel {
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
 		
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 		
 		paymentHistory = new SBButton("payment_history.png", "payment_history2.png", "Payment History");
 		
@@ -212,7 +233,7 @@ public class ViewCAForm extends EditFormPanel {
 
 		scrollPane.setBounds(245, 63, 300, 275);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 		
 		add(voidBtn);
@@ -250,28 +271,39 @@ public class ViewCAForm extends EditFormPanel {
 			}
 		});
 	}
-
-	private void fillEntries() {
-
-		voidBtn.setVisible(cashAdvance.getInventorySheetData() != null ? false : cashAdvance.isValid());
+	
+	private void colorTable(){
 
 		String s = "";
 		if (cashAdvance.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 		} else {
 			if (cashAdvance.isValid()) {
 				icon = new ImageIcon("images/pending.png");
 				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 			} else {
 				icon = new ImageIcon("images/invalidated.png");
 				s = "INVALIDATED";
-				remarks.setText(cashAdvance.getRemarks());
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
 			}
 		}
-
 		status.setText(s);
 		status.setIcon(icon);
+
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(cashAdvance.getInventorySheetData() != null ? false : cashAdvance.isValid());
 
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cashAdvance.getDate()));
 		issuedBy.setToolTip(issuedBy,Manager.loggedInAccount.getFirstPlusLastName());
@@ -279,7 +311,13 @@ public class ViewCAForm extends EditFormPanel {
 		amount.setToolTip(amount, cashAdvance.getAmount() + "");
 		balance.setToolTip(balance, cashAdvance.getBalance() + "");
 		
-		payBtn.setVisible(cashAdvance.getBalance() > 0d);
+		if(cashAdvance.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+cashAdvance.getRemarks());
+		
+		if(cashAdvance.isValid())
+			payBtn.setVisible(cashAdvance.getBalance() > 0d);
+		else
+			payBtn.setVisible(false);
 	}
 	
 	public void closeBalloonPanel(){

@@ -1,9 +1,11 @@
 package gui.forms.edit;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -56,7 +58,7 @@ public class ViewDiscountForm extends EditFormPanel {
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private int initY = 32;
-	private ViewFormLabel dateLabel, issuedByLabel, productLabel, customerLabel, amountLabel, remarks;
+	private ViewFormLabel dateLabel, issuedByLabel, productLabel, customerLabel, amountLabel;
 	private ViewFormField product, customer, issuedBy, date, amount;
 
 	private ErrorLabel error;
@@ -76,6 +78,7 @@ public class ViewDiscountForm extends EditFormPanel {
 		super("View Discount");
 		this.discountIssue = discountIssue;
 		addComponents();
+		colorTable();
 		fillEntries();
 	}
 
@@ -87,7 +90,25 @@ public class ViewDiscountForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, discountIssue).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				if (!uP.getReason().equals("")) {
+					discountIssue.setValid(false);
+					discountIssue.setRemarks(uP.getReason());
+
+					try {
+						Manager.discountIssueManager
+								.updateDiscountIssue(discountIssue);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.DISCOUNTS);
+				}
 			}
 		});
 
@@ -95,7 +116,7 @@ public class ViewDiscountForm extends EditFormPanel {
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
 
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -189,7 +210,7 @@ public class ViewDiscountForm extends EditFormPanel {
 
 		scrollPane.setBounds(245, 63, 300, 275);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(voidBtn);
@@ -199,33 +220,47 @@ public class ViewDiscountForm extends EditFormPanel {
 
 	}
 
-	private void fillEntries() {
-
-		voidBtn.setVisible(discountIssue.getInventorySheetData() != null ? false : discountIssue.isValid());
+	private void colorTable(){
 
 		String s = "";
 		if (discountIssue.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 		} else {
 			if (discountIssue.isValid()) {
 				icon = new ImageIcon("images/pending.png");
 				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 			} else {
 				icon = new ImageIcon("images/invalidated.png");
 				s = "INVALIDATED";
-				remarks.setText(discountIssue.getRemarks());
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
 			}
 		}
-
 		status.setText(s);
 		status.setIcon(icon);
 
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
-		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
-		product.setText(discountIssue.getProduct().getName());
-		customer.setText(discountIssue.getCustomer() != null ? discountIssue.getCustomer().getFirstPlusLastName() : "");
-		amount.setText(discountIssue.getAmount() + "");
+	}
+	
+	private void fillEntries() {
+
+		voidBtn.setVisible(discountIssue.getInventorySheetData() != null ? false : discountIssue.isValid());
+
+		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
+		issuedBy.setToolTip(issuedBy,Manager.loggedInAccount.getFirstPlusLastName());
+		product.setToolTip(product,discountIssue.getProduct().getName());
+		customer.setToolTip(customer,discountIssue.getCustomer() != null ? discountIssue.getCustomer().getFirstPlusLastName() : "");
+		amount.setToolTip(amount,discountIssue.getAmount() + "");
+		
+		if(discountIssue.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+discountIssue.getRemarks());
 	}
 
 	private void clearFields() {
