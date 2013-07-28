@@ -2,11 +2,13 @@ package gui.forms.edit;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.EditRowPanel;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.BasicStroke;
@@ -115,7 +117,7 @@ public class ViewSalesForm extends EditFormPanel {
 		status = new JLabel(s, null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 
 		issuedaTLabel = new ViewFormLabel("Issued at:");
 		issuedOnLabel = new ViewFormLabel("Issued on:");
@@ -224,17 +226,20 @@ public class ViewSalesForm extends EditFormPanel {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
 			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
 			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 		} else {
 			if (sales.isValid()) {
 				icon = new ImageIcon("images/pending.png");
 				s = "PENDING";
 				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
 				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 			} else {
 				icon = new ImageIcon("images/invalidated.png");
 				s = "INVALIDATED";
 				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
 				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
 			}
 		}
@@ -304,8 +309,22 @@ public class ViewSalesForm extends EditFormPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, sales).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
 
+				sales.setValid(false);
+				sales.setRemarks(uP.getReason());
+				
+				try {
+					Manager.salesManager.updateSales(sales);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				Values.editPanel.startAnimation();
+				new SuccessPopup("Invalidation").setVisible(true);
+				Values.centerPanel.changeTable(Values.SALES);
 			}
 		});
 

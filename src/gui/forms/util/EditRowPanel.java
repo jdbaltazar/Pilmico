@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import common.entity.dailyexpenses.DailyExpensesDetail;
+import common.entity.salary.FeeDeduction;
 import common.entity.sales.SalesDetail;
 
 import util.Values;
@@ -53,6 +55,20 @@ public class EditRowPanel extends JPanel {
 			setBounds(0, y, 580, ROW_HEIGHT);
 
 		}
+		
+		if(table == Values.EXPENSES){
+			DailyExpensesDetail de = (DailyExpensesDetail) object;
+			drawExpensesRow(de.getAmount(), de.getExpense().getName());
+			
+			setBounds(0, y, 280, ROW_HEIGHT);
+		}
+		
+		if(table == Values.SALARY){
+			FeeDeduction fd = (FeeDeduction) object;
+			drawFeesRow(fd.getAmount(), fd.getFee().getName());
+			
+			setBounds(0, y, 270, ROW_HEIGHT);
+		}
 
 		// System.out.println("y: "+y+ " panel width: "+panel.getWidth());
 	}
@@ -87,6 +103,50 @@ public class EditRowPanel extends JPanel {
 
 		row.setOpaque(true);
 		// row.setBorder(BorderFactory.createEtchedBorder());
+
+		add(row);
+
+	}
+	
+	private void drawExpensesRow(double amount, String expenses) {
+
+		ROW_HEIGHT = 35;
+
+		formField.add(new ViewFormField(amount + ""));
+		formField.get(formField.size() - 1).setBounds(0, 0, 77, ROW_HEIGHT);
+
+		formField.add(new ViewFormField(expenses));
+		formField.get(formField.size() - 1).setBounds(formField.get(formField.size() - 2).getX() + formField.get(formField.size() - 2).getWidth(), 0,
+				188, ROW_HEIGHT);
+
+		for (int i = 0; i < formField.size(); i++) {
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 12));
+			row.add(formField.get(i));
+		}
+
+		row.setOpaque(true);
+
+		add(row);
+
+	}
+	
+	private void drawFeesRow(double amount, String fees) {
+
+		ROW_HEIGHT = 35;
+
+		formField.add(new ViewFormField(fees));
+		formField.get(formField.size() - 1).setBounds(0, 0, 170, ROW_HEIGHT);
+
+		formField.add(new ViewFormField(amount + ""));
+		formField.get(formField.size() - 1).setBounds(formField.get(formField.size() - 2).getX() + formField.get(formField.size() - 2).getWidth(), 0,
+				100, ROW_HEIGHT);
+
+		for (int i = 0; i < formField.size(); i++) {
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 12));
+			row.add(formField.get(i));
+		}
+
+		row.setOpaque(true);
 
 		add(row);
 

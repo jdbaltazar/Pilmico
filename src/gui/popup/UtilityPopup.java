@@ -32,19 +32,24 @@ public class UtilityPopup extends JDialog {
 
 	private final int WIDTH = 155, HEIGHT = 55;
 	private FormField field;
-	private String label;
 	private Point p;
 	private int utility;
 	private JPanel panel;
-	private SBButton close, backup, recover;
-	private ErrorLabel error;
-	private Object object;
+	private SBButton close;
+	private ErrorLabel utilityLabel;
+	
+	private String reason;
 
-	public UtilityPopup(Point p, String label, int utility, Object o) {
+	public UtilityPopup(Point p, int utility) {
 		this.p = p;
-		this.label = label;
 		this.utility = utility;
-		this.object = o;
+		init();
+		addComponents();
+	}
+	
+	public UtilityPopup(Point p, String label, int utility, Object object) {
+		this.p = p;
+		this.utility = utility;
 		init();
 		addComponents();
 	}
@@ -77,36 +82,29 @@ public class UtilityPopup extends JDialog {
 
 		panel.setOpaque(false);
 
-		field = new FormField(label, 100, Color.white, Color.gray);
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
-		backup = new SBButton("backup.png", "backup2.png", "Backup Database");
-		recover = new SBButton("recover.png", "recover2.png", "Database Recovery");
 		
-		error = new ErrorLabel();
+		utilityLabel = new ErrorLabel();
 
 		if (utility == Values.CATEGORY) {
 			field.setBounds(5, 20, 140, 20);
 			close.setBounds(132, 2, 16, 16);
-		} 
-		else if(utility == Values.DATABASE){
-			backup.setBounds(15, 19, 20, 20);
-			recover.setBounds(55, 19, 20, 20);
-			close.setBounds(72, 2, 16, 16);
-			
-			panel.add(backup);
-			panel.add(recover);
 		}
 		else {
+			field = new FormField("What's your reason for invalidating this form?", 100, Color.white, Color.gray);			
+			utilityLabel.setForeground(Color.decode("#FF4500"));
+			utilityLabel.setText("*Required");
+			
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
 		}
 
-		error.setBounds(7, 3, 120, 15);
+		utilityLabel.setBounds(7, 3, 120, 15);
 
 		if(utility != Values.DATABASE)
 			panel.add(field);
 		
-		panel.add(error);
+		panel.add(utilityLabel);
 		
 		field.addKeyListener(new KeyAdapter() {
 			@Override
@@ -127,27 +125,17 @@ public class UtilityPopup extends JDialog {
 
 				if (!field.getText().equals("")) {
 
-					if (object instanceof Sales) {
+					/*if (object instanceof Sales) {
 						Sales s = (Sales) object;
 						s.setValid(false);
 						s.setRemarks(field.getText());
 						try {
 							Manager.salesManager.updateSales(s);
-							Values.mainFrame.dimScreen(false);
-
-							switch (utility) {
-
-							case Values.CATEGORY:
-								Values.productForm.updateFormDropdowns();
-								break;
-
-							default:
-								break;
-
-							}
 
 							dispose();
-							new SuccessPopup("Edit", 1).setVisible(true);
+							Values.editPanel.startAnimation();
+							new SuccessPopup("Invalidation").setVisible(true);
+							Values.centerPanel.changeTable(Values.SALES);
 
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
@@ -182,9 +170,12 @@ public class UtilityPopup extends JDialog {
 						}
 
 					}
+					else{*/
+						reason = field.getText();
+						dispose();
+//					}
 
-				} else
-					error.setText("Textfield empty");
+				}
 			}
 		});
 
@@ -211,6 +202,10 @@ public class UtilityPopup extends JDialog {
 
 		add(close);
 		add(panel);
+	}
+	
+	public String getReason(){
+		return reason;
 	}
 
 }

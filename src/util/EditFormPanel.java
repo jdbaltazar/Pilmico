@@ -1,5 +1,6 @@
 package util;
 
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormLabel;
 
 import java.awt.Color;
@@ -20,7 +21,7 @@ public class EditFormPanel extends JPanel {
 	protected GradientPaint gradient;
 	protected GradientPaint gradient1;
 	
-	public ViewFormLabel remarks;
+	public RemarksLabel remarks;
 	
 	public JLabel status;
 

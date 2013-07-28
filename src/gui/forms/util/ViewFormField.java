@@ -50,11 +50,6 @@ public class ViewFormField extends JLabel{
 		ToolTipUtils.balloonToToolTip(balloonTip, 10, 3000);
 	}
 
-	/**
-	 * Set a tooltip
-	 * @param comp		sets a tooltip for this component
-	 * @param text		the contents of the tooltip (you may use html)
-	 */
 	public void setToolTip(JComponent comp, String text) {
 		RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.white, Color.black);
 		

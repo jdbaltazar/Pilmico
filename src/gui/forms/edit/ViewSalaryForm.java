@@ -1,12 +1,15 @@
 package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.MouseInfo;
@@ -27,6 +30,7 @@ import javax.swing.ScrollPaneConstants;
 import common.entity.salary.FeeDeduction;
 import common.entity.salary.SalaryRelease;
 import common.entity.sales.SalesDetail;
+import common.manager.Manager;
 
 import util.DateFormatter;
 import util.EditFormPanel;
@@ -44,10 +48,10 @@ public class ViewSalaryForm extends EditFormPanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel feesPanel;
 	private JScrollPane feesPane;
-	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
+	private final int ROW_WIDTH = 270, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
 	private Object[] array = {};
 
-	private ArrayList<RowPanel> feesRowPanel = new ArrayList<RowPanel>();
+	private ArrayList<EditRowPanel> feesRowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel feesLabel, amountLabel;
 	private ImageIcon icon;
 	private SoyButton save;
@@ -70,6 +74,8 @@ public class ViewSalaryForm extends EditFormPanel {
 		this.salaryRelease = salaryRelease;
 		init();
 		addComponents();
+		
+		colorTable();
 		fillEntries();
 	}
 
@@ -88,7 +94,7 @@ public class ViewSalaryForm extends EditFormPanel {
 		status = new JLabel("", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 
 		date = new ViewFormField("");
 
@@ -114,6 +120,7 @@ public class ViewSalaryForm extends EditFormPanel {
 
 		feesPane = new JScrollPane(feesPanel);
 		feesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		feesPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		feesPane.setOpaque(false);
 		feesPane.getViewport().setOpaque(false);
 
@@ -193,81 +200,67 @@ public class ViewSalaryForm extends EditFormPanel {
 		add(remarks);
 	}
 
-	private void alternateRows(boolean isForFees) {
+	private void alternateRows() {
 
-		if (isForFees) {
 			for (int i = 0; i < feesRowPanel.size(); i++)
 				if (i % 2 == 0)
 					feesRowPanel.get(i).getRow().setBackground(Values.row1);
 				else
 					feesRowPanel.get(i).getRow().setBackground(Values.row2);
+	}
+	
+	private void colorTable(){
+
+		String s = "";
+		if (salaryRelease.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
+		} else {
+			if (salaryRelease.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
+			}
 		}
+		status.setText(s);
+		status.setIcon(icon);
+		
 	}
 
 	public void fillEntries() {
 
 		voidBtn.setVisible(salaryRelease.getInventorySheetData() != null ? false : salaryRelease.isValid());
 
-		String s = "";
-		if (salaryRelease.getInventorySheetData() != null) {
-			icon = new ImageIcon("images/accounted.png");
-			s = "ACCOUNTED";
-		} else {
-			if (salaryRelease.isValid()) {
-				icon = new ImageIcon("images/pending.png");
-				s = "PENDING";
-			} else {
-				icon = new ImageIcon("images/invalidated.png");
-				s = "INVALIDATED";
-				remarks.setText(salaryRelease.getRemarks());
-			}
-		}
-		status.setText(s);
-		status.setIcon(icon);
-
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(salaryRelease.getDate()));
-		issuedBy.setText(salaryRelease.getIssuedBy().getFirstPlusLastName());
-		issuedFor.setText(salaryRelease.getIssuedFor().getFirstPlusLastName());
-		grossPay.setText(String.format("%.2f", salaryRelease.getGrossAmount()));
-		netPay.setText(String.format("%.2f", salaryRelease.getNetAmount()));
+		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(salaryRelease.getDate()));
+		issuedBy.setToolTip(issuedBy,salaryRelease.getIssuedBy().getFirstPlusLastName());
+		issuedFor.setToolTip(issuedFor,salaryRelease.getIssuedFor().getFirstPlusLastName());
+		grossPay.setToolTip(grossPay,String.format("%.2f", salaryRelease.getGrossAmount()));
+		netPay.setToolTip(netPay, String.format("%.2f", salaryRelease.getNetAmount()));
+		remarks.setToolTip(remarks, "-"+salaryRelease.getRemarks());
 
 		Set<FeeDeduction> feeDeductions = salaryRelease.getFeeDeductions();
 		for (FeeDeduction fd : feeDeductions) {
-			// feesRowPanel.add(new RowPanel(fd, feesPanel, ""));
-			//
-			// rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
-			// productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-			// alternateRows();
-			//
-			// productsPanel.setPreferredSize(new Dimension(330,
-			// productsPanel.getComponentCount() * ROW_HEIGHT));
-			// productsPanel.updateUI();
-			// productsPanel.revalidate();
+			 feesRowPanel.add(new EditRowPanel(fd, feesPanel, Values.SALARY));
+			
+			 feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
+			 alternateRows();
+			
+			 feesPanel.setPreferredSize(new Dimension(ROW_WIDTH, feesPanel.getComponentCount() * ROW_HEIGHT));
+			 feesPanel.updateUI();
+			 feesPanel.revalidate();
 		}
 
-	}
-
-	public void removeRow(int rowNum) {
-		feesPanel.remove(rowNum);
-		feesPanel.updateUI();
-		feesPanel.revalidate();
-		feesPanel.setPreferredSize(new Dimension(237, feesPanel.getComponentCount() * ROW_HEIGHT));
-		updateList(rowNum);
-		alternateRows(true);
-	}
-
-	private void updateList(int removedRow) {
-
-		for (int i = removedRow + 1; i < feesRowPanel.size(); i++) {
-			feesRowPanel.get(i).setBounds(0, feesRowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
-			feesRowPanel.get(i).setY(feesRowPanel.get(i).getY() - ROW_HEIGHT);
-			// System.out.println("command: "+rowPanel2.get(i).getCommand());
-			feesRowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
-			feesRowPanel.get(i).updateUI();
-			feesRowPanel.get(i).revalidate();
-		}
-
-		feesRowPanel.remove(removedRow);
 	}
 
 	private void addComponents() {
@@ -294,7 +287,22 @@ public class ViewSalaryForm extends EditFormPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, salaryRelease).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				salaryRelease.setValid(false);
+				salaryRelease.setRemarks(uP.getReason());
+				
+				try {
+					Manager.salaryReleaseManager.updateSalaryRelease(salaryRelease);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				Values.editPanel.startAnimation();
+				new SuccessPopup("Invalidation").setVisible(true);
+				Values.centerPanel.changeTable(Values.SALARY);
 
 			}
 		});
