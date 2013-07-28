@@ -222,19 +222,22 @@ public class ViewExpensesForm extends EditFormPanel {
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
 				
-				dailyExpenses.setValid(false);
-				dailyExpenses.setRemarks(uP.getReason());
-				
-				try {
-					Manager.dailyExpenseManager.updateDailyExpenses(dailyExpenses);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (!uP.getReason().equals("")) {
+					dailyExpenses.setValid(false);
+					dailyExpenses.setRemarks(uP.getReason());
+
+					try {
+						Manager.dailyExpenseManager
+								.updateDailyExpenses(dailyExpenses);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.EXPENSES);
 				}
-				
-				Values.editPanel.startAnimation();
-				new SuccessPopup("Invalidation").setVisible(true);
-				Values.centerPanel.changeTable(Values.EXPENSES);
 			}
 		});
 
@@ -254,7 +257,9 @@ public class ViewExpensesForm extends EditFormPanel {
 		type.setToolTip(type, dailyExpenses.getDailyExpensesType().toString());
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
 		issuedBy.setToolTip(issuedBy,dailyExpenses.getAccount().getFirstPlusLastName());
-		remarks.setToolTip(remarks, "-"+dailyExpenses.getRemarks());
+		
+		if(dailyExpenses.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+dailyExpenses.getRemarks());
 
 		Set<DailyExpensesDetail> details = dailyExpenses.getDailyExpenseDetails();
 		for (DailyExpensesDetail ded : details) {

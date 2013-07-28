@@ -294,18 +294,12 @@ public class RowPanel extends JPanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
-					priceSack.setText(p.getCurrentPricePerSack() + "");
-					priceKG.setText(p.getCurrentPricePerKilo() + "");
+					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack() + "");
+					priceKG.setToolTip(priceKG, p.getCurrentPricePerKilo() + "");
 				}
 			}
 		});
 
-		// quantitySack.setText(quant + "");
-
-		// itemsPanel.setPreferredSize(new Dimension(330,
-		// itemsPanel.getComponentCount()
-		// * ROW_HEIGHT));
-		// Values.tableUtilPanel.getLabel();
 
 		if (mode == Values.EDIT)
 			ROW_WIDTH = 335;

@@ -290,20 +290,22 @@ public class ViewSalaryForm extends EditFormPanel {
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
 				
-				salaryRelease.setValid(false);
-				salaryRelease.setRemarks(uP.getReason());
-				
-				try {
-					Manager.salaryReleaseManager.updateSalaryRelease(salaryRelease);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				Values.editPanel.startAnimation();
-				new SuccessPopup("Invalidation").setVisible(true);
-				Values.centerPanel.changeTable(Values.SALARY);
+				if (!uP.getReason().equals("")) {
+					salaryRelease.setValid(false);
+					salaryRelease.setRemarks(uP.getReason());
 
+					try {
+						Manager.salaryReleaseManager
+								.updateSalaryRelease(salaryRelease);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.SALARY);
+				}
 			}
 		});
 

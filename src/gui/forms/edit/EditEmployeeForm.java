@@ -4,6 +4,7 @@ import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
 import gui.forms.util.HistoryTable;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -258,7 +259,10 @@ public class EditEmployeeForm extends EditFormPanel {
 
 				try {
 					Manager.employeePersonManager.updateEmployee(employee);
-					System.out.println("employee updated");
+					
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Edit").setVisible(true);
+					Values.centerPanel.changeTable(Values.EMPLOYEES);
 
 				} catch (Exception e1) {
 					e1.printStackTrace();

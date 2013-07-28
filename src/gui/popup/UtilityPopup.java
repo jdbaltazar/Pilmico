@@ -38,7 +38,7 @@ public class UtilityPopup extends JDialog {
 	private SBButton close;
 	private ErrorLabel utilityLabel;
 	
-	private String reason;
+	private String reason = "";
 
 	public UtilityPopup(Point p, int utility) {
 		this.p = p;

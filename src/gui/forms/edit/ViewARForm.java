@@ -1,12 +1,15 @@
 package gui.forms.edit;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.EditRowPanel;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.HistoryTable;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -23,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -70,12 +74,12 @@ public class ViewARForm extends EditFormPanel {
 	private Object[] array = {};
 	private JTextField customerComboField;
 
-	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
+	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel;
 	private ImageIcon icon;
 	private SoyButton save;
 	private ViewFormField balance, issuedBy, date, customer, amount;
-	private ViewFormLabel issuedByLabel, balanceLabel, dateLabel, customerLabel, remarks, amountLabel;
+	private ViewFormLabel issuedByLabel, balanceLabel, dateLabel, customerLabel, amountLabel;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -97,6 +101,7 @@ public class ViewARForm extends EditFormPanel {
 		this.accountReceivable = accountReceivable;
 		init();
 		addComponents();
+		colorTable();
 		fillEntries();
 		
 		Values.viewARForm = this;
@@ -130,9 +135,8 @@ public class ViewARForm extends EditFormPanel {
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
-		status.setForeground(Color.orange);
 
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 
 		date = new ViewFormField("");
 
@@ -205,21 +209,6 @@ public class ViewARForm extends EditFormPanel {
 				Values.addEntryPanel.showPaymentForm(Values.AR_PAYMENTS, accountReceivable);
 			}
 		});
-		/*
-		 * addRow.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent arg0) {
-		 * rowPanel.add(new RowPanel(productsPanel, Values.ADD));
-		 * productsPanel.add(rowPanel.get(rowPanel.size() - 1)); alternateRows();
-		 * 
-		 * productsPanel.setPreferredSize(new Dimension(330,
-		 * productsPanel.getComponentCount() * ROW_HEIGHT));
-		 * productsPanel.updateUI(); productsPanel.revalidate();
-		 * 
-		 * Rectangle rect = new Rectangle(0, (int)
-		 * productsPanel.getPreferredSize().getHeight(), 10, 10);
-		 * productsPanel.scrollRectToVisible(rect); } });
-		 */
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -238,30 +227,24 @@ public class ViewARForm extends EditFormPanel {
 		panel.add(amount);
 
 		panel.add(payBtn);
-		// panel.add(addRow);
 
-		// panel.add(fwdProduct);
 		panel.add(quantitySACKlabel);
 		panel.add(quantityKGLabel);
 		panel.add(priceKG);
 		panel.add(priceSACK);
 		panel.add(productLabel);
-		// panel.add(deleteLabel);
 
 		panel.add(productsPane);
-
-		// panel.add(fwdCustomer);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
-		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane.setBounds(83, 63, 638, 280);
 		
 		payBtn.setBounds(616, 7, 16, 16);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
@@ -278,32 +261,6 @@ public class ViewARForm extends EditFormPanel {
 				rowPanel.get(i).getRow().setBackground(Values.row2);
 	}
 
-	public void removeRow(int rowNum) {
-		productsPanel.remove(rowNum);
-		productsPanel.updateUI();
-		productsPanel.revalidate();
-
-		productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-
-		updateList(rowNum);
-
-		alternateRows();
-	}
-
-	private void updateList(int removedRow) {
-
-		for (int i = removedRow + 1; i < rowPanel.size(); i++) {
-			rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
-			rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
-			// System.out.println("command: "+rowPanel2.get(i).getCommand());
-			rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
-			rowPanel.get(i).updateUI();
-			rowPanel.get(i).revalidate();
-		}
-
-		rowPanel.remove(removedRow);
-	}
-
 	private void addComponents() {
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
@@ -312,7 +269,25 @@ public class ViewARForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, accountReceivable).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				if (!uP.getReason().equals("")) {
+					accountReceivable.setValid(false);
+					accountReceivable.setRemarks(uP.getReason());
+
+					try {
+						Manager.accountReceivableManager
+								.updateAccountReceivable(accountReceivable);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+				}
 			}
 		});
 
@@ -363,48 +338,66 @@ public class ViewARForm extends EditFormPanel {
 		});
 	}
 	
-	private void fillEntries() {
-
-		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
+	private void colorTable(){
 
 		String s = "";
 		if (accountReceivable.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 		} else {
 			if (accountReceivable.isValid()) {
 				icon = new ImageIcon("images/pending.png");
 				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 			} else {
 				icon = new ImageIcon("images/invalidated.png");
 				s = "INVALIDATED";
-				remarks.setText(accountReceivable.getRemarks());
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
 			}
 		}
-
 		status.setText(s);
 		status.setIcon(icon);
 
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate()));
-		issuedBy.setText(accountReceivable.getIssuedBy().getFirstPlusLastName());
-		customer.setText(accountReceivable.getCustomer().getFirstPlusLastName());
-		amount.setText(accountReceivable.getAccountReceivablesAmount() + "");
-		balance.setText(accountReceivable.getBalance() + "");
+	}
 
-		payBtn.setVisible(accountReceivable.getBalance() > 0d);
+	
+	private void fillEntries() {
 
-		//
-		// Set<DeliveryDetail> deliveryDetails = delivery.getDeliveryDetails();
-		// for (DeliveryDetail sd : deliveryDetails) {
-		// // rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
-		// // productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-		// // alternateRows();
-		// //
-		// // productsPanel.setPreferredSize(new Dimension(330,
-		// // productsPanel.getComponentCount() * ROW_HEIGHT));
-		// // productsPanel.updateUI();
-		// // productsPanel.revalidate();
-		// }
+		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
+
+		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate()));
+		issuedBy.setToolTip(issuedBy,accountReceivable.getIssuedBy().getFirstPlusLastName());
+		customer.setToolTip(customer,accountReceivable.getCustomer().getFirstPlusLastName());
+		amount.setToolTip(amount,accountReceivable.getAccountReceivablesAmount() + "");
+		balance.setToolTip(balance,accountReceivable.getBalance() + "");
+
+		if(accountReceivable.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+accountReceivable.getRemarks());
+
+		if (accountReceivable.isValid()) {
+			payBtn.setVisible(accountReceivable.getBalance() > 0d);
+		} else
+			payBtn.setVisible(false);
+
+		Set<AccountReceivableDetail> arDetails = accountReceivable
+				.getAccountReceivableDetails();
+		for (AccountReceivableDetail ard : arDetails) {
+			rowPanel.add(new EditRowPanel(ard, productsPanel, Values.ACCOUNT_RECEIVABLES));
+			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
+			alternateRows();
+
+			productsPanel.setPreferredSize(new Dimension(330, productsPanel
+					.getComponentCount() * ROW_HEIGHT));
+			productsPanel.updateUI();
+			productsPanel.revalidate();
+		}
 
 	}
 	

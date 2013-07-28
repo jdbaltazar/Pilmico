@@ -312,39 +312,26 @@ public class ViewSalesForm extends EditFormPanel {
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
 
-				sales.setValid(false);
-				sales.setRemarks(uP.getReason());
-				
-				try {
-					Manager.salesManager.updateSales(sales);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (!uP.getReason().equals("")) {
+					sales.setValid(false);
+					sales.setRemarks(uP.getReason());
+
+					try {
+						Manager.salesManager.updateSales(sales);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.SALES);
 				}
-				
-				Values.editPanel.startAnimation();
-				new SuccessPopup("Invalidation").setVisible(true);
-				Values.centerPanel.changeTable(Values.SALES);
 			}
 		});
 
 		add(voidBtn);
 		add(error);
-
-	}
-
-	private void fillTable() {
-		// TODO Auto-generated method stub
-
-		for (int i = 0; i < 8; i++) {
-			rowPanel.add(new EditRowPanel(null, productsPanel, Values.SALES));
-			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
-			alternateRows();
-
-			productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
-			productsPanel.updateUI();
-			productsPanel.revalidate();
-		}
 
 	}
 	
@@ -363,7 +350,9 @@ public class ViewSalesForm extends EditFormPanel {
 
 		voidBtn.setVisible(sales.getInventorySheetData() != null ? false : sales.isValid());
 
-
+		if(sales.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+sales.getRemarks());
+		
 		Set<SalesDetail> salesDetails = sales.getSalesDetails();
 		for (SalesDetail sd : salesDetails) {
 			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));

@@ -230,7 +230,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		discount.setBounds(240, 50, 300, 380);
 
-		deposit.setBounds(122, 70, 540, 350);
+		deposit.setBounds(122, 95, 540, 300);
 		bank.setBounds(130, 87, 550, 310);
 
 		checkBox.setBounds(660, 5, 200, 20);

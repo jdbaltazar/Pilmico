@@ -35,7 +35,7 @@ public class RemarksLabel extends JLabel{
 	public void setToolTip(JComponent comp, String text) {
 		RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.white, Color.black);
 		
-		final BalloonTip balloon = new BalloonTip(comp, new JLabel(text), style, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.ALIGNED, 5, 7, false);
+		final BalloonTip balloon = new BalloonTip(comp, new JLabel(text.substring(1)), style, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.ALIGNED, 5, 7, false);
 		balloon.addDefaultMouseListener(false);
 		
 		ToolTipUtils.balloonToToolTip(balloon, 10, 3000);

@@ -1,8 +1,10 @@
 package gui.forms.edit;
 
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -40,7 +42,7 @@ public class ViewARPaymentForm extends EditFormPanel {
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private int initY = 32;
-	private ViewFormLabel dateLabel, issuedByLabel, arIDLabel, custRepLabel, amountLabel, remarks;
+	private ViewFormLabel dateLabel, issuedByLabel, arIDLabel, custRepLabel, amountLabel;
 	private ViewFormField arID, custRep, issuedBy, date, amount;
 
 	private ErrorLabel error;
@@ -59,6 +61,7 @@ public class ViewARPaymentForm extends EditFormPanel {
 		super("View AR Payment");
 		this.arPayment = arPayment;
 		addComponents();
+		colorTable();
 		fillEntries();
 	}
 
@@ -70,7 +73,24 @@ public class ViewARPaymentForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				new UtilityPopup(b, "What's your reason for invalidating this form?", Values.REMARKS, arPayment).setVisible(true);
+				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				uP.setVisible(true);
+				
+				if (!uP.getReason().equals("")) {
+					arPayment.setValid(false);
+					arPayment.setRemarks(uP.getReason());
+
+					try {
+						Manager.accountReceivableManager.updateARPayment(arPayment);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.AR_PAYMENTS);
+				}
 			}
 		});
 
@@ -78,7 +98,7 @@ public class ViewARPaymentForm extends EditFormPanel {
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
 		
-		remarks = new ViewFormLabel("", true);
+		remarks = new RemarksLabel("");
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -168,7 +188,7 @@ public class ViewARPaymentForm extends EditFormPanel {
 
 		scrollPane.setBounds(245, 63, 300, 275);
 
-		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 		
 		
@@ -180,33 +200,47 @@ public class ViewARPaymentForm extends EditFormPanel {
 		add(remarks);
 
 	}
-
-	private void fillEntries() {
-
-		voidBtn.setVisible(arPayment.getInventorySheetData() != null ? false : arPayment.isValid());
+	
+	private void colorTable(){
 
 		String s = "";
 		if (arPayment.getInventorySheetData() != null) {
 			icon = new ImageIcon("images/accounted.png");
 			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 		} else {
 			if (arPayment.isValid()) {
 				icon = new ImageIcon("images/pending.png");
 				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 			} else {
 				icon = new ImageIcon("images/invalidated.png");
 				s = "INVALIDATED";
-				remarks.setText(arPayment.getRemarks());
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
 			}
 		}
-
 		status.setText(s);
 		status.setIcon(icon);
 
-		arID.setText(arPayment.getAccountReceivable().getId() + "");
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arPayment.getDate()));
-		issuedBy.setText(arPayment.getIssuedBy().getFirstPlusLastName());
-		custRep.setText(arPayment.getRepresentative() != null ? arPayment.getRepresentative().getFirstPlusLastName() : "");
-		amount.setText(arPayment.getAmount() + "");
+	}
+
+	private void fillEntries() {
+
+		voidBtn.setVisible(arPayment.getInventorySheetData() != null ? false : arPayment.isValid());
+
+		arID.setToolTip(arID, arPayment.getAccountReceivable().getId() + "");
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arPayment.getDate()));
+		issuedBy.setToolTip(issuedBy, arPayment.getIssuedBy().getFirstPlusLastName());
+		custRep.setToolTip(custRep, arPayment.getRepresentative() != null ? arPayment.getRepresentative().getFirstPlusLastName() : "");
+		amount.setToolTip(amount, arPayment.getAmount() + "");
+
+		if(arPayment.getRemarks() != null)
+			remarks.setToolTip(remarks, "-"+arPayment.getRemarks());
 	}
 }
