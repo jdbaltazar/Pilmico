@@ -9,6 +9,9 @@ import javax.persistence.Id;
 @Entity
 public class DailyExpensesType {
 
+	public static final String personal = "Personal";
+	public static final String store = "Store";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column

@@ -111,19 +111,25 @@ public class InventorySheetDetail {
 		return inventorySheetDataDetail.getPricePerKilo();
 	}
 
+	/*
+	 * beginning inventory - on display + deliveries - pullouts
+	 */
 	public double getEndingInventoryInSack() {
-		return 0d;
+		return ((getBeginningInventoryInSack() - getOnDisplayInSack()) + getDeliveriesInSack()) - getPullOutsInSack();
 	}
 
+	/*
+	 * beginning inventory - on display + deliveries - pullouts
+	 */
 	public double getEndingInventoryInKilo() {
-		return 0d;
+		return ((getBeginningInventoryInKilo() - getOnDisplayInKilo()) + getDeliveriesInKilo()) - getPullOutsInKilo();
 	}
 
-	public double getSalesAmountForSack() {
-		return 0d;
+	public double getCombinedSalesAmountForSack() {
+		return offTakeInSack * inventorySheetDataDetail.getPricePerSack();
 	}
 
-	public double getSalesAmountForKilo() {
-		return 0d;
+	public double getCombinedSalesAmountForKilo() {
+		return offTakeInKilo * inventorySheetDataDetail.getPricePerKilo();
 	}
 }

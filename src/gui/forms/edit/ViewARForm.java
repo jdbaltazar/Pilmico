@@ -103,7 +103,7 @@ public class ViewARForm extends EditFormPanel {
 		addComponents();
 		colorTable();
 		fillEntries();
-		
+
 		Values.viewARForm = this;
 	};
 
@@ -117,18 +117,18 @@ public class ViewARForm extends EditFormPanel {
 
 		payBtn = new SBButton("peso.png", "peso2.png", "Pay");
 		paymentHistory = new SBButton("payment_history.png", "payment_history2.png", "Payment History");
-		
+
 		paymentHistory.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 				initBalloonTip();
-				
+
 				balloonTip.setVisible(true);
 				paymentHistory.setEnabled(false);
-			
+
 			}
 
 		});
@@ -179,12 +179,11 @@ public class ViewARForm extends EditFormPanel {
 
 		customerLabel.setBounds(20, 50, 70, 20);
 		customer.setBounds(95, 48, 180, 20);
-		
+
 		paymentHistory.setBounds(310, 50, 16, 16);
-		
+
 		amountLabel.setBounds(305, 50, 70, 20);
 		amount.setBounds(380, 48, 80, 20);
-
 
 		balanceLabel.setBounds(465, 50, 70, 20);
 		balance.setBounds(540, 48, 80, 20);
@@ -204,7 +203,7 @@ public class ViewARForm extends EditFormPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				closeBalloonPanel();
-				
+
 				Values.addEntryPanel.startAnimation();
 				Values.addEntryPanel.showPaymentForm(Values.AR_PAYMENTS, accountReceivable);
 			}
@@ -241,7 +240,7 @@ public class ViewARForm extends EditFormPanel {
 		scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
 
 		scrollPane.setBounds(83, 63, 638, 280);
-		
+
 		payBtn.setBounds(616, 7, 16, 16);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
@@ -267,18 +266,18 @@ public class ViewARForm extends EditFormPanel {
 		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
-				
+
 				if (!uP.getReason().equals("")) {
 					accountReceivable.setValid(false);
 					accountReceivable.setRemarks(uP.getReason());
 
 					try {
-						Manager.accountReceivableManager
-								.updateAccountReceivable(accountReceivable);
+						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -310,26 +309,21 @@ public class ViewARForm extends EditFormPanel {
 
 	}
 
-	private void initBalloonTip(){
-		
+	private void initBalloonTip() {
+
 		String[] employmentHeaders = { "Date", "Amount Paid" };
-		String[][] entries = { { "21 Jun 2013 10:47 AM", "1800.00" }};
-		
-		balloonTip = new BalloonTip(
-				paymentHistory,
-				new HistoryTable(employmentHeaders, entries),
-				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
-				BalloonTip.Orientation.RIGHT_BELOW,
-				BalloonTip.AttachLocation.WEST,
-				7, 12,
-				false
-			);
+		String[][] entries = { { "21 Jun 2013 10:47 AM", "1800.00" } };
+
+		balloonTip = new BalloonTip(paymentHistory, new HistoryTable(employmentHeaders, entries), new RoundedBalloonStyle(7, 7,
+				Color.decode("#F5FFFA"), Color.decode("#BDFF59")),// ,
+																					// Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST, 7, 12, false);
 		balloonTip.setPadding(5);
 		balloonTip.setVisible(false);
-		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
-		
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), false, false);
+
 		balloonTip.getCloseButton().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -337,8 +331,8 @@ public class ViewARForm extends EditFormPanel {
 			}
 		});
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (accountReceivable.getInventorySheetData() != null) {
@@ -367,42 +361,39 @@ public class ViewARForm extends EditFormPanel {
 
 	}
 
-	
 	private void fillEntries() {
 
 		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
 
-		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate()));
-		issuedBy.setToolTip(issuedBy,accountReceivable.getIssuedBy().getFirstPlusLastName());
-		customer.setToolTip(customer,accountReceivable.getCustomer().getFirstPlusLastName());
-		amount.setToolTip(amount,accountReceivable.getAccountReceivablesAmount() + "");
-		balance.setToolTip(balance,accountReceivable.getBalance() + "");
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate()));
+		issuedBy.setToolTip(issuedBy, accountReceivable.getIssuedBy().getFirstPlusLastName());
+		customer.setToolTip(customer, accountReceivable.getCustomer().getFirstPlusLastName());
+		amount.setToolTip(amount, accountReceivable.getAccountReceivablesAmount() + "");
+		balance.setToolTip(balance, accountReceivable.getBalance() + "");
 
-		if(accountReceivable.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+accountReceivable.getRemarks());
+		if (accountReceivable.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + accountReceivable.getRemarks());
 
 		if (accountReceivable.isValid()) {
 			payBtn.setVisible(accountReceivable.getBalance() > 0d);
 		} else
 			payBtn.setVisible(false);
 
-		Set<AccountReceivableDetail> arDetails = accountReceivable
-				.getAccountReceivableDetails();
+		Set<AccountReceivableDetail> arDetails = accountReceivable.getAccountReceivableDetails();
 		for (AccountReceivableDetail ard : arDetails) {
 			rowPanel.add(new EditRowPanel(ard, productsPanel, Values.ACCOUNT_RECEIVABLES));
 			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 			alternateRows();
 
-			productsPanel.setPreferredSize(new Dimension(330, productsPanel
-					.getComponentCount() * ROW_HEIGHT));
+			productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 			productsPanel.updateUI();
 			productsPanel.revalidate();
 		}
 
 	}
-	
-	public void closeBalloonPanel(){
-		if(balloonTip!=null)
+
+	public void closeBalloonPanel() {
+		if (balloonTip != null)
 			balloonTip.setVisible(false);
 	}
 

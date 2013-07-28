@@ -231,8 +231,8 @@ public class ISRowPanel extends JPanel {
 		formField.get(12).setText(String.format("%.2f", isd.getOffTakeInKilo()));
 		formField.get(13).setText(String.format("%.2f", isd.getPricePerSack()));
 		formField.get(14).setText(String.format("%.2f", isd.getPricePerKilo()));
-		formField.get(15).setText(String.format("%.2f", isd.getSalesAmountForSack()));
-		formField.get(16).setText(String.format("%.2f", isd.getSalesAmountForKilo()));
+		formField.get(15).setText(String.format("%.2f", isd.getCombinedSalesAmountForSack()));
+		formField.get(16).setText(String.format("%.2f", isd.getCombinedSalesAmountForKilo()));
 
 		for (ViewFormField vff : formField) {
 			row.add(vff);

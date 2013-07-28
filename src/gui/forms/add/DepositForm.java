@@ -208,7 +208,7 @@ public class DepositForm extends SimplePanel {
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 				Deposit deposit = new Deposit(d, (BankAccount) bankAcctCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
-						(Employee) depositorCombo.getSelectedItem(), Manager.loggedInAccount, true, remarks.getText());
+						(Employee) depositorCombo.getSelectedItem(), Manager.loggedInAccount, true, "");
 
 				try {
 					Manager.depositManager.addDeposit(deposit);

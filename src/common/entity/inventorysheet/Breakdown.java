@@ -95,4 +95,11 @@ public class Breakdown {
 		this.breakdownLines = breakdownLines;
 	}
 
+	public double getActualCashCount() {
+		double total = 0d;
+		for (BreakdownLine bdl : breakdownLines) {
+			total += bdl.getAmount();
+		}
+		return total;
+	}
 }

@@ -986,7 +986,9 @@ public class InventorySheetForm extends SimplePanel {
 
 		inventorySheet = new InventorySheet(inventorySheetData);
 		inventorySheet.build(new HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new HashSet<Sales>(sales),
-				new HashSet<AccountReceivable>(accountReceivables));
+				new HashSet<AccountReceivable>(accountReceivables), new HashSet<DiscountIssue>(discountIssues), new HashSet<ARPayment>(arPayments),
+				new HashSet<CAPayment>(caPayments), new HashSet<DailyExpenses>(dailyExpenses), new HashSet<CashAdvance>(cashAdvances),
+				new HashSet<SalaryRelease>(salaryReleases), new HashSet<Deposit>(deposits));
 
 		fillProductInventories(products);
 		fillSales(sales);
@@ -998,7 +1000,6 @@ public class InventorySheetForm extends SimplePanel {
 		fillPullOut(pullOuts);
 		fillDailyExpenses(dailyExpenses);
 		fillCashAdvances(cashAdvances);
-		fillDiscount(discountIssues);
 		fillSalaryRelease(salaryReleases);
 		fillDeposit(deposits);
 
@@ -1065,8 +1066,8 @@ public class InventorySheetForm extends SimplePanel {
 		totalInventoryLabel.get(11).setText(String.format("%.2f", inventorySheet.getTotalOfftakesInKilo()));
 		totalInventoryLabel.get(12).setText(String.format("%.2f", inventorySheet.getTotalPricesInSack()));
 		totalInventoryLabel.get(13).setText(String.format("%.2f", inventorySheet.getTotalPricesInKilo()));
-		totalInventoryLabel.get(14).setText(String.format("%.2f", inventorySheet.getCombinedSalesInSack()));
-		totalInventoryLabel.get(15).setText(String.format("%.2f", inventorySheet.getCombinedSalesInKilo()));
+		totalInventoryLabel.get(14).setText(String.format("%.2f", inventorySheet.getCombinedSalesAmountInSack()));
+		totalInventoryLabel.get(15).setText(String.format("%.2f", inventorySheet.getCombinedSalesAmountInKilo()));
 	}
 
 	private void fillSales(List<Sales> sales) {
@@ -1083,7 +1084,7 @@ public class InventorySheetForm extends SimplePanel {
 
 		// total sales
 
-		formsOverall.get(0).setText(String.format("%.2f", inventorySheet.getOverallCashAndCheckSales()));
+		formsOverall.get(0).setText(String.format("%.2f", inventorySheet.getOverallCashAndCheckSalesAmount()));
 
 	}
 
@@ -1177,7 +1178,7 @@ public class InventorySheetForm extends SimplePanel {
 		}
 
 		alternateRows(expensesInventory);
-		formsOverall.get(6).setText(String.format("%.2f", inventorySheet.getOverallPersonalAndStoreExpenses()));
+		formsOverall.get(6).setText(String.format("%.2f", inventorySheet.getOverallExpenses()));
 	}
 
 	private void fillCashAdvances(List<CashAdvance> cashAdvances) {

@@ -19,10 +19,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
+import common.entity.deposit.Deposit;
+import common.entity.discountissue.DiscountIssue;
 import common.entity.profile.Account;
 import common.entity.pullout.PullOut;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 
 @Entity
@@ -72,8 +79,26 @@ public class InventorySheetData {
 	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<AccountReceivable> accountReceivables = new HashSet<AccountReceivable>();
 
-	// cash advance, ca payments, salary release, daily expenses, pulloout,
-	// delivery, discount issue, ar, ar payments, sales, deposit
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<DiscountIssue> discountIssues = new HashSet<DiscountIssue>();
+
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ARPayment> arPayments = new HashSet<ARPayment>();
+
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<CAPayment> caPayments = new HashSet<CAPayment>();
+
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<DailyExpenses> dailyExpenses = new HashSet<DailyExpenses>();
+
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<CashAdvance> cashAdvances = new HashSet<CashAdvance>();
+
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<SalaryRelease> salaryReleases = new HashSet<SalaryRelease>();
+
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Deposit> deposits = new HashSet<Deposit>();
 
 	public InventorySheetData() {
 		super();
@@ -296,8 +321,70 @@ public class InventorySheetData {
 		}
 	}
 
+	public Set<DiscountIssue> getDiscountIssues() {
+		return discountIssues;
+	}
+
+	public void setDiscountIssues(Set<DiscountIssue> discountIssues) {
+		this.discountIssues = discountIssues;
+	}
+
+	public Set<ARPayment> getArPayments() {
+		return arPayments;
+	}
+
+	public void setArPayments(Set<ARPayment> arPayments) {
+		this.arPayments = arPayments;
+	}
+
+	public Set<CAPayment> getCaPayments() {
+		return caPayments;
+	}
+
+	public void setCaPayments(Set<CAPayment> caPayments) {
+		this.caPayments = caPayments;
+	}
+
+	public Set<DailyExpenses> getDailyExpenses() {
+		return dailyExpenses;
+	}
+
+	public void setDailyExpenses(Set<DailyExpenses> dailyExpenses) {
+		this.dailyExpenses = dailyExpenses;
+	}
+
+	public Set<CashAdvance> getCashAdvances() {
+		return cashAdvances;
+	}
+
+	public void setCashAdvances(Set<CashAdvance> cashAdvances) {
+		this.cashAdvances = cashAdvances;
+	}
+
+	public Set<SalaryRelease> getSalaryReleases() {
+		return salaryReleases;
+	}
+
+	public void setSalaryReleases(Set<SalaryRelease> salaryReleases) {
+		this.salaryReleases = salaryReleases;
+	}
+
+	public Set<Deposit> getDeposits() {
+		return deposits;
+	}
+
+	public void setDeposits(Set<Deposit> deposits) {
+		this.deposits = deposits;
+	}
+
 	public Breakdown getBreakdown() {
 		return breakdown;
+	}
+
+	public double getActualCashCount() {
+		if (breakdown != null)
+			return breakdown.getActualCashCount();
+		return 0d;
 	}
 
 }

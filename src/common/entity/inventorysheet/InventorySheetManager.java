@@ -89,23 +89,39 @@ public interface InventorySheetManager {
 
 	// combined sales (cash, check & account receivables)
 
-	public double getCombinedSalesInSackForProduct(int productId);
+	public double getCombinedSalesAmountInSackForProduct(int productId);
 
-	public double getCombinedSalesInKiloForProduct(int productId);
+	public double getCombinedSalesAmountInKiloForProduct(int productId);
 
-	public double getCombinedSalesInSack();
+	public double getCombinedSalesAmountInSack();
 
-	public double getCombinedSalesInKilo();
+	public double getCombinedSalesAmountInKilo();
 
-	public double getOverallCombinedSales();
+	public double getOverallCombinedSalesAmount();
+
+	// sales(cash and check)
+
+	public double getCashAndCheckSalesAmountInSackForProduct(int productId);
+
+	public double getCashAndCheckSalesAmountInKiloForProduct(int productId);
+
+	public double getCashAndCheckSalesAmountInSack();
+
+	public double getCashAndCheckSalesAmountInKilo();
+
+	public double getOverallCashAndCheckSalesAmount();
 
 	public Set<Sales> getSales();
 
-	// cash/check sales
-
-	public double getOverallCashAndCheckSales();
-
 	// account receivables
+
+	public double getAccountReceivablesAmountInSackForProduct(int productId);
+
+	public double getAccountReceivablesAmountInKiloForProduct(int productId);
+
+	public double getAccountReceivablesAmountInSack();
+
+	public double getAccountReceivablesAmountInKilo();
 
 	public double getOverallAccountReceivables();
 
@@ -133,7 +149,7 @@ public interface InventorySheetManager {
 
 	// personal and store
 
-	public double getOverallPersonalAndStoreExpenses();
+	public double getOverallExpenses();
 
 	// salary releases
 
@@ -173,7 +189,7 @@ public interface InventorySheetManager {
 
 	// over amount
 
-	public double getOverAmount(); 
+	public double getOverAmount();
 
 	// short amount
 
