@@ -35,7 +35,7 @@ public class DatabaseTool {
 
 	public static boolean backup(String dbUserName, String dbPassword, String dbName, String path) {
 
-		String executeCmd = "mysqldump -u " + dbUserName + " -p " + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
+		String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
 		Process runtimeProcess;
 		try {
 			System.out.println(executeCmd);// this out put works in mysql shell
@@ -53,6 +53,29 @@ public class DatabaseTool {
 		}
 		return false;
 	}
+
+	// public static boolean backup(String dbUserName, String dbPassword, String
+	// dbName, String path) {
+	//
+	// String executeCmd = "mysqldump -u " + dbUserName + " -p " + dbPassword +
+	// " --add-drop-database -B " + dbName + " -r " + path;
+	// Process runtimeProcess;
+	// try {
+	// System.out.println(executeCmd);// this out put works in mysql shell
+	// runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+	// int processComplete = runtimeProcess.waitFor();
+	//
+	// if (processComplete == 0) {
+	// System.out.println("Backup created successfully");
+	// return true;
+	// } else {
+	// System.out.println("Could not create the backup");
+	// }
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	// return false;
+	// }
 
 	public static void decryptAndUpdate(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
 		update(dbUserName, dbPassword, dbName, filePath);

@@ -274,5 +274,6 @@ public class ViewExpensesForm extends EditFormPanel {
 			// expensesPanel.updateUI();
 			// expensesPanel.revalidate();
 		}
+
 	}
 }
