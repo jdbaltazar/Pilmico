@@ -165,7 +165,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		issuedByLabel.setBounds(350, 50, 70, 20);
 		issuedBy.setBounds(425, 50, 170, 20);
 
-		customerLabel.setBounds(40, 80, 70, 20);
+		customerLabel.setBounds(45, 80, 70, 20);
 		
 		fwdCustomer.setBounds(298, 82, 16, 16);
 

@@ -113,6 +113,7 @@ public class Values {
 
 	public static final int SALES_GRAPH = 19;
 	public static final int DATABASE = 20;
+	public static final int ON_DISPLAY = 21;
 
 	public static final int UNITS = 0;
 	public static final int CONDITION = 1;
