@@ -176,7 +176,6 @@ public class ExpensesForm extends SimplePanel {
 				type.addItem(det);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

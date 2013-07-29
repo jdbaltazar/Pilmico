@@ -146,7 +146,7 @@ public class DiscountIssue {
 		return inventorySheetData;
 	}
 
-	public void setInventorySheet(InventorySheetData inventorySheetData) {
+	public void setInventorySheetData(InventorySheetData inventorySheetData) {
 		this.inventorySheetData = inventorySheetData;
 	}
 

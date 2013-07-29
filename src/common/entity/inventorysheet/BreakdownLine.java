@@ -70,4 +70,8 @@ public class BreakdownLine {
 		this.quantity = quantity;
 	}
 
+	public double getAmount() {
+		return quantity * denomination.getDenomination();
+	}
+
 }

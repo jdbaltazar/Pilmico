@@ -95,4 +95,29 @@ public class Breakdown {
 		this.breakdownLines = breakdownLines;
 	}
 
+	public void addBreakdownLine(BreakdownLine breakdownLine) {
+		breakdownLine.setBreakdown(this);
+		breakdownLines.add(breakdownLine);
+	}
+
+	public void removeBreakdownLine(BreakdownLine breakdownLine) {
+		removeBreakdownLine(breakdownLine.getId());
+	}
+
+	public void removeBreakdownLine(int breakdownLineId) {
+		for (BreakdownLine bdl : breakdownLines) {
+			if (bdl.getId() == breakdownLineId) {
+				breakdownLines.remove(bdl);
+				break;
+			}
+		}
+	}
+
+	public double getActualCashCount() {
+		double total = 0d;
+		for (BreakdownLine bdl : breakdownLines) {
+			total += bdl.getAmount();
+		}
+		return total;
+	}
 }

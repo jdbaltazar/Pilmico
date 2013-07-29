@@ -6,12 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
+import common.entity.deposit.Deposit;
+import common.entity.discountissue.DiscountIssue;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
+import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 
@@ -30,8 +38,16 @@ public class InventorySheet implements InventorySheetManager {
 	public InventorySheet(InventorySheetData inventorySheetData) {
 		super();
 		this.inventorySheetData = inventorySheetData;
-		init(initInventorySheetDetails());
-		// build();
+		build();
+	}
+
+	public InventorySheet(InventorySheetData inventorySheetData, Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales,
+			Set<AccountReceivable> accountReceivables, Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments,
+			Set<DailyExpenses> dailyExpenses, Set<CashAdvance> cashAdvances, Set<SalaryRelease> salaryReleases, Set<Deposit> deposits) {
+		super();
+		this.inventorySheetData = inventorySheetData;
+		build(deliveries, pullOuts, sales, accountReceivables, discountIssues, arPayments, caPayments, dailyExpenses, cashAdvances, salaryReleases,
+				deposits);
 	}
 
 	private List<InventorySheetDetail> initInventorySheetDetails() {
@@ -51,18 +67,33 @@ public class InventorySheet implements InventorySheetManager {
 		}
 	}
 
-	public void build() {
-		addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
-		addPullOutsToProductInventory(inventorySheetData.getPullouts());
-		addSalesToProductInventory(inventorySheetData.getSales());
-		addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
-	}
-
-	public void build(Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales, Set<AccountReceivable> accountReceivables) {
+	public void build(Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales, Set<AccountReceivable> accountReceivables,
+			Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments, Set<DailyExpenses> dailyExpenses,
+			Set<CashAdvance> cashAdvances, Set<SalaryRelease> salaryReleases, Set<Deposit> deposits) {
+		init(initInventorySheetDetails());
 		addDeliveriesToProductInventory(deliveries);
 		addPullOutsToProductInventory(pullOuts);
 		addSalesToProductInventory(sales);
 		addAccountReceivablesToProductInventory(accountReceivables);
+		inventorySheetData.setDeliveries(deliveries);
+		inventorySheetData.setPullouts(pullOuts);
+		inventorySheetData.setSales(sales);
+		inventorySheetData.setAccountReceivables(accountReceivables);
+		inventorySheetData.setDiscountIssues(discountIssues);
+		inventorySheetData.setArPayments(arPayments);
+		inventorySheetData.setCaPayments(caPayments);
+		inventorySheetData.setDailyExpenses(dailyExpenses);
+		inventorySheetData.setCashAdvances(cashAdvances);
+		inventorySheetData.setSalaryReleases(salaryReleases);
+		inventorySheetData.setDeposits(deposits);
+	}
+
+	public void build() {
+		init(initInventorySheetDetails());
+		addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
+		addPullOutsToProductInventory(inventorySheetData.getPullouts());
+		addSalesToProductInventory(inventorySheetData.getSales());
+		addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
 	}
 
 	private void addDeliveriesToProductInventory(Set<Delivery> deliveries) {
@@ -260,32 +291,47 @@ public class InventorySheet implements InventorySheetManager {
 
 	@Override
 	public double getOverallCostOfPullouts() {
-		// TODO Auto-generated method stub
-		return 0;
+		double total = 0d;
+		for (PullOut po : inventorySheetData.getPullouts()) {
+			total += po.getPulloutAmount();
+		}
+		return total;
 	}
 
+	/*
+	 * beginning inventory - on display + deliveries - pullouts
+	 */
 	@Override
 	public double getEndingInventoryInSackForProduct(int productId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return ((getBeginningInventoryInSackForProduct(productId) - getOnDisplayInSackForProduct(productId)) + getDeliveriesInSackForProduct(productId))
+				- getPulloutsInSackForProduct(productId);
 	}
 
+	/*
+	 * beginning inventory - on display + deliveries - pullouts
+	 */
 	@Override
 	public double getEndingInventoryInKiloForProduct(int productId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return ((getBeginningInventoryInKiloForProduct(productId) - getOnDisplayInKiloForProduct(productId)) + getDeliveriesInKiloForProduct(productId))
+				- getPulloutsInKiloForProduct(productId);
 	}
 
 	@Override
 	public double getTotalEndingInventoryInSack() {
-		// TODO Auto-generated method stub
-		return 0;
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getEndingInventoryInSackForProduct(i);
+		}
+		return total;
 	}
 
 	@Override
 	public double getTotalEndingInventoryInKilo() {
-		// TODO Auto-generated method stub
-		return 0;
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getEndingInventoryInKiloForProduct(i);
+		}
+		return total;
 	}
 
 	@Override
@@ -356,33 +402,81 @@ public class InventorySheet implements InventorySheetManager {
 		return total;
 	}
 
+	/*
+	 * sales (cash and check) + account receivables
+	 */
 	@Override
-	public double getCombinedSalesInSackForProduct(int productId) {
-		return 0;
+	public double getCombinedSalesAmountInSackForProduct(int productId) {
+		return getCashAndCheckSalesAmountInSackForProduct(productId) + getAccountReceivablesAmountInSackForProduct(productId);
+	}
+
+	/*
+	 * sales (cash and check) + account receivables
+	 */
+	@Override
+	public double getCombinedSalesAmountInKiloForProduct(int productId) {
+		return getCashAndCheckSalesAmountInKiloForProduct(productId) + getAccountReceivablesAmountInKiloForProduct(productId);
 	}
 
 	@Override
-	public double getCombinedSalesInKiloForProduct(int productId) {
-		return 0;
+	public double getCombinedSalesAmountInSack() {
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getCombinedSalesAmountInSackForProduct(i);
+		}
+		return total;
 	}
 
 	@Override
-	public double getCombinedSalesInSack() {
-		return 0;
+	public double getCombinedSalesAmountInKilo() {
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getCombinedSalesAmountInKiloForProduct(i);
+		}
+		return total;
 	}
 
 	@Override
-	public double getCombinedSalesInKilo() {
-		return 0;
+	public double getOverallCombinedSalesAmount() {
+		return getCombinedSalesAmountInSack() + getCombinedSalesAmountInKilo();
 	}
 
 	@Override
-	public double getOverallCombinedSales() {
-		return 0;
+	public double getCashAndCheckSalesAmountInSackForProduct(int productId) {
+		InventorySheetDetail isd = productInventories.get(productId);
+		if (isd != null)
+			return isd.getCombinedSalesAmountForSack();
+		return 0d;
 	}
 
 	@Override
-	public double getOverallCashAndCheckSales() {
+	public double getCashAndCheckSalesAmountInKiloForProduct(int productId) {
+		InventorySheetDetail isd = productInventories.get(productId);
+		if (isd != null)
+			return isd.getCombinedSalesAmountForKilo();
+		return 0d;
+	}
+
+	@Override
+	public double getCashAndCheckSalesAmountInSack() {
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getCashAndCheckSalesAmountInSackForProduct(i);
+		}
+		return total;
+	}
+
+	@Override
+	public double getCashAndCheckSalesAmountInKilo() {
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getCashAndCheckSalesAmountInKiloForProduct(i);
+		}
+		return total;
+	}
+
+	@Override
+	public double getOverallCashAndCheckSalesAmount() {
 		double total = 0d;
 		Set<Sales> sales = inventorySheetData.getSales();
 		for (Sales s : sales) {
@@ -404,76 +498,121 @@ public class InventorySheet implements InventorySheetManager {
 	@Override
 	public double getOverallAccountReceivablesPayments() {
 		double total = 0d;
-		// Set<ARPayment> ars = inventorySheetData.get
-		// for (AccountReceivable ar : ars) {
-		// total += ar.getAccountReceivablesAmount();
-		// }
+		Set<ARPayment> ars = inventorySheetData.getArPayments();
+		for (ARPayment ar : ars) {
+			total += ar.getAmount();
+		}
 		return total;
 	}
 
 	@Override
 	public double getOverallCashAdvances() {
-		return 0;
+		double total = 0d;
+		Set<CashAdvance> cas = inventorySheetData.getCashAdvances();
+		for (CashAdvance ca : cas) {
+			total += ca.getAmount();
+		}
+		return total;
 	}
 
 	@Override
 	public double getOverallCashAdvancesPayments() {
-		return 0;
+		double total = 0d;
+		Set<CAPayment> caps = inventorySheetData.getCaPayments();
+		for (CAPayment cap : caps) {
+			total += cap.getAmount();
+		}
+		return total;
 	}
 
 	@Override
 	public double getOverallPersonalExpenses() {
-		return 0;
+		double total = 0d;
+		Set<DailyExpenses> des = inventorySheetData.getDailyExpenses();
+		for (DailyExpenses de : des) {
+			if (de.getExpenseType().getName().equals(DailyExpensesType.personal))
+				total += de.getDailyExpensesAmount();
+		}
+		return total;
 	}
 
 	@Override
 	public double getOverallStoreExpenses() {
-		return 0;
+		double total = 0d;
+		Set<DailyExpenses> des = inventorySheetData.getDailyExpenses();
+		for (DailyExpenses de : des) {
+			if (de.getExpenseType().getName().equals(DailyExpensesType.store))
+				total += de.getDailyExpensesAmount();
+		}
+		return total;
 	}
 
 	@Override
-	public double getOverallPersonalAndStoreExpenses() {
-		return 0;
+	public double getOverallExpenses() {
+		double total = 0d;
+		Set<DailyExpenses> des = inventorySheetData.getDailyExpenses();
+		for (DailyExpenses de : des) {
+			total += de.getDailyExpensesAmount();
+		}
+		return total;
 	}
 
 	@Override
 	public double getOverallSalaryReleases() {
-		return 0;
+		double total = 0d;
+		Set<SalaryRelease> srs = inventorySheetData.getSalaryReleases();
+		for (SalaryRelease sr : srs) {
+			total += sr.getNetAmount();
+		}
+		return total;
 	}
 
 	@Override
 	public double getOverallDiscounts() {
-		return 0;
+		double total = 0d;
+		Set<DiscountIssue> dis = inventorySheetData.getDiscountIssues();
+		for (DiscountIssue di : dis) {
+			total += di.getAmount();
+		}
+		return total;
+
 	}
 
 	@Override
 	public double getOverallDeposits() {
-		return 0;
+		double total = 0d;
+		Set<Deposit> ds = inventorySheetData.getDeposits();
+		for (Deposit d : ds) {
+			total += d.getAmount();
+		}
+		return total;
 	}
 
 	@Override
 	public double getPreviousCashOnHand() {
-		return 0;
+		return inventorySheetData.getPreviousAcoh();
 	}
 
 	@Override
 	public double getTotalAssets() {
-		return 0;
+		return getOverallCombinedSalesAmount() + inventorySheetData.getPreviousAcoh() + getOverallAccountReceivablesPayments()
+				+ getOverallCashAdvancesPayments();
 	}
 
 	@Override
 	public double getTotalLiabilities() {
-		return 0;
+		return getOverallExpenses() + getOverallSalaryReleases() + getOverallCashAdvances() + getOverallAccountReceivables() + getOverallDiscounts()
+				+ getOverallDeposits();
 	}
 
 	@Override
 	public double getActualCashOnHand() {
-		return 0;
+		return (getPreviousCashOnHand() + getTotalAssets()) - getTotalLiabilities();
 	}
 
 	@Override
 	public double getActualCashCount() {
-		return 0;
+		return inventorySheetData.getActualCashCount();
 	}
 
 	@Override
@@ -502,6 +641,30 @@ public class InventorySheet implements InventorySheetManager {
 	}
 
 	@Override
+	public double getAccountReceivablesAmountInSackForProduct(int productId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getAccountReceivablesAmountInKiloForProduct(int productId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getAccountReceivablesAmountInSack() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getAccountReceivablesAmountInKilo() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
 	public Set<AccountReceivable> getAccountReceivables() {
 		return inventorySheetData.getAccountReceivables();
 	}
@@ -521,6 +684,10 @@ public class InventorySheet implements InventorySheetManager {
 
 	public void setProductInventories(Map<Integer, InventorySheetDetail> productInventories) {
 		this.productInventories = productInventories;
+	}
+
+	public InventorySheetData getInventorySheetData() {
+		return inventorySheetData;
 	}
 
 }
