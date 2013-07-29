@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -36,11 +37,12 @@ public class RowPanel extends JPanel {
 	private String command = "none";
 
 	private JComboBox productsCombo, feesCombo, expensesCombo;
-	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
+	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25,
+			LABEL_Y = 85, UPPER_Y = 55;
 	private JTextField productsComboField, expensesComboField, feesComboField;
-	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount;
+	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount, onDisplaySack, onDisplayKG;
 
-	private ViewFormField priceSack, priceKG;
+	private ViewFormField priceSack, priceKG, productOnDisplay;
 	private JButton deleteRow, addRow;
 	private JPanel row;
 	private FormField bankAccount;
@@ -53,22 +55,16 @@ public class RowPanel extends JPanel {
 	private String label = "";
 	private JPanel srcPanel = new JPanel();
 
-	/*
-	 * public RowPanel(int y, String command, Item item, int quant, int mode) {
-	 * this.y = y; this.command = command; // this.item = item; this.quant =
-	 * quant; this.mode = mode; init(); }
-	 */
-
 	public RowPanel(JPanel srcPanel, String label) {
 		this.srcPanel = srcPanel;
 		this.label = label;
 		init();
 	}
 
-	public RowPanel(Object object, JPanel srcPanel, int mode) {
+	public RowPanel(Object object, JPanel srcPanel, String label) {
 		this.srcPanel = srcPanel;
 		this.object = object;
-		this.mode = mode;
+		this.label = label;
 		init();
 	}
 
@@ -87,6 +83,9 @@ public class RowPanel extends JPanel {
 
 	private void init() {
 		// TODO Auto-generated method stub
+		if(label.equals(Tables.PRODUCTS))
+			ROW_HEIGHT = 30;
+		
 		command = srcPanel.getComponentCount() + "";
 		y = srcPanel.getComponentCount() * ROW_HEIGHT;
 
@@ -97,24 +96,8 @@ public class RowPanel extends JPanel {
 		row.setBackground(Color.decode("#FFFFE6"));
 
 		deleteRow = new SBButton("cancel.png", "cancel.png", "Remove");
-		// if(mode == Values.EDIT)
-		// row.setBorder(BorderFactory.createMatteBorder(0, 1, 1,
-		// 1,Color.LIGHT_GRAY));
-
-		// row.setBackground(new Color(245, 245, 220));
-
-		// row.setBorder(BorderFactory.createEtchedBorder());
 
 		try {
-			// List<Item> items = Manager.itemManager.getItems();
-
-			// System.out.println("items inputted: " + items.size());
-
-			// stocks = new String[items.size()];
-			//
-			// for (int i = 0; i < items.size(); i++) {
-			// stocks[i] = items.get(i).getName();
-			// }
 			List<Product> products = new ArrayList<Product>();
 			try {
 				products = Manager.productManager.getProducts();
@@ -123,15 +106,6 @@ public class RowPanel extends JPanel {
 			}
 
 			productsCombo = new JComboBox(products.toArray());
-
-			// List<Fee> fees = new ArrayList<Fee>();
-			// try {
-			// fees = Manager.salaryReleaseManager.getFees();
-			// } catch (Exception e1) {
-			// e1.printStackTrace();
-			// }
-			//
-			// feesCombo = new JComboBox(fees.toArray());
 
 			feesCombo = new JComboBox();
 
@@ -145,12 +119,6 @@ public class RowPanel extends JPanel {
 				e1.printStackTrace();
 			}
 
-			// List<Expense> expenses = new ArrayList<Expense>();
-			// try {
-			// expenses = Manager.dailyExpenseManager.getExpenses();
-			// } catch (Exception e1) {
-			// e1.printStackTrace();
-			// }
 			expensesCombo = new JComboBox();
 
 			List<Expense> expenses = new ArrayList<Expense>();
@@ -169,13 +137,15 @@ public class RowPanel extends JPanel {
 
 		productsCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		productsCombo.setEditable(true);
-		productsComboField = (JTextField) productsCombo.getEditor().getEditorComponent();
+		productsComboField = (JTextField) productsCombo.getEditor()
+				.getEditorComponent();
 		productsComboField.setText("");
 		productsComboField.addKeyListener(new ComboKeyHandler(productsCombo));
 
 		feesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		feesCombo.setEditable(true);
-		feesComboField = (JTextField) feesCombo.getEditor().getEditorComponent();
+		feesComboField = (JTextField) feesCombo.getEditor()
+				.getEditorComponent();
 		feesComboField.setText("");
 		feesComboField.addKeyListener(new ComboKeyHandler(feesCombo));
 		feesCombo.addItemListener(new ItemListener() {
@@ -190,7 +160,10 @@ public class RowPanel extends JPanel {
 					try {
 						fee = Manager.salaryReleaseManager.searchFee(str);
 						if (fee != null) {
-							feeAmount.setText(String.format("%.2f", Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId())));
+							feeAmount.setText(String.format("%.2f",
+									Manager.salaryReleaseManager
+											.getMostRecentAmountForFee(fee
+													.getId())));
 						} else {
 							feeAmount.setText("0");
 						}
@@ -200,47 +173,13 @@ public class RowPanel extends JPanel {
 				} else {
 					feeAmount.setText("0");
 				}
-
-				// if (feesCombo.getSelectedItem() != null) {
-				//
-				// System.out.println("entered1");
-				//
-				// Fee fee = null;
-				// try {
-				// Object o = feesCombo.getSelectedItem();
-				// if (o instanceof Fee) {
-				// fee = (Fee) feesCombo.getSelectedItem();
-				// }else{
-				// System.out.println("not fee!");
-				// }
-				//
-				// } catch (Exception e) {
-				// e.printStackTrace();
-				// }
-				// if (fee != null) {
-				// double val = 0d;
-				// try {
-				// val =
-				// Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId());
-				// } catch (Exception e) {
-				// e.printStackTrace();
-				// }
-				// System.out.println("value: "+val);
-				// feeAmount.setText(String.format("%.2f", val));
-				// } else {
-				//
-				// System.out.println("fee was null");
-				// feeAmount.setText("0");
-				// }
-				// } else {
-				// feeAmount.setText("0");
-				// }
 			}
 		});
 
 		expensesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		expensesCombo.setEditable(true);
-		expensesComboField = (JTextField) expensesCombo.getEditor().getEditorComponent();
+		expensesComboField = (JTextField) expensesCombo.getEditor()
+				.getEditorComponent();
 		expensesComboField.setText("");
 		expensesComboField.addKeyListener(new ComboKeyHandler(expensesCombo));
 		expensesCombo.addItemListener(new ItemListener() {
@@ -253,9 +192,14 @@ public class RowPanel extends JPanel {
 				if (str != null && !str.equals("")) {
 					Expense expense = null;
 					try {
-						expense = Manager.dailyExpenseManager.searchExpense(str);
+						expense = Manager.dailyExpenseManager
+								.searchExpense(str);
 						if (expense != null) {
-							amountOfExpense.setText(String.format("%.2f", Manager.dailyExpenseManager.getMostRecentAmountForExpense(expense.getId())));
+							amountOfExpense.setText(String.format(
+									"%.2f",
+									Manager.dailyExpenseManager
+											.getMostRecentAmountForExpense(expense
+													.getId())));
 						} else {
 							amountOfExpense.setText("0");
 						}
@@ -294,49 +238,58 @@ public class RowPanel extends JPanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
-					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack() + "");
+					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack()
+							+ "");
 					priceKG.setToolTip(priceKG, p.getCurrentPricePerKilo() + "");
-					
-					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)){
-						if(Values.salesForm.hasMultipleProduct())
-							Values.salesForm.setErrorText("No multiple product entry allowed ");
+
+					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)) {
+						if (Values.salesForm.hasMultipleProduct())
+							Values.salesForm
+									.setErrorText("No multiple product entry allowed ");
 					}
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES)){
-						if(Values.accountReceivablesForm.hasMultipleProduct())
-							Values.accountReceivablesForm.setErrorText("No multiple product entry allowed ");
+					else if (Values.tableUtilPanel.getLabel().contains(
+							Tables.ACCOUNT_RECEIVABLES)) {
+						if (Values.accountReceivablesForm.hasMultipleProduct())
+							Values.accountReceivablesForm
+									.setErrorText("No multiple product entry allowed ");
 					}
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS)){
-						if(Values.pulloutForm.hasMultipleProduct())
-							Values.pulloutForm.setErrorText("No multiple product entry allowed ");
+					else if (Values.tableUtilPanel.getLabel().contains(
+							Tables.PULLOUTS)) {
+						if (Values.pulloutForm.hasMultipleProduct())
+							Values.pulloutForm
+									.setErrorText("No multiple product entry allowed ");
 					}
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES)){
-						if(Values.deliveryForm.hasMultipleProduct())
-							Values.deliveryForm.setErrorText("No multiple product entry allowed ");
+					else if (Values.tableUtilPanel.getLabel().contains(
+							Tables.DELIVERIES)) {
+						if (Values.deliveryForm.hasMultipleProduct())
+							Values.deliveryForm
+									.setErrorText("No multiple product entry allowed ");
 					}
 				}
 			}
 		});
 
-
 		if (mode == Values.EDIT)
 			ROW_WIDTH = 335;
 
-		if (label.equals("CADeductions")) {
-			addCADeductionsRow();
-		} else if (label.equals(Tables.EXPENSES))
+		if (label.equals(Tables.EXPENSES))
 			addExpensesRow();
 		else if (label.equals(Tables.SALARY))
 			addFeesRow();
 		else if (label.equals(Tables.BANK))
 			addBankAccountRow();
+		else if (label.equals(Tables.PRODUCTS))
+			addOnDisplayRow();
 		else
 			addProductRow();
 
-		setBounds(0, y, ROW_WIDTH, ROW_HEIGHT);
-
+		if (label.equals(Tables.PRODUCTS))
+			setBounds(-1, y, ROW_WIDTH, ROW_HEIGHT);
+		else
+			setBounds(0, y, ROW_WIDTH, ROW_HEIGHT);
 	}
 
 	public JComboBox getFeesCombo() {
@@ -347,21 +300,39 @@ public class RowPanel extends JPanel {
 		return expensesCombo;
 	}
 
-	private void addCADeductionsRow() {
-		ROW_WIDTH = 270;
+	private void addOnDisplayRow(){
+		
+		Product product = (Product) object;
+		
+		productOnDisplay = new ViewFormField(product.getName());
+		
+		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
+		onDisplayKG.setPrecision(2);
+		onDisplayKG.setText(product.getDisplayInKilo()+"");
+		
+		onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
+		onDisplaySack.setPrecision(2);
+		onDisplaySack.setText(product.getDisplayInSack()+"");
+		
+		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
+		onDisplaySack.setBounds(209, 5, 60, 20);
+		onDisplayKG.setBounds(298, 5, 60, 20); // +33
 
-		date = new RowJLabel("Jul 02, 2013 06:32 PM");
-		amount = new RowJLabel("P " + "2500");
-
-		date.setBounds(10, 7, 150, 20);
-		amount.setBounds(177, 7, 60, 20);
-
-		row.add(date);
-		row.add(amount);
+		row.add(productOnDisplay);
+		row.add(onDisplaySack);
+		row.add(onDisplayKG);
+		
+//		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		
+		if(product.getDisplayInKilo() == 0d && product.getDisplayInSack() == 0d){
+			row.setBackground(Color.decode("#E0EBEB"));
+		}
+		else
+			row.setBackground(Color.decode("#BFFF80"));
 
 		add(row);
 	}
-
+	
 	private void addFeesRow() {
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
@@ -369,7 +340,8 @@ public class RowPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Values.salaryReleaseForm.removeRow(Integer.parseInt(e.getActionCommand()));
+				Values.salaryReleaseForm.removeRow(Integer.parseInt(e
+						.getActionCommand()));
 			}
 		});
 
@@ -415,7 +387,8 @@ public class RowPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Values.expensesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+				Values.expensesForm.removeRow(Integer.parseInt(e
+						.getActionCommand()));
 			}
 		});
 
@@ -442,31 +415,27 @@ public class RowPanel extends JPanel {
 
 				case Values.ADD:
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES))
-						Values.salesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+						Values.salesForm.removeRow(Integer.parseInt(e
+								.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES))
-						Values.accountReceivablesForm.removeRow(Integer.parseInt(e.getActionCommand()));
+					else if (Values.tableUtilPanel.getLabel().contains(
+							Tables.ACCOUNT_RECEIVABLES))
+						Values.accountReceivablesForm.removeRow(Integer
+								.parseInt(e.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS))
-						Values.pulloutForm.removeRow(Integer.parseInt(e.getActionCommand()));
+					else if (Values.tableUtilPanel.getLabel().contains(
+							Tables.PULLOUTS))
+						Values.pulloutForm.removeRow(Integer.parseInt(e
+								.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES))
-						Values.deliveryForm.removeRow(Integer.parseInt(e.getActionCommand()));
-					/*
-					 * else Values.stockPurchasePanel.removeRow(Integer.parseInt(e.
-					 * getActionCommand()));
-					 */
+					else if (Values.tableUtilPanel.getLabel().contains(
+							Tables.DELIVERIES))
+						Values.deliveryForm.removeRow(Integer.parseInt(e
+								.getActionCommand()));
+
 					break;
 
 				case Values.EDIT:
-					/*
-					 * if (Values.tableUtilPanel.getLabel().contains("SALES ORDER"))
-					 * Values
-					 * .editSalesOrder.removeRow(Integer.parseInt(e.getActionCommand
-					 * ())); else
-					 * Values.editStockPurchase.removeRow(Integer.parseInt(
-					 * e.getActionCommand()));
-					 */
 					break;
 
 				default:
@@ -507,18 +476,10 @@ public class RowPanel extends JPanel {
 	public JPanel getRow() {
 		return row;
 	}
-	
-	public JComboBox getProductCombo(){
+
+	public JComboBox getProductCombo() {
 		return productsCombo;
 	}
-	
-	/*public JNumericField getQuantitySack(){
-		return quantitySack;
-	}
-	
-	public JNumericField getQuantityKG(){
-		return quantityKG;
-	}*/
 
 	public JButton getDeleteRow() {
 		return deleteRow;
@@ -550,14 +511,6 @@ public class RowPanel extends JPanel {
 
 	public String getSelectedExpense() {
 		return expensesComboField.getText();
-
-		// if (expensesCombo.getSelectedIndex() == -1) {
-		// System.out.println("new expense!!");
-		// return new Expense(expensesComboField.getText());
-		// } else {
-		// System.out.println("old expense: " + expensesCombo.getSelectedItem());
-		// return (Expense) expensesCombo.getSelectedItem();
-		// }
 	}
 
 	public String getSelectedFee() {

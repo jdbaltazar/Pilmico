@@ -65,13 +65,13 @@ public class CenterPanel extends SoyPanel {
 
 		add(new LoginPanel());
 
-		// try {
-		// Manager.getInstance().login("manager", "pilmico".toCharArray());
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// changeTable(Values.HOME);
+		 /*try {
+		 Manager.getInstance().login("manager", "pilmico".toCharArray());
+		 } catch (Exception e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 changeTable(Values.HOME);*/
 
 	}
 
