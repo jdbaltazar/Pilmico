@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -269,25 +270,34 @@ public class ViewARForm extends EditFormPanel {
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-				uP.setVisible(true);
+				if (accountReceivable.getValidArPayments().size() == 0) {
 
-				if (!uP.getReason().equals("")) {
-					accountReceivable.setValid(false);
-					accountReceivable.setRemarks(uP.getReason());
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-					try {
-						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					if (!uP.getReason().equals("")) {
+						accountReceivable.setValid(false);
+						accountReceivable.setRemarks(uP.getReason());
+
+						try {
+							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Invalidation").setVisible(true);
+						Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
 					}
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+				} else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame, "Not Allowed",
+							"Please invalidate ALL payments for this transaction in order to proceed", JOptionPane.ERROR_MESSAGE);
+
 				}
 			}
 		});

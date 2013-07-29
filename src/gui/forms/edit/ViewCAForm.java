@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -82,25 +83,32 @@ public class ViewCAForm extends EditFormPanel {
 		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-				uP.setVisible(true);
 
-				if (!uP.getReason().equals("")) {
-					cashAdvance.setValid(false);
-					cashAdvance.setRemarks(uP.getReason());
+				if (cashAdvance.getValidCaPayments().size() == 0) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-					try {
-						Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					if (!uP.getReason().equals("")) {
+						cashAdvance.setValid(false);
+						cashAdvance.setRemarks(uP.getReason());
+
+						try {
+							Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Invalidation").setVisible(true);
+						Values.centerPanel.changeTable(Values.CASH_ADVANCE);
 					}
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.CASH_ADVANCE);
+				} else {
+					JOptionPane.showMessageDialog(Values.mainFrame, "Not Allowed",
+							"Please invalidate ALL payments for this transaction in order to proceed", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
