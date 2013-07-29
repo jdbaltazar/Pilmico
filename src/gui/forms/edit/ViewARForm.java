@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,7 @@ import javax.swing.SpinnerDateModel;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 
+import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.product.Product;
@@ -311,8 +313,17 @@ public class ViewARForm extends EditFormPanel {
 
 	private void initBalloonTip() {
 
-		String[] employmentHeaders = { "Date", "Amount Paid" };
-		String[][] entries = { { "21 Jun 2013 10:47 AM", "1800.00" } };
+		String[] employmentHeaders = { "ID", "Date", "Amount Paid" };
+		Set<ARPayment> payments = accountReceivable.getValidArPayments();
+		String[][] entries = new String[payments.size()][employmentHeaders.length];
+
+		int i = 0;
+		for (ARPayment arp : payments) {
+			entries[i][0] = arp.getId() + "";
+			entries[i][1] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arp.getDate());
+			entries[i][2] = String.format("%.2f", arp.getAmount());
+			i++;
+		}
 
 		balloonTip = new BalloonTip(paymentHistory, new HistoryTable(employmentHeaders, entries), new RoundedBalloonStyle(7, 7,
 				Color.decode("#F5FFFA"), Color.decode("#BDFF59")),// ,

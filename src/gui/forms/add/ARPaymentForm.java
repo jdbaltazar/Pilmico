@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +37,7 @@ import util.soy.SoyButton;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
+import common.entity.profile.Person;
 import common.manager.Manager;
 
 public class ARPaymentForm extends SimplePanel {
@@ -67,7 +69,6 @@ public class ARPaymentForm extends SimplePanel {
 	public ARPaymentForm() {
 		super("Add AR Payment");
 		addComponents();
-
 	}
 
 	private void addComponents() {
@@ -184,26 +185,26 @@ public class ARPaymentForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 				if (isValidated()) {
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					ARPayment arPayment = new ARPayment(accountReceivable, d,
-							Double.parseDouble(fields.get(0).getText()),
-							Manager.loggedInAccount);
-					try {
-						Manager.accountReceivableManager
-								.addARPayment(arPayment);
-						accountReceivable.addARPayment(arPayment);
-						accountReceivable.setBalance(accountReceivable
-								.getBalance() - arPayment.getAmount());
-						Manager.accountReceivableManager
-								.updateAccountReceivable(accountReceivable);
+					Person rep = null;
+					if (customerRepCombo.getSelectedItem() instanceof Person)
+						rep = (Person) customerRepCombo.getSelectedItem();
+					ARPayment arPayment = new ARPayment(accountReceivable, d, Double.parseDouble(fields.get(0).getText()), rep, Manager.loggedInAccount,
+							true, "");
 
+					try {
+
+						Manager.accountReceivableManager.addARPayment(arPayment);
+						accountReceivable.addARPayment(arPayment);
+						accountReceivable.setBalance(accountReceivable.getBalance() - arPayment.getAmount());
+						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
 						Values.centerPanel.changeTable(Values.AR_PAYMENTS);
 						new SuccessPopup("Add").setVisible(true);
 						clearFields();
+
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-				}
-				else
+				} else
 					error.setText(msg);
 			}
 		});
@@ -240,7 +241,21 @@ public class ARPaymentForm extends SimplePanel {
 	public void fillEntries(AccountReceivable accountReceivable) {
 		this.accountReceivable = accountReceivable;
 		arID.setText(accountReceivable != null ? accountReceivable.getId() + "" : "");
+		date.setValue(new Date());
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+
+		try {
+			List<Person> customerReps = Manager.employeePersonManager.getPersons();
+			if (customerReps.size() > 0) {
+				customerRepCombo.setModel(new DefaultComboBoxModel(customerReps.toArray()));
+				customerRepCombo.setSelectedIndex(-1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		fields.get(0).setText(accountReceivable != null ? accountReceivable.getBalance() + "" : "");
+
 	}
 
 	private void clearFields() {
@@ -251,17 +266,17 @@ public class ARPaymentForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		amount = fields.get(0).getText();
-		
-		if (!amount.equals("")){
+
+		if (!amount.equals("")) {
 			return true;
 		}
-		
+
 		msg = "Amount is required ";
 		return false;
 	}
-	
+
 	public void refreshDropdown() {
 		try {
 			model = new DefaultComboBoxModel();

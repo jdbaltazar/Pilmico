@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +37,7 @@ import util.soy.SoyButton;
 
 import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
+import common.entity.profile.Person;
 import common.manager.Manager;
 
 public class CAPaymentForm extends SimplePanel {
@@ -182,23 +184,24 @@ public class CAPaymentForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				CAPayment caPayment = new CAPayment(cashAdvance, d, Double.parseDouble(fields.get(0).getText()), null, Manager.loggedInAccount, true, "");
+				if (isValidated()) {
+					Date d = ((SpinnerDateModel) date.getModel()).getDate();
+					CAPayment caPayment = new CAPayment(cashAdvance, d, Double.parseDouble(fields.get(0).getText()), null, Manager.loggedInAccount, true,
+							"");
 
-				try {
-					Manager.cashAdvanceManager.addCAPayment(caPayment);
-					System.out.println("id: " + caPayment.getId());
-					cashAdvance.addCAPayment(caPayment);
-					cashAdvance.setBalance(cashAdvance.getBalance() - caPayment.getAmount());
-					Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
-					Values.centerPanel.changeTable(Values.CA_PAYMENTS);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}}
-				else
+					try {
+						Manager.cashAdvanceManager.addCAPayment(caPayment);
+						System.out.println("id: " + caPayment.getId());
+						cashAdvance.addCAPayment(caPayment);
+						cashAdvance.setBalance(cashAdvance.getBalance() - caPayment.getAmount());
+						Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
+						Values.centerPanel.changeTable(Values.CA_PAYMENTS);
+						new SuccessPopup("Add").setVisible(true);
+						clearFields();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
 					error.setText(msg);
 			}
 		});
@@ -235,7 +238,18 @@ public class CAPaymentForm extends SimplePanel {
 	public void fillEntries(CashAdvance cashAdvance) {
 		this.cashAdvance = cashAdvance;
 		caID.setText(cashAdvance != null ? cashAdvance.getId() + "" : "");
+		date.setValue(new Date());
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		try {
+			List<Person> employeeRep = Manager.employeePersonManager.getPersons();
+			if (employeeRep.size() > 0) {
+				employeeRepCombo.setModel(new DefaultComboBoxModel(employeeRep.toArray()));
+				employeeRepCombo.setSelectedIndex(-1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		fields.get(0).setText(cashAdvance != null ? cashAdvance.getBalance() + "" : "");
 	}
 
@@ -257,7 +271,6 @@ public class CAPaymentForm extends SimplePanel {
 		msg = "Amount is required ";
 		return false;
 	}
-
 
 	public void refreshDropdown() {
 		try {
