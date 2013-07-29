@@ -195,8 +195,8 @@ public class ARPaymentForm extends SimplePanel {
 
 						Manager.accountReceivableManager.addARPayment(arPayment);
 						accountReceivable.addARPayment(arPayment);
-						accountReceivable.setBalance(accountReceivable.getBalance() - arPayment.getAmount());
 						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+						Values.viewARForm.fillEntries();
 						Values.centerPanel.changeTable(Values.AR_PAYMENTS);
 						new SuccessPopup("Add").setVisible(true);
 						clearFields();

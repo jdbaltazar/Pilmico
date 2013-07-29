@@ -64,20 +64,21 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		add(new LoginPanel());
+		// add(new LoginPanel());
 
-		/*
-		 * try { Manager.getInstance().login("manager", "pilmico".toCharArray());
-		 * } catch (Exception e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } changeTable(Values.HOME);
-		 */
+		try {
+			Manager.getInstance().login("manager", "pilmico".toCharArray());
+		} catch (Exception e) { // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		// if (val != Values.HOME)
-		remove(getComponent(getComponentCount() - 1));
+		if (val != Values.HOME)
+			remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
@@ -680,7 +681,8 @@ public class CenterPanel extends SoyPanel {
 			add(new TableUtilPanel(new TablePanel(entries, headers, products), Tables.PRODUCTS), BorderLayout.CENTER);
 
 			// on displayPopup
-			new ProductOnDisplayPopup();
+			if (Values.productOnDisplayPopup == null)
+				new ProductOnDisplayPopup();
 			Values.productOnDisplayPopup.fillTable(Manager.productManager.getProductsOnDisplayFirst());
 
 		} catch (Exception e) {

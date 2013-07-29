@@ -107,8 +107,13 @@ public class ViewCAForm extends EditFormPanel {
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(Values.mainFrame, "Not Allowed",
-							"Please invalidate ALL payments for this transaction in order to proceed", JOptionPane.ERROR_MESSAGE);
+
+					JOptionPane.showMessageDialog(Values.mainFrame, "Please invalidate ALL payments for this transaction in order to proceed",
+							"Not Allowed", JOptionPane.ERROR_MESSAGE);
+
+					if (balloonTip == null)
+						initBalloonTip();
+					balloonTip.setVisible(true);
 				}
 			}
 		});

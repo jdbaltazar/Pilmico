@@ -191,9 +191,7 @@ public class CAPaymentForm extends SimplePanel {
 
 					try {
 						Manager.cashAdvanceManager.addCAPayment(caPayment);
-						System.out.println("id: " + caPayment.getId());
 						cashAdvance.addCAPayment(caPayment);
-						cashAdvance.setBalance(cashAdvance.getBalance() - caPayment.getAmount());
 						Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
 						Values.centerPanel.changeTable(Values.CA_PAYMENTS);
 						new SuccessPopup("Add").setVisible(true);

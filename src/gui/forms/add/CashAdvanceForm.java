@@ -184,6 +184,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 					try {
 						Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
+						
 						Values.centerPanel.changeTable(Values.CASH_ADVANCE);
 						new SuccessPopup("Add").setVisible(true);
 

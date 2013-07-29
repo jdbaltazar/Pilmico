@@ -57,8 +57,6 @@ public class ProductOnDisplayPopup extends JDialog {
 		init();
 		addComponents();
 		Values.productOnDisplayPopup = this;
-
-		System.out.println("created!!!");
 	}
 
 	private void init() {

@@ -284,7 +284,6 @@ public class ViewARForm extends EditFormPanel {
 						try {
 							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
 						} catch (Exception e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 
@@ -295,8 +294,12 @@ public class ViewARForm extends EditFormPanel {
 
 				} else {
 
-					JOptionPane.showMessageDialog(Values.mainFrame, "Not Allowed",
-							"Please invalidate ALL payments for this transaction in order to proceed", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Values.mainFrame, "Please invalidate ALL payments for this transaction in order to proceed",
+							"Not Allowed", JOptionPane.ERROR_MESSAGE);
+
+					if (balloonTip == null)
+						initBalloonTip();
+					balloonTip.setVisible(true);
 
 				}
 			}
@@ -382,7 +385,7 @@ public class ViewARForm extends EditFormPanel {
 
 	}
 
-	private void fillEntries() {
+	public void fillEntries() {
 
 		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
 
