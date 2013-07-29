@@ -66,13 +66,17 @@ public class CashAdvanceForm extends SimplePanel {
 	public CashAdvanceForm() {
 		super("Add Cash Advance");
 		addComponents();
-//		fillEntries();
+		fillEntries();
 		Values.cashAdvanceForm = this;
 	}
 
-	// public void fillEntries() {
-	//
-	// }
+	public void fillEntries() {
+
+		date.setValue(new Date());
+		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		refreshEmployee();
+		fields.get(0).setText("0");
+	}
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
@@ -184,7 +188,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 					try {
 						Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
-						
+
 						Values.centerPanel.changeTable(Values.CASH_ADVANCE);
 						new SuccessPopup("Add").setVisible(true);
 

@@ -319,7 +319,7 @@ public class ViewCAForm extends EditFormPanel {
 
 	}
 
-	private void fillEntries() {
+	public void fillEntries() {
 
 		voidBtn.setVisible(cashAdvance.getInventorySheetData() != null ? false : cashAdvance.isValid());
 
