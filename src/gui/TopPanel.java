@@ -139,16 +139,16 @@ public class TopPanel extends SoyPanel {
 		store_info.setBounds(32, logoY, 220, 80);
 		tools.setBounds(5, 5, 16, 16);
 
-		store_info.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (Manager.loggedInAccount != null && Manager.isAuthorized()) {
-					Values.mainFrame.dimScreen(true);
-					new EditStoreInfoPopup().setVisible(true);
-				}
-			}
-		});
+		// store_info.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent arg0) {
+		// if (Manager.loggedInAccount != null && Manager.isAuthorized()) {
+		// Values.mainFrame.dimScreen(true);
+		// new EditStoreInfoPopup().setVisible(true);
+		// }
+		// }
+		// });
 
 		tools.addActionListener(new ActionListener() {
 

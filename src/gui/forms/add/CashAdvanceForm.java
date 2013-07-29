@@ -66,9 +66,13 @@ public class CashAdvanceForm extends SimplePanel {
 	public CashAdvanceForm() {
 		super("Add Cash Advance");
 		addComponents();
-
+//		fillEntries();
 		Values.cashAdvanceForm = this;
 	}
+
+	// public void fillEntries() {
+	//
+	// }
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
@@ -175,10 +179,8 @@ public class CashAdvanceForm extends SimplePanel {
 				if (isValidated()) {
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					Employee emp = (Employee) issuedFor.getSelectedItem();
-					CashAdvance cashAdvance = new CashAdvance(d, Double
-							.parseDouble(fields.get(0).getText()), emp, Double
-							.parseDouble(fields.get(0).getText()),
-							Manager.loggedInAccount);
+					CashAdvance cashAdvance = new CashAdvance(d, Double.parseDouble(fields.get(0).getText()), emp, Double.parseDouble(fields.get(0)
+							.getText()), Manager.loggedInAccount);
 
 					try {
 						Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
@@ -220,7 +222,7 @@ public class CashAdvanceForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		if (issuedFor.getModel().getSelectedItem() == null) {
 
 			msg = "No employee selected ";

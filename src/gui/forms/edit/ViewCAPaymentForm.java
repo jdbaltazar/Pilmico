@@ -76,6 +76,7 @@ public class ViewCAPaymentForm extends EditFormPanel {
 		issuedByLabel = new ViewFormLabel("Issued by:");
 		caIDLabel = new ViewFormLabel("CA ID:");
 		empRepLabel = new ViewFormLabel("Emp. Rep.:");
+		empRepLabel.setToolTipText("Employee Representative");
 		amountLabel = new ViewFormLabel("Amount:");
 
 		issuedBy = new ViewFormField(Manager.loggedInAccount.getFirstPlusLastName());

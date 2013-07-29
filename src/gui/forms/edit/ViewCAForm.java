@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -27,6 +28,8 @@ import javax.swing.JScrollPane;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
 import common.manager.Manager;
 
@@ -69,7 +72,7 @@ public class ViewCAForm extends EditFormPanel {
 		addComponents();
 		colorTable();
 		fillEntries();
-		
+
 		Values.viewCAForm = this;
 	}
 
@@ -83,14 +86,13 @@ public class ViewCAForm extends EditFormPanel {
 				Point b = a.getLocation();
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
-				
+
 				if (!uP.getReason().equals("")) {
 					cashAdvance.setValid(false);
 					cashAdvance.setRemarks(uP.getReason());
 
 					try {
-						Manager.cashAdvanceManager
-								.updateCashAdvance(cashAdvance);
+						Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -106,22 +108,22 @@ public class ViewCAForm extends EditFormPanel {
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		remarks = new RemarksLabel("");
-		
+
 		paymentHistory = new SBButton("payment_history.png", "payment_history2.png", "Payment History");
-		
+
 		paymentHistory.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 				initBalloonTip();
-				
+
 				balloonTip.setVisible(true);
 				paymentHistory.setEnabled(false);
-			
+
 			}
 
 		});
@@ -187,7 +189,7 @@ public class ViewCAForm extends EditFormPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				closeBalloonPanel();
-				
+
 				Values.addEntryPanel.startAnimation();
 				Values.addEntryPanel.showPaymentForm(Values.CA_PAYMENTS, cashAdvance);
 			}
@@ -235,35 +237,38 @@ public class ViewCAForm extends EditFormPanel {
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
-		
+
 		add(voidBtn);
 		add(scrollPane);
 		add(status);
 		add(remarks);
-		
 
 	}
-	
-	private void initBalloonTip(){
-		
-		String[] employmentHeaders = { "Date", "Amount Paid" };
-		String[][] entries = { { "21 Jun 2013 10:47 AM", "1800.00" }};
-		
-		balloonTip = new BalloonTip(
-				paymentHistory,
-				new HistoryTable(employmentHeaders, entries),
-				new RoundedBalloonStyle(7, 7, Color.decode("#F5FFFA"), Color.decode("#BDFF59")),//, Color.decode("#B2CCCC")),
-				BalloonTip.Orientation.LEFT_ABOVE,
-				BalloonTip.AttachLocation.NORTHEAST,
-				7, 12,
-				false
-			);
+
+	private void initBalloonTip() {
+
+		String[] employmentHeaders = { "ID", "Date", "Amount Paid" };
+		Set<CAPayment> payments = cashAdvance.getValidCaPayments();
+		String[][] entries = new String[payments.size()][employmentHeaders.length];
+
+		int i = 0;
+		for (CAPayment cap : payments) {
+			entries[i][0] = cap.getId() + "";
+			entries[i][1] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cap.getDate());
+			entries[i][2] = String.format("%.2f", cap.getAmount());
+			i++;
+		}
+
+		balloonTip = new BalloonTip(paymentHistory, new HistoryTable(employmentHeaders, entries), new RoundedBalloonStyle(7, 7,
+				Color.decode("#F5FFFA"), Color.decode("#BDFF59")),// ,
+																					// Color.decode("#B2CCCC")),
+				BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTHEAST, 7, 12, false);
 		balloonTip.setPadding(5);
 		balloonTip.setVisible(false);
-		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(),false, false);
-		
+		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), false, false);
+
 		balloonTip.getCloseButton().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -271,8 +276,8 @@ public class ViewCAForm extends EditFormPanel {
 			}
 		});
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (cashAdvance.getInventorySheetData() != null) {
@@ -306,22 +311,22 @@ public class ViewCAForm extends EditFormPanel {
 		voidBtn.setVisible(cashAdvance.getInventorySheetData() != null ? false : cashAdvance.isValid());
 
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(cashAdvance.getDate()));
-		issuedBy.setToolTip(issuedBy,Manager.loggedInAccount.getFirstPlusLastName());
+		issuedBy.setToolTip(issuedBy, Manager.loggedInAccount.getFirstPlusLastName());
 		issuedFor.setToolTip(issuedFor, cashAdvance.getEmployee().toString());
 		amount.setToolTip(amount, cashAdvance.getAmount() + "");
 		balance.setToolTip(balance, cashAdvance.getBalance() + "");
-		
-		if(cashAdvance.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+cashAdvance.getRemarks());
-		
-		if(cashAdvance.isValid())
+
+		if (cashAdvance.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + cashAdvance.getRemarks());
+
+		if (cashAdvance.isValid())
 			payBtn.setVisible(cashAdvance.getBalance() > 0d);
 		else
 			payBtn.setVisible(false);
 	}
-	
-	public void closeBalloonPanel(){
-		if(balloonTip!=null)
+
+	public void closeBalloonPanel() {
+		if (balloonTip != null)
 			balloonTip.setVisible(false);
 	}
 }
