@@ -249,13 +249,13 @@ public class ExpensesForm extends SimplePanel {
 
 		save.setBounds(417, LABEL_Y + 135, 80, 30);
 
-		error.setBounds(305, 340, 200, 30);
+		error.setBounds(370, 160, 220, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if (isValidated()) {
-					hasBlankEntry();
+				if (isValidated() && !hasBlankEntry() && !hasZeroQuantity()) {
+					
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					DailyExpenses de = new DailyExpenses(d,
 							(DailyExpensesType) (type.getSelectedItem()),
@@ -293,6 +293,8 @@ public class ExpensesForm extends SimplePanel {
 						e1.printStackTrace();
 					}
 				}
+				else
+					error.setText(msg);
 			}
 		});
 
@@ -305,7 +307,7 @@ public class ExpensesForm extends SimplePanel {
 
 		if (expensesPanel.getComponentCount() == 0) {
 
-			msg = "Put at least one entry";
+			msg = "Put at least one entry ";
 
 			return false;
 		}
@@ -317,7 +319,25 @@ public class ExpensesForm extends SimplePanel {
 	private boolean hasBlankEntry(){
 		
 		for(int i = 0; i < rowPanel.size(); i++){
-			System.out.println("selected index: "+rowPanel.get(i).getExpensesCombo().getSelectedIndex());
+			JTextField field = (JTextField) rowPanel.get(i).getExpensesCombo().getEditor().getEditorComponent();
+			
+			if(field.getText().equals("")){
+				msg = "Blank entry in row "+(i+1)+" ";
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean hasZeroQuantity(){
+		
+		for(int i = 0; i < rowPanel.size(); i++){
+			
+			if(rowPanel.get(i).getExpenseAmount() == 0d){
+				msg = "0 amount found in row "+(i+1)+" ";
+				return true;
+			}
 		}
 		
 		return false;

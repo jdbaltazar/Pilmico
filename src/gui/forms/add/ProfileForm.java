@@ -38,7 +38,7 @@ public class ProfileForm extends SimplePanel {
 	private DefaultComboBoxModel model;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
+	private String msg;
 
 	private final int num = Tables.profileFormLabel.length;
 
@@ -57,7 +57,7 @@ public class ProfileForm extends SimplePanel {
 		error = new ErrorLabel();
 
 		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 48; i < num; i++, y += 54) {
+		for (int i = 0, y = 0, x1 = 43; i < num; i++, y += 54) {
 
 				fields.add(new FormField(Tables.profileFormLabel[i], 100, Color.white, Color.gray));
 				fields.get(i).setBounds(x1, 55 + y, 200, 25);
@@ -67,7 +67,7 @@ public class ProfileForm extends SimplePanel {
 		clear.setBounds(167, 330, 80, 30);
 		save.setBounds(58, 330, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(68, 300, 170, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -79,6 +79,7 @@ public class ProfileForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields.get(4)
 						.getText(), true);
 				try {
@@ -95,7 +96,8 @@ public class ProfileForm extends SimplePanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+				}else
+					error.setText(msg);
 			}
 		});
 
@@ -115,10 +117,21 @@ public class ProfileForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+		if(fields.get(0).getText().equals("")){
+			
+			msg = "Last Name is required";
+			
+			return false;
+		}
+		
+		if(fields.get(1).getText().equals("")){
+			
+			msg = "First Name is required";
+			
+			return false;
+		}
 
-		return false;
+		return true;
 	}
 
 	public void refreshDropdown() {

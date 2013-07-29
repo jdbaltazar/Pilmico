@@ -47,7 +47,7 @@ public class SupplierForm extends SimplePanel {
 
 	private ErrorLabel error;
 
-	private String name, address;
+	private String name, address, msg;
 
 	public SupplierForm() {
 		super("Add Supplier");
@@ -112,7 +112,7 @@ public class SupplierForm extends SimplePanel {
 		clear.setBounds(220, 260, 80, 30);
 		save.setBounds(100, 260, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(190, 230, 190, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -125,13 +125,14 @@ public class SupplierForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				System.out.println("name: " + fields.get(0).getText());
+				/*System.out.println("name: " + fields.get(0).getText());
 				System.out.println("address: " + fields.get(1).getText());
 				System.out.println("tin: " + fields.get(2).getText());
 				System.out.println("contactNo: " + fields.get(3).getText());
 				System.out.println("contactPerson: " + fields.get(4).getText());
-				System.out.println("remarks: " + fields.get(5).getText());
+				System.out.println("remarks: " + fields.get(5).getText());*/
 
+				if(isValidated()){
 				Person person = null;
 				Supplier s = new Supplier(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText(), fields.get(3).getText(), person,
 						fields.get(5).getText());
@@ -145,6 +146,8 @@ public class SupplierForm extends SimplePanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				}else
+					error.setText(msg);
 
 			}
 		});
@@ -161,8 +164,14 @@ public class SupplierForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		if (!name.equals("") && !address.equals(""))
+		
+		name = fields.get(0).getText();
+		
+		if (!name.equals("")){
 			return true;
+		}
+		
+		msg = "Name is required ";
 
 		return false;
 	}

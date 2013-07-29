@@ -35,6 +35,7 @@ import common.manager.Manager;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
+import util.JNumericField;
 import util.SBButton;
 import util.SimplePanel;
 import util.SpinnerDate;
@@ -54,11 +55,12 @@ public class EmployeeForm extends SimplePanel {
 	private DefaultComboBoxModel model;
 	private JSpinner startDate, endDate;
 
+	private JNumericField salary;
 	private int initY = 50;
 
 	private ErrorLabel error;
 	private DropdownLabel designationLabel, status, startD, endD;
-	private String username, password, firstName, lastName, address;
+	private String msg;
 
 	private final int num = Tables.employeeFormLabel.length;
 	private JPanel panel;
@@ -94,6 +96,9 @@ public class EmployeeForm extends SimplePanel {
 
 		employmentStatus = new FormDropdown();
 		designation = new FormDropdown();
+		
+		salary = new JNumericField("*Salary");
+		salary.setMaxLength(10);
 
 		try {
 			model = new DefaultComboBoxModel();
@@ -108,17 +113,17 @@ public class EmployeeForm extends SimplePanel {
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 19; i < num; i++, y += 60) {
 
-			if (i == 4) {
+			if (i == 3) {
 				x1 = 224;
 				y = 0;
 			}
 
-			if (i == 8) {
+			if (i == 7) {
 				x1 = 429;
 				y = 0;
 			}
 
-			if (i != 5 && i != 6 && i != 7 && i != 10) {
+			if (i != 5 && i != 6 && i != 7 && i!=8 && i != 10) {
 				fields.add(new FormField(Tables.employeeFormLabel[i], 100, Color.white, Color.gray));
 				fields.get(ctr).setBounds(x1, initY + y, 170, 25);
 				panel.add(fields.get(ctr));
@@ -140,6 +145,10 @@ public class EmployeeForm extends SimplePanel {
 				startD.setBounds(x1, initY + y - 7, 100, 11);
 				startDate.setBounds(x1, initY + y + 5, 170, 20);
 			}
+			
+			if (i == 8) {
+				salary.setBounds(x1, initY + y, 170, 25);
+			}
 
 			if (i == 10) {
 				endD.setBounds(x1, initY + y - 7, 100, 11);
@@ -153,7 +162,7 @@ public class EmployeeForm extends SimplePanel {
 		clear.setBounds(342, 300, 80, 30);
 		save.setBounds(223, 300, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(375, 276, 230, 25);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -165,12 +174,13 @@ public class EmployeeForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				try {
 
 					Employee employee = new Employee(new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3)
 							.getText(), fields.get(4).getText(), false), (Designation) designation.getSelectedItem(), (EmploymentStatus) employmentStatus
-							.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double.parseDouble(fields.get(5).getText()), fields
-							.get(6).getText(), null);
+							.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double.parseDouble(salary.getText()), fields
+							.get(5).getText(), null);
 
 					Manager.employeePersonManager.addEmployee(employee);
 
@@ -186,6 +196,8 @@ public class EmployeeForm extends SimplePanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				}else
+					error.setText(msg);
 
 			}
 		});
@@ -201,6 +213,8 @@ public class EmployeeForm extends SimplePanel {
 		panel.add(status);
 		panel.add(startD);
 		panel.add(endD);
+		
+		panel.add(salary);
 
 		panel.add(employmentStatus);
 		panel.add(endDate);
@@ -246,11 +260,29 @@ public class EmployeeForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+		if(fields.get(0).getText().equals("")){
+			
+			msg = "Last Name is required";
+			
+			return false;
+		}
+		
+		if(fields.get(1).getText().equals("")){
+			
+			msg = "First Name is required";
+			
+			return false;
+		}
+		
+		if(salary.getText().equals("")){
+			msg = "Salary is required";
+			
+			return false;
+		}
 
-		return false;
+		return true;
 	}
+
 
 	public void refreshDropdown() {
 		try {

@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import gui.forms.util.FormField;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import common.entity.product.Category;
@@ -85,6 +86,7 @@ public class UtilityPopup extends JDialog {
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		
 		utilityLabel = new ErrorLabel();
+		utilityLabel.setHorizontalAlignment(JLabel.LEFT);
 
 		if (utility == Values.CATEGORY) {
 			field.setBounds(5, 20, 140, 20);

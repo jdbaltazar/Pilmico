@@ -372,11 +372,12 @@ public class DeliveryForm extends SimplePanel {
 
 		save.setBounds(275, 275, 80, 30);
 
-		error.setBounds(305, 340, 200, 30);
+		error.setBounds(365, 300, 260, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()){
 				try {
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					Supplier supplier = (Supplier) supplierCombo.getSelectedItem();
@@ -400,6 +401,8 @@ public class DeliveryForm extends SimplePanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				}else
+					error.setText(msg);
 
 			}
 		});
@@ -409,19 +412,73 @@ public class DeliveryForm extends SimplePanel {
 
 	}
 
+	public void setErrorText(String msg){
+		error.setText(msg);
+	}
+	
+	public boolean hasMultipleProduct(){
+		
+		for (int i = 0; i < rowPanel.size(); i++) {
+			for (int j = i + 1; j < rowPanel.size(); j++) {
+				
+				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel
+						.get(j).getProductCombo().getSelectedIndex()) {
+					msg = "No multiple product entry allowed ";
+					
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean hasBlankProduct(){
+		
+		for (int i = 0; i < rowPanel.size(); i++) {
+			if(rowPanel.get(i).getProductCombo().getSelectedIndex() == -1){
+				
+				JTextField field = (JTextField) rowPanel.get(i).getProductCombo().getEditor().getEditorComponent();
+				System.out.println(field.getText());
+				
+				if(!field.getText().equals(""))
+					msg = "Unknown product found in row "+(i+1)+" ";
+				else
+					msg = "No product indicated in row "+(i+1)+" ";
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean hasZeroQuantity(){
+		
+		for (int i = 0; i < rowPanel.size(); i++) {
+			
+			if(rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d){
+				msg = "Both quantities should not be 0 in row "+(i+1)+" ";
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private boolean isValidated() {
 
-		if (supplierCombo.getModel().getSelectedItem() == null) {
+		/*if (supplierCombo.getModel().getSelectedItem() == null) {
 
 			msg = "Select an account";
 
 			return false;
 
-		}
+		}*/
 
 		if (productsPanel.getComponentCount() == 0) {
 
-			msg = "Put at least one item";
+			msg = "Put at least one product ";
 
 			return false;
 		}

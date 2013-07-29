@@ -276,10 +276,12 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		save.setBounds(310, LABEL_Y + 270, 80, 30);
 
-		error.setBounds(305, 340, 200, 30);
+		error.setBounds(430, 250, 250, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				
+				if(isValidated()&&!hasBlankEntry() && !hasZeroQuantity()){
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 				Employee emp = (Employee) issuedFor.getSelectedItem();
@@ -313,6 +315,8 @@ public class SalaryReleaseForm extends SimplePanel {
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 				}
+				}else
+					error.setText(msg);
 
 			}
 		});
@@ -331,18 +335,43 @@ public class SalaryReleaseForm extends SimplePanel {
 		refreshDate();
 		refreshEmployee();
 	}
-
+	
+	private boolean hasBlankEntry(){
+		
+		for(int i = 0; i < feesRowPanel.size(); i++){
+			JTextField field = (JTextField) feesRowPanel.get(i).getFeesCombo().getEditor().getEditorComponent();
+			
+			if(field.getText().equals("")){
+				msg = "Blank entry in row "+(i+1)+" ";
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private boolean isValidated() {
+		
+		if (issuedFor.getModel().getSelectedItem() == null) {
 
-		if (feesPanel.getComponentCount() == 0) {
-
-			msg = "Put at least one item";
+			msg = "No employee selected ";
 
 			return false;
 		}
-
+		
 		return true;
-
+	}
+	private boolean hasZeroQuantity(){
+		
+		for(int i = 0; i < feesRowPanel.size(); i++){
+			
+			if(feesRowPanel.get(i).getFeeAmout() == 0d){
+				msg = "0 amount found in row "+(i+1)+" ";
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private void clearForm() {

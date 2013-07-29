@@ -46,6 +46,8 @@ public class AccountForm extends SimplePanel {
 	private ErrorLabel error;
 	private DropdownLabel employee, acctT;
 	private SBButton fwd;
+	
+	private String msg;
 
 	private final int num = Tables.accountFormLabel.length;
 
@@ -126,11 +128,10 @@ public class AccountForm extends SimplePanel {
 		clear.setBounds(167, 330, 80, 30);
 		save.setBounds(58, 330, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(60, 290, 200, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
 				clearFields();
 			}
 		});
@@ -138,6 +139,7 @@ public class AccountForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				Account acc = new Account(fields.get(0).getText(), fields.get(1).getText(), (AccountType) acctType.getSelectedItem(),
 						(Employee) employeeCombo.getSelectedItem());
 				try {
@@ -148,6 +150,8 @@ public class AccountForm extends SimplePanel {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
+				}else
+					error.setText(msg);
 			}
 		});
 
@@ -180,13 +184,30 @@ public class AccountForm extends SimplePanel {
 	private void clearFields() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
+		
+		employeeCombo.setSelectedIndex(0);
 
 		error.setText("");
 	}
 
 	private boolean isValidated() {
+		
+		if (employeeCombo.getModel().getSelectedItem() == null) {
 
-		return false;
+			msg = "Employee is required ";
+
+			return false;
+		}
+		
+		
+		for (int i = 0; i < fields.size(); i++)
+			
+			if(fields.get(i).getText().equals("")){
+				msg = "Please fillup all fields ";
+				return false;
+			}
+		
+		return true;
 	}
 
 	public void refreshEmployee() {
@@ -194,7 +215,7 @@ public class AccountForm extends SimplePanel {
 
 			List<Employee> employees = Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts();
 
-			System.out.println("emps: " + employees.size());
+//			System.out.println("emps: " + employees.size());
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts().toArray());
 			employeeCombo.setModel(model);
 		} catch (Exception e2) {

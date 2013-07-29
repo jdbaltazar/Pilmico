@@ -2,6 +2,7 @@ package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.FormDropdown;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
@@ -87,6 +88,8 @@ public class ViewExpensesForm extends EditFormPanel {
 		this.dailyExpenses = dailyExpenses;
 		init();
 		addComponents();
+		
+		colorTable();
 		fillEntries();
 
 	};
@@ -106,6 +109,8 @@ public class ViewExpensesForm extends EditFormPanel {
 		status = new JLabel("", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.green.darker());
+		
+		remarks = new RemarksLabel("");
 
 		issuedByLabel = new ViewFormLabel("Issued by:");
 		typeLabel = new ViewFormLabel("Type:");
@@ -121,6 +126,7 @@ public class ViewExpensesForm extends EditFormPanel {
 		expensesPane = new JScrollPane(expensesPanel);
 
 		expensesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		expensesPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		expensesPane.setOpaque(false);
 		expensesPane.getViewport().setOpaque(false);
@@ -158,7 +164,6 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		panel.add(amountLabel);
 		panel.add(expenseLabel);
-		// panel.add(deleteLabel);
 
 		panel.add(expensesPane);
 
@@ -173,15 +178,16 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		scrollPane.setViewportView(panel);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 
 		scrollPane.setBounds(115, 95, issuedBy.getX() + issuedBy.getWidth() + amountLabel.getX(), expensesPane.getY() + expensesPane.getHeight()
 				+ LABEL_Y + 3);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(scrollPane);
 		add(status);
+		add(remarks);
 	}
 
 	private void alternateRows() {
@@ -193,33 +199,6 @@ public class ViewExpensesForm extends EditFormPanel {
 				rowPanel.get(i).getRow().setBackground(Values.row2);
 	}
 
-	public void removeRow(int rowNum) {
-		expensesPanel.remove(rowNum);
-		expensesPanel.updateUI();
-		expensesPanel.revalidate();
-
-		expensesPanel.setPreferredSize(new Dimension(ROW_WIDTH - 20, expensesPanel.getComponentCount() * ROW_HEIGHT));
-
-		// updateList(rowNum);
-
-		alternateRows();
-	}
-
-	// private void updateList(int removedRow) {
-	//
-	// for (int i = removedRow + 1; i < rowPanel.size(); i++) {
-	// rowPanel.get(i).setBounds(0, rowPanel.get(i).getY() - ROW_HEIGHT,
-	// ROW_WIDTH, ROW_HEIGHT);
-	// rowPanel.get(i).setY(rowPanel.get(i).getY() - ROW_HEIGHT);
-	// // System.out.println("command: "+rowPanel2.get(i).getCommand());
-	// rowPanel.get(i).getDeleteRow().setActionCommand((i - 1) + "");
-	// rowPanel.get(i).updateUI();
-	// rowPanel.get(i).revalidate();
-	// }
-	//
-	// rowPanel.remove(removedRow);
-	// }
-
 	private void addComponents() {
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
@@ -228,11 +207,7 @@ public class ViewExpensesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				// <<<<<<< HEAD
-				// new UtilityPopup(b,
-				// "What's your reason for invalidating this form?", Values.REMARKS,
-				// dailyExpenses).setVisible(true);
-				// =======
+				
 				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 				uP.setVisible(true);
 
@@ -251,7 +226,6 @@ public class ViewExpensesForm extends EditFormPanel {
 					new SuccessPopup("Invalidation").setVisible(true);
 					Values.centerPanel.changeTable(Values.EXPENSES);
 				}
-				// >>>>>>> refs/remotes/remote/master
 			}
 		});
 
@@ -263,49 +237,55 @@ public class ViewExpensesForm extends EditFormPanel {
 		add(error);
 
 	}
+	
+	private void colorTable(){
+
+		String s = "";
+		if (dailyExpenses.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
+		} else {
+			if (dailyExpenses.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+		
+	}
 
 	private void fillEntries() {
 
 		voidBtn.setVisible(dailyExpenses.getInventorySheetData() != null ? false : dailyExpenses.isValid());
 
-		// <<<<<<< HEAD
-		String s = "";
-		if (dailyExpenses.getInventorySheetData() != null) {
-			icon = new ImageIcon("images/accounted.png");
-			s = "ACCOUNTED";
-		} else {
-			if (dailyExpenses.isValid()) {
-				icon = new ImageIcon("images/pending.png");
-				s = "PENDING";
-			} else {
-				icon = new ImageIcon("images/invalidated.png");
-				s = "INVALIDATED";
-			}
-		}
-		status.setText(s);
-		status.setIcon(icon);
-
-		type.setText(dailyExpenses.getDailyExpensesType().toString());
-		date.setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
-		issuedBy.setText(dailyExpenses.getAccount().getFirstPlusLastName());
-		// =======
 		type.setToolTip(type, dailyExpenses.getDailyExpensesType().toString());
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(dailyExpenses.getDate()));
 		issuedBy.setToolTip(issuedBy, dailyExpenses.getAccount().getFirstPlusLastName());
 
 		if (dailyExpenses.getRemarks() != null)
 			remarks.setToolTip(remarks, "-" + dailyExpenses.getRemarks());
-		// >>>>>>> refs/remotes/remote/master
 
 		Set<DailyExpensesDetail> details = dailyExpenses.getDailyExpenseDetails();
-		System.out.println("size: " + details.size());
 
 		for (DailyExpensesDetail ded : details) {
 			rowPanel.add(new EditRowPanel(ded, expensesPanel, Values.EXPENSES));
 			expensesPanel.add(rowPanel.get(rowPanel.size() - 1));
 			alternateRows();
 
-			expensesPanel.setPreferredSize(new Dimension(330, expensesPanel.getComponentCount() * ROW_HEIGHT));
+			expensesPanel.setPreferredSize(new Dimension(270, expensesPanel.getComponentCount() * ROW_HEIGHT));
 			expensesPanel.updateUI();
 			expensesPanel.revalidate();
 		}

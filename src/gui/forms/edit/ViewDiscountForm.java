@@ -255,7 +255,7 @@ public class ViewDiscountForm extends EditFormPanel {
 
 		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
 		issuedBy.setToolTip(issuedBy,Manager.loggedInAccount.getFirstPlusLastName());
-		product.setToolTip(product,discountIssue.getProduct().getName());
+		product.setToolTip(product,discountIssue.getProduct() != null ? discountIssue.getProduct().getName(): "");
 		customer.setToolTip(customer,discountIssue.getCustomer() != null ? discountIssue.getCustomer().getFirstPlusLastName() : "");
 		amount.setToolTip(amount,discountIssue.getAmount() + "");
 		

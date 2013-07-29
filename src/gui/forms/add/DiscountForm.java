@@ -61,7 +61,7 @@ public class DiscountForm extends SimplePanel {
 	private JTextField productComboField, customerComboField;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
+	private String msg;
 
 	private final int num = Tables.discountFormLabel.length;
 	private JPanel panel;
@@ -165,7 +165,7 @@ public class DiscountForm extends SimplePanel {
 		clear.setBounds(157, 298, 80, 30);
 		save.setBounds(48, 298, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(73, 267, 170, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -177,6 +177,7 @@ public class DiscountForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 				DiscountIssue discountIssue = new DiscountIssue(d, (Product) productCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
 						Manager.loggedInAccount, (Person) customerCombo.getSelectedItem(), true, "");
@@ -190,12 +191,16 @@ public class DiscountForm extends SimplePanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				}
+				else
+					error.setText(msg);
 
 			}
 		});
 
 		panel.add(clear);
 		panel.add(save);
+		panel.add(error);
 
 		panel.add(issuedBy);
 		panel.add(date);
@@ -238,9 +243,13 @@ public class DiscountForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+		amount = fields.get(0).getText();
 
+		if (!amount.equals("")) {
+			return true;
+		}
+
+		msg = "Amount is required ";
 		return false;
 	}
 

@@ -17,6 +17,8 @@ public class SimplePanel extends JPanel {
 	protected GradientPaint gradient;
 	protected GradientPaint gradient1;
 	private String label = "";
+	
+	public String amount;
 
 	/** Stroke size. it is recommended to set it to 1 for better view */
 	protected int strokeSize = 1;

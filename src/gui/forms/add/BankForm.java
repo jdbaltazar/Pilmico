@@ -93,7 +93,7 @@ public class BankForm extends SimplePanel {
 		bankAccountPane.setOpaque(false);
 		bankAccountPane.getViewport().setOpaque(false);
 
-		for (int i = 0, y = 80; i < Tables.bankFormLabel.length; i++, y += 55) {
+		for (int i = 0, y = 75; i < Tables.bankFormLabel.length; i++, y += 55) {
 			fields.add(new FormField(Tables.bankFormLabel[i], 100, Color.white, Color.GRAY));
 			fields.get(i).setBounds(24, y, 200, 25);// 115
 			panel.add(fields.get(i));
@@ -181,44 +181,65 @@ public class BankForm extends SimplePanel {
 
 		save.setBounds(235, LABEL_Y + 255, 80, 30);
 
-		error.setBounds(305, 340, 200, 30);
+		error.setBounds(282, 232, 250, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Bank bank = new Bank(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText());
-				for (RowPanel rp : accountRowPanel) {
-					bank.addBankAccount(new BankAccount(bank, rp.getAccountNo()));
-				}
+				
+				if (isValidated()) {
+					Bank bank = new Bank(fields.get(0).getText(), fields.get(1)
+							.getText(), fields.get(2).getText());
+					for (RowPanel rp : accountRowPanel) {
+						bank.addBankAccount(new BankAccount(bank, rp
+								.getAccountNo()));
+					}
 
-				try {
-					Manager.depositManager.addBank(bank);
+					try {
+						Manager.depositManager.addBank(bank);
 
-					Values.centerPanel.changeTable(Values.BANK);
-					new SuccessPopup("Add").setVisible(true);
-					clearForm();
-					
-					Values.depositForm.refreshDropdowns(true);
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+						Values.centerPanel.changeTable(Values.BANK);
+						new SuccessPopup("Add").setVisible(true);
+						clearForm();
+
+						Values.depositForm.refreshDropdowns(true);
+
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
+					error.setText(msg);
 
 			}
 		});
 
 		panel.add(save);
-		add(error);
+		panel.add(error);
 
 	}
 
 	private boolean isValidated() {
+		
+		if(fields.get(0).getText().equals("")){
+			
+			msg = "Name is required ";
+			
+			return false;
+		}
 
 		if (bankAccountPanel.getComponentCount() == 0) {
 
-			msg = "Put at least one item";
+			msg = "Put at least one bank account ";
 
 			return false;
+		}
+		
+		for(int i = 0; i < accountRowPanel.size(); i++){
+			if(accountRowPanel.get(i).getBankAccount().getText().equals("")){
+				msg = "Blank entry found in row "+(i+1)+" ";
+				
+				return false;
+			}
 		}
 
 		return true;

@@ -56,7 +56,7 @@ public class CAPaymentForm extends SimplePanel {
 	private JTextField employeeRepComboField;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
+	private String msg;
 
 	private final int num = Tables.ARPaymentFormLabel.length;
 	private JPanel panel;
@@ -170,7 +170,7 @@ public class CAPaymentForm extends SimplePanel {
 		clear.setBounds(157, 298, 80, 30);
 		save.setBounds(48, 298, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(73, 267, 170, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -182,6 +182,7 @@ public class CAPaymentForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 				CAPayment caPayment = new CAPayment(cashAdvance, d, Double.parseDouble(fields.get(0).getText()), null, Manager.loggedInAccount, true, "");
 
@@ -196,12 +197,15 @@ public class CAPaymentForm extends SimplePanel {
 					clearFields();
 				} catch (Exception e1) {
 					e1.printStackTrace();
-				}
+				}}
+				else
+					error.setText(msg);
 			}
 		});
 
 		panel.add(clear);
 		panel.add(save);
+		panel.add(error);
 
 		panel.add(issuedByLabel);
 		panel.add(issuedBy);
@@ -244,11 +248,16 @@ public class CAPaymentForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+		amount = fields.get(0).getText();
 
+		if (!amount.equals("")) {
+			return true;
+		}
+
+		msg = "Amount is required ";
 		return false;
 	}
+
 
 	public void refreshDropdown() {
 		try {

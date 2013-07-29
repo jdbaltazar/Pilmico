@@ -59,20 +59,15 @@ public class CashAdvanceForm extends SimplePanel {
 	private SBButton fwd;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
+	private String msg;
 
 	private final int num = Tables.cashAdvanceFormLabel.length;
 
 	public CashAdvanceForm() {
 		super("Add Cash Advance");
 		addComponents();
-		fillEntries();
 
 		Values.cashAdvanceForm = this;
-	}
-
-	private void fillEntries() {
-		fields.get(0).setText("0");
 	}
 
 	private void addComponents() {
@@ -165,7 +160,7 @@ public class CashAdvanceForm extends SimplePanel {
 		clear.setBounds(167, 290, 80, 30);
 		save.setBounds(58, 290, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(102, 257, 160, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -177,21 +172,26 @@ public class CashAdvanceForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				Employee emp = (Employee) issuedFor.getSelectedItem();
-				CashAdvance cashAdvance = new CashAdvance(d, Double.parseDouble(fields.get(0).getText()), emp, Double
-						.parseDouble(fields.get(0).getText()), Manager.loggedInAccount);
+				if (isValidated()) {
+					Date d = ((SpinnerDateModel) date.getModel()).getDate();
+					Employee emp = (Employee) issuedFor.getSelectedItem();
+					CashAdvance cashAdvance = new CashAdvance(d, Double
+							.parseDouble(fields.get(0).getText()), emp, Double
+							.parseDouble(fields.get(0).getText()),
+							Manager.loggedInAccount);
 
-				try {
-					Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
-					Values.centerPanel.changeTable(Values.CASH_ADVANCE);
-					new SuccessPopup("Add").setVisible(true);
+					try {
+						Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
+						Values.centerPanel.changeTable(Values.CASH_ADVANCE);
+						new SuccessPopup("Add").setVisible(true);
 
-					clearFields();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+						clearFields();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
+					error.setText(msg);
 
 			}
 		});
@@ -220,10 +220,21 @@ public class CashAdvanceForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
+		
+		if (issuedFor.getModel().getSelectedItem() == null) {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
+			msg = "No employee selected ";
+
+			return false;
+		}
+
+		amount = fields.get(0).getText();
+
+		if (!amount.equals("")) {
 			return true;
+		}
 
+		msg = "Amount is required ";
 		return false;
 	}
 

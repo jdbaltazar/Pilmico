@@ -297,8 +297,25 @@ public class RowPanel extends JPanel {
 					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack() + "");
 					priceKG.setToolTip(priceKG, p.getCurrentPricePerKilo() + "");
 					
-					if(Values.salesForm.hasMultipleProduct())
-						Values.salesForm.setErrorText("No multiple product entry allowed");
+					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)){
+						if(Values.salesForm.hasMultipleProduct())
+							Values.salesForm.setErrorText("No multiple product entry allowed ");
+					}
+
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES)){
+						if(Values.accountReceivablesForm.hasMultipleProduct())
+							Values.accountReceivablesForm.setErrorText("No multiple product entry allowed ");
+					}
+
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS)){
+						if(Values.pulloutForm.hasMultipleProduct())
+							Values.pulloutForm.setErrorText("No multiple product entry allowed ");
+					}
+
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES)){
+						if(Values.deliveryForm.hasMultipleProduct())
+							Values.deliveryForm.setErrorText("No multiple product entry allowed ");
+					}
 				}
 			}
 		});
@@ -320,6 +337,10 @@ public class RowPanel extends JPanel {
 
 		setBounds(0, y, ROW_WIDTH, ROW_HEIGHT);
 
+	}
+
+	public JComboBox getFeesCombo() {
+		return feesCombo;
 	}
 
 	public JComboBox getExpensesCombo() {
@@ -381,6 +402,10 @@ public class RowPanel extends JPanel {
 		row.add(deleteRow);
 
 		add(row);
+	}
+
+	public FormField getBankAccount() {
+		return bankAccount;
 	}
 
 	private void addExpensesRow() {
