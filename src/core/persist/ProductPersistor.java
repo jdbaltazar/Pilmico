@@ -76,6 +76,22 @@ public class ProductPersistor extends Persistor implements ProductManager {
 		return getAll(Product.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> getProductsOnDisplayFirst() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Product.class);
+		List<Product> products = new ArrayList<Product>();
+		try {
+			products = criteria.addOrder(Order.desc("displayInSack")).addOrder(Order.desc("displayInKilo")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return products;
+	}
+
 	@Override
 	public void updateProduct(Product product) throws Exception {
 		update(product);

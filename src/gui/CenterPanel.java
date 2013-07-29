@@ -7,6 +7,7 @@ import gui.panels.TablePanel;
 import gui.panels.TableUtilPanel;
 import gui.panels.extra.AddEntryPanel;
 import gui.panels.extra.EditPanel;
+import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -65,13 +66,11 @@ public class CenterPanel extends SoyPanel {
 
 		add(new LoginPanel());
 
-		 /*try {
-		 Manager.getInstance().login("manager", "pilmico".toCharArray());
-		 } catch (Exception e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		 changeTable(Values.HOME);*/
+		/*
+		 * try { Manager.getInstance().login("manager", "pilmico".toCharArray());
+		 * } catch (Exception e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } changeTable(Values.HOME);
+		 */
 
 	}
 
@@ -661,7 +660,6 @@ public class CenterPanel extends SoyPanel {
 	private void fillProducts() {
 
 		try {
-			// String[][] entries = new String[1][headers.length];
 			String[] headers = { "ID", "Name", "SK", "Kilo", "Price/SK", "Price/Kilo", "Category", "Availability" };
 			List<Product> products = Manager.productManager.getProducts();
 			String[][] entries = new String[products.size()][headers.length];
@@ -680,6 +678,10 @@ public class CenterPanel extends SoyPanel {
 			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, products), Tables.PRODUCTS), BorderLayout.CENTER);
+
+			// on displayPopup
+			new ProductOnDisplayPopup();
+			Values.productOnDisplayPopup.fillTable(Manager.productManager.getProductsOnDisplayFirst());
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

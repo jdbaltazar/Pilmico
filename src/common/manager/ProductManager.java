@@ -13,6 +13,8 @@ public interface ProductManager {
 
 	public List<Product> getProducts() throws Exception;
 
+	public List<Product> getProductsOnDisplayFirst() throws Exception;
+
 	public void updateProduct(Product product) throws Exception;
 
 	public void deleteProduct(Product product) throws Exception;

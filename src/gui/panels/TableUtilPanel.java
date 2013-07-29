@@ -41,10 +41,9 @@ public class TableUtilPanel extends SoyPanel {
 	private TablePanel tablePanel;
 	private String label;
 	private JLabel tableLabel;
-	private String[] links = { Tables.EXPENSES, Tables.SALARY, Tables.DELIVERIES,
-			Tables.PULLOUTS, Tables.SUPPLIERS, Tables.ACCOUNT_RECEIVABLES,
-			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS, Tables.DEPOSITS, Tables.BANK,
-			Tables.CUSTOMERS, Tables.EMPLOYEES, Tables.ACCOUNTS };
+	private String[] links = { Tables.EXPENSES, Tables.SALARY, Tables.DELIVERIES, Tables.PULLOUTS, Tables.SUPPLIERS, Tables.ACCOUNT_RECEIVABLES,
+			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS, Tables.DEPOSITS, Tables.BANK, Tables.CUSTOMERS, Tables.EMPLOYEES,
+			Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
 
 	public TableUtilPanel(TablePanel tablePanel, String label) {
@@ -122,26 +121,27 @@ public class TableUtilPanel extends SoyPanel {
 		graphBtn = new SBButton("graph.png", "graph2.png", "Show Graph");
 		graphBtn.setBounds(100, 11, 20, 20);
 		graphBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.centerPanel.changeTable(Values.SALES_GRAPH);
 			}
 		});
-		
+
 		onDisplayBtn = new SBButton("on_display.png", "on_display2.png", "Show On-Display Products");
 		onDisplayBtn.setBounds(130, 10, 20, 20);
-		
+
 		onDisplayBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new ProductOnDisplayPopup().setVisible(true);
+				Values.mainFrame.dimScreen(true);
+				// Values.productOnDisplayPopup.fillTable();
+				Values.productOnDisplayPopup.setVisible(true);
 			}
 		});
-		
+
 		search = new JLabel(icon);
 
 		search.setBounds(565, 12, 24, 24);
@@ -150,25 +150,24 @@ public class TableUtilPanel extends SoyPanel {
 		// search.setBounds(38, 12, 24, 24);
 		// searchField.setBounds(62, 9, 200, 25);
 
-		if(label.equals(Tables.SALES))
+		if (label.equals(Tables.SALES))
 			searchPanel.add(graphBtn);
-		
-		if(label.equals(Tables.PRODUCTS))
+
+		if (label.equals(Tables.PRODUCTS))
 			searchPanel.add(onDisplayBtn);
-		
+
 		if (!label.equals(Tables.LOGS)) {// && !label.equals("ACCOUNTS")) {
 			tableLabel.setBounds(40, 11, 200, 20);
 			searchPanel.add(addbtn);
 		} /*
-		 * else if (Manager.loggedInAccount.getAccountType().getName()
-		 * .equals(AccountType.manager) && label.equals("ACCOUNTS")) {
-		 * searchPanel.add(addbtn); tableLabel.setBounds(40, 11, 200, 20); }
-		 */else
+			 * else if (Manager.loggedInAccount.getAccountType().getName()
+			 * .equals(AccountType.manager) && label.equals("ACCOUNTS")) {
+			 * searchPanel.add(addbtn); tableLabel.setBounds(40, 11, 200, 20); }
+			 */else
 			tableLabel.setBounds(20, 11, 200, 20);
 
 		searchPanel.add(search);
 		searchPanel.add(searchField);
-		
 
 		if (!isMultiple())
 			searchPanel.add(tableLabel);
@@ -201,8 +200,7 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(labels.get(Values.SALARY));
 		}
 
-		else if (label.equals(Tables.ACCOUNT_RECEIVABLES)
-				|| label.equals(Tables.AR_PAYMENTS)) {
+		else if (label.equals(Tables.ACCOUNT_RECEIVABLES) || label.equals(Tables.AR_PAYMENTS)) {
 
 			JLabel l = new JLabel("->");
 			l.setBounds(247, 11, 20, 20);
@@ -212,13 +210,12 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(labels.get(Values.ACCOUNT_RECEIVABLES));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.AR_PAYMENTS));
-			
-			if(label.equals(Tables.AR_PAYMENTS))
+
+			if (label.equals(Tables.AR_PAYMENTS))
 				addbtn.setVisible(false);
 		}
 
-		else if (label.equals(Tables.DELIVERIES)
-				|| label.equals(Tables.SUPPLIERS) || label.equals(Tables.PULLOUTS)) {
+		else if (label.equals(Tables.DELIVERIES) || label.equals(Tables.SUPPLIERS) || label.equals(Tables.PULLOUTS)) {
 
 			JLabel l = new JLabel("->");
 			JLabel l2 = new JLabel("->");
@@ -234,42 +231,40 @@ public class TableUtilPanel extends SoyPanel {
 			searchPanel.add(l2);
 			searchPanel.add(labels.get(Values.SUPPLIERS));
 		}
-		
+
 		else if (label.equals(Tables.CASH_ADVANCE) || label.equals(Tables.CA_PAYMENTS)) {
 
 			JLabel l = new JLabel("->");
 			l.setBounds(185, 11, 20, 20);
 			labels.get(Values.CASH_ADVANCE).setBounds(40, 11, 143, 20);
 			labels.get(Values.CA_PAYMENTS).setBounds(203, 11, 132, 20);
-			
+
 			searchPanel.add(labels.get(Values.CASH_ADVANCE));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.CA_PAYMENTS));
-			
-			if(label.equals(Tables.CA_PAYMENTS))
-					addbtn.setVisible(false);
+
+			if (label.equals(Tables.CA_PAYMENTS))
+				addbtn.setVisible(false);
 		}
-		
+
 		else if (label.equals(Tables.DEPOSITS) || label.equals(Tables.BANK)) {
 
 			JLabel l = new JLabel("->");
 			l.setBounds(128, 11, 20, 20);
 			labels.get(Values.DEPOSITS).setBounds(40, 11, 86, 20);
 			labels.get(Values.BANK).setBounds(146, 11, 55, 20);
-			
+
 			searchPanel.add(labels.get(Values.DEPOSITS));
 			searchPanel.add(l);
 			searchPanel.add(labels.get(Values.BANK));
 		}
 
-		else if (label.equals(Tables.CUSTOMERS)
-				|| label.equals(Tables.EMPLOYEES)
-				|| label.equals(Tables.ACCOUNTS)) {
+		else if (label.equals(Tables.CUSTOMERS) || label.equals(Tables.EMPLOYEES) || label.equals(Tables.ACCOUNTS)) {
 
 			JLabel l = new JLabel("->");
 			JLabel l2 = new JLabel("->");
 			l.setBounds(147, 11, 20, 20);
-			labels.get(Values.CUSTOMERS).setBounds(40, 11, 105, 20);//86
+			labels.get(Values.CUSTOMERS).setBounds(40, 11, 105, 20);// 86
 			labels.get(Values.EMPLOYEES).setBounds(165, 11, 107, 20);
 			l2.setBounds(274, 11, 20, 20);
 			labels.get(Values.ACCOUNTS).setBounds(292, 11, 93, 20);
@@ -297,8 +292,7 @@ public class TableUtilPanel extends SoyPanel {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 
-		gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0,
-				getHeight(), new Color(5, 5, 5));
+		gradient = new GradientPaint(0, 0, new Color(30, 30, 30), 0, getHeight(), new Color(5, 5, 5));
 		g2.setPaint(gradient);
 		g2.fill(g.getClipBounds());
 

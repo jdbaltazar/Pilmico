@@ -38,6 +38,7 @@ import gui.panels.TableUtilPanel;
 import gui.panels.extra.AddEntryPanel;
 import gui.panels.extra.EditPanel;
 import gui.popup.NotesPopup;
+import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -76,13 +77,15 @@ public class Values {
 	public static CashAdvanceForm cashAdvanceForm;
 	public static DiscountForm discountForm;
 	public static DepositForm depositForm;
-	
+
 	public static EditProductPanel editProductPanel;
 	public static EditEmployeeForm editEmployeeForm;
 	public static ViewCAForm viewCAForm;
 	public static ViewARForm viewARForm;
-	
+
 	public static SalesGraphForm salesGraphForm;
+
+	public static ProductOnDisplayPopup productOnDisplayPopup;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;

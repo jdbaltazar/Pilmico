@@ -27,6 +27,7 @@ import javax.swing.ScrollPaneConstants;
 import common.entity.product.Product;
 import common.entity.sales.SalesDetail;
 import common.manager.Manager;
+import de.erichseifert.gral.data.Row;
 
 import util.SBButton;
 import util.SimplePanel;
@@ -35,14 +36,14 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ProductOnDisplayPopup extends JDialog{
-	
+public class ProductOnDisplayPopup extends JDialog {
+
 	private int WIDTH = 440, HEIGHT = 260;
 	private JPanel panel;
 	private JPanel onDisplayPanel;
 	private JScrollPane productsPane;
 	private SoyButton update;
-	
+
 	private SBButton close;
 	private final int ROW_WIDTH = 392, ROW_HEIGHT = 30, LABEL_HEIGHT = 25, LABEL_Y = 50, PRODUCTS_PANE_Y = 74;
 
@@ -53,15 +54,14 @@ public class ProductOnDisplayPopup extends JDialog{
 	private ImageIcon icon;
 
 	public ProductOnDisplayPopup() {
-		Values.mainFrame.dimScreen(true);
 		init();
 		addComponents();
-		
-		fillTable();
+		Values.productOnDisplayPopup = this;
+
+		System.out.println("created!!!");
 	}
 
 	private void init() {
-
 		setSize(WIDTH, HEIGHT);
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
@@ -69,119 +69,89 @@ public class ProductOnDisplayPopup extends JDialog{
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
-		setBackground(new Color(0,0,0,0));
-
+		setBackground(new Color(0, 0, 0, 0));
 	}
 
 	private void addComponents() {
-		
+
 		icon = new ImageIcon("images/util.png");
-		
 		close = new SBButton("close.png", "close.png", "Close");
 		close.setBounds(408, 10, 24, 24);
 		close.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				dispose();
+				// rowPanel.clear();
+				// onDisplayPanel.removeAll();
+				// onDisplayPanel.updateUI();
+				// onDisplayPanel.revalidate();
 				Values.mainFrame.dimScreen(false);
+				setVisible(false);
 			}
 		});
-		
+
 		update = new SoyButton("Update");
 		update.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
-			public void mouseClicked(MouseEvent m){
+			public void mouseClicked(MouseEvent m) {
 				dispose();
 				Values.mainFrame.dimScreen(false);
 			}
 		});
 		update.setBounds(185, 212, 80, 30);
-		
+
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
-		
-//		quantitySACKlabel.setBounds(23, LABEL_Y, 77, LABEL_HEIGHT);
-//		quantityKGLabel.setBounds(100, LABEL_Y, 77, LABEL_HEIGHT);
-//		productLabel.setBounds(177, LABEL_Y, 197, LABEL_HEIGHT);
+
+		// quantitySACKlabel.setBounds(23, LABEL_Y, 77, LABEL_HEIGHT);
+		// quantityKGLabel.setBounds(100, LABEL_Y, 77, LABEL_HEIGHT);
+		// productLabel.setBounds(177, LABEL_Y, 197, LABEL_HEIGHT);
 
 		productLabel.setBounds(23, LABEL_Y, 197, LABEL_HEIGHT);
 		quantitySACKlabel.setBounds(220, LABEL_Y, 90, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(310, LABEL_Y, 90, LABEL_HEIGHT);
-		
+
 		deleteLabel.setBounds(374, LABEL_Y, 42, LABEL_HEIGHT);
 
 		onDisplayPanel = new JPanel();
 		onDisplayPanel.setLayout(null);
 		onDisplayPanel.setOpaque(false);
-		
-			panel = new SimplePanel("Update Products On Display");
-			panel.setOpaque(false);
 
-			productsPane = new JScrollPane(onDisplayPanel);
-			productsPane.setOpaque(false);
-			productsPane.getViewport().setOpaque(false);
-			productsPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			productsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			productsPane.getVerticalScrollBar().setUnitIncrement(10);
-//			productsPane.setBorder(BorderFactory.createEmptyBorder());
+		panel = new SimplePanel("Update Products On Display");
+		panel.setOpaque(false);
 
-			productsPane.setBounds(24, PRODUCTS_PANE_Y, ROW_WIDTH-1, 120);
+		productsPane = new JScrollPane(onDisplayPanel);
+		productsPane.setOpaque(false);
+		productsPane.getViewport().setOpaque(false);
+		productsPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		productsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		productsPane.getVerticalScrollBar().setUnitIncrement(10);
+		// productsPane.setBorder(BorderFactory.createEmptyBorder());
+
+		productsPane.setBounds(24, PRODUCTS_PANE_Y, ROW_WIDTH - 1, 120);
 
 		panel.add(productsPane);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
 		panel.add(productLabel);
-//		panel.add(deleteLabel);
+		// panel.add(deleteLabel);
 		panel.add(update);
 
 		add(close);
 		add(panel);
 	}
 
-	private void fillTable() {
-		// TODO Auto-generated method stub
-		List<Product> products;
-		
-		try {
-			products = Manager.productManager.getProducts();
-			for (Product p : products) {
-
-				if (p.getDisplayInKilo() == 0d && p.getDisplayInSack() == 0d)
-					continue;
-
-				rowPanel.add(new RowPanel(p, onDisplayPanel, Tables.PRODUCTS));
-				onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
-				onDisplayPanel.setPreferredSize(new Dimension(330,
-						onDisplayPanel.getComponentCount() * ROW_HEIGHT));
-				onDisplayPanel.updateUI();
-				onDisplayPanel.revalidate();
-			}
-
-			for (Product p : products) {
-
-				if (p.getDisplayInKilo() == 0d && p.getDisplayInSack() == 0d) {
-					rowPanel.add(new RowPanel(p, onDisplayPanel,
-							Tables.PRODUCTS));
-					onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
-					onDisplayPanel.setPreferredSize(new Dimension(330,
-							onDisplayPanel.getComponentCount() * ROW_HEIGHT));
-					onDisplayPanel.updateUI();
-					onDisplayPanel.revalidate();
-				}
-
-				else
-					continue;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void fillTable(List<Product> products) {
+		for (Product p : products) {
+			rowPanel.add(new RowPanel(p, onDisplayPanel, Tables.PRODUCTS));
+			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
+			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
+			onDisplayPanel.updateUI();
+			onDisplayPanel.revalidate();
 		}
-		
 	}
 
 }
