@@ -316,10 +316,20 @@ public class ISRowPanel extends JPanel {
 			public void keyReleased(KeyEvent e) {
 
 				if (!field.getText().equals("")) {
-					if (componentCount != moneyString.length - 1)
-						totalLabel.setText("" + Integer.parseInt(field.getText()) * Integer.parseInt(moneyString[componentCount]));
-					else
+					if (componentCount != moneyString.length - 1) {
+						double number = 0d;
+						try {
+							number = Double.parseDouble(field.getText());
+						} catch (Exception ex) {
+						}
+
+						totalLabel.setText(String.format("%.2f", number * Double.parseDouble(moneyString[componentCount])));
+						InventorySheetForm isForm = (InventorySheetForm) object;
+						isForm.updateActualCashCountAndSummary();
+
+					} else {
 						totalLabel.setText(field.getText());
+					}
 				} else
 					totalLabel.setText("");
 			}
@@ -367,4 +377,15 @@ public class ISRowPanel extends JPanel {
 		return row;
 	}
 
+	public double getCashBreakdownRowTotal() {
+		return Double.parseDouble(totalLabel.getText());
+	}
+
+	public double getCashBreakdownRowQuantity() {
+		return Double.parseDouble(field.getText());
+	}
+
+	public double getCashBreakdownRowDenomination(int i) {
+		return Double.parseDouble(moneyString[i]);
+	}
 }

@@ -38,8 +38,16 @@ public class InventorySheet implements InventorySheetManager {
 	public InventorySheet(InventorySheetData inventorySheetData) {
 		super();
 		this.inventorySheetData = inventorySheetData;
-		init(initInventorySheetDetails());
-		// build();
+		build();
+	}
+
+	public InventorySheet(InventorySheetData inventorySheetData, Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales,
+			Set<AccountReceivable> accountReceivables, Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments,
+			Set<DailyExpenses> dailyExpenses, Set<CashAdvance> cashAdvances, Set<SalaryRelease> salaryReleases, Set<Deposit> deposits) {
+		super();
+		this.inventorySheetData = inventorySheetData;
+		build(deliveries, pullOuts, sales, accountReceivables, discountIssues, arPayments, caPayments, dailyExpenses, cashAdvances, salaryReleases,
+				deposits);
 	}
 
 	private List<InventorySheetDetail> initInventorySheetDetails() {
@@ -59,16 +67,10 @@ public class InventorySheet implements InventorySheetManager {
 		}
 	}
 
-	// public void build() {
-	// addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
-	// addPullOutsToProductInventory(inventorySheetData.getPullouts());
-	// addSalesToProductInventory(inventorySheetData.getSales());
-	// addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
-	// }
-
 	public void build(Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales, Set<AccountReceivable> accountReceivables,
 			Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments, Set<DailyExpenses> dailyExpenses,
 			Set<CashAdvance> cashAdvances, Set<SalaryRelease> salaryReleases, Set<Deposit> deposits) {
+		init(initInventorySheetDetails());
 		addDeliveriesToProductInventory(deliveries);
 		addPullOutsToProductInventory(pullOuts);
 		addSalesToProductInventory(sales);
@@ -84,6 +86,14 @@ public class InventorySheet implements InventorySheetManager {
 		inventorySheetData.setCashAdvances(cashAdvances);
 		inventorySheetData.setSalaryReleases(salaryReleases);
 		inventorySheetData.setDeposits(deposits);
+	}
+
+	public void build() {
+		init(initInventorySheetDetails());
+		addDeliveriesToProductInventory(inventorySheetData.getDeliveries());
+		addPullOutsToProductInventory(inventorySheetData.getPullouts());
+		addSalesToProductInventory(inventorySheetData.getSales());
+		addAccountReceivablesToProductInventory(inventorySheetData.getAccountReceivables());
 	}
 
 	private void addDeliveriesToProductInventory(Set<Delivery> deliveries) {
@@ -674,6 +684,10 @@ public class InventorySheet implements InventorySheetManager {
 
 	public void setProductInventories(Map<Integer, InventorySheetDetail> productInventories) {
 		this.productInventories = productInventories;
+	}
+
+	public InventorySheetData getInventorySheetData() {
+		return inventorySheetData;
 	}
 
 }

@@ -61,43 +61,43 @@ public class InventorySheetData {
 	@Column
 	private String remarks;
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<InventorySheetDataDetail> inventorySheetDataDetails = new HashSet<InventorySheetDataDetail>();
 
-	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.LAZY)
 	private Breakdown breakdown;
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Delivery> deliveries = new HashSet<Delivery>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PullOut> pullouts = new HashSet<PullOut>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Sales> sales = new HashSet<Sales>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<AccountReceivable> accountReceivables = new HashSet<AccountReceivable>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DiscountIssue> discountIssues = new HashSet<DiscountIssue>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ARPayment> arPayments = new HashSet<ARPayment>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CAPayment> caPayments = new HashSet<CAPayment>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DailyExpenses> dailyExpenses = new HashSet<DailyExpenses>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CashAdvance> cashAdvances = new HashSet<CashAdvance>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<SalaryRelease> salaryReleases = new HashSet<SalaryRelease>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Deposit> deposits = new HashSet<Deposit>();
 
 	public InventorySheetData() {
@@ -223,6 +223,9 @@ public class InventorySheetData {
 
 	public void setDeliveries(Set<Delivery> deliveries) {
 		this.deliveries = deliveries;
+		for (Delivery d : deliveries) {
+			d.setInventorySheetData(this);
+		}
 	}
 
 	public void addDelivery(Delivery delivery) {
@@ -249,6 +252,9 @@ public class InventorySheetData {
 
 	public void setPullouts(Set<PullOut> pullouts) {
 		this.pullouts = pullouts;
+		for (PullOut po : pullouts) {
+			po.setInventorySheetData(this);
+		}
 	}
 
 	public void addPullOut(PullOut pullOut) {
@@ -275,6 +281,9 @@ public class InventorySheetData {
 
 	public void setSales(Set<Sales> sales) {
 		this.sales = sales;
+		for (Sales s : sales) {
+			s.setInventorySheetData(this);
+		}
 	}
 
 	public void addSales(Sales s) {
@@ -301,6 +310,9 @@ public class InventorySheetData {
 
 	public void setAccountReceivables(Set<AccountReceivable> accountReceivables) {
 		this.accountReceivables = accountReceivables;
+		for (AccountReceivable ar : accountReceivables) {
+			ar.setInventorySheetData(this);
+		}
 	}
 
 	public void addAccountReceivable(AccountReceivable accountReceivable) {
@@ -327,6 +339,9 @@ public class InventorySheetData {
 
 	public void setDiscountIssues(Set<DiscountIssue> discountIssues) {
 		this.discountIssues = discountIssues;
+		for (DiscountIssue di : discountIssues) {
+			di.setInventorySheetData(this);
+		}
 	}
 
 	public Set<ARPayment> getArPayments() {
@@ -335,6 +350,9 @@ public class InventorySheetData {
 
 	public void setArPayments(Set<ARPayment> arPayments) {
 		this.arPayments = arPayments;
+		for (ARPayment ar : arPayments) {
+			ar.setInventorySheetData(this);
+		}
 	}
 
 	public Set<CAPayment> getCaPayments() {
@@ -343,6 +361,9 @@ public class InventorySheetData {
 
 	public void setCaPayments(Set<CAPayment> caPayments) {
 		this.caPayments = caPayments;
+		for (CAPayment ca : caPayments) {
+			ca.setInventorySheetData(this);
+		}
 	}
 
 	public Set<DailyExpenses> getDailyExpenses() {
@@ -351,6 +372,9 @@ public class InventorySheetData {
 
 	public void setDailyExpenses(Set<DailyExpenses> dailyExpenses) {
 		this.dailyExpenses = dailyExpenses;
+		for (DailyExpenses d : dailyExpenses) {
+			d.setInventorySheetData(this);
+		}
 	}
 
 	public Set<CashAdvance> getCashAdvances() {
@@ -359,6 +383,9 @@ public class InventorySheetData {
 
 	public void setCashAdvances(Set<CashAdvance> cashAdvances) {
 		this.cashAdvances = cashAdvances;
+		for (CashAdvance ca : cashAdvances) {
+			ca.setInventorySheetData(this);
+		}
 	}
 
 	public Set<SalaryRelease> getSalaryReleases() {
@@ -367,6 +394,9 @@ public class InventorySheetData {
 
 	public void setSalaryReleases(Set<SalaryRelease> salaryReleases) {
 		this.salaryReleases = salaryReleases;
+		for (SalaryRelease sr : salaryReleases) {
+			sr.setInventorySheetData(this);
+		}
 	}
 
 	public Set<Deposit> getDeposits() {
@@ -375,6 +405,13 @@ public class InventorySheetData {
 
 	public void setDeposits(Set<Deposit> deposits) {
 		this.deposits = deposits;
+		for (Deposit d : deposits) {
+			d.setInventorySheetData(this);
+		}
+	}
+
+	public void setBreakdown(Breakdown breakdown) {
+		this.breakdown = breakdown;
 	}
 
 	public Breakdown getBreakdown() {
@@ -385,6 +422,10 @@ public class InventorySheetData {
 		if (breakdown != null)
 			return breakdown.getActualCashCount();
 		return 0d;
+	}
+
+	public void finalize() {
+
 	}
 
 }

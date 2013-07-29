@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
 
 import util.MainFormLabel;
 import util.SimplePanel;
@@ -37,6 +39,9 @@ import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
+import common.entity.inventorysheet.Breakdown;
+import common.entity.inventorysheet.BreakdownLine;
+import common.entity.inventorysheet.Denomination;
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
 import common.entity.inventorysheet.InventorySheetDataDetail;
@@ -128,7 +133,6 @@ public class InventorySheetForm extends SimplePanel {
 	// double previousAcoh =
 	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
-	private InventorySheetData inventorySheetData = new InventorySheetData();
 	private InventorySheet inventorySheet;
 
 	public InventorySheetForm() {
@@ -728,7 +732,7 @@ public class InventorySheetForm extends SimplePanel {
 				20);
 
 		for (int i = 0; i < 7; i++) {
-			cashBreakdown.add(new ISRowPanel(null, cashBreakdownPanel, Values.OTHERS));
+			cashBreakdown.add(new ISRowPanel(this, cashBreakdownPanel, Values.OTHERS));
 			cashBreakdownPanel.add(cashBreakdown.get(i));
 
 			cashBreakdownPanel.updateUI();
@@ -896,8 +900,37 @@ public class InventorySheetForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				// create is
-				// add all other details
+				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+				inventorySheet.getInventorySheetData().setDate(d);
+				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
+				inventorySheet.getInventorySheetData().setOverAmount(0d);
+				inventorySheet.getInventorySheetData().setShortAmount(0d);
+
+				double coh = Double.parseDouble(summaryValues.get(0).getText());
+				double acc = Double.parseDouble(summaryValues.get(1).getText());
+				if (coh > acc) {
+					inventorySheet.getInventorySheetData().setShortAmount(coh - acc);
+				} else if (coh < acc) {
+					inventorySheet.getInventorySheetData().setOverAmount(acc - coh);
+				}
+
+				inventorySheet.getInventorySheetData().setIssuedBy(Manager.loggedInAccount);
+				inventorySheet.getInventorySheetData().setRemarks("");
+
+				Breakdown breakdown = new Breakdown(0d, 0d, inventorySheet.getInventorySheetData());
+				for (int i = 0; i < 6; i++) {
+					breakdown.addBreakdownLine(new BreakdownLine(breakdown, new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i)),
+							cashBreakdown.get(i).getCashBreakdownRowQuantity()));
+				}
+
+				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
+				try {
+					Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
+					System.out.println("IS successfully saved!!!!!!!!!!!!!1");
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -943,14 +976,6 @@ public class InventorySheetForm extends SimplePanel {
 
 	public void build() throws Exception {
 
-		// List<Product> products, List<Delivery> deliveries, List<PullOut>
-		// pullOuts, List<Sales> sales, List<Acccoun> ar, ar payments, previous
-		// acoh,
-		// cash advances, ca payments, personal expenses, store expenses (salary
-		// release, cash advance)
-		// discounts
-		// deposits
-		// generate acoh
 		Component[] components = isPanel.getComponents();
 		for (Component component : components) {
 			if (component instanceof PDControlScrollPane) {
@@ -962,6 +987,8 @@ public class InventorySheetForm extends SimplePanel {
 			}
 
 		}
+
+		// check if there is previous acoh
 
 		products = Manager.productManager.getProducts();
 		deliveries = Manager.deliveryManager.getPendingDeliveries();
@@ -978,17 +1005,17 @@ public class InventorySheetForm extends SimplePanel {
 		// double previousAcoh =
 		// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
-		inventorySheetData = new InventorySheetData();
+		InventorySheetData inventorySheetData = new InventorySheetData();
+		inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0, Manager.loggedInAccount);
 		for (Product p : products) {
 			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, p.getBeginningInventoryInSack(), p
 					.getBeginningInventoryInKilo(), p.getDisplayInSack(), p.getDisplayInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
 		}
 
-		inventorySheet = new InventorySheet(inventorySheetData);
-		inventorySheet.build(new HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new HashSet<Sales>(sales),
-				new HashSet<AccountReceivable>(accountReceivables), new HashSet<DiscountIssue>(discountIssues), new HashSet<ARPayment>(arPayments),
-				new HashSet<CAPayment>(caPayments), new HashSet<DailyExpenses>(dailyExpenses), new HashSet<CashAdvance>(cashAdvances),
-				new HashSet<SalaryRelease>(salaryReleases), new HashSet<Deposit>(deposits));
+		inventorySheet = new InventorySheet(inventorySheetData, new HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new HashSet<Sales>(
+				sales), new HashSet<AccountReceivable>(accountReceivables), new HashSet<DiscountIssue>(discountIssues),
+				new HashSet<ARPayment>(arPayments), new HashSet<CAPayment>(caPayments), new HashSet<DailyExpenses>(dailyExpenses),
+				new HashSet<CashAdvance>(cashAdvances), new HashSet<SalaryRelease>(salaryReleases), new HashSet<Deposit>(deposits));
 
 		fillProductInventories(products);
 		fillSales(sales);
@@ -1012,19 +1039,9 @@ public class InventorySheetForm extends SimplePanel {
 
 		summaryValues.get(0).setText(String.format("%.2f", inventorySheet.getActualCashOnHand()));
 		summaryValues.get(1).setText(String.format("%.2f", inventorySheet.getActualCashCount()));
+		summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
+		summary3Label.setText("OVER/SHORT");
 
-		if (inventorySheet.getShortAmount() > 0) {
-			summary3Label.setText("SHORT");
-			summaryValues.get(2).setText(String.format("%.2f", inventorySheet.getShortAmount()));
-		} else {
-			if (inventorySheet.getOverAmount() > 0) {
-				summary3Label.setText("OVER");
-				summaryValues.get(2).setText(String.format("%.2f", inventorySheet.getOverAmount()));
-			} else {
-				summary3Label.setText("OVER/SHORT");
-				summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
-			}
-		}
 	}
 
 	private void alternateRows(ArrayList<ISRowPanel> rowPanel) {
@@ -1145,7 +1162,7 @@ public class InventorySheetForm extends SimplePanel {
 			caPaymentPanel.revalidate();
 			i++;
 		}
-		alternateRows(arPaymentInventory);
+		alternateRows(caPaymentInventory);
 
 		formsOverall.get(4).setText(String.format("%.2f", inventorySheet.getOverallCashAdvancesPayments()));
 	}
@@ -1256,5 +1273,34 @@ public class InventorySheetForm extends SimplePanel {
 		}
 		alternateRows(depositInventory);
 		formsOverall.get(11).setText(String.format("%.2f", inventorySheet.getOverallDeposits()));
+	}
+
+	public void updateActualCashCountAndSummary() {
+
+		double total = 0d;
+		for (int i = 0; i < 6; i++) {
+
+			double value = 0;
+			try {
+				value = cashBreakdown.get(i).getCashBreakdownRowTotal();
+			} catch (Exception e) {
+			}
+			total += value;
+		}
+
+		actualCashCount.setText(String.format("%.2f", total));
+		summaryValues.get(1).setText(String.format("%.2f", total));
+		double acoh = Double.parseDouble(summaryValues.get(0).getText());
+		summaryValues.get(2).setText(String.format("%.2f", Math.abs(acoh - total)));
+
+		if ((acoh - total) > 0) {
+			summary3Label.setText("SHORT");
+		} else {
+			if ((acoh - total) < 0) {
+				summary3Label.setText("OVER");
+			} else {
+				summary3Label.setText("OVER/SHORT");
+			}
+		}
 	}
 }
