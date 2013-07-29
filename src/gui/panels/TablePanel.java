@@ -18,21 +18,21 @@ import util.soy.SoyPanel;
 
 public class TablePanel extends SoyPanel {
 
-	public TablePanel(Object[][] data, String[] header, List objects) {
+	public TablePanel(Object[][] data, String[] header, List objects, String tableName) {
 		this.data = data;
 		this.header = header;
-		init(objects);
+		init(objects, tableName);
 		addComponents();
 		
 		Values.tablePanel = this;
 	}
 
-	private void init(List objects) {
+	private void init(List objects, String tableName) {
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder());
 		setLayout(new BorderLayout());
 		
-		soyTable = new SBTable(data, header, objects);
+		soyTable = new SBTable(data, header, objects, tableName);
 	}
 
 	private void addComponents() {

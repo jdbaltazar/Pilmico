@@ -4,9 +4,13 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -177,11 +181,20 @@ public class CashAdvanceForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				if (isValidated()) {
+					
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+					
+					if (!uP.isClosed()) {
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					Employee emp = (Employee) issuedFor.getSelectedItem();
 					CashAdvance cashAdvance = new CashAdvance(d, Double.parseDouble(fields.get(0).getText()), emp, Double.parseDouble(fields.get(0)
 							.getText()), Manager.loggedInAccount);
 
+					cashAdvance.setRemarks(uP.getInput());
 					try {
 						Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
 						Values.centerPanel.changeTable(Values.CASH_ADVANCE);
@@ -191,6 +204,7 @@ public class CashAdvanceForm extends SimplePanel {
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					}
 					}
 				} else
 					error.setText(msg);

@@ -242,7 +242,13 @@ public class ProductForm extends SimplePanel {
 
 					if (JOptionPane.showConfirmDialog(null, "If a new category is added, it cannot be deleted. Continue?", "Warning!",
 							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-						new UtilityPopup(b, "Add new category", Values.CATEGORY, new Category()).setVisible(true);
+
+						UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+						uP.setVisible(true);
+
+						if (!uP.getInput().equals("")) {
+							//insert code here for adding category
+						}
 						// Category c = new Category(fwd.getText());
 						// category.addItem(c);
 					}

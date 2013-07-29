@@ -192,12 +192,12 @@ public class ViewDepositForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 				
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					deposit.setValid(false);
-					deposit.setRemarks(uP.getReason());
+					deposit.setRemarks(uP.getInput());
 
 					try {
 						Manager.depositManager

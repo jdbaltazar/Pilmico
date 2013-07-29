@@ -227,12 +227,12 @@ public class ViewPulloutForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					pullOut.setValid(false);
-					pullOut.setRemarks(uP.getReason());
+					pullOut.setRemarks(uP.getInput());
 
 					try {
 						Manager.pullOutManager.updatePullOut(pullOut);

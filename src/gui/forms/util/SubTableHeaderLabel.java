@@ -16,6 +16,14 @@ public class SubTableHeaderLabel extends JLabel{
 		init();
 	}
 	
+	public SubTableHeaderLabel(String label, int transactionTable){
+		super(label);
+		
+		color = Color.decode("#483D8B");
+		
+		init();
+	}
+	
 	public SubTableHeaderLabel(String label, Color color){
 		super(label);
 		

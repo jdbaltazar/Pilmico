@@ -73,12 +73,12 @@ public class ViewARPaymentForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 				
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					arPayment.setValid(false);
-					arPayment.setRemarks(uP.getReason());
+					arPayment.setRemarks(uP.getInput());
 
 					try {
 						Manager.accountReceivableManager.updateARPayment(arPayment);

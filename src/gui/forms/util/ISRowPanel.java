@@ -35,7 +35,7 @@ import common.entity.sales.Sales;
 
 public class ISRowPanel extends JPanel {
 
-	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins" };
+	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins", "check/s"};
 	private JTextField field;
 	private JPanel row;
 	private JPanel panel = new JPanel();
@@ -66,7 +66,7 @@ public class ISRowPanel extends JPanel {
 
 		selectTable();
 
-		if (table == Values.PRODUCTS)
+		if (table == Values.PRODUCTS || table == Values.PRODUCT_TWIN)
 			setBounds(0, y, InventorySheetForm.PRODUCT_ROW_WIDTH, ROW_HEIGHT);
 		else if (table == Values.DISCOUNTS)
 			setBounds(0, y, 250, ROW_HEIGHT);
@@ -82,6 +82,10 @@ public class ISRowPanel extends JPanel {
 
 		case Values.PRODUCTS:
 			drawProductInventory();
+			break;
+			
+		case Values.PRODUCT_TWIN:
+			drawProductInventory2();
 			break;
 
 		case Values.SALES:
@@ -204,36 +208,63 @@ public class ISRowPanel extends JPanel {
 
 	private void drawProductInventory() {
 		ROW_HEIGHT = 35;
-		formField.add(new ViewFormField("PELLETS"));
+		formField.add(new ViewFormField(""));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
-		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 3; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
-			formField.add(new ViewFormField("0.0"));
+		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 7; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
+			formField.add(new ViewFormField(""));
 			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
 		}
-		for (int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 3, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL + 1; i++, x += InventorySheetForm.SALES_KG_WIDTH) {
-			formField.add(new ViewFormField("0.0"));
-			formField.get(i).setBounds(999 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
+		
+		InventorySheetDetail isd = (InventorySheetDetail) object;
+		formField.get(0).setToolTip(formField.get(0),isd.getProduct().getName());
+		formField.get(1).setToolTip(formField.get(1),String.format("%.2f", isd.getBeginningInventoryInSack()));
+		formField.get(2).setToolTip(formField.get(2),String.format("%.2f", isd.getBeginningInventoryInKilo()));
+		formField.get(3).setToolTip(formField.get(3),String.format("%.2f", isd.getOnDisplayInSack()));
+		formField.get(4).setToolTip(formField.get(4),String.format("%.2f", isd.getOnDisplayInKilo()));
+		formField.get(5).setToolTip(formField.get(5),String.format("%.2f", isd.getDeliveriesInSack()));
+		formField.get(6).setToolTip(formField.get(6),String.format("%.2f", isd.getDeliveriesInKilo()));
+		formField.get(7).setToolTip(formField.get(7),String.format("%.2f", isd.getPullOutsInSack()));
+		formField.get(8).setToolTip(formField.get(8),String.format("%.2f", isd.getPullOutsInKilo()));
+		
+		for (ViewFormField vff : formField) {
+			row.add(vff);
 		}
 
-		InventorySheetDetail isd = (InventorySheetDetail) object;
-		formField.get(0).setText(isd.getProduct().getName());
-		formField.get(1).setText(String.format("%.2f", isd.getBeginningInventoryInSack()));
-		formField.get(2).setText(String.format("%.2f", isd.getBeginningInventoryInKilo()));
-		formField.get(3).setText(String.format("%.2f", isd.getOnDisplayInSack()));
-		formField.get(4).setText(String.format("%.2f", isd.getOnDisplayInKilo()));
-		formField.get(5).setText(String.format("%.2f", isd.getDeliveriesInSack()));
-		formField.get(6).setText(String.format("%.2f", isd.getDeliveriesInKilo()));
-		formField.get(7).setText(String.format("%.2f", isd.getPullOutsInSack()));
-		formField.get(8).setText(String.format("%.2f", isd.getPullOutsInKilo()));
-		formField.get(9).setText(String.format("%.2f", isd.getEndingInventoryInSack()));
-		formField.get(10).setText(String.format("%.2f", isd.getEndingInventoryInKilo()));
-		formField.get(11).setText(String.format("%.2f", isd.getOffTakeInSack()));
-		formField.get(12).setText(String.format("%.2f", isd.getOffTakeInKilo()));
-		formField.get(13).setText(String.format("%.2f", isd.getPricePerSack()));
-		formField.get(14).setText(String.format("%.2f", isd.getPricePerKilo()));
-		formField.get(15).setText(String.format("%.2f", isd.getCombinedSalesAmountForSack()));
-		formField.get(16).setText(String.format("%.2f", isd.getCombinedSalesAmountForKilo()));
+		for (int i = 0; i < formField.size(); i++)
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
 
+		row.setOpaque(true);
+		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		add(row);
+
+	}
+	
+	private void drawProductInventory2() {
+		ROW_HEIGHT = 35;
+		formField.add(new ViewFormField(""));
+		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
+		
+		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 11; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
+			formField.add(new ViewFormField(""));
+			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
+		}
+		
+		for (int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 11, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 7; i++, x += InventorySheetForm.SALES_KG_WIDTH) {
+			formField.add(new ViewFormField(""));
+			formField.get(i).setBounds(440 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
+		}
+	
+		InventorySheetDetail isd = (InventorySheetDetail) object;
+		formField.get(0).setToolTip(formField.get(0),isd.getProduct().getName());
+		formField.get(1).setToolTip(formField.get(1),String.format("%.2f",  isd.getEndingInventoryInSack()));
+		formField.get(2).setToolTip(formField.get(2),String.format("%.2f", isd.getEndingInventoryInKilo()));
+		formField.get(3).setToolTip(formField.get(3),String.format("%.2f", isd.getOffTakeInSack()));
+		formField.get(4).setToolTip(formField.get(4),String.format("%.2f", isd.getOffTakeInKilo()));
+		formField.get(5).setToolTip(formField.get(5),String.format("%.2f", isd.getPricePerSack()));
+		formField.get(6).setToolTip(formField.get(6),String.format("%.2f",	isd.getPricePerKilo()));
+		formField.get(7).setToolTip(formField.get(7),String.format("%.2f", isd.getCombinedSalesAmountForSack()));
+		formField.get(8).setToolTip(formField.get(8),String.format("%.2f", isd.getCombinedSalesAmountForKilo()));
+		
 		for (ViewFormField vff : formField) {
 			row.add(vff);
 		}
@@ -316,7 +347,7 @@ public class ISRowPanel extends JPanel {
 			public void keyReleased(KeyEvent e) {
 
 				if (!field.getText().equals("")) {
-					if (componentCount != moneyString.length - 1) {
+					if (componentCount != moneyString.length - 1 && componentCount != moneyString.length - 2) {
 						double number = 0d;
 						try {
 							number = Double.parseDouble(field.getText());
@@ -329,6 +360,9 @@ public class ISRowPanel extends JPanel {
 
 					} else {
 						totalLabel.setText(field.getText());
+						
+						InventorySheetForm isForm = (InventorySheetForm) object;
+						isForm.updateActualCashCountAndSummary();
 					}
 				} else
 					totalLabel.setText("");
@@ -338,7 +372,8 @@ public class ISRowPanel extends JPanel {
 		eq.setBounds(220, 5, 20, 20);
 		totalLabel.setBounds(240, 7, 100, 17);
 
-		if (componentCount != moneyString.length - 1)
+		if (componentCount != moneyString.length - 1
+				&& componentCount != moneyString.length - 2)
 			row.add(x);
 
 		row.add(eq);

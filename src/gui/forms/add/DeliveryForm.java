@@ -4,10 +4,14 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -377,31 +381,54 @@ public class DeliveryForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()){
-				try {
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					Supplier supplier = (Supplier) supplierCombo.getSelectedItem();
-					Store store;
-					store = Manager.storeManager.getStore();
-					Delivery delivery = new Delivery(d, supplier, store, delivery_no.getText(), po_no.getText(), terms.getText(), Manager.loggedInAccount);
+				if (isValidated() && !hasMultipleProduct()
+						&& !hasBlankProduct() && !hasZeroQuantity()) {
 
-					for (RowPanel rp : rowPanel) {
-						Product p = rp.getSelectedProduct();
-						System.out.println("qty in kilo: " + rp.getQuantityInKilo());
-						System.out.println("qty in sack: " + rp.getQuantityInSack());
-						delivery.addDeliveryDetail(new DeliveryDetail(delivery, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp
-								.getQuantityInSack()));
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+
+					if (!uP.isClosed()) {
+						try {
+							Date d = ((SpinnerDateModel) date.getModel())
+									.getDate();
+							Supplier supplier = (Supplier) supplierCombo
+									.getSelectedItem();
+							Store store;
+							store = Manager.storeManager.getStore();
+							Delivery delivery = new Delivery(d, supplier,
+									store, delivery_no.getText(), po_no
+											.getText(), terms.getText(),
+									Manager.loggedInAccount);
+
+							for (RowPanel rp : rowPanel) {
+								Product p = rp.getSelectedProduct();
+								System.out.println("qty in kilo: "
+										+ rp.getQuantityInKilo());
+								System.out.println("qty in sack: "
+										+ rp.getQuantityInSack());
+								delivery.addDeliveryDetail(new DeliveryDetail(
+										delivery, p,
+										p.getCurrentPricePerKilo(), p
+												.getCurrentPricePerSack(), rp
+												.getQuantityInKilo(), rp
+												.getQuantityInSack()));
+							}
+							
+							delivery.setRemarks(uP.getInput());
+
+							Manager.deliveryManager.addDelivery(delivery);
+							Values.centerPanel.changeTable(Values.DELIVERY);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
-
-					Manager.deliveryManager.addDelivery(delivery);
-					Values.centerPanel.changeTable(Values.DELIVERY);
-					new SuccessPopup("Add").setVisible(true);
-					clearForm();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+				} else
 					error.setText(msg);
 
 			}

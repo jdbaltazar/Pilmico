@@ -271,12 +271,12 @@ public class ViewARForm extends EditFormPanel {
 
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					accountReceivable.setValid(false);
-					accountReceivable.setRemarks(uP.getReason());
+					accountReceivable.setRemarks(uP.getInput());
 
 					try {
 						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);

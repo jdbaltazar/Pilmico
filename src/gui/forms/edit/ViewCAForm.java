@@ -84,12 +84,12 @@ public class ViewCAForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					cashAdvance.setValid(false);
-					cashAdvance.setRemarks(uP.getReason());
+					cashAdvance.setRemarks(uP.getInput());
 
 					try {
 						Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);

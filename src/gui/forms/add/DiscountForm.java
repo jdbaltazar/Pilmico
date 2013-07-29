@@ -3,9 +3,13 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -177,22 +181,34 @@ public class DiscountForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				DiscountIssue discountIssue = new DiscountIssue(d, (Product) productCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
-						Manager.loggedInAccount, (Person) customerCombo.getSelectedItem(), true, "");
+				if (isValidated()) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-				try {
-					Manager.discountIssueManager.addDiscountIssue(discountIssue);
-					Values.centerPanel.changeTable(Values.DISCOUNTS);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}
-				else
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+
+					if (!uP.isClosed()) {
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						DiscountIssue discountIssue = new DiscountIssue(d,
+								(Product) productCombo.getSelectedItem(),
+								Double.parseDouble(fields.get(0).getText()),
+								Manager.loggedInAccount, (Person) customerCombo
+										.getSelectedItem(), true, "");
+
+						discountIssue.setRemarks(uP.getInput());
+						try {
+							Manager.discountIssueManager
+									.addDiscountIssue(discountIssue);
+							Values.centerPanel.changeTable(Values.DISCOUNTS);
+							new SuccessPopup("Add").setVisible(true);
+							clearFields();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				} else
 					error.setText(msg);
 
 			}

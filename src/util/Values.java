@@ -88,6 +88,7 @@ public class Values {
 	public static int HEIGHT = 600;
 
 	public static final int OTHERS = -100;
+	public static final int PRODUCT_TWIN = -101;
 
 	public static final int HOME = -1;
 
@@ -122,7 +123,10 @@ public class Values {
 	public static final int ACCOUNT_TYPE = 3;
 	public static final int LOG_TYPE = 4;
 	public static final int NOTE_TYPE = 5;
-	public static final int REMARKS = 5;
+	
+	public static final int INVALIDATE = 6;
+	public static final int PCOH = 7;
+	public static final int REMARKS = 8;
 
 	public static final int ADD = 0;
 	public static final int EDIT = 1;

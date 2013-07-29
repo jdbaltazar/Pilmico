@@ -47,15 +47,17 @@ public class SBTable extends JTable implements MouseListener {
 	private TableRowSorter<MyTableModel> sorter;
 	private MyTableModel model;
 	private List objects;
+	private String tableName;
 	private Object[][] data;
 	private String[] header;
 
-	public SBTable(Object[][] data, String[] header, List objects) {
+	public SBTable(Object[][] data, String[] header, List objects, String tableName) {
 		// TODO Auto-generated constructor stub
 
 		this.data = data;
 		this.header = header;
 		this.objects = objects;
+		this.tableName = tableName;
 		// gradientTableHeader.setColumnModel(this.getColumnModel());
 		// setTableHeader(gradientTableHeader);
 
@@ -79,6 +81,7 @@ public class SBTable extends JTable implements MouseListener {
 		model = new MyTableModel(data, header);
 
 		setModel(model);
+		setName(tableName);
 
 		getTableHeader().setReorderingAllowed(false);
 		setFocusable(false);
