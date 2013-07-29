@@ -255,38 +255,45 @@ public class ExpensesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				DailyExpenses de = new DailyExpenses(d, (DailyExpensesType) (type.getSelectedItem()), Manager.loggedInAccount);
+				if (isValidated()) {
+					hasBlankEntry();
+					Date d = ((SpinnerDateModel) date.getModel()).getDate();
+					DailyExpenses de = new DailyExpenses(d,
+							(DailyExpensesType) (type.getSelectedItem()),
+							Manager.loggedInAccount);
 
-				for (RowPanel rp : rowPanel) {
-					String exp = rp.getSelectedExpense();
-					Expense expense = null;
-					try {
-						expense = Manager.dailyExpenseManager.searchExpense(exp);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					if (expense == null) {
+					for (RowPanel rp : rowPanel) {
+						String exp = rp.getSelectedExpense();
+						Expense expense = null;
 						try {
-							expense = new Expense(exp);
-							Manager.dailyExpenseManager.addExpenses(expense);
+							expense = Manager.dailyExpenseManager
+									.searchExpense(exp);
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
+						if (expense == null) {
+							try {
+								expense = new Expense(exp);
+								Manager.dailyExpenseManager
+										.addExpenses(expense);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						}
+						de.addDailyExpenseDetail(new DailyExpensesDetail(de,
+								expense, rp.getExpenseAmount()));
 					}
-					de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense, rp.getExpenseAmount()));
-				}
 
-				try {
-					Manager.dailyExpenseManager.addDailyExpenses(de);
-					Values.centerPanel.changeTable(Values.EXPENSES);
-					new SuccessPopup("Add").setVisible(true);
-					clearForm();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					try {
+						Manager.dailyExpenseManager.addDailyExpenses(de);
+						Values.centerPanel.changeTable(Values.EXPENSES);
+						new SuccessPopup("Add").setVisible(true);
+						clearForm();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-
 			}
 		});
 
@@ -299,13 +306,22 @@ public class ExpensesForm extends SimplePanel {
 
 		if (expensesPanel.getComponentCount() == 0) {
 
-			msg = "Put at least one item";
+			msg = "Put at least one entry";
 
 			return false;
 		}
 
 		return true;
 
+	}
+	
+	private boolean hasBlankEntry(){
+		
+		for(int i = 0; i < rowPanel.size(); i++){
+			System.out.println("selected index: "+rowPanel.get(i).getExpensesCombo().getSelectedIndex());
+		}
+		
+		return false;
 	}
 
 	private void clearForm() {

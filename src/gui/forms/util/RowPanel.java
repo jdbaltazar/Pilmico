@@ -322,6 +322,10 @@ public class RowPanel extends JPanel {
 
 	}
 
+	public JComboBox getExpensesCombo() {
+		return expensesCombo;
+	}
+
 	private void addCADeductionsRow() {
 		ROW_WIDTH = 270;
 
