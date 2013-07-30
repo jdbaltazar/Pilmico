@@ -18,6 +18,6 @@ public interface InventorySheetDataManager {
 
 	public void deleteInventorySheetData(InventorySheetData inventorySheetData) throws Exception;
 
-	public double getPreviousActualCashOnHand() throws Exception;
+	// public double getPreviousActualCashOnHand() throws Exception;
 
 }

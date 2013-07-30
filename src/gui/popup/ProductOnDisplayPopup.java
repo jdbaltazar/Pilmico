@@ -1,6 +1,5 @@
 package gui.popup;
 
-import gui.forms.util.EditRowPanel;
 import gui.forms.util.RowPanel;
 
 import java.awt.BorderLayout;
@@ -12,22 +11,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import common.entity.product.Product;
-import common.entity.sales.SalesDetail;
 import common.manager.Manager;
-import de.erichseifert.gral.data.Row;
 
 import util.SBButton;
 import util.SimplePanel;
@@ -38,6 +30,10 @@ import util.soy.SoyButton;
 
 public class ProductOnDisplayPopup extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6042444877917291223L;
 	private int WIDTH = 440, HEIGHT = 260;
 	private JPanel panel;
 	private JPanel onDisplayPanel;
@@ -52,6 +48,8 @@ public class ProductOnDisplayPopup extends JDialog {
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 
 	private ImageIcon icon;
+
+	private List<Product> products;
 
 	public ProductOnDisplayPopup() {
 		init();
@@ -93,6 +91,19 @@ public class ProductOnDisplayPopup extends JDialog {
 
 			@Override
 			public void mouseClicked(MouseEvent m) {
+
+				for (RowPanel rp : rowPanel) {
+					Product p = rp.getOnDisplayProduct();
+					p.setDisplayInSack(rp.getOnDisplayInSack());
+					p.setDisplayInKilo(rp.getOnDisplayInKilo());
+					try {
+						Manager.productManager.updateProduct(p);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+
+				Values.centerPanel.changeTable(Values.PRODUCTS);
 				dispose();
 				Values.mainFrame.dimScreen(false);
 			}
@@ -143,6 +154,14 @@ public class ProductOnDisplayPopup extends JDialog {
 	}
 
 	public void fillTable(List<Product> products) {
+
+		this.products = products;
+
+		rowPanel.clear();
+		onDisplayPanel.removeAll();
+		onDisplayPanel.updateUI();
+		onDisplayPanel.revalidate();
+
 		for (Product p : products) {
 			rowPanel.add(new RowPanel(p, onDisplayPanel, Tables.PRODUCTS));
 			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
