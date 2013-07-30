@@ -14,7 +14,10 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import util.DateFormatter;
 import util.Tables;
@@ -31,6 +34,7 @@ import common.entity.delivery.Delivery;
 import common.entity.deposit.Bank;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
+import common.entity.inventorysheet.InventorySheetData;
 import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
@@ -62,21 +66,21 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		// add(new LoginPanel());
+		add(new LoginPanel());
 
-		try {
-			Manager.getInstance().login("manager", "pilmico".toCharArray());
-		} catch (Exception e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		changeTable(Values.HOME);
+		// try {
+		// Manager.getInstance().login("manager", "pilmico".toCharArray());
+		// } catch (Exception e) { // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		if (val != Values.HOME)
-			remove(getComponent(getComponentCount() - 1));
+		// if (val != Values.HOME)
+		remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
@@ -172,11 +176,7 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		case Values.SALES_GRAPH:
-			add(new LinePlot(), BorderLayout.CENTER);
-
-			// add(Values.salesGraphForm, BorderLayout.CENTER);
-			// // add(new TableUtilPanel(new TablePanel(null, null, null),
-			// // Tables.SALES_GRAPH));
+			add(Values.linePlot, BorderLayout.CENTER);
 			break;
 
 		default:
@@ -662,6 +662,8 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Name", "SK", "Kilo", "Price/SK", "Price/Kilo", "Category", "Availability" };
 			List<Product> products = Manager.productManager.getProducts();
+			List<Product> onDisplayFirst = new ArrayList<Product>();
+			List<Product> notOnDisplay = new ArrayList<Product>();
 			String[][] entries = new String[products.size()][headers.length];
 
 			int i = 0;
@@ -675,14 +677,25 @@ public class CenterPanel extends SoyPanel {
 				entries[i][6] = p.getCategory().getName();
 				entries[i][7] = p.isAvailable() ? "Available" : "Unavailable";
 				i++;
+
+				if (p.isOnDisplay()) {
+					onDisplayFirst.add(p);
+				} else {
+					notOnDisplay.add(p);
+				}
 			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, products, Tables.PRODUCTS), Tables.PRODUCTS), BorderLayout.CENTER);
 
+			for (Product p : notOnDisplay) {
+				onDisplayFirst.add(p);
+			}
+
 			// on displayPopup
 			if (Values.productOnDisplayPopup == null)
 				new ProductOnDisplayPopup();
-			Values.productOnDisplayPopup.fillTable(Manager.productManager.getProductsOnDisplayFirst());
+
+			Values.productOnDisplayPopup.fillTable(onDisplayFirst);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

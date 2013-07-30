@@ -257,6 +257,10 @@ public class Product {
 		return displayInKilo;
 	}
 
+	public boolean isOnDisplay() {
+		return (displayInSack != 0d || displayInKilo != 0d);
+	}
+
 	public void setDisplayInKilo(double displayInKilo) {
 		this.displayInKilo = displayInKilo;
 	}

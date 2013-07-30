@@ -64,7 +64,7 @@ public class SBTable extends JTable implements MouseListener {
 		init();
 		addMouseListener(this);
 	}
-	
+
 	public SBTable(Object[][] data, String[] header) {
 		// TODO Auto-generated constructor stub
 
@@ -127,9 +127,9 @@ public class SBTable extends JTable implements MouseListener {
 			// new EditItemPopup().setVisible(true);
 			Values.editPanel.setHide(false);
 			Values.editPanel.startAnimation();
+			Values.editPanel.showComponent(objects.get(row));
 			// Values.editPanel.showComponent(objects.get(row));
-//			Values.editPanel.showComponent(objects.get(row));
-			 Values.editPanel.showComponent(null);
+			// Values.editPanel.showComponent(null);
 			// }
 		}
 

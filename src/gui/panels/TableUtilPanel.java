@@ -1,6 +1,7 @@
 package gui.panels;
 
 import gui.forms.util.FormField;
+import gui.graph.LinePlot;
 import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.BorderLayout;
@@ -13,12 +14,17 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import common.entity.inventorysheet.InventorySheetData;
+import common.manager.Manager;
 
 import util.SBButton;
 import util.TableLink;
@@ -124,7 +130,24 @@ public class TableUtilPanel extends SoyPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Values.centerPanel.changeTable(Values.SALES_GRAPH);
+
+				List<InventorySheetData> isds = new ArrayList<InventorySheetData>();
+				try {
+					isds = Manager.inventorySheetDataManager.getInventorySheetsData();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				if (isds.size() < 2) {
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"No Inventory Sheet found! \nAt least two (2) Inventory Sheets needed for graphing.", "Notice",
+							JOptionPane.INFORMATION_MESSAGE);
+					// Values.centerPanel.changeTable(Values.SALES);
+				} else {
+					new LinePlot(isds);
+					Values.centerPanel.changeTable(Values.SALES_GRAPH);
+				}
+
 			}
 		});
 
