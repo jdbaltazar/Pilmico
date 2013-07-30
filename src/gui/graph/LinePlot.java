@@ -67,25 +67,16 @@ public class LinePlot extends ExamplePanel {
 	private String description;
 	private String xAxisTitle;
 	private String yAxisTitle;
-	private List<Date> dates;
-	private List<Double> values;
 
 	@SuppressWarnings("unchecked")
-	public LinePlot() {
+	public LinePlot(List<InventorySheetData> isds) {
 
 		// better graph title appearance
 		// x and y axes labels
 		// show data(x, y) values when hovered
 
-		List<InventorySheetData> isds = new ArrayList<InventorySheetData>();
+		// List<InventorySheetData> isds = new ArrayList<InventorySheetData>();
 		List<InventorySheet> iss = new ArrayList<InventorySheet>();
-
-		try {
-			isds = Manager.inventorySheetDataManager.getInventorySheetsData();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		for (InventorySheetData isd : isds) {
 			iss.add(new InventorySheet(isd));
 		}
@@ -174,8 +165,6 @@ public class LinePlot extends ExamplePanel {
 
 		Values.linePlot = this;
 
-		if (iss.size() == 0)
-			JOptionPane.showMessageDialog(Values.mainFrame, "No Inventory Sheet data found! \nAt least two Inventory Sheets needed for graphing.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	// @SuppressWarnings("unchecked")
@@ -266,7 +255,7 @@ public class LinePlot extends ExamplePanel {
 		this.description = description;
 	}
 
-	public static void main(String[] args) {
-		new LinePlot().showInFrame();
-	}
+	// public static void main(String[] args) {
+	// new LinePlot().showInFrame();
+	// }
 }
