@@ -14,6 +14,7 @@ import gui.forms.edit.ViewDeliveryForm;
 import gui.forms.edit.ViewDepositForm;
 import gui.forms.edit.ViewDiscountForm;
 import gui.forms.edit.ViewExpensesForm;
+import gui.forms.edit.ViewInventorySheetForm;
 import gui.forms.edit.ViewPulloutForm;
 import gui.forms.edit.ViewSalaryForm;
 import gui.forms.edit.ViewSalesForm;
@@ -253,6 +254,10 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
 			add(new ViewSalaryForm((SalaryRelease) o), BorderLayout.CENTER);
+		}
+		
+		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
+			add(new ViewInventorySheetForm(), BorderLayout.CENTER);
 		}
 
 	}
