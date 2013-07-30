@@ -200,21 +200,19 @@ public class ARPaymentForm extends SimplePanel {
 						Person rep = null;
 						if (customerRepCombo.getSelectedItem() instanceof Person)
 							rep = (Person) customerRepCombo.getSelectedItem();
-						ARPayment arPayment = new ARPayment(accountReceivable,
-								d, Double.parseDouble(fields.get(0).getText()),
-								rep, Manager.loggedInAccount, true, "");
+						ARPayment arPayment = new ARPayment(accountReceivable, d, Double.parseDouble(fields.get(0).getText()), rep,
+								Manager.loggedInAccount, true, "");
 
 						arPayment.setRemarks(uP.getInput());
-						
+
 						try {
 
-							Manager.accountReceivableManager
-									.addARPayment(arPayment);
+							Manager.accountReceivableManager.addARPayment(arPayment);
 							accountReceivable.addARPayment(arPayment);
-							accountReceivable.setBalance(accountReceivable
-									.getBalance() - arPayment.getAmount());
-							Manager.accountReceivableManager
-									.updateAccountReceivable(accountReceivable);
+							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+							if (Values.viewARForm != null)
+								Values.viewARForm.fillEntries();
+
 							Values.centerPanel.changeTable(Values.AR_PAYMENTS);
 							new SuccessPopup("Add").setVisible(true);
 							clearFields();

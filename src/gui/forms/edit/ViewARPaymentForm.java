@@ -75,15 +75,19 @@ public class ViewARPaymentForm extends EditFormPanel {
 				Point b = a.getLocation();
 				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
-				
+
 				if (!uP.getInput().equals("")) {
 					arPayment.setValid(false);
 					arPayment.setRemarks(uP.getInput());
 
 					try {
 						Manager.accountReceivableManager.updateARPayment(arPayment);
+						arPayment.getAccountReceivable().setBalance(arPayment.getAccountReceivable().getBalance() + arPayment.getAmount());
+						Manager.accountReceivableManager.updateAccountReceivable(arPayment.getAccountReceivable());
+						// Values.viewARForm.fillEntries();
+						if (Values.viewARForm != null)
+							Values.viewARForm.fillEntries();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
@@ -97,7 +101,7 @@ public class ViewARPaymentForm extends EditFormPanel {
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		remarks = new RemarksLabel("");
 
 		panel = new JPanel();
@@ -190,8 +194,7 @@ public class ViewARPaymentForm extends EditFormPanel {
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 150, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
-		
-		
+
 		add(voidBtn);
 		add(error);
 
@@ -200,8 +203,8 @@ public class ViewARPaymentForm extends EditFormPanel {
 		add(remarks);
 
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (arPayment.getInventorySheetData() != null) {
@@ -238,9 +241,9 @@ public class ViewARPaymentForm extends EditFormPanel {
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(arPayment.getDate()));
 		issuedBy.setToolTip(issuedBy, arPayment.getIssuedBy().getFirstPlusLastName());
 		custRep.setToolTip(custRep, arPayment.getRepresentative() != null ? arPayment.getRepresentative().getFirstPlusLastName() : "");
-		amount.setToolTip(amount, arPayment.getAmount() + "");
+		amount.setToolTip(amount, String.format("%.2f", arPayment.getAmount()));
 
-		if(arPayment.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+arPayment.getRemarks());
+		if (arPayment.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + arPayment.getRemarks());
 	}
 }

@@ -64,16 +64,15 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 		remove(inventorySheetData);
 	}
 
-	@Override
-	public double getPreviousActualCashOnHand() throws Exception {
-		InventorySheetData inventorySheetData = getMostRecentInventorySheetData();
-		if (inventorySheetData != null) {
-			InventorySheet inventorySheet = new InventorySheet(inventorySheetData);
-			return inventorySheet.getActualCashCount();
-		} else {
-			throw new Exception("No Inventory Sheet found!");
-		}
-
-	}
+	// @Override
+	// public double getPreviousActualCashOnHand() throws Exception {
+	// InventorySheetData inventorySheetData = getMostRecentInventorySheetData();
+	// if (inventorySheetData != null) {
+	// InventorySheet inventorySheet = new InventorySheet(inventorySheetData);
+	// return inventorySheet.getCashOnHandt();
+	// } else {
+	// throw new NullPointerException();
+	// }
+	// }
 
 }

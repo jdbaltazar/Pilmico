@@ -259,7 +259,7 @@ public class EditEmployeeForm extends EditFormPanel {
 
 				try {
 					Manager.employeePersonManager.updateEmployee(employee);
-					
+
 					Values.editPanel.startAnimation();
 					new SuccessPopup("Edit").setVisible(true);
 					Values.centerPanel.changeTable(Values.EMPLOYEES);
@@ -292,13 +292,14 @@ public class EditEmployeeForm extends EditFormPanel {
 
 	private void initBalloonTip() {
 
-		String[] employmentHeaders = { "Starting Date", "Designation" };
+		String[] employmentHeaders = { "Starting Date", "Designation", "Salary" };
 		List<Employee> employments = employee.getPerson().getEmploymentHistory();
 		String[][] entries = new String[employments.size()][employmentHeaders.length];
 		int i = 0;
 		for (Employee e : employments) {
 			entries[i][0] = e.getStartingDate() != null ? DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(e.getStartingDate()) : "-";
 			entries[i][1] = e.getDesignation().getName();
+			entries[i][2] = String.format("%.2f", e.getSalary());
 			i++;
 		}
 

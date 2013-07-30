@@ -190,6 +190,7 @@ public class CashAdvance {
 	public void addCAPayment(CAPayment caPayment) {
 		caPayment.setCashAdvance(this);
 		caPayments.add(caPayment);
+		balance -= caPayment.getAmount();
 	}
 
 	public void removeCAPayment(CAPayment caPayment) {
@@ -200,6 +201,7 @@ public class CashAdvance {
 		for (CAPayment cap : caPayments) {
 			if (cap.getId() == caPaymentId) {
 				caPayments.remove(cap);
+				balance -= (cap.getAmount());
 				break;
 			}
 		}

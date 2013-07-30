@@ -18,29 +18,21 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
@@ -48,17 +40,12 @@ import net.java.balloontip.styles.RoundedBalloonStyle;
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
-import common.entity.product.Product;
-import common.entity.profile.Person;
 import common.manager.Manager;
 
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
-import util.MainFormField;
-import util.MainFormLabel;
 import util.SBButton;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Utility;
 import util.Values;
@@ -269,25 +256,36 @@ public class ViewARForm extends EditFormPanel {
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
-				uP.setVisible(true);
+				if (accountReceivable.getValidArPayments().size() == 0) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+					UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+					uP.setVisible(true);
 
-				if (!uP.getInput().equals("")) {
-					accountReceivable.setValid(false);
-					accountReceivable.setRemarks(uP.getInput());
+					if (!uP.getInput().equals("")) {
+						accountReceivable.setValid(false);
+						accountReceivable.setRemarks(uP.getInput());
 
-					try {
-						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						try {
+							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Invalidation").setVisible(true);
+						Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
 					}
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+				} else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame, "Please invalidate ALL payments for this transaction in order to proceed",
+							"Not Allowed", JOptionPane.ERROR_MESSAGE);
+
+					if (balloonTip == null)
+						initBalloonTip();
+					balloonTip.setVisible(true);
+
 				}
 			}
 		});
@@ -372,7 +370,7 @@ public class ViewARForm extends EditFormPanel {
 
 	}
 
-	private void fillEntries() {
+	public void fillEntries() {
 
 		voidBtn.setVisible(accountReceivable.getInventorySheetData() != null ? false : accountReceivable.isValid());
 

@@ -100,18 +100,18 @@ public class AccountReceivablesForm extends SimplePanel {
 		fwdCustomer = new SBButton("forward.png", "forward.png", "Add new customer");
 		fwdProduct = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		
+
 		fwdCustomer.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.linkPanel(Values.CUSTOMERS);
 			}
 		});
-		
+
 		fwdProduct.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -132,7 +132,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		issuedByLabel = new MainFormLabel("Issued by:");
 		amountLabel = new MainFormLabel("Amount:");
 		dateLabel = new MainFormLabel("Date:");
-		
+
 		amount = new ViewFormField("");
 
 		customerLabel = new MainFormLabel("Customer:");
@@ -149,7 +149,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
-		
+
 		refreshCustomer(false);
 
 		productsPanel = new JPanel();
@@ -164,13 +164,13 @@ public class AccountReceivablesForm extends SimplePanel {
 		productsPane.getViewport().setOpaque(false);
 
 		dateLabel.setBounds(75, 50, 40, 20);// 15x,12y //40
-		date.setBounds(115, 50, 180, 20);//85
+		date.setBounds(115, 50, 180, 20);// 85
 
 		issuedByLabel.setBounds(350, 50, 70, 20);
 		issuedBy.setBounds(425, 50, 170, 20);
 
 		customerLabel.setBounds(45, 80, 70, 20);
-		
+
 		fwdCustomer.setBounds(298, 82, 16, 16);
 
 		amountLabel.setBounds(359, 80, 60, 20);
@@ -205,7 +205,6 @@ public class AccountReceivablesForm extends SimplePanel {
 				productsPanel.scrollRectToVisible(rect);
 			}
 		});
-
 
 		panel.add(dateLabel);
 		panel.add(date);
@@ -290,10 +289,7 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
-				if (isValidated() && !hasMultipleProduct()
-						&& !hasBlankProduct() && !hasZeroQuantity()) {
-
+				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()) {
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
 
@@ -301,27 +297,25 @@ public class AccountReceivablesForm extends SimplePanel {
 					uP.setVisible(true);
 
 					if (!uP.isClosed()) {
+
 						Date d = ((SpinnerDateModel) date.getModel()).getDate();
-						AccountReceivable ar = new AccountReceivable(d,
-								(Person) customerCombo.getSelectedItem(),
-								Manager.loggedInAccount);
+						AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
+
+						// AccountReceivable ar = new AccountReceivable(d,
+						// (Person) customerCombo.getSelectedItem(),
+						// Manager.loggedInAccount);
 
 						for (RowPanel rp : rowPanel) {
 							Product p = rp.getSelectedProduct();
-							ar.addAccountReceivableDetail(new AccountReceivableDetail(
-									ar, p, p.getCurrentPricePerKilo(), p
-											.getCurrentPricePerSack(), rp
-											.getQuantityInKilo(), rp
-											.getQuantityInSack()));
+							ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
+									.getQuantityInKilo(), rp.getQuantityInSack()));
 						}
 
 						ar.setRemarks(uP.getInput());
-						
+
 						try {
-							Manager.accountReceivableManager
-									.addAccountReceivable(ar);
-							Values.centerPanel
-									.changeTable(Values.ACCOUNT_RECEIVABLES);
+							Manager.accountReceivableManager.addAccountReceivable(ar);
+							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
 							new SuccessPopup("Add").setVisible(true);
 							clearForm();
 						} catch (Exception e1) {
@@ -339,60 +333,59 @@ public class AccountReceivablesForm extends SimplePanel {
 
 	}
 
-	public void setErrorText(String msg){
+	public void setErrorText(String msg) {
 		error.setText(msg);
 	}
-	
-	public boolean hasMultipleProduct(){
-		
+
+	public boolean hasMultipleProduct() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
 			for (int j = i + 1; j < rowPanel.size(); j++) {
-				
-				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel
-						.get(j).getProductCombo().getSelectedIndex()) {
+
+				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel.get(j).getProductCombo().getSelectedIndex()) {
 					msg = "No multiple product entry allowed ";
-					
+
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
-	private boolean hasBlankProduct(){
-		
+	private boolean hasBlankProduct() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			if(rowPanel.get(i).getProductCombo().getSelectedIndex() == -1){
-				
+			if (rowPanel.get(i).getProductCombo().getSelectedIndex() == -1) {
+
 				JTextField field = (JTextField) rowPanel.get(i).getProductCombo().getEditor().getEditorComponent();
 				System.out.println(field.getText());
-				
-				if(!field.getText().equals(""))
-					msg = "Unknown product found in row "+(i+1)+" ";
+
+				if (!field.getText().equals(""))
+					msg = "Unknown product found in row " + (i + 1) + " ";
 				else
-					msg = "No product indicated in row "+(i+1)+" ";
+					msg = "No product indicated in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private boolean hasZeroQuantity(){
-		
+
+	private boolean hasZeroQuantity() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			
-			if(rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d){
-				msg = "Both quantities should not be 0 in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d) {
+				msg = "Both quantities should not be 0 in row " + (i + 1) + " ";
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean isValidated() {
 
 		if (customerCombo.getModel().getSelectedItem() == null) {
@@ -429,18 +422,18 @@ public class AccountReceivablesForm extends SimplePanel {
 	}
 
 	public void refreshCustomer(boolean remove) {
-		
-		if(remove)
+
+		if (remove)
 			panel.remove(customerCombo);
 
 		try {
-			 model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			 customerCombo = new JComboBox(model);
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			customerCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		customerCombo.setUI(ColorArrowUI.createUI(this));
 		customerCombo.setEditable(true);
 		customerCombo.setSelectedIndex(-1);
@@ -449,15 +442,15 @@ public class AccountReceivablesForm extends SimplePanel {
 		customerComboField.setOpaque(false);
 		customerComboField.setBorder(BorderFactory.createEmptyBorder());
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
-		
+
 		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
 
 		customerCombo.setSelectedIndex(-1);
-		
+
 		customerCombo.setBounds(115, 78, 180, 20);
-		
+
 		panel.add(customerCombo);
 	}
 

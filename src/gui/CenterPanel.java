@@ -7,6 +7,7 @@ import gui.panels.TablePanel;
 import gui.panels.TableUtilPanel;
 import gui.panels.extra.AddEntryPanel;
 import gui.panels.extra.EditPanel;
+import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,7 +48,6 @@ public class CenterPanel extends SoyPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 2776395185621879934L;
-	private LinePlot linePlot;
 
 	public CenterPanel() {
 		super();
@@ -57,28 +57,26 @@ public class CenterPanel extends SoyPanel {
 	}
 
 	private void init() {
-		linePlot = new LinePlot();
 		setLayout(new BorderLayout());
 	}
 
 	private void addComponents() {
 
-//		add(new LoginPanel());
+		// add(new LoginPanel());
 
-		 try {
-		 Manager.getInstance().login("manager", "pilmico".toCharArray());
-		 } catch (Exception e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		 changeTable(Values.HOME);
+		try {
+			Manager.getInstance().login("manager", "pilmico".toCharArray());
+		} catch (Exception e) { // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		 if (val != Values.HOME)
-		remove(getComponent(getComponentCount() - 1));
+		if (val != Values.HOME)
+			remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
@@ -174,7 +172,7 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		case Values.SALES_GRAPH:
-			add(linePlot, BorderLayout.CENTER);
+			add(new LinePlot(), BorderLayout.CENTER);
 
 			// add(Values.salesGraphForm, BorderLayout.CENTER);
 			// // add(new TableUtilPanel(new TablePanel(null, null, null),
@@ -312,7 +310,8 @@ public class CenterPanel extends SoyPanel {
 
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, accountReceivables, Tables.ACCOUNT_RECEIVABLES), Tables.ACCOUNT_RECEIVABLES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, accountReceivables, Tables.ACCOUNT_RECEIVABLES), Tables.ACCOUNT_RECEIVABLES),
+					BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -661,7 +660,6 @@ public class CenterPanel extends SoyPanel {
 	private void fillProducts() {
 
 		try {
-			// String[][] entries = new String[1][headers.length];
 			String[] headers = { "ID", "Name", "SK", "Kilo", "Price/SK", "Price/Kilo", "Category", "Availability" };
 			List<Product> products = Manager.productManager.getProducts();
 			String[][] entries = new String[products.size()][headers.length];
@@ -680,6 +678,11 @@ public class CenterPanel extends SoyPanel {
 			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, products, Tables.PRODUCTS), Tables.PRODUCTS), BorderLayout.CENTER);
+
+			// on displayPopup
+			if (Values.productOnDisplayPopup == null)
+				new ProductOnDisplayPopup();
+			Values.productOnDisplayPopup.fillTable(Manager.productManager.getProductsOnDisplayFirst());
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

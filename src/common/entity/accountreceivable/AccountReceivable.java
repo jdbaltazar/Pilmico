@@ -65,7 +65,7 @@ public class AccountReceivable {
 	}
 
 	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks,
-			Set<AccountReceivableDetail> accountReceivableDetails, Set<ARPayment> arPayments) {
+			Set<AccountReceivableDetail> accountReceivableDetails) {
 		super();
 		this.date = date;
 		this.customer = customer;
@@ -73,8 +73,7 @@ public class AccountReceivable {
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
-		this.accountReceivableDetails = accountReceivableDetails;
-		this.arPayments = arPayments;
+		setAccountReceivableDetails(accountReceivableDetails);
 	}
 
 	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks) {
@@ -87,7 +86,7 @@ public class AccountReceivable {
 		this.remarks = remarks;
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, boolean accounted) {
+	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid) {
 		super();
 		this.date = date;
 		this.customer = customer;
@@ -159,6 +158,12 @@ public class AccountReceivable {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public void setAccountReceivableDetails(Set<AccountReceivableDetail> accountReceivableDetails) {
+		for (AccountReceivableDetail ard : accountReceivableDetails) {
+			addAccountReceivableDetail(ard);
+		}
 	}
 
 	public Set<AccountReceivableDetail> getAccountReceivableDetails() {

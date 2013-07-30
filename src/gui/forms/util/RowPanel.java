@@ -37,8 +37,7 @@ public class RowPanel extends JPanel {
 	private String command = "none";
 
 	private JComboBox productsCombo, feesCombo, expensesCombo;
-	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25,
-			LABEL_Y = 85, UPPER_Y = 55;
+	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
 	private JTextField productsComboField, expensesComboField, feesComboField;
 	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount, onDisplaySack, onDisplayKG;
 
@@ -83,9 +82,9 @@ public class RowPanel extends JPanel {
 
 	private void init() {
 		// TODO Auto-generated method stub
-		if(label.equals(Tables.PRODUCTS))
+		if (label.equals(Tables.PRODUCTS))
 			ROW_HEIGHT = 30;
-		
+
 		command = srcPanel.getComponentCount() + "";
 		y = srcPanel.getComponentCount() * ROW_HEIGHT;
 
@@ -137,15 +136,13 @@ public class RowPanel extends JPanel {
 
 		productsCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		productsCombo.setEditable(true);
-		productsComboField = (JTextField) productsCombo.getEditor()
-				.getEditorComponent();
+		productsComboField = (JTextField) productsCombo.getEditor().getEditorComponent();
 		productsComboField.setText("");
 		productsComboField.addKeyListener(new ComboKeyHandler(productsCombo));
 
 		feesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		feesCombo.setEditable(true);
-		feesComboField = (JTextField) feesCombo.getEditor()
-				.getEditorComponent();
+		feesComboField = (JTextField) feesCombo.getEditor().getEditorComponent();
 		feesComboField.setText("");
 		feesComboField.addKeyListener(new ComboKeyHandler(feesCombo));
 		feesCombo.addItemListener(new ItemListener() {
@@ -160,10 +157,7 @@ public class RowPanel extends JPanel {
 					try {
 						fee = Manager.salaryReleaseManager.searchFee(str);
 						if (fee != null) {
-							feeAmount.setText(String.format("%.2f",
-									Manager.salaryReleaseManager
-											.getMostRecentAmountForFee(fee
-													.getId())));
+							feeAmount.setText(String.format("%.2f", Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId())));
 						} else {
 							feeAmount.setText("0");
 						}
@@ -178,8 +172,7 @@ public class RowPanel extends JPanel {
 
 		expensesCombo.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		expensesCombo.setEditable(true);
-		expensesComboField = (JTextField) expensesCombo.getEditor()
-				.getEditorComponent();
+		expensesComboField = (JTextField) expensesCombo.getEditor().getEditorComponent();
 		expensesComboField.setText("");
 		expensesComboField.addKeyListener(new ComboKeyHandler(expensesCombo));
 		expensesCombo.addItemListener(new ItemListener() {
@@ -192,14 +185,9 @@ public class RowPanel extends JPanel {
 				if (str != null && !str.equals("")) {
 					Expense expense = null;
 					try {
-						expense = Manager.dailyExpenseManager
-								.searchExpense(str);
+						expense = Manager.dailyExpenseManager.searchExpense(str);
 						if (expense != null) {
-							amountOfExpense.setText(String.format(
-									"%.2f",
-									Manager.dailyExpenseManager
-											.getMostRecentAmountForExpense(expense
-													.getId())));
+							amountOfExpense.setText(String.format("%.2f", Manager.dailyExpenseManager.getMostRecentAmountForExpense(expense.getId())));
 						} else {
 							amountOfExpense.setText("0");
 						}
@@ -238,35 +226,27 @@ public class RowPanel extends JPanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
-					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack()
-							+ "");
+					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack() + "");
 					priceKG.setToolTip(priceKG, p.getCurrentPricePerKilo() + "");
 
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)) {
 						if (Values.salesForm.hasMultipleProduct())
-							Values.salesForm
-									.setErrorText("No multiple product entry allowed ");
+							Values.salesForm.setErrorText("No multiple product entry allowed ");
 					}
 
-					else if (Values.tableUtilPanel.getLabel().contains(
-							Tables.ACCOUNT_RECEIVABLES)) {
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES)) {
 						if (Values.accountReceivablesForm.hasMultipleProduct())
-							Values.accountReceivablesForm
-									.setErrorText("No multiple product entry allowed ");
+							Values.accountReceivablesForm.setErrorText("No multiple product entry allowed ");
 					}
 
-					else if (Values.tableUtilPanel.getLabel().contains(
-							Tables.PULLOUTS)) {
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS)) {
 						if (Values.pulloutForm.hasMultipleProduct())
-							Values.pulloutForm
-									.setErrorText("No multiple product entry allowed ");
+							Values.pulloutForm.setErrorText("No multiple product entry allowed ");
 					}
 
-					else if (Values.tableUtilPanel.getLabel().contains(
-							Tables.DELIVERIES)) {
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES)) {
 						if (Values.deliveryForm.hasMultipleProduct())
-							Values.deliveryForm
-									.setErrorText("No multiple product entry allowed ");
+							Values.deliveryForm.setErrorText("No multiple product entry allowed ");
 					}
 				}
 			}
@@ -300,20 +280,20 @@ public class RowPanel extends JPanel {
 		return expensesCombo;
 	}
 
-	private void addOnDisplayRow(){
-		
+	private void addOnDisplayRow() {
+
 		Product product = (Product) object;
-		
+
 		productOnDisplay = new ViewFormField(product.getName());
-		
+
 		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplayKG.setPrecision(2);
-		onDisplayKG.setText(product.getDisplayInKilo()+"");
-		
+		onDisplayKG.setText(product.getDisplayInKilo() == 0 ? "0" : String.format("%.2f", product.getDisplayInKilo()));
+
 		onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplaySack.setPrecision(2);
-		onDisplaySack.setText(product.getDisplayInSack()+"");
-		
+		onDisplaySack.setText(product.getDisplayInSack() == 0 ? "0" : String.format("%.2f", product.getDisplayInSack()));
+
 		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
 		onDisplaySack.setBounds(209, 5, 60, 20);
 		onDisplayKG.setBounds(298, 5, 60, 20); // +33
@@ -321,18 +301,18 @@ public class RowPanel extends JPanel {
 		row.add(productOnDisplay);
 		row.add(onDisplaySack);
 		row.add(onDisplayKG);
-		
-//		row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
-		
-		if(product.getDisplayInKilo() == 0d && product.getDisplayInSack() == 0d){
+
+		// row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+		// Color.LIGHT_GRAY));
+
+		if (product.getDisplayInKilo() == 0d && product.getDisplayInSack() == 0d) {
 			row.setBackground(Color.decode("#E0EBEB"));
-		}
-		else
+		} else
 			row.setBackground(Color.decode("#BFFF80"));
 
 		add(row);
 	}
-	
+
 	private void addFeesRow() {
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
@@ -340,8 +320,7 @@ public class RowPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Values.salaryReleaseForm.removeRow(Integer.parseInt(e
-						.getActionCommand()));
+				Values.salaryReleaseForm.removeRow(Integer.parseInt(e.getActionCommand()));
 			}
 		});
 
@@ -387,8 +366,7 @@ public class RowPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Values.expensesForm.removeRow(Integer.parseInt(e
-						.getActionCommand()));
+				Values.expensesForm.removeRow(Integer.parseInt(e.getActionCommand()));
 			}
 		});
 
@@ -415,23 +393,16 @@ public class RowPanel extends JPanel {
 
 				case Values.ADD:
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES))
-						Values.salesForm.removeRow(Integer.parseInt(e
-								.getActionCommand()));
+						Values.salesForm.removeRow(Integer.parseInt(e.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(
-							Tables.ACCOUNT_RECEIVABLES))
-						Values.accountReceivablesForm.removeRow(Integer
-								.parseInt(e.getActionCommand()));
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES))
+						Values.accountReceivablesForm.removeRow(Integer.parseInt(e.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(
-							Tables.PULLOUTS))
-						Values.pulloutForm.removeRow(Integer.parseInt(e
-								.getActionCommand()));
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS))
+						Values.pulloutForm.removeRow(Integer.parseInt(e.getActionCommand()));
 
-					else if (Values.tableUtilPanel.getLabel().contains(
-							Tables.DELIVERIES))
-						Values.deliveryForm.removeRow(Integer.parseInt(e
-								.getActionCommand()));
+					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES))
+						Values.deliveryForm.removeRow(Integer.parseInt(e.getActionCommand()));
 
 					break;
 
@@ -536,6 +507,18 @@ public class RowPanel extends JPanel {
 
 	public double getFeeAmout() {
 		return Double.parseDouble(feeAmount.getText());
+	}
+
+	public Product getOnDisplayProduct() {
+		return (Product) object;
+	}
+
+	public double getOnDisplayInSack() {
+		return Double.parseDouble(onDisplaySack.getText());
+	}
+
+	public double getOnDisplayInKilo() {
+		return Double.parseDouble(onDisplayKG.getText());
 	}
 
 }

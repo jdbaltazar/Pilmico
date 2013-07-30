@@ -100,10 +100,10 @@ public class InventorySheetForm extends SimplePanel {
 	private ArrayList<JLabel> formsOverall = new ArrayList<JLabel>();
 	private ArrayList<JLabel> summaryValues = new ArrayList<JLabel>();
 
-	private JPanel isPanel, productsPanel, productsPanel2, salesPanel, delPanel, arPanel, arPaymentPanel, caPaymentPanel, pulloutPanel, expensesPanel, caPanel,
-			discountPanel, ar2Panel, salaryPanel, depositPanel, cashBreakdownPanel;
-	private PDControlScrollPane productsPane, productsPane2, salesPane, delPane, arPane, arPaymentPane, caPaymentPane, pulloutPane, expensesPane, caPane,
-			discountPane, ar2Pane, salaryPane, depositPane;
+	private JPanel isPanel, productsPanel, productsPanel2, salesPanel, delPanel, arPanel, arPaymentPanel, caPaymentPanel, pulloutPanel, expensesPanel,
+			caPanel, discountPanel, ar2Panel, salaryPanel, depositPanel, cashBreakdownPanel;
+	private PDControlScrollPane productsPane, productsPane2, salesPane, delPane, arPane, arPaymentPane, caPaymentPane, pulloutPane, expensesPane,
+			caPane, discountPane, ar2Pane, salaryPane, depositPane;
 
 	private JScrollPane isPane;
 	private JLabel actualCashCount;
@@ -112,16 +112,16 @@ public class InventorySheetForm extends SimplePanel {
 	private SpinnerDate date;
 
 	private SoyButton save;
-	
+
 	private JButton inputPCOH;
 
-	private TableHeaderLabel productLabel2, productLabel, sack1Label, kg1Label, sack2Label, kg2Label, sack3Label, kg3Label, sack4Label, kg4Label, sack5Label,
-			kg5Label, sack6Label, kg6Label, sack7Label, kg7Label, sack8Label, kg8Label, productTotalLabel, productTotalLabel2, dateSaleslabel, cashierLabel,
-			grossSalesLabel, dateDellabel, delReceivedByLabel, grossDelLabel, dateARlabel, arIssuedByLabel, grossARLabel, dateARPaymentlabel,
-			arPaymentIssuedByLabel, grossARPaymentLabel, dateCAPaymentlabel, caPaymentIssuedByLabel, grossCAPaymentLabel, datePulloutlabel,
-			pulloutIssuedByLabel, grossPulloutLabel, dateExpenseslabel, expensesIssuedByLabel, grossExpensesLabel, dateCAlabel, CAIssuedByLabel,
-			grossCALabel, dateDiscountlabel, discountAmountLabel, dateAR2label, ar2IssuedByLabel, grossAR2Label, dateSalarylabel, salaryIssuedForLabel,
-			salaryAmountLabel, dateDepositlabel, depositorLabel, depositAmountLabel;
+	private TableHeaderLabel productLabel2, productLabel, sack1Label, kg1Label, sack2Label, kg2Label, sack3Label, kg3Label, sack4Label, kg4Label,
+			sack5Label, kg5Label, sack6Label, kg6Label, sack7Label, kg7Label, sack8Label, kg8Label, productTotalLabel, productTotalLabel2,
+			dateSaleslabel, cashierLabel, grossSalesLabel, dateDellabel, delReceivedByLabel, grossDelLabel, dateARlabel, arIssuedByLabel, grossARLabel,
+			dateARPaymentlabel, arPaymentIssuedByLabel, grossARPaymentLabel, dateCAPaymentlabel, caPaymentIssuedByLabel, grossCAPaymentLabel,
+			datePulloutlabel, pulloutIssuedByLabel, grossPulloutLabel, dateExpenseslabel, expensesIssuedByLabel, grossExpensesLabel, dateCAlabel,
+			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateAR2label, ar2IssuedByLabel, grossAR2Label, dateSalarylabel,
+			salaryIssuedForLabel, salaryAmountLabel, dateDepositlabel, depositorLabel, depositAmountLabel;
 	private SubTableHeaderLabel begInvtyLabel, onDisplayLabel, delLabel, poLabel, endInvtyLabel, offtakeLabel, priceLabel, salesLabel, salesFormLabel,
 			overallSalesLabel, arFormLabel, overallARLabel, deliveryFormLabel, overallDelLabel, arPaymentFormLabel, overallARPaymentLabel,
 			caPaymentFormLabel, overallCAPaymentLabel, pullOutFormLabel, overallPulloutLabel, expensesFormLabel, overallExpensesLabel, caFormLabel,
@@ -155,7 +155,7 @@ public class InventorySheetForm extends SimplePanel {
 	private void init() {
 		// TODO Auto-generated method stub
 		inputPCOH = new JButton("+");
-		
+
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
 		navigationPanel.setOpaque(false);
@@ -169,7 +169,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.setLayout(null);
 		isPanel.setOpaque(false);
 
-		isPanel.setPreferredSize(new Dimension(PANE_WIDTH + 335, PANE_HEIGHT + 2385));//2k
+		isPanel.setPreferredSize(new Dimension(PANE_WIDTH + 335, PANE_HEIGHT + 2385));// 2k
 
 		isPane = new JScrollPane(isPanel);
 		isPane.getVerticalScrollBar().setUnitIncrement(15);
@@ -236,7 +236,7 @@ public class InventorySheetForm extends SimplePanel {
 		productsPane.getViewport().setOpaque(false);
 
 		productsPane.getVerticalScrollBar().setUnitIncrement(15);
-		
+
 		productsPanel2 = new JPanel();
 		productsPanel2.setOpaque(false);
 		productsPanel2.setLayout(null);
@@ -361,7 +361,7 @@ public class InventorySheetForm extends SimplePanel {
 		expensesPane = new PDControlScrollPane();
 		expensesPane.setViewportView(expensesPanel);
 
-		caFormLabel = new SubTableHeaderLabel("CASH ADVANCES",2);
+		caFormLabel = new SubTableHeaderLabel("CASH ADVANCES", 2);
 		dateCAlabel = new TableHeaderLabel("Date");
 		CAIssuedByLabel = new TableHeaderLabel("Employee");
 		grossCALabel = new TableHeaderLabel("Amount");
@@ -434,14 +434,15 @@ public class InventorySheetForm extends SimplePanel {
 		cashBreakdownPanel.setLayout(null);
 		cashBreakdownPanel.setOpaque(false);
 
-//		for (int i = 0; i < 4; i++) {
-//			computationLabel.add(new JLabel());
-//			computationLabel.get(i).setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.black));
-//			computationLabel.get(i).setHorizontalAlignment(JLabel.CENTER);
-////			computationLabel.get(i).setText("P 2470.65");
-//
-//			isPanel.add(computationLabel.get(i));
-//		}
+		// for (int i = 0; i < 4; i++) {
+		// computationLabel.add(new JLabel());
+		// computationLabel.get(i).setBorder(BorderFactory.createMatteBorder(1, 0,
+		// 1, 1, Color.black));
+		// computationLabel.get(i).setHorizontalAlignment(JLabel.CENTER);
+		// // computationLabel.get(i).setText("P 2470.65");
+		//
+		// isPanel.add(computationLabel.get(i));
+		// }
 
 		for (int i = 0; i < 6; i++) {
 			sectionLabel.add(new JLabel());
@@ -462,7 +463,7 @@ public class InventorySheetForm extends SimplePanel {
 			computationLabel.get(i).setHorizontalAlignment(JLabel.CENTER);
 			computationLabel.get(i).setOpaque(true);
 			computationLabel.get(i).setBackground(Color.decode("#FFFFE6"));
-//			computationLabel.get(i).setText("P 2470.65");
+			// computationLabel.get(i).setText("P 2470.65");
 
 			isPanel.add(computationLabel.get(i));
 		}
@@ -545,18 +546,19 @@ public class InventorySheetForm extends SimplePanel {
 		sack4Label.setBounds(delLabel.getX() + delLabel.getWidth(), productLabel.getY() + delLabel.getHeight(), delLabel.getWidth() / 2, 20);
 		kg4Label.setBounds(delLabel.getX() + delLabel.getWidth() + sack3Label.getWidth() - 1, productLabel.getY() + delLabel.getHeight(),
 				delLabel.getWidth() / 2 + 2, 20);
-		
+
 		productsPane.setBounds(startX + 1, productLabel.getHeight() + productLabel.getY() - 1,
 				poLabel.getX() + poLabel.getWidth() - productLabel.getX() + SCROLLBAR_WIDTH - 1, 350);
-		
+
 		productTotalLabel.setBounds(startX, productsPane.getY() + productsPane.getHeight(), productLabel.getWidth(), 20);
-		
+
 		productLabel2.setBounds(startX, productTotalLabel.getY() + productTotalLabel.getHeight() + TABLE_GAP, PRODUCT_LABEL_WIDTH, 30);
 
 		endInvtyLabel.setBounds(startX + productLabel2.getWidth(), productLabel2.getY(), 140, 10);
-		sack5Label.setBounds(productLabel2.getX() + productLabel2.getWidth() - 1, productLabel2.getY() + endInvtyLabel.getHeight(), endInvtyLabel.getWidth() / 2, 20);
-		kg5Label.setBounds(productLabel2.getX() + productLabel2.getWidth() + sack5Label.getWidth() - 2, productLabel2.getY() + endInvtyLabel.getHeight(),
-				endInvtyLabel.getWidth() / 2 + 3, 20);
+		sack5Label.setBounds(productLabel2.getX() + productLabel2.getWidth() - 1, productLabel2.getY() + endInvtyLabel.getHeight(),
+				endInvtyLabel.getWidth() / 2, 20);
+		kg5Label.setBounds(productLabel2.getX() + productLabel2.getWidth() + sack5Label.getWidth() - 2,
+				productLabel2.getY() + endInvtyLabel.getHeight(), endInvtyLabel.getWidth() / 2 + 3, 20);
 
 		offtakeLabel.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth(), productLabel2.getY(), 140, 10);
 		sack6Label.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth(), productLabel2.getY() + endInvtyLabel.getHeight(),
@@ -575,9 +577,9 @@ public class InventorySheetForm extends SimplePanel {
 		kg8Label.setBounds(priceLabel.getX() + priceLabel.getWidth() + sack8Label.getWidth() - 1, productLabel2.getY() + priceLabel.getHeight(),
 				salesLabel.getWidth() / 2 + 2, 20);
 
-		productsPane2.setBounds(startX + 1, productLabel2.getHeight() + productLabel2.getY() - 1,
-				salesLabel.getX() + salesLabel.getWidth() - productLabel2.getX() + SCROLLBAR_WIDTH - 1, 350);
-		
+		productsPane2.setBounds(startX + 1, productLabel2.getHeight() + productLabel2.getY() - 1, salesLabel.getX() + salesLabel.getWidth()
+				- productLabel2.getX() + SCROLLBAR_WIDTH - 1, 350);
+
 		productTotalLabel2.setBounds(startX, productsPane2.getY() + productsPane2.getHeight(), productLabel2.getWidth(), 20);
 
 		// fillTables();
@@ -588,12 +590,13 @@ public class InventorySheetForm extends SimplePanel {
 		for (int i = TOTAL_INVENTORY_LABEL - 8, x = 0; i < TOTAL_INVENTORY_LABEL - 4; i++, x += sack1Label.getWidth())
 			totalInventoryLabel.get(i).setBounds(productTotalLabel2.getX() + productTotalLabel2.getWidth() + x - 1, productTotalLabel2.getY(),
 					sack1Label.getWidth(), 20);
-			
+
 		for (int i = TOTAL_INVENTORY_LABEL - 4, x = 0; i < TOTAL_INVENTORY_LABEL; i++, x += kg7Label.getWidth())
 			totalInventoryLabel.get(i).setBounds(kg6Label.getX() + kg6Label.getWidth() + x - 8, productTotalLabel2.getY(), kg7Label.getWidth(), 20);
 
-		//====================================================== END OF PRODUCT INVENTORY TABLE ==============================================
-		
+		// ====================================================== END OF PRODUCT
+		// INVENTORY TABLE ==============================================
+
 		sectionLabel.get(1).setText("TRANSACTIONS");
 		sectionLabel.get(1).setBounds(startX, productsPane2.getY() + productsPane2.getHeight() + SECTION_GAP, 150, 20);
 
@@ -608,7 +611,6 @@ public class InventorySheetForm extends SimplePanel {
 		formsOverall.get(0).setText("P 15890.50");
 		formsOverall.get(0).setBounds(overallSalesLabel.getX() + overallSalesLabel.getWidth(), overallSalesLabel.getY(),
 				salesPane.getWidth() - overallSalesLabel.getWidth(), 15);
-		
 
 		deliveryFormLabel.setBounds(startX, overallSalesLabel.getY() + overallSalesLabel.getHeight() + TABLE_GAP, 450, 18);
 		dateDellabel.setBounds(deliveryFormLabel.getX() - 1, deliveryFormLabel.getY() + deliveryFormLabel.getHeight(), 150, 20);
@@ -617,13 +619,11 @@ public class InventorySheetForm extends SimplePanel {
 		grossDelLabel.setBounds(delReceivedByLabel.getX() + delReceivedByLabel.getWidth() - 1,
 				deliveryFormLabel.getY() + deliveryFormLabel.getHeight(),
 				deliveryFormLabel.getWidth() - (dateDellabel.getWidth() + delReceivedByLabel.getWidth()) + 4, 20);
-		delPane.setBounds(startX, dateDellabel.getY() + dateDellabel.getHeight() - 1, salesFormLabel.getWidth()
-				+ SCROLLBAR_WIDTH, 105);
+		delPane.setBounds(startX, dateDellabel.getY() + dateDellabel.getHeight() - 1, salesFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
 		overallDelLabel.setBounds(startX, delPane.getY() + delPane.getHeight(), 200, 15);
 		formsOverall.get(1).setBounds(overallDelLabel.getX() + overallDelLabel.getWidth(), overallDelLabel.getY(),
 				delPane.getWidth() - overallDelLabel.getWidth(), 15);
-		
-		
+
 		expensesFormLabel.setBounds(startX, overallDelLabel.getY() + overallDelLabel.getHeight() + TABLE_GAP, 450, 18);
 		dateExpenseslabel.setBounds(expensesFormLabel.getX() - 1, expensesFormLabel.getY() + expensesFormLabel.getHeight(), 150, 20);
 		expensesIssuedByLabel.setBounds(expensesFormLabel.getX() + dateExpenseslabel.getWidth() - 2,
@@ -637,8 +637,7 @@ public class InventorySheetForm extends SimplePanel {
 		overallExpensesLabel.setBounds(expensesFormLabel.getX(), expensesPane.getY() + expensesPane.getHeight(), 200, 15);
 		formsOverall.get(6).setBounds(overallExpensesLabel.getX() + overallExpensesLabel.getWidth(), overallExpensesLabel.getY(),
 				expensesPane.getWidth() - overallExpensesLabel.getWidth(), 15);
-		
-		
+
 		pullOutFormLabel.setBounds(startX, overallExpensesLabel.getY() + overallExpensesLabel.getHeight() + TABLE_GAP, 450, 18);
 		datePulloutlabel.setBounds(pullOutFormLabel.getX() - 1, pullOutFormLabel.getY() + pullOutFormLabel.getHeight(), 150, 20);
 		pulloutIssuedByLabel.setBounds(pullOutFormLabel.getX() + datePulloutlabel.getWidth() - 2,
@@ -652,20 +651,17 @@ public class InventorySheetForm extends SimplePanel {
 		overallPulloutLabel.setBounds(pullOutFormLabel.getX(), pulloutPane.getY() + pulloutPane.getHeight(), 200, 15);
 		formsOverall.get(5).setBounds(overallPulloutLabel.getX() + overallPulloutLabel.getWidth(), overallPulloutLabel.getY(),
 				pulloutPane.getWidth() - overallPulloutLabel.getWidth(), 15);
-		
-		
+
 		arFormLabel.setBounds(startX, overallPulloutLabel.getY() + overallPulloutLabel.getHeight() + TABLE_GAP, 450, 18);
 		dateARlabel.setBounds(arFormLabel.getX() - 1, arFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
 		arIssuedByLabel.setBounds(arFormLabel.getX() + dateARlabel.getWidth() - 2, arFormLabel.getY() + arFormLabel.getHeight(), arFormLabel.getWidth()
 				- dateARlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
 		grossARLabel.setBounds(arIssuedByLabel.getX() + arIssuedByLabel.getWidth() - 1, arFormLabel.getY() + arFormLabel.getHeight(),
 				arFormLabel.getWidth() - (dateARlabel.getWidth() + arIssuedByLabel.getWidth()) + 4, 20);
-		arPane.setBounds(arFormLabel.getX(), dateARlabel.getY() + dateARlabel.getHeight() - 1,
-				arFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
+		arPane.setBounds(arFormLabel.getX(), dateARlabel.getY() + dateARlabel.getHeight() - 1, arFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
 		overallARLabel.setBounds(arFormLabel.getX(), arPane.getY() + arPane.getHeight(), 200, 15);
 		formsOverall.get(2).setBounds(overallARLabel.getX() + overallARLabel.getWidth(), overallARLabel.getY(),
 				arPane.getWidth() - overallARLabel.getWidth(), 15);
-		
 
 		arPaymentFormLabel.setBounds(startX, overallARLabel.getY() + overallARLabel.getHeight() + TABLE_GAP, 450, 18);
 		dateARPaymentlabel.setBounds(arPaymentFormLabel.getX() - 1, arPaymentFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
@@ -675,14 +671,15 @@ public class InventorySheetForm extends SimplePanel {
 		grossARPaymentLabel.setBounds(arPaymentIssuedByLabel.getX() + arPaymentIssuedByLabel.getWidth() - 1, arPaymentFormLabel.getY()
 				+ arPaymentFormLabel.getHeight(),
 				arPaymentFormLabel.getWidth() - (dateARPaymentlabel.getWidth() + arPaymentIssuedByLabel.getWidth()) + 4, 20);
-		arPaymentPane.setBounds(startX, dateARPaymentlabel.getY() + dateARPaymentlabel.getHeight() - 1, arPaymentFormLabel.getWidth()
-				+ SCROLLBAR_WIDTH, 105);
+		arPaymentPane.setBounds(startX, dateARPaymentlabel.getY() + dateARPaymentlabel.getHeight() - 1,
+				arPaymentFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
 		overallARPaymentLabel.setBounds(startX, arPaymentPane.getY() + arPaymentPane.getHeight(), 200, 15);
 		formsOverall.get(3).setBounds(overallARPaymentLabel.getX() + overallARPaymentLabel.getWidth(), overallARPaymentLabel.getY(),
 				arPaymentPane.getWidth() - overallARPaymentLabel.getWidth(), 15);
-		
-		//======================================END OF FIRST COLUMN TRANSACTION TABLES==========================================================
-		
+
+		// ======================================END OF FIRST COLUMN TRANSACTION
+		// TABLES==========================================================
+
 		caFormLabel.setBounds(salesFormLabel.getWidth() + TAB, sectionLabel.get(1).getY() + sectionLabel.get(1).getHeight() + LABEL_GAP, 450, 18);
 		dateCAlabel.setBounds(caFormLabel.getX() - 1, caFormLabel.getY() + caFormLabel.getHeight(), 150, 20);
 		CAIssuedByLabel.setBounds(caFormLabel.getX() + dateCAlabel.getWidth() - 2, caFormLabel.getY() + caFormLabel.getHeight(), caFormLabel.getWidth()
@@ -693,7 +690,7 @@ public class InventorySheetForm extends SimplePanel {
 		overallCALabel.setBounds(caFormLabel.getX(), caPane.getY() + caPane.getHeight(), 200, 15);
 		formsOverall.get(7).setBounds(overallCALabel.getX() + overallCALabel.getWidth(), overallCALabel.getY(),
 				caPane.getWidth() - overallCALabel.getWidth(), 15);
-		
+
 		caPaymentFormLabel.setBounds(caFormLabel.getX(), overallCALabel.getY() + overallCALabel.getHeight() + TABLE_GAP, 450, 18);
 		dateCAPaymentlabel.setBounds(caPaymentFormLabel.getX() - 1, caPaymentFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
 		caPaymentIssuedByLabel.setBounds(caPaymentFormLabel.getX() + dateCAPaymentlabel.getWidth() - 2,
@@ -707,7 +704,7 @@ public class InventorySheetForm extends SimplePanel {
 		overallCAPaymentLabel.setBounds(caPaymentFormLabel.getX(), caPaymentPane.getY() + caPaymentPane.getHeight(), 200, 15);
 		formsOverall.get(4).setBounds(overallCAPaymentLabel.getX() + overallCAPaymentLabel.getWidth(), overallCAPaymentLabel.getY(),
 				caPaymentPane.getWidth() - overallCAPaymentLabel.getWidth(), 15);
-		
+
 		salaryFormLabel.setBounds(caFormLabel.getX(), overallCAPaymentLabel.getY() + overallCAPaymentLabel.getHeight() + TABLE_GAP, 450, 18);
 		dateSalarylabel.setBounds(salaryFormLabel.getX() - 1, salaryFormLabel.getY() + salaryFormLabel.getHeight(), 150, 20);
 		salaryIssuedForLabel.setBounds(salaryFormLabel.getX() + datePulloutlabel.getWidth() - 2, salaryFormLabel.getY() + salaryFormLabel.getHeight(),
@@ -720,7 +717,7 @@ public class InventorySheetForm extends SimplePanel {
 		overallSalaryLabel.setBounds(salaryFormLabel.getX(), salaryPane.getY() + salaryPane.getHeight(), 200, 15);
 		formsOverall.get(10).setBounds(overallSalaryLabel.getX() + overallSalaryLabel.getWidth(), overallSalaryLabel.getY(),
 				salaryPane.getWidth() - overallSalaryLabel.getWidth(), 15);
-		
+
 		depositFormLabel.setBounds(caFormLabel.getX(), overallSalaryLabel.getY() + overallSalaryLabel.getHeight() + TABLE_GAP, 450, 18);
 		dateDepositlabel.setBounds(depositFormLabel.getX() - 1, depositFormLabel.getY() + depositFormLabel.getHeight(), 150, 20);
 		depositorLabel.setBounds(depositFormLabel.getX() + dateDepositlabel.getWidth() - 2, depositFormLabel.getY() + depositFormLabel.getHeight(),
@@ -733,9 +730,7 @@ public class InventorySheetForm extends SimplePanel {
 		formsOverall.get(11).setBounds(overallDepositLabel.getX() + overallDepositLabel.getWidth(), overallDepositLabel.getY(),
 				depositPane.getWidth() - overallDepositLabel.getWidth(), 15);
 
-
-		discountFormLabel.setBounds(caFormLabel.getX(), overallDepositLabel.getY() + overallDepositLabel.getHeight()
-				+ TABLE_GAP, 250, 18);
+		discountFormLabel.setBounds(caFormLabel.getX(), overallDepositLabel.getY() + overallDepositLabel.getHeight() + TABLE_GAP, 250, 18);
 		dateDiscountlabel.setBounds(discountFormLabel.getX() - 1, discountFormLabel.getY() + discountFormLabel.getHeight(), 150, 20);
 		discountAmountLabel.setBounds(discountFormLabel.getX() + dateDiscountlabel.getWidth() - 2,
 				discountFormLabel.getY() + discountFormLabel.getHeight(), discountFormLabel.getWidth() - dateDiscountlabel.getWidth() + 3, 20);
@@ -745,11 +740,13 @@ public class InventorySheetForm extends SimplePanel {
 		formsOverall.get(8).setBounds(overallDiscountLabel.getX() + overallDiscountLabel.getWidth(), overallDiscountLabel.getY(),
 				discountPane.getWidth() - overallDiscountLabel.getWidth(), 15);
 
-//		sectionLabel.get(2).setText("LIABILITIES");
-//		sectionLabel.get(2).setBounds(startX, overallCAPaymentLabel.getY() + overallCAPaymentLabel.getHeight() + SECTION_GAP, 150, 20);
-		
-		//===============================================END OF TRANSACTION SECTION===========================================================
-		
+		// sectionLabel.get(2).setText("LIABILITIES");
+		// sectionLabel.get(2).setBounds(startX, overallCAPaymentLabel.getY() +
+		// overallCAPaymentLabel.getHeight() + SECTION_GAP, 150, 20);
+
+		// ===============================================END OF TRANSACTION
+		// SECTION===========================================================
+
 		sectionLabel.get(3).setText("CASH ON HAND");
 		sectionLabel.get(3).setBounds(startX, overallARPaymentLabel.getY() + overallARPaymentLabel.getHeight() + SECTION_GAP, 150, 20);
 
@@ -762,11 +759,11 @@ public class InventorySheetForm extends SimplePanel {
 		computationLabel.get(1).setBounds(computationLabel.get(0).getX(), assetsLabel.getY(), 200, 26);
 		computationLabel.get(2).setBounds(computationLabel.get(0).getX(), liabilitiesLabel.getY(), 200, 26);
 		computationLabel.get(3).setBounds(computationLabel.get(0).getX(), cohLabel.getY(), 200, 30);
-		
+
 		inputPCOH.setBounds(computationLabel.get(0).getX() + computationLabel.get(0).getWidth() + 5, computationLabel.get(0).getY() + 5, 16, 16);
-		
+
 		inputPCOH.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -778,14 +775,13 @@ public class InventorySheetForm extends SimplePanel {
 
 				if (uP.getInput().equals("")) {
 					computationLabel.get(0).setText("0.00");
-				}
-				else
+				} else
 					computationLabel.get(0).setText(uP.getInput());
 			}
 		});
 
-		cashBreakdownPanel.setBounds(computationLabel.get(0).getX() + computationLabel.get(0).getWidth() + TABLE_GAP + TAB + 50, sectionLabel
-				.get(3).getY() + sectionLabel.get(3).getHeight() + LABEL_GAP, 340, 280);
+		cashBreakdownPanel.setBounds(computationLabel.get(0).getX() + computationLabel.get(0).getWidth() + TABLE_GAP + TAB + 50, sectionLabel.get(3)
+				.getY() + sectionLabel.get(3).getHeight() + LABEL_GAP, 340, 280);
 
 		sectionLabel.get(4).setText("CASH BREAKDOWN");
 		sectionLabel.get(4).setBounds(cashBreakdownPanel.getX(), overallARPaymentLabel.getY() + overallARPaymentLabel.getHeight() + SECTION_GAP, 150,
@@ -831,9 +827,9 @@ public class InventorySheetForm extends SimplePanel {
 
 		isPanel.add(productsPane);
 		isPanel.add(productTotalLabel);
-		
+
 		isPanel.add(productLabel2);
-		
+
 		isPanel.add(poLabel);
 		isPanel.add(sack4Label);
 		isPanel.add(kg4Label);
@@ -853,7 +849,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(salesLabel);
 		isPanel.add(sack8Label);
 		isPanel.add(kg8Label);
-		
+
 		isPanel.add(productsPane2);
 		isPanel.add(productTotalLabel2);
 
@@ -870,14 +866,14 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(grossDelLabel);
 		isPanel.add(delPane);
 		isPanel.add(overallDelLabel);
-		
+
 		isPanel.add(expensesFormLabel);
 		isPanel.add(dateExpenseslabel);
 		isPanel.add(expensesIssuedByLabel);
 		isPanel.add(grossExpensesLabel);
 		isPanel.add(expensesPane);
 		isPanel.add(overallExpensesLabel);
-		
+
 		isPanel.add(pullOutFormLabel);
 		isPanel.add(datePulloutlabel);
 		isPanel.add(pulloutIssuedByLabel);
@@ -898,7 +894,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(grossARPaymentLabel);
 		isPanel.add(arPaymentPane);
 		isPanel.add(overallARPaymentLabel);
-		
+
 		isPanel.add(caFormLabel);
 		isPanel.add(dateCAlabel);
 		isPanel.add(CAIssuedByLabel);
@@ -912,7 +908,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(grossCAPaymentLabel);
 		isPanel.add(caPaymentPane);
 		isPanel.add(overallCAPaymentLabel);
-	
+
 		isPanel.add(salaryFormLabel);
 		isPanel.add(dateSalarylabel);
 		isPanel.add(salaryIssuedForLabel);
@@ -926,7 +922,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(depositAmountLabel);
 		isPanel.add(depositPane);
 		isPanel.add(overallDepositLabel);
-		
+
 		isPanel.add(discountFormLabel);
 		isPanel.add(dateDiscountlabel);
 		isPanel.add(discountAmountLabel);
@@ -934,7 +930,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(overallDiscountLabel);
 
 		isPanel.add(inputPCOH);
-		
+
 		isPanel.add(pcohLabel);
 		isPanel.add(assetsLabel);
 		isPanel.add(liabilitiesLabel);
@@ -945,7 +941,7 @@ public class InventorySheetForm extends SimplePanel {
 		isPanel.add(summary1Label);
 		isPanel.add(summary2Label);
 		isPanel.add(summary3Label);
-//
+		//
 		isPanel.add(accLabel);
 		isPanel.add(actualCashCount);
 
@@ -976,7 +972,9 @@ public class InventorySheetForm extends SimplePanel {
 				inventorySheet.getInventorySheetData().setIssuedBy(Manager.loggedInAccount);
 				inventorySheet.getInventorySheetData().setRemarks("");
 
-				Breakdown breakdown = new Breakdown(0d, 0d, inventorySheet.getInventorySheetData());
+				Breakdown breakdown = new Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(), cashBreakdown.get(7)
+						.getCashBreakdownRowQuantity(), inventorySheet.getInventorySheetData());
+
 				for (int i = 0; i < 6; i++) {
 					breakdown.addBreakdownLine(new BreakdownLine(breakdown, new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i)),
 							cashBreakdown.get(i).getCashBreakdownRowQuantity()));
@@ -1047,7 +1045,14 @@ public class InventorySheetForm extends SimplePanel {
 
 		}
 
-		// check if there is previous acoh
+		double previousAcoh = 0d;
+		InventorySheetData isd = Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
+
+		inputPCOH.setVisible(isd == null);
+		if (isd != null) {
+			InventorySheet is = new InventorySheet(isd);
+			previousAcoh = is.getActualCashOnHand();
+		}
 
 		products = Manager.productManager.getProducts();
 		deliveries = Manager.deliveryManager.getPendingDeliveries();
@@ -1061,8 +1066,6 @@ public class InventorySheetForm extends SimplePanel {
 		salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
 		discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
 		deposits = Manager.depositManager.getPendingDeposits();
-		// double previousAcoh =
-		// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
 		InventorySheetData inventorySheetData = new InventorySheetData();
 		inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0, Manager.loggedInAccount);
@@ -1091,7 +1094,7 @@ public class InventorySheetForm extends SimplePanel {
 
 		actualCashCount.setText(String.format("%.2f", new Double(0)));
 
-		computationLabel.get(0).setText(String.format("%.2f", inventorySheet.getPreviousCashOnHand()));
+		computationLabel.get(0).setText(String.format("%.2f", previousAcoh));
 		computationLabel.get(1).setText(String.format("%.2f", inventorySheet.getTotalAssets()));
 		computationLabel.get(2).setText(String.format("%.2f", inventorySheet.getTotalLiabilities()));
 		computationLabel.get(3).setText(String.format("%.2f", inventorySheet.getActualCashOnHand()));
@@ -1123,7 +1126,7 @@ public class InventorySheetForm extends SimplePanel {
 			i++;
 		}
 		alternateRows(productsInventory);
-		
+
 		i = 0;
 		for (Product p : products) {
 			InventorySheetDetail isd = inventorySheet.getInventorySheetDetail(p.getId());
@@ -1135,7 +1138,7 @@ public class InventorySheetForm extends SimplePanel {
 			i++;
 		}
 		alternateRows(productsInventory2);
-		
+
 		fillProductInventoriesTotal();
 
 	}
@@ -1351,7 +1354,6 @@ public class InventorySheetForm extends SimplePanel {
 
 		double total = 0d;
 		for (int i = 0; i < 8; i++) {
-
 			double value = 0;
 			try {
 				value = cashBreakdown.get(i).getCashBreakdownRowTotal();
@@ -1377,189 +1379,320 @@ public class InventorySheetForm extends SimplePanel {
 	}
 }
 
-//endInvtyLabel.setBounds(poLabel.getX() + poLabel.getWidth(), productLabel.getY(), 140, 10);
-//sack5Label.setBounds(poLabel.getX() + poLabel.getWidth(), productLabel.getY() + poLabel.getHeight(), poLabel.getWidth() / 2, 20);
-//kg5Label.setBounds(poLabel.getX() + poLabel.getWidth() + sack5Label.getWidth() - 1, productLabel.getY() + poLabel.getHeight(),
-//		poLabel.getWidth() / 2 + 2, 20);
+// endInvtyLabel.setBounds(poLabel.getX() + poLabel.getWidth(),
+// productLabel.getY(), 140, 10);
+// sack5Label.setBounds(poLabel.getX() + poLabel.getWidth(), productLabel.getY()
+// + poLabel.getHeight(), poLabel.getWidth() / 2, 20);
+// kg5Label.setBounds(poLabel.getX() + poLabel.getWidth() +
+// sack5Label.getWidth() - 1, productLabel.getY() + poLabel.getHeight(),
+// poLabel.getWidth() / 2 + 2, 20);
 //
-//offtakeLabel.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth(), productLabel.getY(), 140, 10);
-//sack6Label.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth(), productLabel.getY() + endInvtyLabel.getHeight(),
-//		endInvtyLabel.getWidth() / 2, 20);
-//kg6Label.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth() + sack6Label.getWidth() - 1,
-//		productLabel.getY() + endInvtyLabel.getHeight(), endInvtyLabel.getWidth() / 2 + 2, 20);
+// offtakeLabel.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth(),
+// productLabel.getY(), 140, 10);
+// sack6Label.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth(),
+// productLabel.getY() + endInvtyLabel.getHeight(),
+// endInvtyLabel.getWidth() / 2, 20);
+// kg6Label.setBounds(endInvtyLabel.getX() + endInvtyLabel.getWidth() +
+// sack6Label.getWidth() - 1,
+// productLabel.getY() + endInvtyLabel.getHeight(), endInvtyLabel.getWidth() / 2
+// + 2, 20);
 //
-//priceLabel.setBounds(offtakeLabel.getX() + offtakeLabel.getWidth(), productLabel.getY(), 180, 10);
-//sack7Label.setBounds(offtakeLabel.getX() + offtakeLabel.getWidth(), productLabel.getY() + offtakeLabel.getHeight(), priceLabel.getWidth() / 2,
-//		20);
-//kg7Label.setBounds(offtakeLabel.getX() + offtakeLabel.getWidth() + sack7Label.getWidth() - 1, productLabel.getY() + offtakeLabel.getHeight(),
-//		priceLabel.getWidth() / 2 + 2, 20);
+// priceLabel.setBounds(offtakeLabel.getX() + offtakeLabel.getWidth(),
+// productLabel.getY(), 180, 10);
+// sack7Label.setBounds(offtakeLabel.getX() + offtakeLabel.getWidth(),
+// productLabel.getY() + offtakeLabel.getHeight(), priceLabel.getWidth() / 2,
+// 20);
+// kg7Label.setBounds(offtakeLabel.getX() + offtakeLabel.getWidth() +
+// sack7Label.getWidth() - 1, productLabel.getY() + offtakeLabel.getHeight(),
+// priceLabel.getWidth() / 2 + 2, 20);
 //
-//salesLabel.setBounds(priceLabel.getX() + priceLabel.getWidth(), productLabel.getY(), 180, 10);
-//sack8Label.setBounds(priceLabel.getX() + priceLabel.getWidth(), productLabel.getY() + priceLabel.getHeight(), salesLabel.getWidth() / 2, 20);
-//kg8Label.setBounds(priceLabel.getX() + priceLabel.getWidth() + sack8Label.getWidth() - 1, productLabel.getY() + priceLabel.getHeight(),
-//		salesLabel.getWidth() / 2 + 2, 20);
+// salesLabel.setBounds(priceLabel.getX() + priceLabel.getWidth(),
+// productLabel.getY(), 180, 10);
+// sack8Label.setBounds(priceLabel.getX() + priceLabel.getWidth(),
+// productLabel.getY() + priceLabel.getHeight(), salesLabel.getWidth() / 2, 20);
+// kg8Label.setBounds(priceLabel.getX() + priceLabel.getWidth() +
+// sack8Label.getWidth() - 1, productLabel.getY() + priceLabel.getHeight(),
+// salesLabel.getWidth() / 2 + 2, 20);
 
-//productsPane.setBounds(startX + 1, productLabel.getHeight() + productLabel.getY() - 1,
-//		salesLabel.getX() + salesLabel.getWidth() - productLabel.getX() + SCROLLBAR_WIDTH - 1, 350);
+// productsPane.setBounds(startX + 1, productLabel.getHeight() +
+// productLabel.getY() - 1,
+// salesLabel.getX() + salesLabel.getWidth() - productLabel.getX() +
+// SCROLLBAR_WIDTH - 1, 350);
 
-//deliveryFormLabel.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP, salesFormLabel.getY(), 450, 18);
-//dateDellabel.setBounds(deliveryFormLabel.getX() - 1, deliveryFormLabel.getY() + deliveryFormLabel.getHeight(), 150, 20);
-//delReceivedByLabel.setBounds(deliveryFormLabel.getX() + dateDellabel.getWidth() - 2, deliveryFormLabel.getY() + deliveryFormLabel.getHeight(),
-//		deliveryFormLabel.getWidth() - dateDellabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//grossDelLabel.setBounds(delReceivedByLabel.getX() + delReceivedByLabel.getWidth() - 1,
-//		deliveryFormLabel.getY() + deliveryFormLabel.getHeight(),
-//		deliveryFormLabel.getWidth() - (dateDellabel.getWidth() + delReceivedByLabel.getWidth()) + 4, 20);
-//delPane.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP, dateDellabel.getY() + dateDellabel.getHeight() - 1, salesFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallDelLabel.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP, delPane.getY() + delPane.getHeight(), 200, 15);
-//formsOverall.get(1).setBounds(overallDelLabel.getX() + overallDelLabel.getWidth(), overallDelLabel.getY(),
-//		delPane.getWidth() - overallDelLabel.getWidth(), 15);
+// deliveryFormLabel.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP,
+// salesFormLabel.getY(), 450, 18);
+// dateDellabel.setBounds(deliveryFormLabel.getX() - 1, deliveryFormLabel.getY()
+// + deliveryFormLabel.getHeight(), 150, 20);
+// delReceivedByLabel.setBounds(deliveryFormLabel.getX() +
+// dateDellabel.getWidth() - 2, deliveryFormLabel.getY() +
+// deliveryFormLabel.getHeight(),
+// deliveryFormLabel.getWidth() - dateDellabel.getWidth() + 2 -
+// TOTAL_LABEL_WIDTH, 20);
+// grossDelLabel.setBounds(delReceivedByLabel.getX() +
+// delReceivedByLabel.getWidth() - 1,
+// deliveryFormLabel.getY() + deliveryFormLabel.getHeight(),
+// deliveryFormLabel.getWidth() - (dateDellabel.getWidth() +
+// delReceivedByLabel.getWidth()) + 4, 20);
+// delPane.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP,
+// dateDellabel.getY() + dateDellabel.getHeight() - 1, salesFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallDelLabel.setBounds(startX + salesFormLabel.getWidth() + TABLE_GAP,
+// delPane.getY() + delPane.getHeight(), 200, 15);
+// formsOverall.get(1).setBounds(overallDelLabel.getX() +
+// overallDelLabel.getWidth(), overallDelLabel.getY(),
+// delPane.getWidth() - overallDelLabel.getWidth(), 15);
 //
-//arFormLabel.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth() + TABLE_GAP, salesFormLabel.getY(), 450, 18);
-//dateARlabel.setBounds(arFormLabel.getX() - 1, arFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
-//arIssuedByLabel.setBounds(arFormLabel.getX() + dateARlabel.getWidth() - 2, arFormLabel.getY() + arFormLabel.getHeight(), arFormLabel.getWidth()
-//		- dateARlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//grossARLabel.setBounds(arIssuedByLabel.getX() + arIssuedByLabel.getWidth() - 1, arFormLabel.getY() + arFormLabel.getHeight(),
-//		arFormLabel.getWidth() - (dateARlabel.getWidth() + arIssuedByLabel.getWidth()) + 4, 20);
-//arPane.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth() + TABLE_GAP, dateARlabel.getY() + dateARlabel.getHeight() - 1,
-//		arFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
-//overallARLabel.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth() + TABLE_GAP, delPane.getY() + delPane.getHeight(), 200, 15);
-//formsOverall.get(2).setBounds(overallARLabel.getX() + overallARLabel.getWidth(), overallARLabel.getY(),
-//		arPane.getWidth() - overallARLabel.getWidth(), 15);
+// arFormLabel.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth()
+// + TABLE_GAP, salesFormLabel.getY(), 450, 18);
+// dateARlabel.setBounds(arFormLabel.getX() - 1, arFormLabel.getY() +
+// arFormLabel.getHeight(), 150, 20);
+// arIssuedByLabel.setBounds(arFormLabel.getX() + dateARlabel.getWidth() - 2,
+// arFormLabel.getY() + arFormLabel.getHeight(), arFormLabel.getWidth()
+// - dateARlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
+// grossARLabel.setBounds(arIssuedByLabel.getX() + arIssuedByLabel.getWidth() -
+// 1, arFormLabel.getY() + arFormLabel.getHeight(),
+// arFormLabel.getWidth() - (dateARlabel.getWidth() +
+// arIssuedByLabel.getWidth()) + 4, 20);
+// arPane.setBounds(deliveryFormLabel.getX() + deliveryFormLabel.getWidth() +
+// TABLE_GAP, dateARlabel.getY() + dateARlabel.getHeight() - 1,
+// arFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
+// overallARLabel.setBounds(deliveryFormLabel.getX() +
+// deliveryFormLabel.getWidth() + TABLE_GAP, delPane.getY() +
+// delPane.getHeight(), 200, 15);
+// formsOverall.get(2).setBounds(overallARLabel.getX() +
+// overallARLabel.getWidth(), overallARLabel.getY(),
+// arPane.getWidth() - overallARLabel.getWidth(), 15);
 //
-//arPaymentFormLabel.setBounds(startX + TAB, overallARLabel.getY() + overallARLabel.getHeight() + 70, 450, 18);
-//dateARPaymentlabel.setBounds(arPaymentFormLabel.getX() - 1, arPaymentFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
-//arPaymentIssuedByLabel.setBounds(arPaymentFormLabel.getX() + dateARPaymentlabel.getWidth() - 2,
-//		arPaymentFormLabel.getY() + arPaymentFormLabel.getHeight(), arPaymentFormLabel.getWidth() - dateARPaymentlabel.getWidth() + 2
-//				- TOTAL_LABEL_WIDTH, 20);
-//grossARPaymentLabel.setBounds(arPaymentIssuedByLabel.getX() + arPaymentIssuedByLabel.getWidth() - 1, arPaymentFormLabel.getY()
-//		+ arPaymentFormLabel.getHeight(),
-//		arPaymentFormLabel.getWidth() - (dateARPaymentlabel.getWidth() + arPaymentIssuedByLabel.getWidth()) + 4, 20);
-//arPaymentPane.setBounds(startX + TAB, dateARPaymentlabel.getY() + dateARPaymentlabel.getHeight() - 1, arPaymentFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallARPaymentLabel.setBounds(startX + TAB, arPaymentPane.getY() + arPaymentPane.getHeight(), 200, 15);
-//formsOverall.get(3).setBounds(overallARPaymentLabel.getX() + overallARPaymentLabel.getWidth(), overallARPaymentLabel.getY(),
-//		arPaymentPane.getWidth() - overallARPaymentLabel.getWidth(), 15);
+// arPaymentFormLabel.setBounds(startX + TAB, overallARLabel.getY() +
+// overallARLabel.getHeight() + 70, 450, 18);
+// dateARPaymentlabel.setBounds(arPaymentFormLabel.getX() - 1,
+// arPaymentFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
+// arPaymentIssuedByLabel.setBounds(arPaymentFormLabel.getX() +
+// dateARPaymentlabel.getWidth() - 2,
+// arPaymentFormLabel.getY() + arPaymentFormLabel.getHeight(),
+// arPaymentFormLabel.getWidth() - dateARPaymentlabel.getWidth() + 2
+// - TOTAL_LABEL_WIDTH, 20);
+// grossARPaymentLabel.setBounds(arPaymentIssuedByLabel.getX() +
+// arPaymentIssuedByLabel.getWidth() - 1, arPaymentFormLabel.getY()
+// + arPaymentFormLabel.getHeight(),
+// arPaymentFormLabel.getWidth() - (dateARPaymentlabel.getWidth() +
+// arPaymentIssuedByLabel.getWidth()) + 4, 20);
+// arPaymentPane.setBounds(startX + TAB, dateARPaymentlabel.getY() +
+// dateARPaymentlabel.getHeight() - 1, arPaymentFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallARPaymentLabel.setBounds(startX + TAB, arPaymentPane.getY() +
+// arPaymentPane.getHeight(), 200, 15);
+// formsOverall.get(3).setBounds(overallARPaymentLabel.getX() +
+// overallARPaymentLabel.getWidth(), overallARPaymentLabel.getY(),
+// arPaymentPane.getWidth() - overallARPaymentLabel.getWidth(), 15);
 //
-//caPaymentFormLabel.setBounds(arPaymentFormLabel.getX() + arPaymentFormLabel.getWidth() + TABLE_GAP + TAB, arPaymentFormLabel.getY(), 450, 18);
-//dateCAPaymentlabel.setBounds(caPaymentFormLabel.getX() - 1, caPaymentFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
-//caPaymentIssuedByLabel.setBounds(caPaymentFormLabel.getX() + dateCAPaymentlabel.getWidth() - 2,
-//		caPaymentFormLabel.getY() + caPaymentFormLabel.getHeight(), caPaymentFormLabel.getWidth() - dateCAPaymentlabel.getWidth() + 2
-//				- TOTAL_LABEL_WIDTH, 20);
-//grossCAPaymentLabel.setBounds(caPaymentIssuedByLabel.getX() + caPaymentIssuedByLabel.getWidth() - 1, caPaymentFormLabel.getY()
-//		+ arPaymentFormLabel.getHeight(),
-//		caPaymentFormLabel.getWidth() - (dateCAPaymentlabel.getWidth() + caPaymentIssuedByLabel.getWidth()) + 4, 20);
-//caPaymentPane.setBounds(caPaymentFormLabel.getX(), dateCAPaymentlabel.getY() + dateCAPaymentlabel.getHeight() - 1,
-//		caPaymentFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
-//overallCAPaymentLabel.setBounds(caPaymentFormLabel.getX(), caPaymentPane.getY() + caPaymentPane.getHeight(), 200, 15);
-//formsOverall.get(4).setBounds(overallCAPaymentLabel.getX() + overallCAPaymentLabel.getWidth(), overallCAPaymentLabel.getY(),
-//		caPaymentPane.getWidth() - overallCAPaymentLabel.getWidth(), 15);
+// caPaymentFormLabel.setBounds(arPaymentFormLabel.getX() +
+// arPaymentFormLabel.getWidth() + TABLE_GAP + TAB, arPaymentFormLabel.getY(),
+// 450, 18);
+// dateCAPaymentlabel.setBounds(caPaymentFormLabel.getX() - 1,
+// caPaymentFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
+// caPaymentIssuedByLabel.setBounds(caPaymentFormLabel.getX() +
+// dateCAPaymentlabel.getWidth() - 2,
+// caPaymentFormLabel.getY() + caPaymentFormLabel.getHeight(),
+// caPaymentFormLabel.getWidth() - dateCAPaymentlabel.getWidth() + 2
+// - TOTAL_LABEL_WIDTH, 20);
+// grossCAPaymentLabel.setBounds(caPaymentIssuedByLabel.getX() +
+// caPaymentIssuedByLabel.getWidth() - 1, caPaymentFormLabel.getY()
+// + arPaymentFormLabel.getHeight(),
+// caPaymentFormLabel.getWidth() - (dateCAPaymentlabel.getWidth() +
+// caPaymentIssuedByLabel.getWidth()) + 4, 20);
+// caPaymentPane.setBounds(caPaymentFormLabel.getX(), dateCAPaymentlabel.getY()
+// + dateCAPaymentlabel.getHeight() - 1,
+// caPaymentFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
+// overallCAPaymentLabel.setBounds(caPaymentFormLabel.getX(),
+// caPaymentPane.getY() + caPaymentPane.getHeight(), 200, 15);
+// formsOverall.get(4).setBounds(overallCAPaymentLabel.getX() +
+// overallCAPaymentLabel.getWidth(), overallCAPaymentLabel.getY(),
+// caPaymentPane.getWidth() - overallCAPaymentLabel.getWidth(), 15);
 //
-//sectionLabel.get(2).setText("LIABILITIES");
-//sectionLabel.get(2).setBounds(startX, overallCAPaymentLabel.getY() + overallCAPaymentLabel.getHeight() + SECTION_GAP, 150, 20);
+// sectionLabel.get(2).setText("LIABILITIES");
+// sectionLabel.get(2).setBounds(startX, overallCAPaymentLabel.getY() +
+// overallCAPaymentLabel.getHeight() + SECTION_GAP, 150, 20);
 //
-//pullOutFormLabel.setBounds(startX + TAB, sectionLabel.get(2).getY() + sectionLabel.get(2).getHeight() + LABEL_GAP, 450, 18);
-//datePulloutlabel.setBounds(pullOutFormLabel.getX() - 1, pullOutFormLabel.getY() + pullOutFormLabel.getHeight(), 150, 20);
-//pulloutIssuedByLabel.setBounds(pullOutFormLabel.getX() + datePulloutlabel.getWidth() - 2,
-//		pullOutFormLabel.getY() + pullOutFormLabel.getHeight(),
-//		pullOutFormLabel.getWidth() - datePulloutlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//grossPulloutLabel.setBounds(pulloutIssuedByLabel.getX() + pulloutIssuedByLabel.getWidth() - 1,
-//		pullOutFormLabel.getY() + pullOutFormLabel.getHeight(),
-//		pullOutFormLabel.getWidth() - (datePulloutlabel.getWidth() + pulloutIssuedByLabel.getWidth()) + 4, 20);
-//pulloutPane.setBounds(pullOutFormLabel.getX(), datePulloutlabel.getY() + datePulloutlabel.getHeight() - 1, pullOutFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallPulloutLabel.setBounds(pullOutFormLabel.getX(), pulloutPane.getY() + pulloutPane.getHeight(), 200, 15);
-//formsOverall.get(5).setBounds(overallPulloutLabel.getX() + overallPulloutLabel.getWidth(), overallPulloutLabel.getY(),
-//		pulloutPane.getWidth() - overallPulloutLabel.getWidth(), 15);
+// pullOutFormLabel.setBounds(startX + TAB, sectionLabel.get(2).getY() +
+// sectionLabel.get(2).getHeight() + LABEL_GAP, 450, 18);
+// datePulloutlabel.setBounds(pullOutFormLabel.getX() - 1,
+// pullOutFormLabel.getY() + pullOutFormLabel.getHeight(), 150, 20);
+// pulloutIssuedByLabel.setBounds(pullOutFormLabel.getX() +
+// datePulloutlabel.getWidth() - 2,
+// pullOutFormLabel.getY() + pullOutFormLabel.getHeight(),
+// pullOutFormLabel.getWidth() - datePulloutlabel.getWidth() + 2 -
+// TOTAL_LABEL_WIDTH, 20);
+// grossPulloutLabel.setBounds(pulloutIssuedByLabel.getX() +
+// pulloutIssuedByLabel.getWidth() - 1,
+// pullOutFormLabel.getY() + pullOutFormLabel.getHeight(),
+// pullOutFormLabel.getWidth() - (datePulloutlabel.getWidth() +
+// pulloutIssuedByLabel.getWidth()) + 4, 20);
+// pulloutPane.setBounds(pullOutFormLabel.getX(), datePulloutlabel.getY() +
+// datePulloutlabel.getHeight() - 1, pullOutFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallPulloutLabel.setBounds(pullOutFormLabel.getX(), pulloutPane.getY() +
+// pulloutPane.getHeight(), 200, 15);
+// formsOverall.get(5).setBounds(overallPulloutLabel.getX() +
+// overallPulloutLabel.getWidth(), overallPulloutLabel.getY(),
+// pulloutPane.getWidth() - overallPulloutLabel.getWidth(), 15);
 //
-//expensesFormLabel.setBounds(pullOutFormLabel.getX() + pullOutFormLabel.getWidth() + TABLE_GAP + TAB, pullOutFormLabel.getY(), 450, 18);
-//dateExpenseslabel.setBounds(expensesFormLabel.getX() - 1, expensesFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
-//expensesIssuedByLabel.setBounds(expensesFormLabel.getX() + dateExpenseslabel.getWidth() - 2,
-//		expensesFormLabel.getY() + expensesFormLabel.getHeight(), expensesFormLabel.getWidth() - dateExpenseslabel.getWidth() + 2
-//				- TOTAL_LABEL_WIDTH, 20);
-//grossExpensesLabel.setBounds(expensesIssuedByLabel.getX() + expensesIssuedByLabel.getWidth() - 1,
-//		expensesFormLabel.getY() + expensesFormLabel.getHeight(), expensesFormLabel.getWidth()
-//				- (dateExpenseslabel.getWidth() + expensesIssuedByLabel.getWidth()) + 4, 20);
-//expensesPane.setBounds(expensesFormLabel.getX(), dateExpenseslabel.getY() + dateExpenseslabel.getHeight() - 1, expensesFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallExpensesLabel.setBounds(expensesFormLabel.getX(), expensesPane.getY() + expensesPane.getHeight(), 200, 15);
-//formsOverall.get(6).setBounds(overallExpensesLabel.getX() + overallExpensesLabel.getWidth(), overallExpensesLabel.getY(),
-//		expensesPane.getWidth() - overallExpensesLabel.getWidth(), 15);
+// expensesFormLabel.setBounds(pullOutFormLabel.getX() +
+// pullOutFormLabel.getWidth() + TABLE_GAP + TAB, pullOutFormLabel.getY(), 450,
+// 18);
+// dateExpenseslabel.setBounds(expensesFormLabel.getX() - 1,
+// expensesFormLabel.getY() + arFormLabel.getHeight(), 150, 20);
+// expensesIssuedByLabel.setBounds(expensesFormLabel.getX() +
+// dateExpenseslabel.getWidth() - 2,
+// expensesFormLabel.getY() + expensesFormLabel.getHeight(),
+// expensesFormLabel.getWidth() - dateExpenseslabel.getWidth() + 2
+// - TOTAL_LABEL_WIDTH, 20);
+// grossExpensesLabel.setBounds(expensesIssuedByLabel.getX() +
+// expensesIssuedByLabel.getWidth() - 1,
+// expensesFormLabel.getY() + expensesFormLabel.getHeight(),
+// expensesFormLabel.getWidth()
+// - (dateExpenseslabel.getWidth() + expensesIssuedByLabel.getWidth()) + 4, 20);
+// expensesPane.setBounds(expensesFormLabel.getX(), dateExpenseslabel.getY() +
+// dateExpenseslabel.getHeight() - 1, expensesFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallExpensesLabel.setBounds(expensesFormLabel.getX(), expensesPane.getY()
+// + expensesPane.getHeight(), 200, 15);
+// formsOverall.get(6).setBounds(overallExpensesLabel.getX() +
+// overallExpensesLabel.getWidth(), overallExpensesLabel.getY(),
+// expensesPane.getWidth() - overallExpensesLabel.getWidth(), 15);
 //
-//caFormLabel.setBounds(startX, overallExpensesLabel.getY() + overallExpensesLabel.getHeight() + 70, 450, 18);
-//dateCAlabel.setBounds(caFormLabel.getX() - 1, caFormLabel.getY() + caFormLabel.getHeight(), 150, 20);
-//CAIssuedByLabel.setBounds(caFormLabel.getX() + dateCAlabel.getWidth() - 2, caFormLabel.getY() + caFormLabel.getHeight(), caFormLabel.getWidth()
-//		- dateCAlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//grossCALabel.setBounds(CAIssuedByLabel.getX() + CAIssuedByLabel.getWidth() - 1, caFormLabel.getY() + caFormLabel.getHeight(),
-//		caFormLabel.getWidth() - (dateCAlabel.getWidth() + CAIssuedByLabel.getWidth()) + 4, 20);
-//caPane.setBounds(caFormLabel.getX(), dateCAlabel.getY() + dateCAlabel.getHeight() - 1, caFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
-//overallCALabel.setBounds(caFormLabel.getX(), caPane.getY() + caPane.getHeight(), 200, 15);
-//formsOverall.get(7).setBounds(overallCALabel.getX() + overallCALabel.getWidth(), overallCALabel.getY(),
-//		caPane.getWidth() - overallCALabel.getWidth(), 15);
+// caFormLabel.setBounds(startX, overallExpensesLabel.getY() +
+// overallExpensesLabel.getHeight() + 70, 450, 18);
+// dateCAlabel.setBounds(caFormLabel.getX() - 1, caFormLabel.getY() +
+// caFormLabel.getHeight(), 150, 20);
+// CAIssuedByLabel.setBounds(caFormLabel.getX() + dateCAlabel.getWidth() - 2,
+// caFormLabel.getY() + caFormLabel.getHeight(), caFormLabel.getWidth()
+// - dateCAlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
+// grossCALabel.setBounds(CAIssuedByLabel.getX() + CAIssuedByLabel.getWidth() -
+// 1, caFormLabel.getY() + caFormLabel.getHeight(),
+// caFormLabel.getWidth() - (dateCAlabel.getWidth() +
+// CAIssuedByLabel.getWidth()) + 4, 20);
+// caPane.setBounds(caFormLabel.getX(), dateCAlabel.getY() +
+// dateCAlabel.getHeight() - 1, caFormLabel.getWidth() + SCROLLBAR_WIDTH, 105);
+// overallCALabel.setBounds(caFormLabel.getX(), caPane.getY() +
+// caPane.getHeight(), 200, 15);
+// formsOverall.get(7).setBounds(overallCALabel.getX() +
+// overallCALabel.getWidth(), overallCALabel.getY(),
+// caPane.getWidth() - overallCALabel.getWidth(), 15);
 //
-//discountFormLabel.setBounds(caFormLabel.getX() + caFormLabel.getWidth() + 100, overallExpensesLabel.getY() + overallExpensesLabel.getHeight()
-//		+ 70, 250, 18);
-//dateDiscountlabel.setBounds(discountFormLabel.getX() - 1, discountFormLabel.getY() + discountFormLabel.getHeight(), 150, 20);
-//discountAmountLabel.setBounds(discountFormLabel.getX() + dateDiscountlabel.getWidth() - 2,
-//		discountFormLabel.getY() + discountFormLabel.getHeight(), discountFormLabel.getWidth() - dateDiscountlabel.getWidth() + 3, 20);
-//discountPane.setBounds(discountFormLabel.getX(), dateDiscountlabel.getY() + dateDiscountlabel.getHeight() - 1, discountFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallDiscountLabel.setBounds(discountFormLabel.getX(), discountPane.getY() + discountPane.getHeight(), 100, 15);
-//formsOverall.get(8).setBounds(overallDiscountLabel.getX() + overallDiscountLabel.getWidth(), overallDiscountLabel.getY(),
-//		discountPane.getWidth() - overallDiscountLabel.getWidth(), 15);
+// discountFormLabel.setBounds(caFormLabel.getX() + caFormLabel.getWidth() +
+// 100, overallExpensesLabel.getY() + overallExpensesLabel.getHeight()
+// + 70, 250, 18);
+// dateDiscountlabel.setBounds(discountFormLabel.getX() - 1,
+// discountFormLabel.getY() + discountFormLabel.getHeight(), 150, 20);
+// discountAmountLabel.setBounds(discountFormLabel.getX() +
+// dateDiscountlabel.getWidth() - 2,
+// discountFormLabel.getY() + discountFormLabel.getHeight(),
+// discountFormLabel.getWidth() - dateDiscountlabel.getWidth() + 3, 20);
+// discountPane.setBounds(discountFormLabel.getX(), dateDiscountlabel.getY() +
+// dateDiscountlabel.getHeight() - 1, discountFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallDiscountLabel.setBounds(discountFormLabel.getX(), discountPane.getY()
+// + discountPane.getHeight(), 100, 15);
+// formsOverall.get(8).setBounds(overallDiscountLabel.getX() +
+// overallDiscountLabel.getWidth(), overallDiscountLabel.getY(),
+// discountPane.getWidth() - overallDiscountLabel.getWidth(), 15);
 //
-//ar2FormLabel.setBounds(discountFormLabel.getX() + discountFormLabel.getWidth() + 100, caFormLabel.getY(), 450, 18);
-//dateAR2label.setBounds(ar2FormLabel.getX() - 1, ar2FormLabel.getY() + ar2FormLabel.getHeight(), 150, 20);
-//ar2IssuedByLabel.setBounds(ar2FormLabel.getX() + dateAR2label.getWidth() - 2, ar2FormLabel.getY() + ar2FormLabel.getHeight(),
-//		ar2FormLabel.getWidth() - dateAR2label.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//grossAR2Label.setBounds(ar2IssuedByLabel.getX() + ar2IssuedByLabel.getWidth() - 1, ar2FormLabel.getY() + ar2FormLabel.getHeight(),
-//		ar2FormLabel.getWidth() - (dateAR2label.getWidth() + ar2IssuedByLabel.getWidth()) + 4, 20);
-//ar2Pane.setBounds(ar2FormLabel.getX(), dateAR2label.getY() + dateAR2label.getHeight() - 1, ar2FormLabel.getWidth(), 105);
-//overallAR2Label.setBounds(ar2FormLabel.getX(), ar2Pane.getY() + ar2Pane.getHeight(), 200, 15);
-//formsOverall.get(9).setBounds(overallAR2Label.getX() + overallAR2Label.getWidth(), overallAR2Label.getY(),
-//		ar2Pane.getWidth() - overallAR2Label.getWidth(), 15);
+// ar2FormLabel.setBounds(discountFormLabel.getX() +
+// discountFormLabel.getWidth() + 100, caFormLabel.getY(), 450, 18);
+// dateAR2label.setBounds(ar2FormLabel.getX() - 1, ar2FormLabel.getY() +
+// ar2FormLabel.getHeight(), 150, 20);
+// ar2IssuedByLabel.setBounds(ar2FormLabel.getX() + dateAR2label.getWidth() - 2,
+// ar2FormLabel.getY() + ar2FormLabel.getHeight(),
+// ar2FormLabel.getWidth() - dateAR2label.getWidth() + 2 - TOTAL_LABEL_WIDTH,
+// 20);
+// grossAR2Label.setBounds(ar2IssuedByLabel.getX() + ar2IssuedByLabel.getWidth()
+// - 1, ar2FormLabel.getY() + ar2FormLabel.getHeight(),
+// ar2FormLabel.getWidth() - (dateAR2label.getWidth() +
+// ar2IssuedByLabel.getWidth()) + 4, 20);
+// ar2Pane.setBounds(ar2FormLabel.getX(), dateAR2label.getY() +
+// dateAR2label.getHeight() - 1, ar2FormLabel.getWidth(), 105);
+// overallAR2Label.setBounds(ar2FormLabel.getX(), ar2Pane.getY() +
+// ar2Pane.getHeight(), 200, 15);
+// formsOverall.get(9).setBounds(overallAR2Label.getX() +
+// overallAR2Label.getWidth(), overallAR2Label.getY(),
+// ar2Pane.getWidth() - overallAR2Label.getWidth(), 15);
 //
-//salaryFormLabel.setBounds(startX + TAB, overallAR2Label.getY() + overallAR2Label.getHeight() + 70, 450, 18);
-//dateSalarylabel.setBounds(salaryFormLabel.getX() - 1, salaryFormLabel.getY() + salaryFormLabel.getHeight(), 150, 20);
-//salaryIssuedForLabel.setBounds(salaryFormLabel.getX() + datePulloutlabel.getWidth() - 2, salaryFormLabel.getY() + salaryFormLabel.getHeight(),
-//		salaryFormLabel.getWidth() - dateSalarylabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//salaryAmountLabel.setBounds(salaryIssuedForLabel.getX() + salaryIssuedForLabel.getWidth() - 1,
-//		salaryFormLabel.getY() + salaryFormLabel.getHeight(),
-//		salaryFormLabel.getWidth() - (dateSalarylabel.getWidth() + salaryIssuedForLabel.getWidth()) + 4, 20);
-//salaryPane.setBounds(salaryFormLabel.getX(), dateSalarylabel.getY() + dateSalarylabel.getHeight() - 1, salaryFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallSalaryLabel.setBounds(salaryFormLabel.getX(), salaryPane.getY() + salaryPane.getHeight(), 200, 15);
-//formsOverall.get(10).setBounds(overallSalaryLabel.getX() + overallSalaryLabel.getWidth(), overallSalaryLabel.getY(),
-//		salaryPane.getWidth() - overallSalaryLabel.getWidth(), 15);
+// salaryFormLabel.setBounds(startX + TAB, overallAR2Label.getY() +
+// overallAR2Label.getHeight() + 70, 450, 18);
+// dateSalarylabel.setBounds(salaryFormLabel.getX() - 1, salaryFormLabel.getY()
+// + salaryFormLabel.getHeight(), 150, 20);
+// salaryIssuedForLabel.setBounds(salaryFormLabel.getX() +
+// datePulloutlabel.getWidth() - 2, salaryFormLabel.getY() +
+// salaryFormLabel.getHeight(),
+// salaryFormLabel.getWidth() - dateSalarylabel.getWidth() + 2 -
+// TOTAL_LABEL_WIDTH, 20);
+// salaryAmountLabel.setBounds(salaryIssuedForLabel.getX() +
+// salaryIssuedForLabel.getWidth() - 1,
+// salaryFormLabel.getY() + salaryFormLabel.getHeight(),
+// salaryFormLabel.getWidth() - (dateSalarylabel.getWidth() +
+// salaryIssuedForLabel.getWidth()) + 4, 20);
+// salaryPane.setBounds(salaryFormLabel.getX(), dateSalarylabel.getY() +
+// dateSalarylabel.getHeight() - 1, salaryFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallSalaryLabel.setBounds(salaryFormLabel.getX(), salaryPane.getY() +
+// salaryPane.getHeight(), 200, 15);
+// formsOverall.get(10).setBounds(overallSalaryLabel.getX() +
+// overallSalaryLabel.getWidth(), overallSalaryLabel.getY(),
+// salaryPane.getWidth() - overallSalaryLabel.getWidth(), 15);
 //
-//depositFormLabel.setBounds(salaryFormLabel.getX() + salaryFormLabel.getWidth() + TABLE_GAP + TAB, salaryFormLabel.getY(), 450, 18);
-//dateDepositlabel.setBounds(depositFormLabel.getX() - 1, depositFormLabel.getY() + depositFormLabel.getHeight(), 150, 20);
-//depositorLabel.setBounds(depositFormLabel.getX() + dateDepositlabel.getWidth() - 2, depositFormLabel.getY() + depositFormLabel.getHeight(),
-//		depositFormLabel.getWidth() - dateDepositlabel.getWidth() + 2 - TOTAL_LABEL_WIDTH, 20);
-//depositAmountLabel.setBounds(depositorLabel.getX() + depositorLabel.getWidth() - 1, depositFormLabel.getY() + depositFormLabel.getHeight(),
-//		depositFormLabel.getWidth() - (dateExpenseslabel.getWidth() + depositorLabel.getWidth()) + 4, 20);
-//depositPane.setBounds(depositFormLabel.getX(), dateDepositlabel.getY() + dateDepositlabel.getHeight() - 1, depositFormLabel.getWidth()
-//		+ SCROLLBAR_WIDTH, 105);
-//overallDepositLabel.setBounds(depositFormLabel.getX(), depositPane.getY() + depositPane.getHeight(), 200, 15);
-//formsOverall.get(11).setBounds(overallDepositLabel.getX() + overallDepositLabel.getWidth(), overallDepositLabel.getY(),
-//		depositPane.getWidth() - overallDepositLabel.getWidth(), 15);
+// depositFormLabel.setBounds(salaryFormLabel.getX() +
+// salaryFormLabel.getWidth() + TABLE_GAP + TAB, salaryFormLabel.getY(), 450,
+// 18);
+// dateDepositlabel.setBounds(depositFormLabel.getX() - 1,
+// depositFormLabel.getY() + depositFormLabel.getHeight(), 150, 20);
+// depositorLabel.setBounds(depositFormLabel.getX() +
+// dateDepositlabel.getWidth() - 2, depositFormLabel.getY() +
+// depositFormLabel.getHeight(),
+// depositFormLabel.getWidth() - dateDepositlabel.getWidth() + 2 -
+// TOTAL_LABEL_WIDTH, 20);
+// depositAmountLabel.setBounds(depositorLabel.getX() +
+// depositorLabel.getWidth() - 1, depositFormLabel.getY() +
+// depositFormLabel.getHeight(),
+// depositFormLabel.getWidth() - (dateExpenseslabel.getWidth() +
+// depositorLabel.getWidth()) + 4, 20);
+// depositPane.setBounds(depositFormLabel.getX(), dateDepositlabel.getY() +
+// dateDepositlabel.getHeight() - 1, depositFormLabel.getWidth()
+// + SCROLLBAR_WIDTH, 105);
+// overallDepositLabel.setBounds(depositFormLabel.getX(), depositPane.getY() +
+// depositPane.getHeight(), 200, 15);
+// formsOverall.get(11).setBounds(overallDepositLabel.getX() +
+// overallDepositLabel.getWidth(), overallDepositLabel.getY(),
+// depositPane.getWidth() - overallDepositLabel.getWidth(), 15);
 //
-//sectionLabel.get(3).setText("CASH ON HAND");
-//sectionLabel.get(3).setBounds(startX, overallDepositLabel.getY() + overallDepositLabel.getHeight() + SECTION_GAP, 150, 20);
+// sectionLabel.get(3).setText("CASH ON HAND");
+// sectionLabel.get(3).setBounds(startX, overallDepositLabel.getY() +
+// overallDepositLabel.getHeight() + SECTION_GAP, 150, 20);
 //
-//pcohLabel.setBounds(startX + TAB, sectionLabel.get(3).getY() + sectionLabel.get(3).getHeight() + LABEL_GAP, 150, 25);
-//assetsLabel.setBounds(pcohLabel.getX(), pcohLabel.getY() + pcohLabel.getHeight(), 150, 25);
-//liabilitiesLabel.setBounds(pcohLabel.getX(), assetsLabel.getY() + assetsLabel.getHeight(), 150, 25);
-//cohLabel.setBounds(pcohLabel.getX(), liabilitiesLabel.getY() + liabilitiesLabel.getHeight(), 150, 30);
+// pcohLabel.setBounds(startX + TAB, sectionLabel.get(3).getY() +
+// sectionLabel.get(3).getHeight() + LABEL_GAP, 150, 25);
+// assetsLabel.setBounds(pcohLabel.getX(), pcohLabel.getY() +
+// pcohLabel.getHeight(), 150, 25);
+// liabilitiesLabel.setBounds(pcohLabel.getX(), assetsLabel.getY() +
+// assetsLabel.getHeight(), 150, 25);
+// cohLabel.setBounds(pcohLabel.getX(), liabilitiesLabel.getY() +
+// liabilitiesLabel.getHeight(), 150, 30);
 //
-//computationLabel.get(0).setBounds(pcohLabel.getX() + pcohLabel.getWidth() - 1, pcohLabel.getY(), 200, 26);
-//computationLabel.get(1).setBounds(computationLabel.get(0).getX(), assetsLabel.getY(), 200, 26);
-//computationLabel.get(2).setBounds(computationLabel.get(0).getX(), liabilitiesLabel.getY(), 200, 26);
-//computationLabel.get(3).setBounds(computationLabel.get(0).getX(), cohLabel.getY(), 200, 30);
+// computationLabel.get(0).setBounds(pcohLabel.getX() + pcohLabel.getWidth() -
+// 1, pcohLabel.getY(), 200, 26);
+// computationLabel.get(1).setBounds(computationLabel.get(0).getX(),
+// assetsLabel.getY(), 200, 26);
+// computationLabel.get(2).setBounds(computationLabel.get(0).getX(),
+// liabilitiesLabel.getY(), 200, 26);
+// computationLabel.get(3).setBounds(computationLabel.get(0).getX(),
+// cohLabel.getY(), 200, 30);
 //
-//cashBreakdownPanel.setBounds(computationLabel.get(0).getX() + computationLabel.get(0).getWidth() + TABLE_GAP + TAB + TAB + 50, sectionLabel
-//		.get(3).getY() + sectionLabel.get(3).getHeight() + LABEL_GAP, 340, 210);
+// cashBreakdownPanel.setBounds(computationLabel.get(0).getX() +
+// computationLabel.get(0).getWidth() + TABLE_GAP + TAB + TAB + 50, sectionLabel
+// .get(3).getY() + sectionLabel.get(3).getHeight() + LABEL_GAP, 340, 210);
 //
-//sectionLabel.get(4).setText("CASH BREAKDOWN");
-//sectionLabel.get(4).setBounds(cashBreakdownPanel.getX() - TAB, overallDepositLabel.getY() + overallDepositLabel.getHeight() + SECTION_GAP, 150,
-//		20);
+// sectionLabel.get(4).setText("CASH BREAKDOWN");
+// sectionLabel.get(4).setBounds(cashBreakdownPanel.getX() - TAB,
+// overallDepositLabel.getY() + overallDepositLabel.getHeight() + SECTION_GAP,
+// 150,
+// 20);

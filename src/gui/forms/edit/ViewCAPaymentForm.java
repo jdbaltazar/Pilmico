@@ -1,11 +1,17 @@
 package gui.forms.edit;
 
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -18,9 +24,12 @@ import javax.swing.JScrollPane;
 import common.entity.cashadvance.CAPayment;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
+import util.SBButton;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -44,20 +53,52 @@ public class ViewCAPaymentForm extends EditFormPanel {
 	private JLabel status;
 	private ImageIcon icon;
 
+	private SBButton voidBtn;
+
 	private CAPayment caPayment;
 
 	public ViewCAPaymentForm(CAPayment caPayment) {
 		super("View CA Payment");
 		this.caPayment = caPayment;
 		addComponents();
-
+		colorTable();
+		fillEntries();
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
-		icon = new ImageIcon("images/pending.png");
 
-		status = new JLabel("PENDING", icon, JLabel.LEADING);
+		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
+		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
+//		voidBtn.addMouseListener(new MouseAdapter() {
+//			public void mouseClicked(MouseEvent e) {
+//				PointerInfo a = MouseInfo.getPointerInfo();
+//				Point b = a.getLocation();
+//				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+//				uP.setVisible(true);
+//
+//				if (!uP.getReason().equals("")) {
+//					caPayment.setValid(false);
+//					caPayment.setRemarks(uP.getReason());
+//
+//					try {
+//						Manager.cashAdvanceManager.updateCAPayment(caPayment);
+//						caPayment.getCashAdvance().setBalance(caPayment.getCashAdvance().getBalance() + caPayment.getAmount());
+//						Manager.cashAdvanceManager.updateCashAdvance(caPayment.getCashAdvance());
+//						if (Values.viewCAForm != null)
+//							Values.viewCAForm.fillEntries();
+//
+//					} catch (Exception e1) {
+//						e1.printStackTrace();
+//					}
+//
+//					Values.editPanel.startAnimation();
+//					new SuccessPopup("Invalidation").setVisible(true);
+//					Values.centerPanel.changeTable(Values.CA_PAYMENTS);
+//				}
+//			}
+//		});
+
+		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
 
@@ -79,11 +120,11 @@ public class ViewCAPaymentForm extends EditFormPanel {
 		empRepLabel.setToolTipText("Employee Representative");
 		amountLabel = new ViewFormLabel("Amount:");
 
-		issuedBy = new ViewFormField(Manager.loggedInAccount.getFirstPlusLastName());
-		date = new ViewFormField("17 Jul 2013 10:15 PM");
-		empRep = new ViewFormField("Employee E. Mployee");
-		caID = new ViewFormField("1");
-		amount = new ViewFormField("2500.00");
+		issuedBy = new ViewFormField("");
+		date = new ViewFormField("");
+		empRep = new ViewFormField("");
+		caID = new ViewFormField("");
+		amount = new ViewFormField("");
 
 		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 53) {
 
@@ -130,6 +171,8 @@ public class ViewCAPaymentForm extends EditFormPanel {
 			}
 		});
 
+		remarks = new RemarksLabel("");
+
 		panel.add(issuedBy);
 		panel.add(date);
 
@@ -152,9 +195,59 @@ public class ViewCAPaymentForm extends EditFormPanel {
 		scrollPane.setBounds(245, 63, 300, 275);
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
+		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
+		
+		add(voidBtn);
 
 		add(scrollPane);
 		add(status);
 
+		add(remarks);
+
 	}
+
+	private void colorTable() {
+
+		String s = "";
+		if (caPayment.getInventorySheetData() != null) {
+			icon = new ImageIcon("images/accounted.png");
+			s = "ACCOUNTED";
+			status.setForeground(Color.GREEN.darker());
+			remarks.setForeground(Color.GREEN.darker());
+			scrollPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
+		} else {
+			if (caPayment.isValid()) {
+				icon = new ImageIcon("images/pending.png");
+				s = "PENDING";
+				status.setForeground(Color.orange);
+				remarks.setForeground(Color.orange);
+				scrollPane.setBorder(new ViewFormBorder(Values.PENDING_COLOR));
+			} else {
+				icon = new ImageIcon("images/invalidated.png");
+				s = "INVALIDATED";
+				status.setForeground(Color.RED);
+				remarks.setForeground(Color.RED);
+				scrollPane.setBorder(new ViewFormBorder(Values.INVALIDATED_COLOR));
+			}
+		}
+		status.setText(s);
+		status.setIcon(icon);
+
+	}
+
+	public void fillEntries() {
+
+		voidBtn.setVisible(caPayment.getInventorySheetData() != null ? false : caPayment.isValid());
+
+		caID.setToolTip(caID, caPayment.getCashAdvance().getId() + "");
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(caPayment.getDate()));
+		issuedBy.setToolTip(issuedBy, caPayment.getIssuedBy().getFirstPlusLastName());
+		empRep.setToolTip(empRep, caPayment.getEmployeeRepresentative() != null ? caPayment.getEmployeeRepresentative().getFirstPlusLastName() : "");
+		amount.setToolTip(amount, String.format("%.2f", caPayment.getAmount()));
+
+		if (caPayment.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + caPayment.getRemarks());
+
+	}
+
 }
