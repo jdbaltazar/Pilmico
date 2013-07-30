@@ -378,8 +378,10 @@ public class ISRowPanel extends JPanel {
 		totalLabel.setBounds(240, 7, 100, 17);
 
 		if (componentCount != moneyString.length - 1
-				&& componentCount != moneyString.length - 2)
+				&& componentCount != moneyString.length - 2){
+			field.setFormat(SimpleNumericField.NUMERIC);
 			row.add(x);
+		}
 
 		row.add(eq);
 		row.add(money);
@@ -423,8 +425,9 @@ public class ISRowPanel extends JPanel {
 		totalLabel.setBounds(240, 7, 100, 17);
 
 		if (componentCount != moneyString.length - 1
-				&& componentCount != moneyString.length - 2)
+				&& componentCount != moneyString.length - 2){
 			row.add(x);
+		}
 
 		row.add(eq);
 		row.add(money);

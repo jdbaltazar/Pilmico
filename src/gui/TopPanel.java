@@ -156,6 +156,7 @@ public class TopPanel extends SoyPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 
+
 				if (Manager.loggedInAccount == null) {
 					balloonTip.setVisible(!balloonTip.isVisible());
 				}
