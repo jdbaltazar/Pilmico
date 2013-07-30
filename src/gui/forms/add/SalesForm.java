@@ -536,7 +536,14 @@ public class SalesForm extends SimplePanel {
 	}
 	
 	private boolean isValidated() {
-
+		
+		if(((SpinnerDateModel) date.getModel()).getDate().after(new Date())){
+			
+			msg = "Future date not allowed ";
+			
+			return false;
+		}
+		
 		if (productsPanel.getComponentCount() == 0) {
 
 			msg = "Put at least one product ";

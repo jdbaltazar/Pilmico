@@ -91,7 +91,8 @@ public class Values {
 	public static int HEIGHT = 600;
 
 	public static final int OTHERS = -100;
-	public static final int PRODUCT_TWIN = -101;
+	public static final int OTHERS_EDIT = -101;
+	public static final int PRODUCT_TWIN = -102;
 
 	public static final int HOME = -1;
 

@@ -128,8 +128,8 @@ public class SBTable extends JTable implements MouseListener {
 			Values.editPanel.setHide(false);
 			Values.editPanel.startAnimation();
 			// Values.editPanel.showComponent(objects.get(row));
-			Values.editPanel.showComponent(objects.get(row));
-			// Values.editPanel.showComponent(null);
+//			Values.editPanel.showComponent(objects.get(row));
+			 Values.editPanel.showComponent(null);
 			// }
 		}
 

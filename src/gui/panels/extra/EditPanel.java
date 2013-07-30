@@ -257,7 +257,14 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 		
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
-			add(new ViewInventorySheetForm(), BorderLayout.CENTER);
+			ViewInventorySheetForm vis = new ViewInventorySheetForm();
+			
+			try {
+				vis.build();
+				add(vis, BorderLayout.CENTER);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

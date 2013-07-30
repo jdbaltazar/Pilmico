@@ -36,7 +36,8 @@ import common.entity.sales.Sales;
 public class ISRowPanel extends JPanel {
 
 	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins", "check/s"};
-	private JTextField field;
+	private SimpleNumericField field;
+	private ViewFormField viewField;
 	private JPanel row;
 	private JPanel panel = new JPanel();
 	private ArrayList<ViewFormField> formField = new ArrayList<ViewFormField>();
@@ -70,7 +71,7 @@ public class ISRowPanel extends JPanel {
 			setBounds(0, y, InventorySheetForm.PRODUCT_ROW_WIDTH, ROW_HEIGHT);
 		else if (table == Values.DISCOUNTS)
 			setBounds(0, y, 250, ROW_HEIGHT);
-		else if (table == Values.OTHERS)
+		else if (table == Values.OTHERS || table == Values.OTHERS_EDIT)
 			setBounds(0, y, panel.getWidth(), ROW_HEIGHT);
 		else
 			setBounds(0, y, InventorySheetForm.TRANSACTIONS_ROW_WIDTH, ROW_HEIGHT);
@@ -157,8 +158,12 @@ public class ISRowPanel extends JPanel {
 					String.format("%.2f", d.getAmount()));
 			break;
 
-		default:
+		case Values.OTHERS:
 			drawCashBreakDown();
+			break;
+			
+		default:
+			drawViewCashBreakDown();
 			break;
 		}
 
@@ -323,10 +328,10 @@ public class ISRowPanel extends JPanel {
 
 		JLabel money, x, eq;
 
-		field = new JTextField("0");
+		field = new SimpleNumericField(10);
 		field.setHorizontalAlignment(JTextField.CENTER);
 
-		totalLabel = new JLabel("0");
+		totalLabel = new JLabel("0.0");
 		totalLabel.setHorizontalAlignment(JLabel.CENTER);
 		totalLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 
@@ -365,7 +370,7 @@ public class ISRowPanel extends JPanel {
 						isForm.updateActualCashCountAndSummary();
 					}
 				} else
-					totalLabel.setText("");
+					totalLabel.setText("0.0");
 			}
 
 		});
@@ -379,6 +384,51 @@ public class ISRowPanel extends JPanel {
 		row.add(eq);
 		row.add(money);
 		row.add(field);
+		row.add(totalLabel);
+
+		row.setOpaque(true);
+		row.setBackground(Color.decode("#CCFFB2"));
+		row.setBorder(BorderFactory.createEtchedBorder());
+
+		add(row);
+
+	}
+	
+	private void drawViewCashBreakDown() {
+
+		JLabel money, x, eq;
+
+		viewField = new ViewFormField("5");
+		viewField.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		
+		totalLabel = new JLabel("0.0");
+		totalLabel.setHorizontalAlignment(JLabel.CENTER);
+		totalLabel.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+
+		componentCount = panel.getComponentCount();
+		money = getALabel(moneyString[panel.getComponentCount()]);
+		money.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		
+		x = getALabel("x");
+		eq = getALabel("=");
+
+		// sum = Integer.parseInt(field.getText()) *
+		// Integer.parseInt(moneyString[panel.getComponentCount()]);
+
+		money.setBounds(2, 7, 50, 15);
+		x.setBounds(60, 5, 20, 20);
+		viewField.setBounds(100, 7, 100, 17);
+		
+		eq.setBounds(220, 5, 20, 20);
+		totalLabel.setBounds(240, 7, 100, 17);
+
+		if (componentCount != moneyString.length - 1
+				&& componentCount != moneyString.length - 2)
+			row.add(x);
+
+		row.add(eq);
+		row.add(money);
+		row.add(viewField);
 		row.add(totalLabel);
 
 		row.setOpaque(true);
