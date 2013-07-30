@@ -5,10 +5,14 @@ import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.ViewFormField;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -285,27 +289,38 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-					for (RowPanel rp : rowPanel) {
-						Product p = rp.getSelectedProduct();
-						ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
-								.getQuantityInKilo(), rp.getQuantityInSack()));
-					}
+					if (!uP.isClosed()) {
 
-					try {
-						Manager.accountReceivableManager.addAccountReceivable(ar);
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
 
-						System.out.println("balance: " + ar.getBalance());
-						Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
-						new SuccessPopup("Add").setVisible(true);
-						clearForm();
-					} catch (Exception e1) {
-						e1.printStackTrace();
+						// AccountReceivable ar = new AccountReceivable(d,
+						// (Person) customerCombo.getSelectedItem(),
+						// Manager.loggedInAccount);
+
+						for (RowPanel rp : rowPanel) {
+							Product p = rp.getSelectedProduct();
+							ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
+									.getQuantityInKilo(), rp.getQuantityInSack()));
+						}
+
+						ar.setRemarks(uP.getInput());
+
+						try {
+							Manager.accountReceivableManager.addAccountReceivable(ar);
+							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				} else
 					error.setText(msg);

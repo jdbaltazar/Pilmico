@@ -208,12 +208,12 @@ public class ViewExpensesForm extends EditFormPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 				
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					dailyExpenses.setValid(false);
-					dailyExpenses.setRemarks(uP.getReason());
+					dailyExpenses.setRemarks(uP.getInput());
 
 					try {
 						Manager.dailyExpenseManager.updateDailyExpenses(dailyExpenses);

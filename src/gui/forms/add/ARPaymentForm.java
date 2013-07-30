@@ -2,9 +2,13 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -184,26 +188,38 @@ public class ARPaymentForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (isValidated()) {
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					Person rep = null;
-					if (customerRepCombo.getSelectedItem() instanceof Person)
-						rep = (Person) customerRepCombo.getSelectedItem();
-					ARPayment arPayment = new ARPayment(accountReceivable, d, Double.parseDouble(fields.get(0).getText()), rep, Manager.loggedInAccount,
-							true, "");
 
-					try {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-						Manager.accountReceivableManager.addARPayment(arPayment);
-						accountReceivable.addARPayment(arPayment);
-						Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
-						if (Values.viewARForm != null)
-							Values.viewARForm.fillEntries();
-						Values.centerPanel.changeTable(Values.AR_PAYMENTS);
-						new SuccessPopup("Add").setVisible(true);
-						clearFields();
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-					} catch (Exception e1) {
-						e1.printStackTrace();
+					if (!uP.isClosed()) {
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						Person rep = null;
+						if (customerRepCombo.getSelectedItem() instanceof Person)
+							rep = (Person) customerRepCombo.getSelectedItem();
+						ARPayment arPayment = new ARPayment(accountReceivable, d, Double.parseDouble(fields.get(0).getText()), rep,
+								Manager.loggedInAccount, true, "");
+
+						arPayment.setRemarks(uP.getInput());
+
+						try {
+
+							Manager.accountReceivableManager.addARPayment(arPayment);
+							accountReceivable.addARPayment(arPayment);
+							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+							if (Values.viewARForm != null)
+								Values.viewARForm.fillEntries();
+
+							Values.centerPanel.changeTable(Values.AR_PAYMENTS);
+							new SuccessPopup("Add").setVisible(true);
+							clearFields();
+
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				} else
 					error.setText(msg);

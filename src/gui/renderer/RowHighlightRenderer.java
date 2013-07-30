@@ -10,6 +10,20 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
+import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.Expense;
+import common.entity.delivery.Delivery;
+import common.entity.deposit.Deposit;
+import common.entity.discountissue.DiscountIssue;
+import common.entity.pullout.PullOut;
+import common.entity.salary.SalaryRelease;
+import common.entity.sales.Sales;
+
+import util.Tables;
 import util.Values;
 
 public class RowHighlightRenderer extends DefaultTableCellRenderer {
@@ -20,19 +34,15 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 	Set<Integer> highlightedRows = new HashSet<Integer>();
 	Color selectedColor = new Color(0, 255, 255), backgroundColor1 = new Color(245, 245, 220), backgroundColor2 = new Color(220, 220, 220),
-			alertColor = new Color(255, 140, 140);
+			invalidColor = Color.decode("#F9CCCC");//= new Color(255, 140, 140);
 
-	private boolean onAlert;
-	private int alertOnQuantity, quantity, itemId;
+	private boolean valid = true;
+//	private int alertOnQuantity, quantity, itemId;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-		// column 5 for quantity
-
-		// System.out.println("value at column 0: "
-		// + Integer.parseInt(table.getValueAt(row, 0) + ""));
 
 		setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -44,56 +54,88 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 		if (isSelected) {
 			setBackground(selectedColor);
 			setForeground(Color.BLACK);
+		}
 
-			// System.out.println(table.getModel().getValueAt(row,
-			// table.getModel().getColumnCount()-2));
-		}/*
-		 * else setForeground(Color.BLACK);
-		 */
-		/*if (table.getColumnCount() > 7) {
-
-			// JTable target = (JTable) arg0.getSource();
-			// int row = target.getSelectedRow();
-			// row = target.convertRowIndexToModel(row);
-			//
-			// getValueAt(convertRowIndexToModel(row), 1)
-
-			// itemId = Integer.parseInt(table.getValueAt(row, 0) + "") - 1;
-			// quantity = Integer.parseInt(table.getValueAt(row, 5) + "");
-
-			@SuppressWarnings("unchecked")
-			List<Item> items = (List<Item>) Values.tablePanel.getSoyTable().getObjects();
-
-			itemId = Integer.parseInt((String) table.getValueAt(table.convertRowIndexToModel(row), 0));
-
-			try {
-
-				Item item = items.get(table.convertRowIndexToModel(row));
-				// Item item = Manager.itemManager.getItem(itemId);
-				onAlert = item.isAllowAllert();
-				if (onAlert) {
-					onAlert = item.getUnitsOnStock() <= item.getAlertOnQuantity();
-				}
-
-				
-				 * quantity = Manager.itemManager.getItems()
-				 * .get(Integer.parseInt(table.getValueAt(row, 0) + "") - 1)
-				 * .getUnitsOnStock();
-				 
-
-				// alertOnQuantity =
-				// Manager.itemManager.getItems().get(itemId).getAlertOnQuantity();
-				// onAlert =
-				// Manager.itemManager.getItems().get(itemId).isAllowAllert();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (onAlert) {
-				setBackground(alertColor);
-			}
-		}*/
+		if(table.getName().equals(Tables.SALES)){
+			List<Sales> sales = (List<Sales>) Values.tablePanel.getSoyTable().getObjects();
+			Sales object = sales.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+			
+		}
+		else if(table.getName().equals(Tables.EXPENSES)){
+			List<DailyExpenses> expense = (List<DailyExpenses>) Values.tablePanel.getSoyTable().getObjects();
+			DailyExpenses object = expense.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.SALARY)){
+			List<SalaryRelease> sr = (List<SalaryRelease>) Values.tablePanel.getSoyTable().getObjects();
+			SalaryRelease object = sr.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.DELIVERIES)){
+			List<Delivery> delivery = (List<Delivery>) Values.tablePanel.getSoyTable().getObjects();
+			Delivery object = delivery.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.PULLOUTS)){
+			List<PullOut> po = (List<PullOut>) Values.tablePanel.getSoyTable().getObjects();
+			PullOut object = po.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.ACCOUNT_RECEIVABLES)){
+			List<AccountReceivable> ar = (List<AccountReceivable>) Values.tablePanel.getSoyTable().getObjects();
+			AccountReceivable object = ar.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.AR_PAYMENTS)){
+			List<ARPayment> arp = (List<ARPayment>) Values.tablePanel.getSoyTable().getObjects();
+			ARPayment object = arp.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.CASH_ADVANCE)){
+			List<CashAdvance> ca = (List<CashAdvance>) Values.tablePanel.getSoyTable().getObjects();
+			CashAdvance object = ca.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.CA_PAYMENTS)){
+			List<CAPayment> cap = (List<CAPayment>) Values.tablePanel.getSoyTable().getObjects();
+			CAPayment object = cap.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.DISCOUNTS)){
+			List<DiscountIssue> di = (List<DiscountIssue>) Values.tablePanel.getSoyTable().getObjects();
+			DiscountIssue object = di.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		else if(table.getName().equals(Tables.DEPOSITS)){
+			List<Deposit> d = (List<Deposit>) Values.tablePanel.getSoyTable().getObjects();
+			Deposit object = d.get(table.convertRowIndexToModel(row));
+			
+			valid = object.isValid();
+		}
+		
+		if (!valid) {
+			setBackground(invalidColor);
+		}
 
 		return this;
 	}

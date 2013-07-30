@@ -197,7 +197,7 @@ public class CenterPanel extends SoyPanel {
 			String[] headers = { "IS No", "Date", "Cash on Hand", "Over/Short", "Amount", "Issued by", "Remarks" };
 			String[][] entries = new String[1][headers.length];
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), Tables.INVENTORY_SHEET), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, null, Tables.INVENTORY_SHEET), Tables.INVENTORY_SHEET), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -224,7 +224,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][7] = de.getRemarks();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, dailyExpenses), Tables.EXPENSES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, dailyExpenses, Tables.EXPENSES), Tables.EXPENSES), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -252,7 +252,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][6] = s.getRemarks();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, sales), Tables.SALES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, sales, Tables.SALES), Tables.SALES), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -281,7 +281,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][7] = arp.getRemarks();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, arPayments), Tables.AR_PAYMENTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, arPayments, Tables.AR_PAYMENTS), Tables.AR_PAYMENTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -312,7 +312,8 @@ public class CenterPanel extends SoyPanel {
 
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, accountReceivables), Tables.ACCOUNT_RECEIVABLES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, accountReceivables, Tables.ACCOUNT_RECEIVABLES), Tables.ACCOUNT_RECEIVABLES),
+					BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -342,7 +343,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][6] = pullOut.getRemarks();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, pullOuts), Tables.PULLOUTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, pullOuts, Tables.PULLOUTS), Tables.PULLOUTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -372,7 +373,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, cashAdvances), Tables.CASH_ADVANCE), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, cashAdvances, Tables.CASH_ADVANCE), Tables.CASH_ADVANCE), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -404,7 +405,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, caps), Tables.CA_PAYMENTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, caps, Tables.CA_PAYMENTS), Tables.CA_PAYMENTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -439,7 +440,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, salaryReleases), Tables.SALARY), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, salaryReleases, Tables.SALARY), Tables.SALARY), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -474,7 +475,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, deliveries), Tables.DELIVERIES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, deliveries, Tables.DELIVERIES), Tables.DELIVERIES), BorderLayout.CENTER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -501,7 +502,7 @@ public class CenterPanel extends SoyPanel {
 			// { "2", "Universal Feeds Corp.", "Tacloban City", "325-5689",
 			// "Pugad Baboy" } };
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, suppliers), Tables.SUPPLIERS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, suppliers, Tables.SUPPLIERS), Tables.SUPPLIERS), BorderLayout.CENTER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -527,7 +528,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, dis), Tables.DISCOUNTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, dis, Tables.DISCOUNTS), Tables.DISCOUNTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -555,7 +556,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, deposits), Tables.DEPOSITS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, deposits, Tables.DEPOSITS), Tables.DEPOSITS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -577,7 +578,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, banks), Tables.BANK), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, banks, Tables.BANK), Tables.BANK), BorderLayout.CENTER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -601,7 +602,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][3] = p.getContactNo();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, customers), Tables.CUSTOMERS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, customers, Tables.CUSTOMERS), Tables.CUSTOMERS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -628,7 +629,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][5] = e.getStatus().getStatus();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, employees), Tables.EMPLOYEES), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, employees, Tables.EMPLOYEES), Tables.EMPLOYEES), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -651,7 +652,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][5] = a.getEmployee().getStatus().getStatus();
 				i++;
 			}
-			add(new TableUtilPanel(new TablePanel(entries, headers, accounts), Tables.ACCOUNTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, accounts, Tables.ACCOUNTS), Tables.ACCOUNTS), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -678,7 +679,7 @@ public class CenterPanel extends SoyPanel {
 				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, products), Tables.PRODUCTS), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, products, Tables.PRODUCTS), Tables.PRODUCTS), BorderLayout.CENTER);
 
 			// on displayPopup
 			if (Values.productOnDisplayPopup == null)
@@ -702,7 +703,7 @@ public class CenterPanel extends SoyPanel {
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMinWidth(200);
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMaxWidth(200);
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null), "LOGS"), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, null, Tables.LOGS), "LOGS"), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

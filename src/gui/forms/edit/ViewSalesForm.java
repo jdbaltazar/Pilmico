@@ -309,12 +309,12 @@ public class ViewSalesForm extends EditFormPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					sales.setValid(false);
-					sales.setRemarks(uP.getReason());
+					sales.setRemarks(uP.getInput());
 
 					try {
 						Manager.salesManager.updateSales(sales);

@@ -3,10 +3,14 @@ package gui.forms.add;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -255,6 +259,13 @@ public class ExpensesForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				if (isValidated() && !hasBlankEntry() && !hasZeroQuantity()) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+					
+					if (!uP.isClosed()) {
 					
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					DailyExpenses de = new DailyExpenses(d,
@@ -282,6 +293,8 @@ public class ExpensesForm extends SimplePanel {
 						de.addDailyExpenseDetail(new DailyExpensesDetail(de,
 								expense, rp.getExpenseAmount()));
 					}
+					
+					de.setRemarks(uP.getInput());
 
 					try {
 						Manager.dailyExpenseManager.addDailyExpenses(de);
@@ -291,6 +304,7 @@ public class ExpensesForm extends SimplePanel {
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					}
 					}
 				}
 				else

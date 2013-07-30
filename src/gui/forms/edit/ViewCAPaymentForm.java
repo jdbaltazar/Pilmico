@@ -69,34 +69,34 @@ public class ViewCAPaymentForm extends EditFormPanel {
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
 		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
-		voidBtn.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-				uP.setVisible(true);
-
-				if (!uP.getReason().equals("")) {
-					caPayment.setValid(false);
-					caPayment.setRemarks(uP.getReason());
-
-					try {
-						Manager.cashAdvanceManager.updateCAPayment(caPayment);
-						caPayment.getCashAdvance().setBalance(caPayment.getCashAdvance().getBalance() + caPayment.getAmount());
-						Manager.cashAdvanceManager.updateCashAdvance(caPayment.getCashAdvance());
-						if (Values.viewCAForm != null)
-							Values.viewCAForm.fillEntries();
-
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.CA_PAYMENTS);
-				}
-			}
-		});
+//		voidBtn.addMouseListener(new MouseAdapter() {
+//			public void mouseClicked(MouseEvent e) {
+//				PointerInfo a = MouseInfo.getPointerInfo();
+//				Point b = a.getLocation();
+//				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+//				uP.setVisible(true);
+//
+//				if (!uP.getReason().equals("")) {
+//					caPayment.setValid(false);
+//					caPayment.setRemarks(uP.getReason());
+//
+//					try {
+//						Manager.cashAdvanceManager.updateCAPayment(caPayment);
+//						caPayment.getCashAdvance().setBalance(caPayment.getCashAdvance().getBalance() + caPayment.getAmount());
+//						Manager.cashAdvanceManager.updateCashAdvance(caPayment.getCashAdvance());
+//						if (Values.viewCAForm != null)
+//							Values.viewCAForm.fillEntries();
+//
+//					} catch (Exception e1) {
+//						e1.printStackTrace();
+//					}
+//
+//					Values.editPanel.startAnimation();
+//					new SuccessPopup("Invalidation").setVisible(true);
+//					Values.centerPanel.changeTable(Values.CA_PAYMENTS);
+//				}
+//			}
+//		});
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));

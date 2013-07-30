@@ -4,10 +4,14 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -247,25 +251,42 @@ public class PulloutForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()){
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				PullOut pullOut = new PullOut(d, Manager.loggedInAccount);
+				if (isValidated() && !hasMultipleProduct()
+						&& !hasBlankProduct() && !hasZeroQuantity()) {
 
-				for (RowPanel rp : rowPanel) {
-					Product product = rp.getSelectedProduct();
-					pullOut.addPullOutDetail(new PullOutDetail(pullOut, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
-							.getQuantityInKilo(), rp.getQuantityInSack()));
-				}
-				try {
-					Manager.pullOutManager.addPullOut(pullOut);
-					Values.centerPanel.changeTable(Values.PULLOUT);
-					new SuccessPopup("Add").setVisible(true);
-					clearForm();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+
+					if (!uP.isClosed()) {
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						PullOut pullOut = new PullOut(d,
+								Manager.loggedInAccount);
+
+						for (RowPanel rp : rowPanel) {
+							Product product = rp.getSelectedProduct();
+							pullOut.addPullOutDetail(new PullOutDetail(pullOut,
+									product, product.getCurrentPricePerKilo(),
+									product.getCurrentPricePerSack(), rp
+											.getQuantityInKilo(), rp
+											.getQuantityInSack()));
+						}
+						
+						pullOut.setRemarks(uP.getInput());
+						
+						try {
+							Manager.pullOutManager.addPullOut(pullOut);
+							Values.centerPanel.changeTable(Values.PULLOUT);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				} else
 					error.setText(msg);
 
 			}

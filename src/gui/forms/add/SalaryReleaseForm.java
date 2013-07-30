@@ -4,10 +4,14 @@ import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -281,41 +285,56 @@ public class SalaryReleaseForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				
-				if(isValidated()&&!hasBlankEntry() && !hasZeroQuantity()){
+				if (isValidated() && !hasBlankEntry() && !hasZeroQuantity()) {
 
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				Employee emp = (Employee) issuedFor.getSelectedItem();
-				SalaryRelease salaryRelease = new SalaryRelease(d, emp, emp.getSalary(), Manager.loggedInAccount, true, "");
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-				for (RowPanel rp : feesRowPanel) {
-					String f = rp.getSelectedFee();
-					Fee fee = null;
-					try {
-						fee = Manager.salaryReleaseManager.searchFee(f);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					if (fee == null) {
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+
+					if (!uP.isClosed()) {
+
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						Employee emp = (Employee) issuedFor.getSelectedItem();
+						SalaryRelease salaryRelease = new SalaryRelease(d, emp,
+								emp.getSalary(), Manager.loggedInAccount, true,
+								"");
+
+						for (RowPanel rp : feesRowPanel) {
+							String f = rp.getSelectedFee();
+							Fee fee = null;
+							try {
+								fee = Manager.salaryReleaseManager.searchFee(f);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+							if (fee == null) {
+								try {
+									fee = new Fee(f);
+									Manager.salaryReleaseManager.addFees(fee);
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							}
+							salaryRelease.addFeeDeduction(new FeeDeduction(fee,
+									salaryRelease, rp.getFeeAmout()));
+						}
+
+						salaryRelease.setRemarks(uP.getInput());
+						
 						try {
-							fee = new Fee(f);
-							Manager.salaryReleaseManager.addFees(fee);
+							Manager.salaryReleaseManager
+									.addSalaryRelease(salaryRelease);
+
+							Values.centerPanel.changeTable(Values.SALARY);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
 						} catch (Exception e1) {
-							e1.printStackTrace();
+							// TODO Auto-generated catch block
 						}
 					}
-					salaryRelease.addFeeDeduction(new FeeDeduction(fee, salaryRelease, rp.getFeeAmout()));
-				}
-
-				try {
-					Manager.salaryReleaseManager.addSalaryRelease(salaryRelease);
-
-					Values.centerPanel.changeTable(Values.SALARY);
-					new SuccessPopup("Add").setVisible(true);
-					clearForm();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-				}
-				}else
+				} else
 					error.setText(msg);
 
 			}

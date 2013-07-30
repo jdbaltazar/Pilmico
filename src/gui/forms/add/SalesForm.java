@@ -5,10 +5,14 @@ import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.FormField;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -423,33 +427,51 @@ public class SalesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				
-				if(isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()){
+				if (isValidated() && !hasMultipleProduct()
+						&& !hasBlankProduct() && !hasZeroQuantity()) {
+					
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-				System.out.println("date: " + d.toString());
-				Date d2 = ((SpinnerDateModel) issueDate.getModel()).getDate();
-				Person p = null;
-				if (customerCombo.getSelectedItem() != null) {
-					p = (Person) customerCombo.getSelectedItem();
-				}
-				Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), d2, receipt_no.getText(), Manager.loggedInAccount);
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+					
+					if (!uP.isClosed()) {
 
-				for (RowPanel rp : rowPanel) {
-					Product product = rp.getSelectedProduct();
-					s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp
-							.getQuantityInSack()));
-				}
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						System.out.println("date: " + d.toString());
+						Date d2 = ((SpinnerDateModel) issueDate.getModel())
+								.getDate();
+						Person p = null;
+						if (customerCombo.getSelectedItem() != null) {
+							p = (Person) customerCombo.getSelectedItem();
+						}
+						Sales s = new Sales(d, p, rc_no.getText(), issuedAt
+								.getText(), d2, receipt_no.getText(),
+								Manager.loggedInAccount);
 
-				try {
-					Manager.salesManager.addSales(s);
-					Values.centerPanel.changeTable(Values.SALES);
-					new SuccessPopup("Add").setVisible(true);
-					clearForm();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+						s.setRemarks(uP.getInput());
+						
+						for (RowPanel rp : rowPanel) {
+							Product product = rp.getSelectedProduct();
+							s.addSalesDetail(new SalesDetail(s, product,
+									product.getCurrentPricePerKilo(), product
+											.getCurrentPricePerSack(), rp
+											.getQuantityInKilo(), rp
+											.getQuantityInSack()));
+						}
+
+						try {
+							Manager.salesManager.addSales(s);
+							Values.centerPanel.changeTable(Values.SALES);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				} else
 					error.setText(msg);
 			}
 		});
@@ -538,6 +560,8 @@ public class SalesForm extends SimplePanel {
 		error.setText("");
 
 		refreshCustomer(true);
+		
+		showUnrequired(false);
 	}
 
 	public void refreshDate() {

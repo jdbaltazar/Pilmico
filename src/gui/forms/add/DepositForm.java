@@ -5,9 +5,13 @@ import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -206,6 +210,13 @@ public class DepositForm extends SimplePanel {
 				// depositor, Account issuedBy, boolean valid, String remarks
 
 				if (isValidated()) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+					
+					if (!uP.isClosed()) {
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					Deposit deposit = new Deposit(d,
 							(BankAccount) bankAcctCombo.getSelectedItem(),
@@ -213,6 +224,7 @@ public class DepositForm extends SimplePanel {
 							(Employee) depositorCombo.getSelectedItem(),
 							Manager.loggedInAccount, true, "");
 
+					deposit.setRemarks(uP.getInput());
 					try {
 						Manager.depositManager.addDeposit(deposit);
 
@@ -222,6 +234,7 @@ public class DepositForm extends SimplePanel {
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					}
 					}
 				} else
 					error.setText(msg);

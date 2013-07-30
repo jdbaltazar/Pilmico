@@ -299,12 +299,12 @@ public class ViewDeliveryForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 				
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					delivery.setValid(false);
-					delivery.setRemarks(uP.getReason());
+					delivery.setRemarks(uP.getInput());
 
 					try {
 						Manager.deliveryManager

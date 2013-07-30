@@ -2,9 +2,13 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -185,10 +189,18 @@ public class CAPaymentForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				if (isValidated()) {
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
+					
+					if (!uP.isClosed()) {
 					Date d = ((SpinnerDateModel) date.getModel()).getDate();
 					CAPayment caPayment = new CAPayment(cashAdvance, d, Double.parseDouble(fields.get(0).getText()), null, Manager.loggedInAccount, true,
 							"");
 
+					caPayment.setRemarks(uP.getInput());
 					try {
 						Manager.cashAdvanceManager.addCAPayment(caPayment);
 						cashAdvance.addCAPayment(caPayment);
@@ -200,6 +212,7 @@ public class CAPaymentForm extends SimplePanel {
 						clearFields();
 					} catch (Exception e1) {
 						e1.printStackTrace();
+					}
 					}
 				} else
 					error.setText(msg);

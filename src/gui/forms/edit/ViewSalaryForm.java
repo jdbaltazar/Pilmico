@@ -287,12 +287,12 @@ public class ViewSalaryForm extends EditFormPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 
-				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 				
-				if (!uP.getReason().equals("")) {
+				if (!uP.getInput().equals("")) {
 					salaryRelease.setValid(false);
-					salaryRelease.setRemarks(uP.getReason());
+					salaryRelease.setRemarks(uP.getInput());
 
 					try {
 						Manager.salaryReleaseManager

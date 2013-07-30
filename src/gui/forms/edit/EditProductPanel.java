@@ -223,7 +223,10 @@ public class EditProductPanel extends EditFormPanel {
 				try {
 					Manager.productManager.updateProduct(product);
 
-					System.out.println("Edit successful!!");
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Edit").setVisible(true);
+					Values.centerPanel.changeTable(Values.PRODUCTS);
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
