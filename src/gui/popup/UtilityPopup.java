@@ -33,7 +33,8 @@ import util.Values;
 public class UtilityPopup extends JDialog {
 
 	private final int WIDTH = 155, HEIGHT = 55;
-	private FormField field;
+	private FormField field, username, password;
+
 	private JNumericField numField;
 	private Point p;
 	private int utility;
@@ -41,7 +42,7 @@ public class UtilityPopup extends JDialog {
 	private SBButton close;
 	private ErrorLabel utilityLabel;
 	
-	private boolean isClosed = false;
+	private boolean isClosed = false, verified = false;
 	
 	private String input = "";
 
@@ -64,18 +65,19 @@ public class UtilityPopup extends JDialog {
 
 		if (utility == Values.CATEGORY)
 			setSize(WIDTH, HEIGHT);
-		else if (utility == Values.PCOH){
+		else if (utility == Values.PCOH) {
 			setSize(215, HEIGHT);
-		}
-		else if (utility == Values.REMARKS){
+		} else if (utility == Values.REMARKS) {
 			setLocation(p.x, p.y - 55);
 			setSize(305, HEIGHT);
-		}
-		else{
+		}else if (utility == Values.DATABASE) {
+			setSize(165, 80);
+		}  
+		else {
 			setLocation(p.x - 300, p.y);
 			setSize(305, HEIGHT);
 		}
-		
+
 		setBackground(new Color(0,0,0,0));
 	}
 
@@ -120,6 +122,24 @@ public class UtilityPopup extends JDialog {
 			
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
+		}
+		
+		else if (utility == Values.DATABASE){
+			username = new FormField("Root username", 100, Color.white, Color.gray);
+			password = new FormField("Root Password", 100, Color.white, Color.gray);
+			
+			password.setForeground(Color.white);
+			
+			utilityLabel.setForeground(Color.decode("#FF4500"));
+			utilityLabel.setText("*Required");
+			
+			username.setBounds(5, 20, 150, 20);
+			password.setBounds(5, 45, 150, 20);
+			
+			close.setBounds(142, 2, 16, 16);
+			
+			panel.add(username);
+			panel.add(password);
 		}
 		
 		else {
@@ -180,6 +200,17 @@ public class UtilityPopup extends JDialog {
 				}
 			}
 		});
+		
+		
+		password.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 
 		close.addActionListener(new ActionListener() {
 
@@ -215,9 +246,25 @@ public class UtilityPopup extends JDialog {
 	public boolean isClosed() {
 		return isClosed;
 	}
-
+	
 	public void setClosed(boolean isClosed) {
 		this.isClosed = isClosed;
+	}
+	
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+	
+	public FormField getPassword() {
+		return password;
+	}
+
+	public FormField getUsername() {
+		return username;
 	}
 
 }

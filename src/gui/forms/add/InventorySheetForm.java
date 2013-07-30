@@ -186,7 +186,7 @@ public class InventorySheetForm extends SimplePanel {
 
 		dateLabel = new MainFormLabel("Date:");
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new SpinnerDate("dd MMM yyyy");
 
 		productLabel = new TableHeaderLabel("Products");
 		productLabel2 = new TableHeaderLabel("Products");
