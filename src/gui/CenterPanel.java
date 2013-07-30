@@ -1,6 +1,5 @@
 package gui;
 
-import gui.graph.LinePlot;
 import gui.panels.LoginPanel;
 import gui.panels.MenuPanel;
 import gui.panels.TablePanel;
@@ -17,8 +16,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import util.DateFormatter;
 import util.Tables;
 import util.Utility;
@@ -34,10 +31,8 @@ import common.entity.delivery.Delivery;
 import common.entity.deposit.Bank;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
-import common.entity.inventorysheet.InventorySheetData;
 import common.entity.product.Product;
 import common.entity.profile.Account;
-import common.entity.profile.AccountType;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.entity.pullout.PullOut;

@@ -42,7 +42,7 @@ public class InventorySheetData {
 	private int id;
 
 	@Column(name = "date")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date date;
 
 	@Column(name = "previous_acoh")
@@ -61,43 +61,43 @@ public class InventorySheetData {
 	@Column
 	private String remarks;
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<InventorySheetDataDetail> inventorySheetDataDetails = new HashSet<InventorySheetDataDetail>();
 
-	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.EAGER)
 	private Breakdown breakdown;
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Delivery> deliveries = new HashSet<Delivery>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PullOut> pullouts = new HashSet<PullOut>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Sales> sales = new HashSet<Sales>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<AccountReceivable> accountReceivables = new HashSet<AccountReceivable>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DiscountIssue> discountIssues = new HashSet<DiscountIssue>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ARPayment> arPayments = new HashSet<ARPayment>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CAPayment> caPayments = new HashSet<CAPayment>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DailyExpenses> dailyExpenses = new HashSet<DailyExpenses>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CashAdvance> cashAdvances = new HashSet<CashAdvance>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<SalaryRelease> salaryReleases = new HashSet<SalaryRelease>();
 
-	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Deposit> deposits = new HashSet<Deposit>();
 
 	public InventorySheetData() {
