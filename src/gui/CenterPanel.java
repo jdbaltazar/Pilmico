@@ -48,7 +48,6 @@ public class CenterPanel extends SoyPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 2776395185621879934L;
-	private LinePlot linePlot;
 
 	public CenterPanel() {
 		super();
@@ -58,7 +57,6 @@ public class CenterPanel extends SoyPanel {
 	}
 
 	private void init() {
-		linePlot = new LinePlot();
 		setLayout(new BorderLayout());
 	}
 
@@ -174,7 +172,7 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		case Values.SALES_GRAPH:
-			add(linePlot, BorderLayout.CENTER);
+			add(new LinePlot(), BorderLayout.CENTER);
 
 			// add(Values.salesGraphForm, BorderLayout.CENTER);
 			// // add(new TableUtilPanel(new TablePanel(null, null, null),

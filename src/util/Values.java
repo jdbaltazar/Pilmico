@@ -16,7 +16,6 @@ import gui.forms.add.ProductForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
-import gui.forms.add.SalesGraphForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
@@ -26,6 +25,7 @@ import gui.forms.edit.EditSalesOrder;
 import gui.forms.edit.EditStockPurchase;
 import gui.forms.edit.ViewARForm;
 import gui.forms.edit.ViewCAForm;
+import gui.graph.LinePlot;
 import gui.list.AccountTypeList;
 import gui.list.CategoryList;
 import gui.list.ConditionList;
@@ -83,7 +83,7 @@ public class Values {
 	public static ViewCAForm viewCAForm;
 	public static ViewARForm viewARForm;
 
-	public static SalesGraphForm salesGraphForm;
+	public static LinePlot linePlot;
 
 	public static ProductOnDisplayPopup productOnDisplayPopup;
 
@@ -126,7 +126,7 @@ public class Values {
 	public static final int ACCOUNT_TYPE = 3;
 	public static final int LOG_TYPE = 4;
 	public static final int NOTE_TYPE = 5;
-	
+
 	public static final int INVALIDATE = 6;
 	public static final int PCOH = 7;
 	public static final int REMARKS = 8;

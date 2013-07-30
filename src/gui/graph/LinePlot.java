@@ -26,9 +26,18 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
+import common.manager.Manager;
+
+import util.Values;
 
 import de.erichseifert.gral.data.Column;
 import de.erichseifert.gral.data.DataTable;
@@ -68,20 +77,52 @@ public class LinePlot extends ExamplePanel {
 		// x and y axes labels
 		// show data(x, y) values when hovered
 
-		Calendar d1 = Calendar.getInstance();
-		d1.set(Calendar.HOUR, 0);
-		d1.set(Calendar.YEAR, 2013);
-		d1.set(Calendar.MONTH, Calendar.APRIL);
-		d1.set(Calendar.DATE, 20);
+		List<InventorySheetData> isds = new ArrayList<InventorySheetData>();
+		List<InventorySheet> iss = new ArrayList<InventorySheet>();
+
+		try {
+			isds = Manager.inventorySheetDataManager.getInventorySheetsData();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		for (InventorySheetData isd : isds) {
+			iss.add(new InventorySheet(isd));
+		}
 
 		DataTable data = new DataTable(Long.class, Double.class);
-		data.add(d1.getTime().getTime(), 100d);
-		d1.set(Calendar.DATE, 21);
-		data.add(d1.getTime().getTime(), 50d);
-		d1.set(Calendar.DATE, 22);
-		data.add(d1.getTime().getTime(), 75d);
-		d1.set(Calendar.DATE, 23);
-		data.add(d1.getTime().getTime(), 75d);
+		for (InventorySheet is : iss) {
+			data.add(is.getInventorySheetData().getDate().getTime(), is.getOverallCashAndCheckSalesAmount());
+		}
+
+		// Calendar d1 = Calendar.getInstance();
+		// d1.set(Calendar.HOUR, 0);
+		// d1.set(Calendar.YEAR, 2013);
+		// d1.set(Calendar.MONTH, Calendar.APRIL);
+		// d1.set(Calendar.DATE, 20);
+		//
+		// data.add(d1.getTime().getTime(), 100d);
+		// d1.set(Calendar.DATE, 21);
+		// data.add(d1.getTime().getTime(), 50d);
+		// d1.set(Calendar.DATE, 22);
+		// data.add(d1.getTime().getTime(), 75d);
+		// d1.set(Calendar.DATE, 23);
+		// data.add(d1.getTime().getTime(), 75d);
+
+		// Calendar d1 = Calendar.getInstance();
+		// d1.set(Calendar.HOUR, 0);
+		// d1.set(Calendar.YEAR, 2013);
+		// d1.set(Calendar.MONTH, Calendar.APRIL);
+		// d1.set(Calendar.DATE, 20);
+		//
+		// DataTable data = new DataTable(Long.class, Double.class);
+		// data.add(d1.getTime().getTime(), 100d);
+		// d1.set(Calendar.DATE, 21);
+		// data.add(d1.getTime().getTime(), 50d);
+		// d1.set(Calendar.DATE, 22);
+		// data.add(d1.getTime().getTime(), 75d);
+		// d1.set(Calendar.DATE, 23);
+		// data.add(d1.getTime().getTime(), 75d);
 
 		// Create and format plot
 		XYPlot plotLower = new XYPlot(data);
@@ -106,7 +147,7 @@ public class LinePlot extends ExamplePanel {
 		plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
 
 		plotLower.setSetting(Plot.TITLE, "Pilmico Daily Sales");
-		
+
 		// insert Pilmico Font here
 		// plotLower.setSetting(Plot.TITLE_FONT, n);
 		// plotLower.setSetting(Plot.LEGEND, true);
@@ -130,55 +171,66 @@ public class LinePlot extends ExamplePanel {
 
 		InteractivePanel panel = new InteractivePanel(plots);
 		add(panel);
+
+		Values.linePlot = this;
+
+		if (iss.size() == 0)
+			JOptionPane.showMessageDialog(Values.mainFrame, "No Inventory Sheet data found! \nAt least two Inventory Sheets needed for graphing.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	@SuppressWarnings("unchecked")
-	public LinePlot(String title, String description, String xAxisTitle, String yAxisTitle, List<Date> dates, List<Double> values) throws Exception {
-		super();
-		this.title = title;
-		this.description = description;
-		this.xAxisTitle = xAxisTitle;
-		this.yAxisTitle = yAxisTitle;
-		this.dates = dates;
-		this.values = values;
-
-		if (dates.size() != values.size())
-			throw new Exception("Size of dates and values do not match!");
-
-		DataTable data = new DataTable(Long.class, Double.class);
-		int i = 0;
-		for (Date d : dates) {
-			data.add(d.getTime(), values.get(i));
-			i++;
-		}
-
-		XYPlot plotLower = new XYPlot(data);
-		// Format all number as time
-		AxisRenderer rendererX = plotLower.getAxisRenderer(XYPlot.AXIS_X);
-		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.DATE_FIELD);
-		rendererX.setSetting(AxisRenderer.TICK_LABELS_FORMAT, dateFormat);
-
-		Color colorLower = COLOR1;
-		PointRenderer pointsLower = plotLower.getPointRenderer(data);
-		pointsLower.setSetting(PointRenderer.COLOR, colorLower);
-		pointsLower.setSetting(PointRenderer.SHAPE, new Ellipse2D.Double(-3, -3, 6, 6));
-		LineRenderer lineLower = new DefaultLineRenderer2D();
-		lineLower.setSetting(LineRenderer.STROKE, new BasicStroke(2f));
-		lineLower.setSetting(LineRenderer.GAP, 1.0);
-		lineLower.setSetting(LineRenderer.COLOR, colorLower);
-		plotLower.setLineRenderer(data, lineLower);
-		plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
-
-		DrawableContainer plots = new DrawableContainer(new TableLayout(1));
-		// plots.add(plotUpper);
-		plots.add(plotLower);
-
-		// Connect the two plots, i.e. user (mouse) actions affect both plots
-		// plotUpper.getNavigator().connect(plotLower.getNavigator());
-
-		InteractivePanel panel = new InteractivePanel(plots);
-		add(panel);
-	}
+	// @SuppressWarnings("unchecked")
+	// public LinePlot(String title, String description, String xAxisTitle,
+	// String yAxisTitle, List<Date> dates, List<Double> values) throws Exception
+	// {
+	// super();
+	// this.title = title;
+	// this.description = description;
+	// this.xAxisTitle = xAxisTitle;
+	// this.yAxisTitle = yAxisTitle;
+	// this.dates = dates;
+	// this.values = values;
+	//
+	// if (dates.size() != values.size())
+	// throw new Exception("Size of dates and values do not match!");
+	//
+	// DataTable data = new DataTable(Long.class, Double.class);
+	// int i = 0;
+	// for (Date d : dates) {
+	// data.add(d.getTime(), values.get(i));
+	// i++;
+	// }
+	//
+	// XYPlot plotLower = new XYPlot(data);
+	// // Format all number as time
+	// AxisRenderer rendererX = plotLower.getAxisRenderer(XYPlot.AXIS_X);
+	// DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.DATE_FIELD);
+	// rendererX.setSetting(AxisRenderer.TICK_LABELS_FORMAT, dateFormat);
+	//
+	// Color colorLower = COLOR1;
+	// PointRenderer pointsLower = plotLower.getPointRenderer(data);
+	// pointsLower.setSetting(PointRenderer.COLOR, colorLower);
+	// pointsLower.setSetting(PointRenderer.SHAPE, new Ellipse2D.Double(-3, -3,
+	// 6, 6));
+	// LineRenderer lineLower = new DefaultLineRenderer2D();
+	// lineLower.setSetting(LineRenderer.STROKE, new BasicStroke(2f));
+	// lineLower.setSetting(LineRenderer.GAP, 1.0);
+	// lineLower.setSetting(LineRenderer.COLOR, colorLower);
+	// plotLower.setLineRenderer(data, lineLower);
+	// plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
+	//
+	// DrawableContainer plots = new DrawableContainer(new TableLayout(1));
+	// // plots.add(plotUpper);
+	// plots.add(plotLower);
+	//
+	// // Connect the two plots, i.e. user (mouse) actions affect both plots
+	// // plotUpper.getNavigator().connect(plotLower.getNavigator());
+	//
+	// InteractivePanel panel = new InteractivePanel(plots);
+	// add(panel);
+	//
+	//
+	// Values.linePlot = this;
+	// }
 
 	@Override
 	public String getTitle() {
