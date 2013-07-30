@@ -132,13 +132,7 @@ public class CAPaymentForm extends SimplePanel {
 			}
 		}
 
-		employeeRepCombo = new JComboBox();
-		employeeRepCombo.setEditable(true);
-		employeeRepCombo.setSelectedIndex(-1);
-		employeeRepComboField = (JTextField) employeeRepCombo.getEditor().getEditorComponent();
-		employeeRepComboField.setText("");
-		employeeRepComboField.setOpaque(false);
-		employeeRepComboField.addKeyListener(new ComboKeyHandler(employeeRepCombo));
+		refreshDropdown(false);
 
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 53) {
@@ -169,7 +163,6 @@ public class CAPaymentForm extends SimplePanel {
 			if (i == 3) {
 				fwd.setBounds(x1 + 129, initY + y - 11, 16, 16);
 				customerRepLabel.setBounds(x1, initY + y - 7, 200, 11);
-				employeeRepCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
 		}
 
@@ -232,7 +225,6 @@ public class CAPaymentForm extends SimplePanel {
 		panel.add(date);
 
 		panel.add(customerRepLabel);
-		panel.add(employeeRepCombo);
 
 		panel.add(caIDLabel);
 		panel.add(caID);
@@ -253,15 +245,6 @@ public class CAPaymentForm extends SimplePanel {
 		caID.setText(cashAdvance != null ? cashAdvance.getId() + "" : "");
 		date.setValue(new Date());
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
-		try {
-			List<Person> employeeRep = Manager.employeePersonManager.getPersons();
-			if (employeeRep.size() > 0) {
-				employeeRepCombo.setModel(new DefaultComboBoxModel(employeeRep.toArray()));
-				employeeRepCombo.setSelectedIndex(-1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		fields.get(0).setText(cashAdvance != null ? cashAdvance.getBalance() + "" : "");
 	}
@@ -285,14 +268,31 @@ public class CAPaymentForm extends SimplePanel {
 		return false;
 	}
 
-	public void refreshDropdown() {
+	public void refreshDropdown(boolean remove) {
+		
+		if(remove)
+			panel.remove(employeeRepCombo);
+		
 		try {
-			model = new DefaultComboBoxModel();
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
 			// issuedBy = new FormDropdown();
 			// issuedBy.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+		
+		employeeRepCombo = new JComboBox();
+		employeeRepCombo.setEditable(true);
+		employeeRepComboField = (JTextField) employeeRepCombo.getEditor().getEditorComponent();
+		employeeRepComboField.setText("");
+		employeeRepComboField.setOpaque(false);
+		employeeRepComboField.addKeyListener(new ComboKeyHandler(employeeRepCombo));
+		
+		employeeRepCombo.setSelectedIndex(-1);
+		
+		employeeRepCombo.setBounds(40, 190, 200, 20);
+		
+		panel.add(employeeRepCombo);
 	}
 
 }

@@ -4,9 +4,11 @@ import gui.CenterPanel;
 import gui.FooterPanel;
 import gui.MainFrame;
 import gui.TopPanel;
+import gui.forms.add.ARPaymentForm;
 import gui.forms.add.AccountForm;
 import gui.forms.add.AccountReceivablesForm;
 import gui.forms.add.BankForm;
+import gui.forms.add.CAPaymentForm;
 import gui.forms.add.CashAdvanceForm;
 import gui.forms.add.DeliveryForm;
 import gui.forms.add.DepositForm;
@@ -19,6 +21,7 @@ import gui.forms.add.SalesForm;
 import gui.forms.add.SalesOrderForm;
 import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
+import gui.forms.edit.EditBankForm;
 import gui.forms.edit.EditEmployeeForm;
 import gui.forms.edit.EditProductPanel;
 import gui.forms.edit.EditSalesOrder;
@@ -82,6 +85,9 @@ public class Values {
 	public static EditEmployeeForm editEmployeeForm;
 	public static ViewCAForm viewCAForm;
 	public static ViewARForm viewARForm;
+	public static ARPaymentForm arPaymentForm;
+	public static CAPaymentForm caPaymentForm;
+	public static EditBankForm editBankForm;
 
 	public static LinePlot linePlot;
 

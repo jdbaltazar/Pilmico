@@ -92,6 +92,8 @@ public class ProfileForm extends SimplePanel {
 					Values.supplierForm.refreshCustomer(true);
 					Values.accountReceivablesForm.refreshCustomer(true);
 					Values.discountForm.refreshDropdown(true);
+					Values.arPaymentForm.refreshDropdown(true);
+					Values.caPaymentForm.refreshDropdown(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

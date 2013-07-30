@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 
 import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
+import common.entity.deposit.BankAccount;
 import common.entity.product.Product;
 import common.entity.salary.Fee;
 import common.manager.Manager;
@@ -259,7 +260,7 @@ public class RowPanel extends JPanel {
 			addExpensesRow();
 		else if (label.equals(Tables.SALARY))
 			addFeesRow();
-		else if (label.equals(Tables.BANK))
+		else if (label.equals(Tables.BANK) || label.equals(Tables.BANK_EDIT))
 			addBankAccountRow();
 		else if (label.equals(Tables.PRODUCTS))
 			addOnDisplayRow();
@@ -336,13 +337,26 @@ public class RowPanel extends JPanel {
 	}
 
 	private void addBankAccountRow() {
+		
+		if(label.equals(Tables.BANK_EDIT)){
+		
+			BankAccount bankAcct = (BankAccount) object;
+			
+			bankAccount.setText(bankAcct.getAccountNo());
+		}
+		
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Values.bankForm.removeRow(Integer.parseInt(e.getActionCommand()));
+				if (label.equals(Tables.BANK))
+					Values.bankForm.removeRow(Integer.parseInt(e
+							.getActionCommand()));
+				else
+					Values.editBankForm.removeRow(Integer.parseInt(e
+							.getActionCommand()));
 			}
 		});
 

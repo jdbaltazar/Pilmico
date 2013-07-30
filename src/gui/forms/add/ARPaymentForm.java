@@ -73,6 +73,8 @@ public class ARPaymentForm extends SimplePanel {
 	public ARPaymentForm() {
 		super("Add AR Payment");
 		addComponents();
+		
+		Values.arPaymentForm = this;
 	}
 
 	private void addComponents() {
@@ -132,13 +134,7 @@ public class ARPaymentForm extends SimplePanel {
 			}
 		}
 
-		customerRepCombo = new JComboBox();
-		customerRepCombo.setEditable(true);
-		customerRepCombo.setSelectedIndex(-1);
-		customerRepComboField = (JTextField) customerRepCombo.getEditor().getEditorComponent();
-		customerRepComboField.setText("");
-		customerRepComboField.setOpaque(false);
-		customerRepComboField.addKeyListener(new ComboKeyHandler(customerRepCombo));
+		refreshDropdown(false);
 
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 53) {
@@ -169,7 +165,7 @@ public class ARPaymentForm extends SimplePanel {
 			if (i == 3) {
 				fwd.setBounds(x1 + 129, initY + y - 11, 16, 16);
 				customerRepLabel.setBounds(x1, initY + y - 7, 200, 11);
-				customerRepCombo.setBounds(x1, initY + y + 5, 200, 20);
+				System.out.println("x1: "+x1+" y: "+(initY + y + 5));
 			}
 		}
 
@@ -213,6 +209,7 @@ public class ARPaymentForm extends SimplePanel {
 							if (Values.viewARForm != null)
 								Values.viewARForm.fillEntries();
 
+							Values.editPanel.startAnimation();
 							Values.centerPanel.changeTable(Values.AR_PAYMENTS);
 							new SuccessPopup("Add").setVisible(true);
 							clearFields();
@@ -239,7 +236,6 @@ public class ARPaymentForm extends SimplePanel {
 		panel.add(date);
 
 		panel.add(customerRepLabel);
-		panel.add(customerRepCombo);
 
 		panel.add(arIDLabel);
 		panel.add(arID);
@@ -260,16 +256,6 @@ public class ARPaymentForm extends SimplePanel {
 		arID.setText(accountReceivable != null ? accountReceivable.getId() + "" : "");
 		date.setValue(new Date());
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
-
-		try {
-			List<Person> customerReps = Manager.employeePersonManager.getPersons();
-			if (customerReps.size() > 0) {
-				customerRepCombo.setModel(new DefaultComboBoxModel(customerReps.toArray()));
-				customerRepCombo.setSelectedIndex(-1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		fields.get(0).setText(accountReceivable != null ? accountReceivable.getBalance() + "" : "");
 
@@ -294,14 +280,31 @@ public class ARPaymentForm extends SimplePanel {
 		return false;
 	}
 
-	public void refreshDropdown() {
+	public void refreshDropdown(boolean remove) {
+		
+		if(remove)
+			panel.remove(customerRepCombo);
+		
 		try {
-			model = new DefaultComboBoxModel();
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
 			// issuedBy = new FormDropdown();
 			// issuedBy.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+		
+		customerRepCombo = new JComboBox(model);
+		customerRepCombo.setEditable(true);
+		customerRepComboField = (JTextField) customerRepCombo.getEditor().getEditorComponent();
+		customerRepComboField.setText("");
+		customerRepComboField.setOpaque(false);
+		customerRepComboField.addKeyListener(new ComboKeyHandler(customerRepCombo));
+		
+		customerRepCombo.setSelectedIndex(-1);
+		
+		customerRepCombo.setBounds(40, 190, 200, 20);
+		
+		panel.add(customerRepCombo);
 	}
 
 }

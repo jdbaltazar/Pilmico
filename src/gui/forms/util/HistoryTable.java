@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import util.SBTable;
 import util.Tables;
@@ -25,19 +26,27 @@ public class HistoryTable extends JScrollPane {
 	private void init() {
 		// TODO Auto-generated method stub
 		
-		if(Values.tableUtilPanel.getLabel().equals(Tables.PRODUCTS))
-			setPreferredSize(new Dimension(390, 150));
-		else
-			setPreferredSize(new Dimension(340, 150));
 		
 		setBorder(BorderFactory.createEmptyBorder());
 		setOpaque(false);
 
 		sbTable = new SBTable(entries, header);
 
-		sbTable.getColumnModel().getColumn(0).setMinWidth(170);
-		sbTable.getColumnModel().getColumn(0).setMaxWidth(170);
-		
+		if(Values.tableUtilPanel.getLabel().equals(Tables.PRODUCTS)){
+			sbTable.getColumnModel().getColumn(0).setMinWidth(170);
+			sbTable.getColumnModel().getColumn(0).setMaxWidth(170);
+
+			setPreferredSize(new Dimension(390, 150));
+		}
+		else{
+			sbTable.getColumnModel().getColumn(1).setMinWidth(160);
+			sbTable.getColumnModel().getColumn(1).setMaxWidth(160);
+			
+			sbTable.getColumnModel().getColumn(0).setMaxWidth(60);
+			sbTable.getColumnModel().getColumn(0).setMinWidth(60);
+
+			setPreferredSize(new Dimension(340, 150));
+		}
 		setViewportView(sbTable);
 
 		getViewport().setOpaque(false);

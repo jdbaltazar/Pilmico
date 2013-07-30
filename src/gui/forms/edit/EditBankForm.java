@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -70,6 +71,8 @@ public class EditBankForm extends EditFormPanel {
 		init();
 		addComponents();
 		fillEntries();
+		
+		Values.editBankForm = this;
 	}
 
 	public void fillEntries() {
@@ -77,6 +80,19 @@ public class EditBankForm extends EditFormPanel {
 		fields.get(1).setText(bank.getAddress());
 		fields.get(2).setText(bank.getContactNo());
 
+		Set<BankAccount>bAccts = bank.getBankAccounts();
+		for(BankAccount ba: bAccts){
+			accountRowPanel.add(new RowPanel(ba, bankAccountPanel, Tables.BANK_EDIT));
+			bankAccountPanel.add(accountRowPanel.get(accountRowPanel.size() - 1));
+			alternateRows();
+
+			bankAccountPanel.setPreferredSize(new Dimension(237, bankAccountPanel.getComponentCount() * ROW_HEIGHT));
+			bankAccountPanel.updateUI();
+			bankAccountPanel.revalidate();
+
+			Rectangle rect = new Rectangle(0, (int) bankAccountPanel.getPreferredSize().getHeight(), 10, 10);
+			bankAccountPanel.scrollRectToVisible(rect);
+		}
 		// populate accounte portion here
 	}
 

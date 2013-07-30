@@ -29,6 +29,7 @@ public class Tables {
 
 	public static String DEPOSITS = "DEPOSITS";
 	public static String BANK = "BANK";
+	public static String BANK_EDIT = "BANK_EDIT";
 
 	public static String INVENTORY_SHEET = "INVENTORY SHEET";
 

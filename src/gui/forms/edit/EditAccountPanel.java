@@ -6,6 +6,9 @@ import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
 import gui.popup.SuccessPopup;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ public class EditAccountPanel extends EditFormPanel {
 	private DefaultEntryLabel employee;
 
 	private JLabel status;
-	private SBButton deactivate;
+	private SBButton deactivate, activate;
 	private ErrorLabel error;
 	private Account account;
 
@@ -53,14 +56,13 @@ public class EditAccountPanel extends EditFormPanel {
 	private void fillEntries() {
 
 		try {
-			ImageIcon icon = account.isActive() ? new ImageIcon("images/active.png") : new ImageIcon("images/inactive.png");
-			status.setIcon(icon);
+			activateAccount(account.isActive());
+			
 			acctType.setModel(new DefaultComboBoxModel(Manager.accountManager.getAccountTypes().toArray()));
 			employee.setText(account.getFirstPlusLastName());
 			fields.get(0).setText(account.getUsername());
 			fields.get(1).setText(account.getPassword());
-			deactivate.setToolTipText(account.isActive() ? "Deactivate Account" : "Activate Account");
-
+			
 			if (!Manager.isAuthorized()) {
 				labels.get(0).setVisible(false);
 				acctType.setVisible(false);
@@ -80,7 +82,28 @@ public class EditAccountPanel extends EditFormPanel {
 
 		status = new JLabel();
 		deactivate = new SBButton("deactivate.png", "deactivate2.png", "Deactivate Account");
+		activate = new SBButton("activate.png", "activate.png", "Reactivate Account");
 
+		deactivate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				activateAccount(false);
+			}
+		});
+		
+		activate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				activateAccount(true);
+			}
+		});
+		
+		deactivate.setVisible(account.isActive());
+		activate.setVisible(!account.isActive());
 		/*
 		 * try { List<AccountType> accountTypes =
 		 * Manager.accountManager.getAccountTypes(); acctType = new
@@ -109,8 +132,10 @@ public class EditAccountPanel extends EditFormPanel {
 				fields.get(fieldCtr).setBounds(x, 65 + y, 200, 25);
 				labels.get(labelsCtr).setBounds(x, 50 + y, 100, 15);
 
-				if (i == 2)
+				if (i == 2){
 					deactivate.setBounds(x + 67, 46 + y, 16, 16);
+					activate.setBounds(x + 67, 46 + y, 16, 16);
+				}
 
 				fieldCtr++;
 				labelsCtr++;
@@ -156,7 +181,8 @@ public class EditAccountPanel extends EditFormPanel {
 				try {
 					Manager.accountManager.updateAccount(account);
 
-					System.out.println("account updated successfully!");
+					update();
+					
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -168,15 +194,29 @@ public class EditAccountPanel extends EditFormPanel {
 		add(edit);
 
 		add(status);
+		
 		add(deactivate);
+		add(activate);
 
 		add(error);
 
 	}
+	
+	private void activateAccount(boolean active){
+
+		account.setActive(active);
+		
+		deactivate.setVisible(active);
+		activate.setVisible(!active);
+		
+		ImageIcon icon = account.isActive() ? new ImageIcon("images/active.png") : new ImageIcon("images/inactive.png");
+		status.setIcon(icon);
+		
+		status.setToolTipText(account.isActive() ? "Active" : "Inactive");
+	}
 
 	private void update() {
 		Values.editPanel.startAnimation();
-		// Values.salesOrderForm.refreshAccount();
 		new SuccessPopup("Edit").setVisible(true);
 		Values.centerPanel.changeTable(Values.ACCOUNTS);
 	}
