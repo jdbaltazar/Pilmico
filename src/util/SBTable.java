@@ -70,6 +70,8 @@ public class SBTable extends JTable implements MouseListener {
 
 		this.data = data;
 		this.header = header;
+		
+		tableName = "HISTORY";
 
 		init();
 	}

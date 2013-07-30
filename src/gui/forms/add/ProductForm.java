@@ -243,11 +243,15 @@ public class ProductForm extends SimplePanel {
 					if (JOptionPane.showConfirmDialog(null, "If a new category is added, it cannot be deleted. Continue?", "Warning!",
 							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 
-						UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+						UtilityPopup uP = new UtilityPopup(b, Values.CATEGORY);
 						uP.setVisible(true);
 
 						if (!uP.getInput().equals("")) {
 							//insert code here for adding category
+							 Manager.productManager.addCategory(new Category(uP.getInput()));
+							 updateCategories();
+							 
+							 new SuccessPopup("Add", 1).setVisible(true);
 						}
 						// Category c = new Category(fwd.getText());
 						// category.addItem(c);
@@ -298,22 +302,16 @@ public class ProductForm extends SimplePanel {
 		return false;
 	}
 
-	public void updateFormDropdowns() {
-		/*
-		 * try { model = new
-		 * DefaultComboBoxModel(Manager.itemManager.getUnits().toArray());
-		 * unit.setModel(model); } catch (Exception e2) { e2.printStackTrace(); }
-		 * 
-		 * try { List<Category> categories = Manager.itemManager.getCategories();
-		 * model = new DefaultComboBoxModel(categories.toArray());
-		 * category.setModel(model); } catch (Exception e2) {
-		 * e2.printStackTrace(); }
-		 * 
-		 * try { List<ItemCondition> conditions =
-		 * Manager.itemManager.getConditions(); model = new
-		 * DefaultComboBoxModel(conditions.toArray()); condition.setModel(model);
-		 * } catch (Exception e2) { e2.printStackTrace(); }
-		 */
+	private void updateCategories() {
+		try {
+			model = new DefaultComboBoxModel(Manager.productManager.getCategories().toArray());
+			category.setModel(model);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		category.setSelectedIndex(0);
 	}
 
 }

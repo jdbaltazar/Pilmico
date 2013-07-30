@@ -192,6 +192,9 @@ public class EmployeeForm extends SimplePanel {
 					Values.cashAdvanceForm.refreshEmployee();
 					Values.accountForm.refreshEmployee();
 					
+					Values.caPaymentForm.refreshDropdown(true);
+					Values.arPaymentForm.refreshDropdown(true);
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

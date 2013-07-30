@@ -91,6 +91,7 @@ public class UtilityPopup extends JDialog {
 		
 		field = new FormField("", 10);
 		numField = new JNumericField("Input previous cash on hand");
+		password = new FormField("Root Password", 100, Color.white, Color.gray);
 		
 		utilityLabel = new ErrorLabel();
 		utilityLabel.setHorizontalAlignment(JLabel.LEFT);
@@ -105,7 +106,6 @@ public class UtilityPopup extends JDialog {
 		}
 		
 		else if (utility == Values.PCOH){
-			numField = new JNumericField("Input previous cash on hand");
 			numField.setMaxLength(10);
 			
 			utilityLabel.setForeground(Color.decode("#FF4500"));
@@ -126,7 +126,6 @@ public class UtilityPopup extends JDialog {
 		
 		else if (utility == Values.DATABASE){
 			username = new FormField("Root username", 100, Color.white, Color.gray);
-			password = new FormField("Root Password", 100, Color.white, Color.gray);
 			
 			password.setForeground(Color.white);
 			
