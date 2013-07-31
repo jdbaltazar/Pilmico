@@ -105,6 +105,7 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@Override
 	public boolean isValidFor(Date date) throws Exception {
 		InventorySheetData isd = getMostRecentInventorySheetData();
+		
 		if (isd == null)
 			return true;
 		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
@@ -195,6 +196,7 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	public void deleteDenomination(int id) throws Exception {
 		remove(getDenomination(id));
 	}
+
 
 	// @Override
 	// public double getPreviousActualCashOnHand() throws Exception {

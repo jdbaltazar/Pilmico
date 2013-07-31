@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -297,26 +298,49 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
-				uP.setVisible(true);
-				
-				if (!uP.getInput().equals("")) {
-					delivery.setValid(false);
-					delivery.setRemarks(uP.getInput());
 
-					try {
-						Manager.deliveryManager
-								.updateDelivery(delivery);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+				boolean validResult = true;
+				for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
+					Product p = dd.getProduct();
+					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
+						validResult = false;
+				}
+
+				if (validResult) {
+
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+					UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+					uP.setVisible(true);
+
+					if (!uP.getInput().equals("")) {
+						delivery.setValid(false);
+						delivery.setRemarks(uP.getInput());
+
+						try {
+							Manager.deliveryManager.updateDelivery(delivery);
+							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
+								Product p = dd.getProduct();
+								p.setQuantityInSack(p.getQuantityInSack() - dd.getQuantityInSack());
+								p.setQuantityInKilo(p.getQuantityInKilo() - dd.getQuantityInKilo());
+								Manager.productManager.updateProduct(p);
+							}
+
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Invalidation").setVisible(true);
+						Values.centerPanel.changeTable(Values.DELIVERY);
 					}
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.DELIVERY);
+				} else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"Invalidating this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
+									+ "\ninvalidate other forms (Pullouts, Sales or Account Receivables) to increment quantity", "Not Allowed",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -326,8 +350,8 @@ public class ViewDeliveryForm extends EditFormPanel {
 		add(error);
 
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (delivery.getInventorySheetData() != null) {
@@ -360,15 +384,15 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 		voidBtn.setVisible(delivery.getInventorySheetData() != null ? false : delivery.isValid());
 
-		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(delivery.getDate()));
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(delivery.getDate()));
 		receivedBy.setToolTip(receivedBy, delivery.getReceivedBy().getFirstPlusLastName());
-		po_no.setToolTip(po_no,delivery.getPoNo());
+		po_no.setToolTip(po_no, delivery.getPoNo());
 		delivery_no.setToolTip(delivery_no, delivery.getDeliveryNo());
-		supplier.setToolTip(supplier,delivery.getSupplier() != null ? delivery.getSupplier().getName() : "");
-		terms.setToolTip(terms,delivery.getTerms());
+		supplier.setToolTip(supplier, delivery.getSupplier() != null ? delivery.getSupplier().getName() : "");
+		terms.setToolTip(terms, delivery.getTerms());
 
-		if(delivery.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+delivery.getRemarks());
+		if (delivery.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + delivery.getRemarks());
 
 		Set<DeliveryDetail> deliveryDetails = delivery.getDeliveryDetails();
 		for (DeliveryDetail dd : deliveryDetails) {
@@ -376,8 +400,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 			productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 			alternateRows();
 
-			productsPanel.setPreferredSize(new Dimension(330,
-					productsPanel.getComponentCount() * ROW_HEIGHT));
+			productsPanel.setPreferredSize(new Dimension(330, productsPanel.getComponentCount() * ROW_HEIGHT));
 			productsPanel.updateUI();
 			productsPanel.revalidate();
 		}

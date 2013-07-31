@@ -1,5 +1,7 @@
 package core.test;
 
+import gui.forms.util.DateWithoutTime;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,6 +11,9 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+
+import util.DateFormatter;
+import util.Utility;
 
 import common.entity.inventorysheet.InventorySheetData;
 import common.manager.Manager;
@@ -74,7 +79,7 @@ public class Test {
 		InventorySheetData isd;
 		try {
 
-			Date d = new Date();
+			Date d = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(d);
 			// Set time fields to zero
@@ -82,10 +87,17 @@ public class Test {
 			cal.set(Calendar.MINUTE, 0);
 			cal.set(Calendar.SECOND, 0);
 			cal.set(Calendar.MILLISECOND, 0);
-			
-			isd = Manager.inventorySheetDataManager.getInventorySheetDataWithThisDate(d);
-			if (isd != null)
-				System.out.println("isdddddddddddd");
+			// Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, 2013);
+			cal.set(Calendar.MONTH, Calendar.JULY);
+			cal.set(Calendar.DAY_OF_MONTH, 31);
+			d = cal.getTime();
+			// Set time fields to zero
+
+			System.out.println(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d));
+
+			if (Manager.inventorySheetDataManager.isValidFor(d))
+				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

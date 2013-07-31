@@ -116,7 +116,7 @@ public class ViewSalesForm extends EditFormPanel {
 
 		status = new JLabel(s, null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
-		
+
 		remarks = new RemarksLabel("");
 
 		issuedaTLabel = new ViewFormLabel("Issued at:");
@@ -218,8 +218,8 @@ public class ViewSalesForm extends EditFormPanel {
 		add(status);
 		add(remarks);
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (sales.getInventorySheetData() != null) {
@@ -247,7 +247,6 @@ public class ViewSalesForm extends EditFormPanel {
 		status.setIcon(icon);
 
 	}
-
 
 	private void alternateRows() {
 
@@ -298,7 +297,6 @@ public class ViewSalesForm extends EditFormPanel {
 
 		error = new ErrorLabel();
 
-
 		error.setBounds(305, 340, 200, 30);
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
@@ -318,8 +316,14 @@ public class ViewSalesForm extends EditFormPanel {
 
 					try {
 						Manager.salesManager.updateSales(sales);
+
+						for (SalesDetail sd : sales.getSalesDetails()) {
+							Product p = sd.getProduct();
+							p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
+							p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
+							Manager.productManager.updateProduct(p);
+						}
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
@@ -334,9 +338,9 @@ public class ViewSalesForm extends EditFormPanel {
 		add(error);
 
 	}
-	
-	private void initLabelEntries(){
-		
+
+	private void initLabelEntries() {
+
 		date = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
 		cashier = new ViewFormField(sales.getCashier().getFirstPlusLastName());
 		rc_no = new ViewFormField(sales.getRcNo());
@@ -350,9 +354,9 @@ public class ViewSalesForm extends EditFormPanel {
 
 		voidBtn.setVisible(sales.getInventorySheetData() != null ? false : sales.isValid());
 
-		if(sales.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+sales.getRemarks());
-		
+		if (sales.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + sales.getRemarks());
+
 		Set<SalesDetail> salesDetails = sales.getSalesDetails();
 		for (SalesDetail sd : salesDetails) {
 			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
@@ -362,9 +366,9 @@ public class ViewSalesForm extends EditFormPanel {
 			productsPanel.updateUI();
 			productsPanel.revalidate();
 		}
-		
-		if(!sales.isValid())
-			remarks.setText("-"+sales.getRemarks());
+
+		if (!sales.isValid())
+			remarks.setText("-" + sales.getRemarks());
 
 	}
 }
