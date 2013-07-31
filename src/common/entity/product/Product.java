@@ -289,6 +289,11 @@ public class Product {
 		return quantityInKilo + soldTodayInKilo;
 	}
 
+	public void resetBeginningInventory() {
+		soldTodayInKilo = 0d;
+		soldTodayInSack = 0d;
+	}
+
 	public Category getCategory() {
 		return category;
 	}

@@ -103,8 +103,10 @@ public class Manager {
 	public static boolean isAuthorized() {
 		if (Manager.loggedInAccount != null) {
 			if (loggedInAccount.getAccountType().getName().equals(AccountType.systemAdmin)
-					|| loggedInAccount.getAccountType().getName().equals(AccountType.manager))
-				return true;
+					|| loggedInAccount.getAccountType().getName().equals(AccountType.manager)) {
+				if (Manager.loggedInAccount.isActive())
+					return true;
+			}
 		}
 
 		return false;

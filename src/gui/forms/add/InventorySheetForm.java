@@ -1,5 +1,6 @@
 package gui.forms.add;
 
+import gui.forms.util.DateWithoutTime;
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
@@ -156,8 +157,8 @@ public class InventorySheetForm extends SimplePanel {
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
 		inputPCOH = new JButton("+");
+		inputPCOH.setToolTipText("Input previous cash on hand");
 
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
@@ -962,13 +963,15 @@ public class InventorySheetForm extends SimplePanel {
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
 
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(d);
-				// Set time fields to zero
-				cal.set(Calendar.HOUR_OF_DAY, 0);
-				cal.set(Calendar.MINUTE, 0);
-				cal.set(Calendar.SECOND, 0);
-				cal.set(Calendar.MILLISECOND, 0);
+				// Calendar cal = Calendar.getInstance();
+				// cal.setTime(d);
+				// // Set time fields to zero
+				// cal.set(Calendar.HOUR_OF_DAY, 0);
+				// cal.set(Calendar.MINUTE, 0);
+				// cal.set(Calendar.SECOND, 0);
+				// cal.set(Calendar.MILLISECOND, 0);
+
+				d = DateWithoutTime.getInstance().getDateWithoutTime(d);
 
 				inventorySheet.getInventorySheetData().setDate(d);
 				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
@@ -1008,7 +1011,10 @@ public class InventorySheetForm extends SimplePanel {
 				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
 				try {
 					Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
-					System.out.println("IS successfully saved!!!!!!!!!!!!!1");
+					for (Product p : products) {
+						p.resetBeginningInventory();
+						Manager.productManager.updateProduct(p);
+					}
 
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -1136,6 +1142,9 @@ public class InventorySheetForm extends SimplePanel {
 		summaryValues.get(1).setText(String.format("%.2f", inventorySheet.getActualCashCount()));
 		summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
 		summary3Label.setText("OVER/SHORT");
+
+		updateCashOnHandSummary();
+		updateActualCashCountAndSummary();
 
 	}
 

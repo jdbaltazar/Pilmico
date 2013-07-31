@@ -6,7 +6,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
+
+import common.entity.inventorysheet.InventorySheetData;
+import common.manager.Manager;
 
 import app.Credentials;
 import core.database.DatabaseTool;
@@ -65,6 +70,27 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
+
+		InventorySheetData isd;
+		try {
+
+			Date d = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(d);
+			// Set time fields to zero
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);
+			
+			isd = Manager.inventorySheetDataManager.getInventorySheetDataWithThisDate(d);
+			if (isd != null)
+				System.out.println("isdddddddddddd");
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// try {
 		// DatabaseTool.decryptAndUpdate("root", "123456", "pilmico",

@@ -8,7 +8,13 @@ import javax.persistence.Id;
 
 @Entity
 public class Denomination {
-	
+
+	public static final double ONE_THOUSAND = 1000d;
+	public static final double FIVE_HUNDRED = 500d;
+	public static final double TWO_HUNDRED = 200d;
+	public static final double ONE_HUNDRED = 100d;
+	public static final double FIFTY = 50d;
+	public static final double TWENTY = 20d;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

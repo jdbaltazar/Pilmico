@@ -1038,58 +1038,10 @@ public class ViewInventorySheetForm extends EditFormPanel {
 				((PDControlScrollPane) component).getViewport().setOpaque(false);
 				((PDControlScrollPane) component).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 				((PDControlScrollPane) component).setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
 			}
-
 		}
 
-		// double previousAcoh = 0d;
-		// Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
-
-		// inputPCOH.setVisible(isd == null);
-		// if (isd != null) {
-		// InventorySheet is = new InventorySheet(isd);
-		// previousAcoh = is.getActualCashOnHand();
-		// }
-
 		products = Manager.productManager.getProducts();
-		// deliveries = Manager.deliveryManager.getPendingDeliveries();
-		// pullOuts = Manager.pullOutManager.getPendingPullOuts();
-		// sales = Manager.salesManager.getPendingSales();
-		// accountReceivables =
-		// Manager.accountReceivableManager.getPendingAccountReceivables();
-		// arPayments = Manager.accountReceivableManager.getPendingARPayments();
-		// cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
-		// caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
-		// dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
-		// salaryReleases =
-		// Manager.salaryReleaseManager.getPendingSalaryReleases();
-		// discountIssues =
-		// Manager.discountIssueManager.getPendingDiscountIssues();
-		// deposits = Manager.depositManager.getPendingDeposits();
-
-		// InventorySheetData inventorySheetData = new InventorySheetData();
-		// inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0,
-		// Manager.loggedInAccount);
-		// for (Product p : products) {
-		// inventorySheetData.addInventorySheetDataDetail(new
-		// InventorySheetDataDetail(inventorySheetData, p,
-		// p.getBeginningInventoryInSack(), p
-		// .getBeginningInventoryInKilo(), p.getDisplayInSack(),
-		// p.getDisplayInKilo(), p.getCurrentPricePerSack(),
-		// p.getCurrentPricePerKilo()));
-		// }
-		//
-		// inventorySheet = new InventorySheet(inventorySheetData, new
-		// HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new
-		// HashSet<Sales>(
-		// sales), new HashSet<AccountReceivable>(accountReceivables), new
-		// HashSet<DiscountIssue>(discountIssues),
-		// new HashSet<ARPayment>(arPayments), new HashSet<CAPayment>(caPayments),
-		// new HashSet<DailyExpenses>(dailyExpenses),
-		// new HashSet<CashAdvance>(cashAdvances), new
-		// HashSet<SalaryRelease>(salaryReleases), new
-		// HashSet<Deposit>(deposits));
 
 		fillProductInventories(products);
 		fillSales(new ArrayList<Sales>(inventorySheet.getSales()));
@@ -1105,34 +1057,24 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		fillDeposit(new ArrayList<Deposit>(inventorySheet.getInventorySheetData().getDeposits()));
 
 		// breakdown
-		for (ISRowPanel irp : cashBreakdown) {
-
+		for (BreakdownLine bdl : inventorySheet.getInventorySheetData().getBreakdown().getBreakdownLines()) {
+			if (bdl.getDenomination().getDenomination() == Denomination.ONE_THOUSAND) {
+				cashBreakdown.get(0).setViewFieldValues(bdl.getQuantity(), bdl.getAmount());
+			} else if (bdl.getDenomination().getDenomination() == Denomination.FIVE_HUNDRED) {
+				cashBreakdown.get(1).setViewFieldValues(bdl.getQuantity(), bdl.getAmount());
+			} else if (bdl.getDenomination().getDenomination() == Denomination.TWO_HUNDRED) {
+				cashBreakdown.get(2).setViewFieldValues(bdl.getQuantity(), bdl.getAmount());
+			} else if (bdl.getDenomination().getDenomination() == Denomination.ONE_HUNDRED) {
+				cashBreakdown.get(3).setViewFieldValues(bdl.getQuantity(), bdl.getAmount());
+			} else if (bdl.getDenomination().getDenomination() == Denomination.FIFTY) {
+				cashBreakdown.get(4).setViewFieldValues(bdl.getQuantity(), bdl.getAmount());
+			} else if (bdl.getDenomination().getDenomination() == Denomination.TWENTY) {
+				cashBreakdown.get(5).setViewFieldValues(bdl.getQuantity(), bdl.getAmount());
+			}
 		}
 
 		cashBreakdown.get(6).setViewFieldValues(inventorySheet.getBreakdown().getCoins(), inventorySheet.getBreakdown().getCoins());
 		cashBreakdown.get(7).setViewFieldValues(inventorySheet.getBreakdown().getCheck(), inventorySheet.getBreakdown().getCheck());
-
-		// Breakdown breakdown = inventorySheet.getBreakdown();
-		// for (BreakdownLine bdl : breakdown.getBreakdownLines()) {
-		//
-		// }
-
-		// for (int i = 0; i < 6; i++) {
-		//
-		//
-		// breakdown.addBreakdownLine(new BreakdownLine(breakdown, new
-		// Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i)),
-		// cashBreakdown.get(i).getCashBreakdownRowQuantity()));
-		// }
-		//
-		// Breakdown breakdown = new
-		// Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(),
-		// cashBreakdown.get(7)
-		// .getCashBreakdownRowQuantity(),
-		// inventorySheet.getInventorySheetData());
-		//
-		//
-		// for(Breakdown)
 
 		actualCashCount.setText(String.format("%.2f", inventorySheet.getActualCashCount()));
 
@@ -1190,7 +1132,6 @@ public class ViewInventorySheetForm extends EditFormPanel {
 			i++;
 		}
 		alternateRows(productsInventory2);
-
 		fillProductInventoriesTotal();
 
 	}

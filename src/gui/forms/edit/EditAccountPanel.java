@@ -84,7 +84,7 @@ public class EditAccountPanel extends EditFormPanel {
 
 		status = new IconLabel(null, "");
 		deactivate = new SBButton("deactivate.png", "deactivate2.png", "Deactivate Account");
-		activate = new SBButton("activate.png", "activate.png", "Reactivate Account");
+		activate = new SBButton("activate.png", "activate2.png", "Reactivate Account");
 
 		deactivate.addActionListener(new ActionListener() {
 			

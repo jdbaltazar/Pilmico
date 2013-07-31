@@ -1,5 +1,8 @@
 package core.persist;
 
+import gui.forms.util.DateWithoutTime;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +12,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
+import util.DateFormatter;
+import util.Utility;
 
 import common.entity.dailyexpenses.Expense;
 import common.entity.inventorysheet.Denomination;
@@ -70,22 +76,64 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@SuppressWarnings("unchecked")
 	@Override
 	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(InventorySheetData.class);
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<InventorySheetData> inventorySheetsData = new ArrayList<InventorySheetData>();
-		InventorySheetData isd = null;
-		try {
-			inventorySheetsData = criteria.add(Restrictions.like("date", date)).addOrder(Order.desc("date")).list();
-			if (inventorySheetsData.size() > 0) {
-				isd = inventorySheetsData.get(0);
-			}
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return isd;
+
+		throw new Exception("Deprecated by JD. Do not use!");
+		// Session session = HibernateUtil.startSession();
+		// Criteria criteria = session.createCriteria(InventorySheetData.class);
+		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		// List<InventorySheetData> inventorySheetsData = new
+		// ArrayList<InventorySheetData>();
+		// InventorySheetData isd = null;
+		// try {
+		// inventorySheetsData = criteria.add(Restrictions.like("date",
+		// date)).addOrder(Order.desc("date")).list();
+		// if (inventorySheetsData.size() > 0) {
+		// isd = inventorySheetsData.get(0);
+		// }
+		// } catch (HibernateException ex) {
+		// ex.printStackTrace();
+		// } finally {
+		// session.close();
+		// }
+		// return isd;
+	}
+
+	/*
+	 * Check if the date is not a future date and date is not equal/earlier than
+	 * the most recent inventory sheet
+	 */
+	@Override
+	public boolean isValidFor(Date date) throws Exception {
+		InventorySheetData isd = getMostRecentInventorySheetData();
+		if (isd == null)
+			return true;
+		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
+		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
+		if (date.before(lowerBound) || date.compareTo(lowerBound) == 0 || date.after(upperBound))
+			return false;
+		return true;
+	}
+
+	/*
+	 * Check if the date is not a future date and date is not equal/earlier than
+	 * the most recent inventory sheet
+	 */
+
+	@Override
+	public String getValidityRemarksFor(Date date) throws Exception {
+		InventorySheetData isd = getMostRecentInventorySheetData();
+		if (isd == null)
+			return "Valid Date";
+		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
+		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
+		if (date.compareTo(lowerBound) == 0)
+			return "An Inventory Sheet for this date already exists!";
+		if (date.before(lowerBound))
+			return "An Inventory Sheet exists for " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate())
+					+ " exists. Inserting earlier Inventory Sheet not allowed";
+		if (date.after(upperBound))
+			return "Adding Inventory Sheet for future date not allowed";
+		return "Valid Date";
 	}
 
 	@Override
