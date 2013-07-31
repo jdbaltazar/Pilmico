@@ -971,7 +971,7 @@ public class InventorySheetForm extends SimplePanel {
 				// cal.set(Calendar.SECOND, 0);
 				// cal.set(Calendar.MILLISECOND, 0);
 
-				d = DateWithoutTime.getDateWithoutTime(d);
+				d = DateWithoutTime.getInstance().getDateWithoutTime(d);
 
 				inventorySheet.getInventorySheetData().setDate(d);
 				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));

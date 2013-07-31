@@ -175,20 +175,7 @@ public class DeliveryForm extends SimplePanel {
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
 
-		supplierCombo = new JComboBox();
-		refreshSupplier();
-		supplierCombo.setUI(ColorArrowUI.createUI(this));
-		supplierCombo.setEditable(true);
-		supplierCombo.setSelectedIndex(-1);
-		supplierComboField = (JTextField) supplierCombo.getEditor().getEditorComponent();
-		supplierComboField.setText("");
-		supplierComboField.setOpaque(false);
-		supplierComboField.setBorder(BorderFactory.createEmptyBorder());
-		supplierComboField.addKeyListener(new ComboKeyHandler(supplierCombo));
-
-		supplierCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
-		supplierCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		supplierCombo.setOpaque(false);
+		refreshSupplier(false);
 
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
@@ -232,7 +219,6 @@ public class DeliveryForm extends SimplePanel {
 		delivery_no.setBounds(386, 32, 140, 20);
 
 		supplierLabel.setBounds(27, 58, 70, 20);
-		supplierCombo.setBounds(85, 56, 220, 20);
 		supplierFwd.setBounds(308, 58, 16, 16);
 
 		termsLabel.setBounds(335, 58, 50, 20);
@@ -290,7 +276,6 @@ public class DeliveryForm extends SimplePanel {
 		// panel.add(issueDate);
 
 		panel.add(supplierLabel);
-		panel.add(supplierCombo);
 		panel.add(supplierFwd);
 
 		panel.add(termsLabel);
@@ -546,16 +531,35 @@ public class DeliveryForm extends SimplePanel {
 		date.setValue(new Date());
 	}
 
-	public void refreshSupplier() {
+	public void refreshSupplier(boolean remove) {
+
+		if (remove)
+			panel.remove(supplierCombo);
 
 		try {
 			model = new DefaultComboBoxModel(Manager.supplierManager.getSuppliers().toArray());
-			supplierCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		supplierCombo = new JComboBox(model);
+		supplierCombo.setUI(ColorArrowUI.createUI(this));
+		supplierCombo.setEditable(true);
+		supplierComboField = (JTextField) supplierCombo.getEditor().getEditorComponent();
+		supplierComboField.setText("");
+		supplierComboField.setOpaque(false);
+		supplierComboField.setBorder(BorderFactory.createEmptyBorder());
+		supplierComboField.addKeyListener(new ComboKeyHandler(supplierCombo));
+
+		supplierCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		supplierCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		supplierCombo.setOpaque(false);
+
 		supplierCombo.setSelectedIndex(-1);
+
+		supplierCombo.setBounds(85, 56, 220, 20);
+
+		panel.add(supplierCombo);
 	}
 }

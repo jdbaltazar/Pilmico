@@ -106,7 +106,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 		dateLabel = new DropdownLabel("Date");
 		issuedByLabel = new DropdownLabel("Issued by");
-		issuedForLabel = new DropdownLabel("Issued for");
+		issuedForLabel = new DropdownLabel("Issued for*");
 
 		// issuedBy = new FormDropdown();
 		issuedBy = new JLabel(Manager.loggedInAccount.getFirstPlusLastName());
@@ -175,7 +175,7 @@ public class CashAdvanceForm extends SimplePanel {
 			}
 
 			if (i == 2) {
-				fwd.setBounds(x1 + 55, initY + y - 11, 16, 16);
+				fwd.setBounds(x1 + 57, initY + y - 11, 16, 16);
 				issuedForLabel.setBounds(x1, initY + y - 7, 200, 11);
 				issuedFor.setBounds(x1, initY + y + 5, 200, 20);
 			}

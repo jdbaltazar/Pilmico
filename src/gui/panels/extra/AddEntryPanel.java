@@ -37,6 +37,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -85,7 +86,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private PulloutForm pullout;
 	private InventorySheetForm inventorySheetForm;
 	private DiscountForm discount;
-	private BankForm bank;
+	private BankForm bankForm;
 	private DepositForm deposit;
 	private ARPaymentForm arPayment;
 	private CAPaymentForm caPayment;
@@ -94,6 +95,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private JScrollPane dummyPane;
 
 	private JPanel motherPanel, motherPanel2;
+	
+	private ArrayList<JPanel> formPanels = new ArrayList<JPanel>();
 	private JLabel backToPrevious;
 
 	private JCheckBox checkBox;
@@ -156,7 +159,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		discount = new DiscountForm();
 
 		deposit = new DepositForm();
-		bank = new BankForm();
+		bankForm = new BankForm();
 
 		inventorySheetForm = new InventorySheetForm();
 
@@ -190,8 +193,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showAllComponents(false);
-				motherPanel.setVisible(true);
+				back();
 			}
 		});
 
@@ -227,7 +229,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		discount.setBounds(240, 50, 300, 380);
 
 		deposit.setBounds(122, 95, 540, 300);
-		bank.setBounds(130, 87, 550, 310);
+		bankForm.setBounds(130, 87, 550, 310);
 
 		checkBox.setBounds(660, 5, 200, 20);
 
@@ -258,7 +260,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		add(discount);
 
 		add(deposit);
-		add(bank);
+		add(bankForm);
 
 		add(inventorySheetForm);
 
@@ -328,6 +330,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			if (currHeight == minHeight)
 				isRunning = false;
 		}
+		
+		formPanels.clear();
 		showAllComponents(false);
 		Values.menuPanel.setVisible(true);
 	}
@@ -357,7 +361,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
 			pullout.setVisible(true);
-			motherPanel = pullout;
+			formPanels.add(pullout);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CUSTOMERS)) {
@@ -366,27 +370,26 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)) {
 			employeeForm.setVisible(true);
-			motherPanel = employeeForm;
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNTS)) {
 			accountForm.setVisible(true);
-			motherPanel = accountForm;
+			formPanels.add(accountForm);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
 			cashAdvanceForm.setVisible(true);
-			motherPanel = cashAdvanceForm;
+			formPanels.add(cashAdvanceForm);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
 			salary.setVisible(true);
-			motherPanel = salary;
+			formPanels.add(salary);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
 			accountReceivables.setVisible(true);
-			motherPanel = accountReceivables;
+			formPanels.add(accountReceivables);
 		}
 
 		/*
@@ -396,25 +399,27 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DISCOUNTS)) {
 			discount.setVisible(true);
+			formPanels.add(discount);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
-			deposit.fillEntries();
+//			deposit.fillEntries();
 			deposit.setVisible(true);
+			formPanels.add(deposit);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
-			bank.setVisible(true);
+			bankForm.setVisible(true);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
 			delivery.setVisible(true);
-			motherPanel = delivery;
+			formPanels.add(delivery);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {
 			supplierForm.setVisible(true);
-			motherPanel = supplierForm;
+			formPanels.add(supplierForm);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
@@ -425,7 +430,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			// Values.salesOrderForm.refreshDate();
 			sales.setVisible(true);
-			motherPanel = sales;
+			//motherPanel = sales;
+			formPanels.add(sales);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
@@ -455,11 +461,13 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		case Values.CA_PAYMENTS:
 			caPayment.fillEntries((CashAdvance) parentTransation);
 			caPayment.setVisible(true);
+			formPanels.add(caPayment);
 			break;
 
 		case Values.AR_PAYMENTS:
 			arPayment.fillEntries((AccountReceivable) parentTransation);
 			arPayment.setVisible(true);
+			formPanels.add(arPayment);
 			break;
 
 		default:
@@ -484,34 +492,64 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	}
 
 	public void linkPanel(int value) {
+		
+		showAllComponents(false);
 
 		dummyPane.setVisible(true);
-		checkBox.setSelected(false);
+
 		checkBox.setVisible(false);
-		motherPanel.setVisible(false);
 
 		switch (value) {
 
 		case Values.PRODUCTS:
 			productForm.setVisible(true);
+			formPanels.add(productForm);
 			break;
 
 		case Values.EMPLOYEES:
 			employeeForm.setVisible(true);
+			formPanels.add(employeeForm);
 			break;
 
 		case Values.CUSTOMERS:
 			profileForm.setVisible(true);
+			formPanels.add(profileForm);
 			break;
 
 		case Values.SUPPLIERS:
 			supplierForm.setVisible(true);
+			formPanels.add(supplierForm);
+			break;
+
+		case Values.BANK:
+			bankForm.setVisible(true);
+			formPanels.add(bankForm);
 			break;
 
 		default:
 			break;
 		}
 
+	}
+	
+	public void back(){
+		
+		showAllComponents(false);
+		
+		if (formPanels.size() >= 2) {
+			formPanels.get(formPanels.size() - 2).setVisible(true);
+			
+			formPanels.remove(formPanels.size()-1);
+		}
+		
+		if(formPanels.size() > 1){
+			dummyPane.setVisible(true);
+			checkBox.setVisible(false);
+		}
+	}
+
+	public JScrollPane getDummyPane() {
+		return dummyPane;
 	}
 
 	public JPanel motherPanel() {
