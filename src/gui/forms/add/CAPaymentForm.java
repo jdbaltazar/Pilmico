@@ -78,6 +78,8 @@ public class CAPaymentForm extends SimplePanel {
 	public CAPaymentForm() {
 		super("Add CA Payment");
 		addComponents();
+		
+		Values.caPaymentForm = this;
 	}
 
 	private void addComponents() {
@@ -98,6 +100,7 @@ public class CAPaymentForm extends SimplePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
 			}
 		});
 
@@ -289,29 +292,32 @@ public class CAPaymentForm extends SimplePanel {
 	}
 
 	public void refreshDropdown(boolean remove) {
-		
-		if(remove)
+
+		if (remove)
 			panel.remove(employeeRepCombo);
-		
+
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager
+					.getPersons().toArray());
 			// issuedBy = new FormDropdown();
 			// issuedBy.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-		
-		employeeRepCombo = new JComboBox();
+
+		employeeRepCombo = new JComboBox(model);
 		employeeRepCombo.setEditable(true);
-		employeeRepComboField = (JTextField) employeeRepCombo.getEditor().getEditorComponent();
+		employeeRepComboField = (JTextField) employeeRepCombo.getEditor()
+				.getEditorComponent();
 		employeeRepComboField.setText("");
 		employeeRepComboField.setOpaque(false);
-		employeeRepComboField.addKeyListener(new ComboKeyHandler(employeeRepCombo));
-		
+		employeeRepComboField.addKeyListener(new ComboKeyHandler(
+				employeeRepCombo));
+
 		employeeRepCombo.setSelectedIndex(-1);
-		
+
 		employeeRepCombo.setBounds(40, 190, 200, 20);
-		
+
 		panel.add(employeeRepCombo);
 	}
 

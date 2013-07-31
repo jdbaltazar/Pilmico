@@ -100,6 +100,7 @@ public class ARPaymentForm extends SimplePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.CUSTOMERS);
 			}
 		});
 
@@ -300,29 +301,30 @@ public class ARPaymentForm extends SimplePanel {
 	}
 
 	public void refreshDropdown(boolean remove) {
-		
-		if(remove)
+
+		if (remove)
 			panel.remove(customerRepCombo);
-		
+
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
-			// issuedBy = new FormDropdown();
-			// issuedBy.setModel(model);
+			model = new DefaultComboBoxModel(Manager.employeePersonManager
+					.getPersons().toArray());
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-		
+
 		customerRepCombo = new JComboBox(model);
 		customerRepCombo.setEditable(true);
-		customerRepComboField = (JTextField) customerRepCombo.getEditor().getEditorComponent();
+		customerRepComboField = (JTextField) customerRepCombo.getEditor()
+				.getEditorComponent();
 		customerRepComboField.setText("");
 		customerRepComboField.setOpaque(false);
-		customerRepComboField.addKeyListener(new ComboKeyHandler(customerRepCombo));
-		
+		customerRepComboField.addKeyListener(new ComboKeyHandler(
+				customerRepCombo));
+
 		customerRepCombo.setSelectedIndex(-1);
-		
+
 		customerRepCombo.setBounds(40, 190, 200, 20);
-		
+
 		panel.add(customerRepCombo);
 	}
 

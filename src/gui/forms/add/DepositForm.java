@@ -114,6 +114,25 @@ public class DepositForm extends SimplePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.BANK);
+			}
+		});
+		
+		fwd2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.BANK);
+			}
+		});
+		
+		fwd3.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Values.addEntryPanel.linkPanel(Values.EMPLOYEES);
 			}
 		});
 

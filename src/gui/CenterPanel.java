@@ -269,6 +269,8 @@ public class CenterPanel extends SoyPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		Values.tablePanel.getSoyTable().removeColumn(Values.tablePanel.getSoyTable().getColumnModel().getColumn(5));
 	}
 
 	private void fillAR_Payments() {

@@ -43,7 +43,7 @@ public class ISRowPanel extends JPanel {
 	private ArrayList<ViewFormField> formField = new ArrayList<ViewFormField>();
 	private JLabel label, totalLabel;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, y, table = 0, componentCount;
-	private Object object;
+	private Object object, object2;
 	private Color rowBkgrndColor;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
@@ -170,6 +170,8 @@ public class ISRowPanel extends JPanel {
 	}
 
 	private void fillRow(Object object, String column1, String column2, String column3) {
+		
+		object2 = object;
 
 		formField.add(new ViewFormField(column1));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
@@ -198,9 +200,13 @@ public class ISRowPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
+				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
-
+					if(mc.getClickCount() == 2){
+						Values.editPanel.setHide(false);
+						Values.editPanel.startAnimation();
+						Values.editPanel.showComponent(object2, Values.SALES);
+					}
 				}
 			});
 			row.add(formField.get(i));

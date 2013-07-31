@@ -139,9 +139,11 @@ public class SupplierForm extends SimplePanel {
 
 				try {
 					Manager.supplierManager.addSupplier(s);
-					clearFields();
 					Values.centerPanel.changeTable(Values.SUPPLIERS);
 					new SuccessPopup("Add").setVisible(true);
+					clearFields();
+
+					Values.deliveryForm.refreshSupplier(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

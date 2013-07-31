@@ -267,6 +267,21 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 
 	}
+	
+	public void showComponent(Object o, int mode) {
+		
+		switch (mode){
+		
+		case Values.SALES:
+				add(new ViewSalesForm((Sales) o), BorderLayout.CENTER);
+			break;
+			
+		default:
+			break;
+		}
+		
+		
+	}
 
 	public void setHide(boolean hide) {
 		this.hide = hide;

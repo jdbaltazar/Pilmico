@@ -4,6 +4,7 @@ import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
+import gui.forms.util.IconLabel;
 import gui.popup.SuccessPopup;
 
 import java.awt.Color;
@@ -40,7 +41,8 @@ public class EditAccountPanel extends EditFormPanel {
 	private FormDropdown acctType;
 	private DefaultEntryLabel employee;
 
-	private JLabel status;
+	private IconLabel status;
+	private String statusTooltip;
 	private SBButton deactivate, activate;
 	private ErrorLabel error;
 	private Account account;
@@ -59,7 +61,7 @@ public class EditAccountPanel extends EditFormPanel {
 			activateAccount(account.isActive());
 			
 			acctType.setModel(new DefaultComboBoxModel(Manager.accountManager.getAccountTypes().toArray()));
-			employee.setText(account.getFirstPlusLastName());
+			employee.setToolTip(account.getFirstPlusLastName());
 			fields.get(0).setText(account.getUsername());
 			fields.get(1).setText(account.getPassword());
 			
@@ -80,7 +82,7 @@ public class EditAccountPanel extends EditFormPanel {
 		acctType = new FormDropdown(true);
 		employee = new DefaultEntryLabel("", true);
 
-		status = new JLabel();
+		status = new IconLabel(null, "");
 		deactivate = new SBButton("deactivate.png", "deactivate2.png", "Deactivate Account");
 		activate = new SBButton("activate.png", "activate.png", "Reactivate Account");
 
@@ -119,7 +121,6 @@ public class EditAccountPanel extends EditFormPanel {
 		error = new ErrorLabel();
 
 		status.setBounds(200, 20, 32, 32);
-		status.setToolTipText("Active");
 
 		int labelsCtr = 0, fieldCtr = 0;
 
@@ -210,9 +211,9 @@ public class EditAccountPanel extends EditFormPanel {
 		activate.setVisible(!active);
 		
 		ImageIcon icon = account.isActive() ? new ImageIcon("images/active.png") : new ImageIcon("images/inactive.png");
-		status.setIcon(icon);
+		statusTooltip = account.isActive() ? "Active" : "Inactive";
 		
-		status.setToolTipText(account.isActive() ? "Active" : "Inactive");
+		status.setIconToolTip(icon, statusTooltip, account.isActive());
 	}
 
 	private void update() {

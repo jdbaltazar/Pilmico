@@ -174,6 +174,10 @@ public class TableUtilPanel extends SoyPanel {
 
 		if (label.equals(Tables.SALES))
 			searchPanel.add(graphBtn);
+		
+		if(label.equals(Tables.ACCOUNTS))
+			if(!Manager.isAuthorized())
+				addbtn.setVisible(false);
 
 		if (label.equals(Tables.PRODUCTS))
 			searchPanel.add(onDisplayBtn);

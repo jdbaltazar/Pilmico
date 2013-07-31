@@ -124,6 +124,7 @@ public class SalesForm extends SimplePanel {
 		issueDate = new SpinnerDate(Values.dateFormat);
 		
 		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		determineDateStatus();
 
 		issuedaTLabel = new MainFormLabel("Issued at:");
 		issuedOnLabel = new MainFormLabel("Issued on:");
@@ -194,44 +195,7 @@ public class SalesForm extends SimplePanel {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
-				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
-				
-				formDate = ((SpinnerDateModel) date.getModel()).getDate();
-				
-				try {
-					if (Manager.inventorySheetDataManager
-							.getInventorySheetDataWithThisDate(DateWithoutTime
-									.getDateWithoutTime(formDate)) != null){
-						dateStatus.setIconToolTip(new ImageIcon(
-								"images/invalid_date2.png"),
-								"An Inventory Sheet with this date already exists", false);
-					}
-					
-					else if(formDate.after(new Date())){
-						dateStatus.setIconToolTip(new ImageIcon(
-								"images/invalid_date2.png"),
-								"Future date not allowed", false);
-					}
-					
-					else
-						dateStatus.setIconToolTip(new ImageIcon(
-								"images/valid_date.png"), "This date is valid", true);
-						
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				/*validDate = !formDate.after(new Date());
-				
-				if (validDate)
-					dateStatus.setIconToolTip(new ImageIcon(
-							"images/valid_date.png"), "This date is valid", true);
-				else
-					dateStatus.setIconToolTip(new ImageIcon(
-							"images/invalid_date2.png"),
-							"Future date not allowed", false);*/
+				determineDateStatus();
 			}
 		});
 
@@ -375,6 +339,35 @@ public class SalesForm extends SimplePanel {
 		scrollPane.setBounds(20, 42, 630, 310);
 
 		add(scrollPane);
+	}
+	
+	private void determineDateStatus(){
+		
+		formDate = ((SpinnerDateModel) date.getModel()).getDate();
+		
+		try {
+			if (Manager.inventorySheetDataManager
+					.getInventorySheetDataWithThisDate(DateWithoutTime.getInstance()
+							.getDateWithoutTime(formDate)) != null){
+				dateStatus.setIconToolTip(new ImageIcon(
+						"images/invalid_date2.png"),
+						"An Inventory Sheet with this date already exists", false);
+			}
+			
+			else if(formDate.after(new Date())){
+				dateStatus.setIconToolTip(new ImageIcon(
+						"images/invalid_date2.png"),
+						"Future date not allowed", false);
+			}
+			
+			else
+				dateStatus.setIconToolTip(new ImageIcon(
+						"images/valid_date.png"), "This date is valid", true);
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void alternateRows() {
