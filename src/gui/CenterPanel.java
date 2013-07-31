@@ -202,14 +202,14 @@ public class CenterPanel extends SoyPanel {
 				entries[i][3] = InventorySheet.overOrShort(is.getActualCashCount(), is.getActualCashCount());
 				entries[i][4] = String.format("%.2f", Math.abs(is.getActualCashOnHand() - is.getActualCashCount()));
 				entries[i][5] = is.getIssuedBy().getFirstPlusLastName();
-
+				iss.add(is);
+				i++;
 				// entries[i][4] = String.format("%.2f",
 				// InventorySheet.overOrShortAmount(is.getActualCashOnHand(),
 				// is.getActualCashCount()));
-				i++;
 			}
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null, Tables.INVENTORY_SHEET), Tables.INVENTORY_SHEET), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, iss, Tables.INVENTORY_SHEET), Tables.INVENTORY_SHEET), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			e.printStackTrace();

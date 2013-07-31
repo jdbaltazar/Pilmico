@@ -35,7 +35,7 @@ import common.entity.sales.Sales;
 
 public class ISRowPanel extends JPanel {
 
-	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins", "check/s"};
+	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins", "check/s" };
 	private SimpleNumericField field;
 	private ViewFormField viewField;
 	private JPanel row;
@@ -84,7 +84,7 @@ public class ISRowPanel extends JPanel {
 		case Values.PRODUCTS:
 			drawProductInventory();
 			break;
-			
+
 		case Values.PRODUCT_TWIN:
 			drawProductInventory2();
 			break;
@@ -161,7 +161,7 @@ public class ISRowPanel extends JPanel {
 		case Values.OTHERS:
 			drawCashBreakDown();
 			break;
-			
+
 		default:
 			drawViewCashBreakDown();
 			break;
@@ -219,18 +219,18 @@ public class ISRowPanel extends JPanel {
 			formField.add(new ViewFormField(""));
 			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
 		}
-		
+
 		InventorySheetDetail isd = (InventorySheetDetail) object;
-		formField.get(0).setToolTip(formField.get(0),isd.getProduct().getName());
-		formField.get(1).setToolTip(formField.get(1),String.format("%.2f", isd.getBeginningInventoryInSack()));
-		formField.get(2).setToolTip(formField.get(2),String.format("%.2f", isd.getBeginningInventoryInKilo()));
-		formField.get(3).setToolTip(formField.get(3),String.format("%.2f", isd.getOnDisplayInSack()));
-		formField.get(4).setToolTip(formField.get(4),String.format("%.2f", isd.getOnDisplayInKilo()));
-		formField.get(5).setToolTip(formField.get(5),String.format("%.2f", isd.getDeliveriesInSack()));
-		formField.get(6).setToolTip(formField.get(6),String.format("%.2f", isd.getDeliveriesInKilo()));
-		formField.get(7).setToolTip(formField.get(7),String.format("%.2f", isd.getPullOutsInSack()));
-		formField.get(8).setToolTip(formField.get(8),String.format("%.2f", isd.getPullOutsInKilo()));
-		
+		formField.get(0).setToolTip(formField.get(0), isd.getProduct().getName());
+		formField.get(1).setToolTip(formField.get(1), String.format("%.2f", isd.getBeginningInventoryInSack()));
+		formField.get(2).setToolTip(formField.get(2), String.format("%.2f", isd.getBeginningInventoryInKilo()));
+		formField.get(3).setToolTip(formField.get(3), String.format("%.2f", isd.getOnDisplayInSack()));
+		formField.get(4).setToolTip(formField.get(4), String.format("%.2f", isd.getOnDisplayInKilo()));
+		formField.get(5).setToolTip(formField.get(5), String.format("%.2f", isd.getDeliveriesInSack()));
+		formField.get(6).setToolTip(formField.get(6), String.format("%.2f", isd.getDeliveriesInKilo()));
+		formField.get(7).setToolTip(formField.get(7), String.format("%.2f", isd.getPullOutsInSack()));
+		formField.get(8).setToolTip(formField.get(8), String.format("%.2f", isd.getPullOutsInKilo()));
+
 		for (ViewFormField vff : formField) {
 			row.add(vff);
 		}
@@ -243,33 +243,33 @@ public class ISRowPanel extends JPanel {
 		add(row);
 
 	}
-	
+
 	private void drawProductInventory2() {
 		ROW_HEIGHT = 35;
 		formField.add(new ViewFormField(""));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.PRODUCT_LABEL_WIDTH, ROW_HEIGHT);
-		
+
 		for (int i = 1, x = formField.get(0).getX() + formField.get(0).getWidth(); i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 11; i++, x += InventorySheetForm.SACK_LABEL_WIDTH) {
 			formField.add(new ViewFormField(""));
 			formField.get(i).setBounds(0 + x, 1, InventorySheetForm.SACK_LABEL_WIDTH, ROW_HEIGHT);
 		}
-		
+
 		for (int i = InventorySheetForm.TOTAL_INVENTORY_LABEL - 11, x = 0; i < InventorySheetForm.TOTAL_INVENTORY_LABEL - 7; i++, x += InventorySheetForm.SALES_KG_WIDTH) {
 			formField.add(new ViewFormField(""));
 			formField.get(i).setBounds(440 + x, 1, InventorySheetForm.SALES_KG_WIDTH, ROW_HEIGHT);
 		}
-	
+
 		InventorySheetDetail isd = (InventorySheetDetail) object;
-		formField.get(0).setToolTip(formField.get(0),isd.getProduct().getName());
-		formField.get(1).setToolTip(formField.get(1),String.format("%.2f",  isd.getEndingInventoryInSack()));
-		formField.get(2).setToolTip(formField.get(2),String.format("%.2f", isd.getEndingInventoryInKilo()));
-		formField.get(3).setToolTip(formField.get(3),String.format("%.2f", isd.getOffTakeInSack()));
-		formField.get(4).setToolTip(formField.get(4),String.format("%.2f", isd.getOffTakeInKilo()));
-		formField.get(5).setToolTip(formField.get(5),String.format("%.2f", isd.getPricePerSack()));
-		formField.get(6).setToolTip(formField.get(6),String.format("%.2f",	isd.getPricePerKilo()));
-		formField.get(7).setToolTip(formField.get(7),String.format("%.2f", isd.getCombinedSalesAmountForSack()));
-		formField.get(8).setToolTip(formField.get(8),String.format("%.2f", isd.getCombinedSalesAmountForKilo()));
-		
+		formField.get(0).setToolTip(formField.get(0), isd.getProduct().getName());
+		formField.get(1).setToolTip(formField.get(1), String.format("%.2f", isd.getEndingInventoryInSack()));
+		formField.get(2).setToolTip(formField.get(2), String.format("%.2f", isd.getEndingInventoryInKilo()));
+		formField.get(3).setToolTip(formField.get(3), String.format("%.2f", isd.getOffTakeInSack()));
+		formField.get(4).setToolTip(formField.get(4), String.format("%.2f", isd.getOffTakeInKilo()));
+		formField.get(5).setToolTip(formField.get(5), String.format("%.2f", isd.getPricePerSack()));
+		formField.get(6).setToolTip(formField.get(6), String.format("%.2f", isd.getPricePerKilo()));
+		formField.get(7).setToolTip(formField.get(7), String.format("%.2f", isd.getCombinedSalesAmountForSack()));
+		formField.get(8).setToolTip(formField.get(8), String.format("%.2f", isd.getCombinedSalesAmountForKilo()));
+
 		for (ViewFormField vff : formField) {
 			row.add(vff);
 		}
@@ -330,6 +330,7 @@ public class ISRowPanel extends JPanel {
 
 		field = new SimpleNumericField(10);
 		field.setHorizontalAlignment(JTextField.CENTER);
+		field.setText("0");
 
 		totalLabel = new JLabel("0.0");
 		totalLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -365,7 +366,7 @@ public class ISRowPanel extends JPanel {
 
 					} else {
 						totalLabel.setText(field.getText());
-						
+
 						InventorySheetForm isForm = (InventorySheetForm) object;
 						isForm.updateActualCashCountAndSummary();
 					}
@@ -377,8 +378,7 @@ public class ISRowPanel extends JPanel {
 		eq.setBounds(220, 5, 20, 20);
 		totalLabel.setBounds(240, 7, 100, 17);
 
-		if (componentCount != moneyString.length - 1
-				&& componentCount != moneyString.length - 2){
+		if (componentCount != moneyString.length - 1 && componentCount != moneyString.length - 2) {
 			field.setFormat(SimpleNumericField.NUMERIC);
 			row.add(x);
 		}
@@ -395,22 +395,22 @@ public class ISRowPanel extends JPanel {
 		add(row);
 
 	}
-	
+
 	private void drawViewCashBreakDown() {
 
 		JLabel money, x, eq;
 
-		viewField = new ViewFormField("5");
+		viewField = new ViewFormField("0");
 		viewField.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
-		
-		totalLabel = new JLabel("0.0");
+
+		totalLabel = new JLabel("0.00");
 		totalLabel.setHorizontalAlignment(JLabel.CENTER);
 		totalLabel.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 
 		componentCount = panel.getComponentCount();
 		money = getALabel(moneyString[panel.getComponentCount()]);
 		money.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
-		
+
 		x = getALabel("x");
 		eq = getALabel("=");
 
@@ -420,12 +420,11 @@ public class ISRowPanel extends JPanel {
 		money.setBounds(2, 7, 50, 15);
 		x.setBounds(60, 5, 20, 20);
 		viewField.setBounds(100, 7, 100, 17);
-		
+
 		eq.setBounds(220, 5, 20, 20);
 		totalLabel.setBounds(240, 7, 100, 17);
 
-		if (componentCount != moneyString.length - 1
-				&& componentCount != moneyString.length - 2){
+		if (componentCount != moneyString.length - 1 && componentCount != moneyString.length - 2) {
 			row.add(x);
 		}
 
@@ -440,6 +439,15 @@ public class ISRowPanel extends JPanel {
 
 		add(row);
 
+	}
+
+	public ViewFormField getViewField() {
+		return viewField;
+	}
+
+	public void setViewFieldValues(double quantity, double total) {
+		viewField.setText(String.format("%.2f", quantity));
+		totalLabel.setText(String.format("%.2f", total));
 	}
 
 	private JLabel getALabel(String str) {
@@ -476,4 +484,5 @@ public class ISRowPanel extends JPanel {
 	public double getCashBreakdownRowDenomination(int i) {
 		return Double.parseDouble(moneyString[i]);
 	}
+
 }

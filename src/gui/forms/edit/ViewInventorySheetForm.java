@@ -52,10 +52,12 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
 
+import util.DateFormatter;
 import util.EditFormPanel;
 import util.MainFormLabel;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -110,7 +112,7 @@ public class ViewInventorySheetForm extends EditFormPanel {
 	private MainFormLabel dateLabel;
 	private SpinnerDate date;
 
-	private JButton inputPCOH;
+	// private JButton inputPCOH;
 
 	private TableHeaderLabel productLabel2, productLabel, sack1Label, kg1Label, sack2Label, kg2Label, sack3Label, kg3Label, sack4Label, kg4Label,
 			sack5Label, kg5Label, sack6Label, kg6Label, sack7Label, kg7Label, sack8Label, kg8Label, productTotalLabel, productTotalLabel2,
@@ -127,37 +129,37 @@ public class ViewInventorySheetForm extends EditFormPanel {
 			accLabel;
 
 	private List<Product> products;
-	private List<Delivery> deliveries;
-	private List<PullOut> pullOuts;
-	private List<Sales> sales;
-	private List<AccountReceivable> accountReceivables;
-	private List<ARPayment> arPayments;
-	private List<CashAdvance> cashAdvances;
-	private List<CAPayment> caPayments;
-	private List<DailyExpenses> dailyExpenses;
-	private List<SalaryRelease> salaryReleases;
-	private List<DiscountIssue> discountIssues;
-	private List<Deposit> deposits;
+	// private List<Delivery> deliveries;
+	// private List<PullOut> pullOuts;
+	// private List<Sales> sales;
+	// private List<AccountReceivable> accountReceivables;
+	// private List<ARPayment> arPayments;
+	// private List<CashAdvance> cashAdvances;
+	// private List<CAPayment> caPayments;
+	// private List<DailyExpenses> dailyExpenses;
+	// private List<SalaryRelease> salaryReleases;
+	// private List<DiscountIssue> discountIssues;
+	// private List<Deposit> deposits;
 	// double previousAcoh =
 	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
 	private InventorySheet inventorySheet;
 
-	public ViewInventorySheetForm() {
+	public ViewInventorySheetForm(InventorySheet inventorySheet) {
 		super("View Inventory Sheet");
-		// this.inventorySheet = inventorySheet;
+		this.inventorySheet = inventorySheet;
 		init();
 		addComponents();
-		fillEntries();
-	}
-
-	public void fillEntries() {
-
+		try {
+			build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void init() {
 		// TODO Auto-generated method stub
-		inputPCOH = new JButton("+");
+		// inputPCOH = new JButton("+");
 
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
@@ -756,25 +758,26 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		computationLabel.get(2).setBounds(computationLabel.get(0).getX(), liabilitiesLabel.getY(), 200, 26);
 		computationLabel.get(3).setBounds(computationLabel.get(0).getX(), cohLabel.getY(), 200, 30);
 
-		inputPCOH.setBounds(computationLabel.get(0).getX() + computationLabel.get(0).getWidth() + 5, computationLabel.get(0).getY() + 5, 16, 16);
-
-		inputPCOH.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-
-				UtilityPopup uP = new UtilityPopup(b, Values.PCOH);
-				uP.setVisible(true);
-
-				if (uP.getInput().equals("")) {
-					computationLabel.get(0).setText("0.00");
-				} else
-					computationLabel.get(0).setText(uP.getInput());
-			}
-		});
+		// inputPCOH.setBounds(computationLabel.get(0).getX() +
+		// computationLabel.get(0).getWidth() + 5, computationLabel.get(0).getY()
+		// + 5, 16, 16);
+		// inputPCOH.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// PointerInfo a = MouseInfo.getPointerInfo();
+		// Point b = a.getLocation();
+		//
+		// UtilityPopup uP = new UtilityPopup(b, Values.PCOH);
+		// uP.setVisible(true);
+		//
+		// if (uP.getInput().equals("")) {
+		// computationLabel.get(0).setText("0.00");
+		// } else
+		// computationLabel.get(0).setText(uP.getInput());
+		// }
+		// });
 
 		cashBreakdownPanel.setBounds(computationLabel.get(0).getX() + computationLabel.get(0).getWidth() + TABLE_GAP + TAB + 50, sectionLabel.get(3)
 				.getY() + sectionLabel.get(3).getHeight() + LABEL_GAP, 340, 280);
@@ -925,7 +928,7 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		isEditPanel.add(discountPane);
 		isEditPanel.add(overallDiscountLabel);
 
-		isEditPanel.add(inputPCOH);
+		// isEditPanel.add(inputPCOH);
 
 		isEditPanel.add(pcohLabel);
 		isEditPanel.add(assetsLabel);
@@ -1040,64 +1043,115 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 		}
 
-		double previousAcoh = 0d;
-		InventorySheetData isd = Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
+		// double previousAcoh = 0d;
+		// Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
 
-		inputPCOH.setVisible(isd == null);
-		if (isd != null) {
-			InventorySheet is = new InventorySheet(isd);
-			previousAcoh = is.getActualCashOnHand();
-		}
+		// inputPCOH.setVisible(isd == null);
+		// if (isd != null) {
+		// InventorySheet is = new InventorySheet(isd);
+		// previousAcoh = is.getActualCashOnHand();
+		// }
 
 		products = Manager.productManager.getProducts();
-		deliveries = Manager.deliveryManager.getPendingDeliveries();
-		pullOuts = Manager.pullOutManager.getPendingPullOuts();
-		sales = Manager.salesManager.getPendingSales();
-		accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivables();
-		arPayments = Manager.accountReceivableManager.getPendingARPayments();
-		cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
-		caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
-		dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
-		salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
-		discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
-		deposits = Manager.depositManager.getPendingDeposits();
+		// deliveries = Manager.deliveryManager.getPendingDeliveries();
+		// pullOuts = Manager.pullOutManager.getPendingPullOuts();
+		// sales = Manager.salesManager.getPendingSales();
+		// accountReceivables =
+		// Manager.accountReceivableManager.getPendingAccountReceivables();
+		// arPayments = Manager.accountReceivableManager.getPendingARPayments();
+		// cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
+		// caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
+		// dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
+		// salaryReleases =
+		// Manager.salaryReleaseManager.getPendingSalaryReleases();
+		// discountIssues =
+		// Manager.discountIssueManager.getPendingDiscountIssues();
+		// deposits = Manager.depositManager.getPendingDeposits();
 
-		InventorySheetData inventorySheetData = new InventorySheetData();
-		inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0, Manager.loggedInAccount);
-		for (Product p : products) {
-			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, p.getBeginningInventoryInSack(), p
-					.getBeginningInventoryInKilo(), p.getDisplayInSack(), p.getDisplayInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
+		// InventorySheetData inventorySheetData = new InventorySheetData();
+		// inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0,
+		// Manager.loggedInAccount);
+		// for (Product p : products) {
+		// inventorySheetData.addInventorySheetDataDetail(new
+		// InventorySheetDataDetail(inventorySheetData, p,
+		// p.getBeginningInventoryInSack(), p
+		// .getBeginningInventoryInKilo(), p.getDisplayInSack(),
+		// p.getDisplayInKilo(), p.getCurrentPricePerSack(),
+		// p.getCurrentPricePerKilo()));
+		// }
+		//
+		// inventorySheet = new InventorySheet(inventorySheetData, new
+		// HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new
+		// HashSet<Sales>(
+		// sales), new HashSet<AccountReceivable>(accountReceivables), new
+		// HashSet<DiscountIssue>(discountIssues),
+		// new HashSet<ARPayment>(arPayments), new HashSet<CAPayment>(caPayments),
+		// new HashSet<DailyExpenses>(dailyExpenses),
+		// new HashSet<CashAdvance>(cashAdvances), new
+		// HashSet<SalaryRelease>(salaryReleases), new
+		// HashSet<Deposit>(deposits));
+
+		fillProductInventories(products);
+		fillSales(new ArrayList<Sales>(inventorySheet.getSales()));
+		fillDeliveries(new ArrayList<Delivery>(inventorySheet.getDeliveries()));
+		fillDiscount(new ArrayList<DiscountIssue>(inventorySheet.getInventorySheetData().getDiscountIssues()));
+		fillAR(new ArrayList<AccountReceivable>(inventorySheet.getAccountReceivables()));
+		fillARPayment(new ArrayList<ARPayment>(inventorySheet.getInventorySheetData().getArPayments()));
+		fillCAPayment(new ArrayList<CAPayment>(inventorySheet.getInventorySheetData().getCaPayments()));
+		fillPullOut(new ArrayList<PullOut>(inventorySheet.getInventorySheetData().getPullouts()));
+		fillDailyExpenses(new ArrayList<DailyExpenses>(inventorySheet.getInventorySheetData().getDailyExpenses()));
+		fillCashAdvances(new ArrayList<CashAdvance>(inventorySheet.getInventorySheetData().getCashAdvances()));
+		fillSalaryRelease(new ArrayList<SalaryRelease>(inventorySheet.getInventorySheetData().getSalaryReleases()));
+		fillDeposit(new ArrayList<Deposit>(inventorySheet.getInventorySheetData().getDeposits()));
+
+		// breakdown
+		for (ISRowPanel irp : cashBreakdown) {
+
 		}
 
-		inventorySheet = new InventorySheet(inventorySheetData, new HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new HashSet<Sales>(
-				sales), new HashSet<AccountReceivable>(accountReceivables), new HashSet<DiscountIssue>(discountIssues),
-				new HashSet<ARPayment>(arPayments), new HashSet<CAPayment>(caPayments), new HashSet<DailyExpenses>(dailyExpenses),
-				new HashSet<CashAdvance>(cashAdvances), new HashSet<SalaryRelease>(salaryReleases), new HashSet<Deposit>(deposits));
+//		Breakdown breakdown = inventorySheet.getBreakdown();
+//		for (BreakdownLine bdl : breakdown.getBreakdownLines()) {
+//
+//		}
 
-		// fillProductInventories(products);
-		// fillSales(sales);
-		// fillDeliveries(deliveries);
-		// fillDiscount(discountIssues);
-		// fillAR(accountReceivables);
-		// fillARPayment(arPayments);
-		// fillCAPayment(caPayments);
-		// fillPullOut(pullOuts);
-		// fillDailyExpenses(dailyExpenses);
-		// fillCashAdvances(cashAdvances);
-		// fillSalaryRelease(salaryReleases);
-		// fillDeposit(deposits);
+		// for (int i = 0; i < 6; i++) {
+		//
+		//
+		// breakdown.addBreakdownLine(new BreakdownLine(breakdown, new
+		// Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i)),
+		// cashBreakdown.get(i).getCashBreakdownRowQuantity()));
+		// }
+		//
+		// Breakdown breakdown = new
+		// Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(),
+		// cashBreakdown.get(7)
+		// .getCashBreakdownRowQuantity(),
+		// inventorySheet.getInventorySheetData());
+		//
+		//
+		// for(Breakdown)
 
-		actualCashCount.setText(String.format("%.2f", new Double(0)));
+		actualCashCount.setText(String.format("%.2f", inventorySheet.getActualCashCount()));
 
-		computationLabel.get(0).setText(String.format("%.2f", previousAcoh));
+		// cash on hand tooltip
+		pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet ");
+		assetsLabel.setToolTipText("Previous COH + Sales + Account Receivables + Account Receivables Payments + Cash Advance Payments");
+		liabilitiesLabel.setToolTipText("Expenses + Salary Releases + Cash Advances + Account Receivables + Discounts");
+		cohLabel.setToolTipText("Previous COH + Assets - Liabilities");
+
+		// cash on hand
+		computationLabel.get(0).setText(String.format("%.2f", inventorySheet.getPreviousAcoh()));
 		computationLabel.get(1).setText(String.format("%.2f", inventorySheet.getTotalAssets()));
 		computationLabel.get(2).setText(String.format("%.2f", inventorySheet.getTotalLiabilities()));
 		computationLabel.get(3).setText(String.format("%.2f", inventorySheet.getActualCashOnHand()));
 
-		summaryValues.get(0).setText(String.format("%.2f", inventorySheet.getActualCashOnHand()));
-		summaryValues.get(1).setText(String.format("%.2f", inventorySheet.getActualCashCount()));
-		summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
-		summary3Label.setText("OVER/SHORT");
+		// summary
+		double acoh = inventorySheet.getActualCashOnHand();
+		double acc = inventorySheet.getActualCashCount();
+		summaryValues.get(0).setText(String.format("%.2f", acoh));
+		summaryValues.get(1).setText(String.format("%.2f", acc));
+		summaryValues.get(2).setText(String.format("%.2f", InventorySheet.overOrShortAmount(acoh, acc)));
+		summary3Label.setText(InventorySheet.overOrShortCaps(acoh, acc));
 
 	}
 

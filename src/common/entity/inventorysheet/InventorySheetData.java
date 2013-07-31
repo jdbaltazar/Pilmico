@@ -64,7 +64,7 @@ public class InventorySheetData {
 	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<InventorySheetDataDetail> inventorySheetDataDetails = new HashSet<InventorySheetDataDetail>();
 
-	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Breakdown breakdown;
 
 	@OneToMany(mappedBy = "inventorySheetData", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

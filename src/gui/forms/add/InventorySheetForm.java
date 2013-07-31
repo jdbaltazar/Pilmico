@@ -779,6 +779,8 @@ public class InventorySheetForm extends SimplePanel {
 					computationLabel.get(0).setText("0.00");
 				} else
 					computationLabel.get(0).setText(uP.getInput());
+
+				updateCashOnHandSummary();
 			}
 		});
 
@@ -1094,8 +1096,12 @@ public class InventorySheetForm extends SimplePanel {
 
 		actualCashCount.setText(String.format("%.2f", new Double(0)));
 
-		pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet on "
-				+ DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(isd.getDate()));
+		if (isd != null)
+			pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet on "
+					+ DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(isd.getDate()));
+		else {
+			pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet");
+		}
 		assetsLabel.setToolTipText("Previous COH + Sales + Account Receivables + Account Receivables Payments + Cash Advance Payments");
 		liabilitiesLabel.setToolTipText("Expenses + Salary Releases + Cash Advances + Account Receivables + Discounts");
 		cohLabel.setToolTipText("Previous COH + Assets - Liabilities");
@@ -1356,6 +1362,20 @@ public class InventorySheetForm extends SimplePanel {
 		formsOverall.get(11).setText(String.format("%.2f", inventorySheet.getOverallDeposits()));
 	}
 
+	public void updateCashOnHandSummary() {
+
+		double pcoh = Double.parseDouble(computationLabel.get(0).getText());
+		double tAssets = Double.parseDouble(computationLabel.get(1).getText());
+		double tLiabilities = Double.parseDouble(computationLabel.get(2).getText());
+		double acoh = (pcoh + tAssets) - tLiabilities;
+		computationLabel.get(3).setText(String.format("%.2f", acoh));
+		summaryValues.get(0).setText(String.format("%.2f", acoh));
+		double acc = Double.parseDouble(summaryValues.get(0).getText());
+		summaryValues.get(2).setText(String.format("%.2f", InventorySheet.overOrShortAmount(acoh, acc)));
+		summary3Label.setText(InventorySheet.overOrShortCaps(acoh, acc));
+
+	}
+
 	public void updateActualCashCountAndSummary() {
 
 		double total = 0d;
@@ -1372,7 +1392,7 @@ public class InventorySheetForm extends SimplePanel {
 		summaryValues.get(1).setText(String.format("%.2f", total));
 		double acoh = Double.parseDouble(summaryValues.get(0).getText());
 		summaryValues.get(2).setText(String.format("%.2f", InventorySheet.overOrShortAmount(acoh, total)));
-		summary3Label.setText(InventorySheet.overOrShort(acoh, total));
+		summary3Label.setText(InventorySheet.overOrShortCaps(acoh, total));
 
 	}
 }

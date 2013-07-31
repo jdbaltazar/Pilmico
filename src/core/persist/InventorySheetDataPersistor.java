@@ -1,14 +1,15 @@
 package core.persist;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
-import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
 import common.manager.InventorySheetDataManager;
 
@@ -62,6 +63,27 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@Override
 	public void deleteInventorySheetData(InventorySheetData inventorySheetData) throws Exception {
 		remove(inventorySheetData);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(InventorySheetData.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<InventorySheetData> inventorySheetsData = new ArrayList<InventorySheetData>();
+		InventorySheetData isd = null;
+		try {
+			inventorySheetsData = criteria.add(Restrictions.like("date", date)).addOrder(Order.desc("date")).list();
+			if (inventorySheetsData.size() > 0) {
+				isd = inventorySheetsData.get(0);
+			}
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return isd;
 	}
 
 	// @Override
