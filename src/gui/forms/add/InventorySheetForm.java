@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -960,6 +961,15 @@ public class InventorySheetForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				Date d = ((SpinnerDateModel) date.getModel()).getDate();
+
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(d);
+				// Set time fields to zero
+				cal.set(Calendar.HOUR_OF_DAY, 0);
+				cal.set(Calendar.MINUTE, 0);
+				cal.set(Calendar.SECOND, 0);
+				cal.set(Calendar.MILLISECOND, 0);
+
 				inventorySheet.getInventorySheetData().setDate(d);
 				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				inventorySheet.getInventorySheetData().setOverAmount(0d);
@@ -976,12 +986,23 @@ public class InventorySheetForm extends SimplePanel {
 				inventorySheet.getInventorySheetData().setIssuedBy(Manager.loggedInAccount);
 				inventorySheet.getInventorySheetData().setRemarks("");
 
+				// breakdown
 				Breakdown breakdown = new Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(), cashBreakdown.get(7)
 						.getCashBreakdownRowQuantity(), inventorySheet.getInventorySheetData());
 
 				for (int i = 0; i < 6; i++) {
-					breakdown.addBreakdownLine(new BreakdownLine(breakdown, new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i)),
-							cashBreakdown.get(i).getCashBreakdownRowQuantity()));
+
+					try {
+
+						if (cashBreakdown.get(i).getCashBreakdownRowQuantity() != 0) {
+							Denomination den = Manager.inventorySheetDataManager.searchDenomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
+							if (den == null)
+								den = new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
+							breakdown.addBreakdownLine(new BreakdownLine(breakdown, den, cashBreakdown.get(i).getCashBreakdownRowQuantity()));
+						}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				}
 
 				inventorySheet.getInventorySheetData().setBreakdown(breakdown);

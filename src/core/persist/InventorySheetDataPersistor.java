@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.dailyexpenses.Expense;
+import common.entity.inventorysheet.Denomination;
 import common.entity.inventorysheet.InventorySheetData;
 import common.manager.InventorySheetDataManager;
 
@@ -38,7 +40,7 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<InventorySheetData> inventorySheetsData = new ArrayList<InventorySheetData>();
 		try {
-			inventorySheetsData = criteria.addOrder(Order.desc("date")).list();
+			inventorySheetsData = criteria.addOrder(Order.desc("date")).addOrder(Order.desc("id")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -84,6 +86,66 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 			session.close();
 		}
 		return isd;
+	}
+
+	@Override
+	public void addDenominations(Denomination denomination) throws Exception {
+		add(denomination);
+	}
+
+	@Override
+	public Denomination getDenomination(int id) throws Exception {
+		return (Denomination) get(Denomination.class, id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Denomination searchDenomination(double value) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Denomination.class);
+		List<Denomination> denominations = new ArrayList<Denomination>();
+		Denomination d = null;
+		try {
+			denominations = criteria.add(Restrictions.eq("denomination", value)).addOrder(Order.desc("denomination")).list();
+			if (denominations.size() > 0)
+				d = denominations.get(0);
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return d;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Denomination> getDenominations() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Denomination.class);
+		List<Denomination> denominations = new ArrayList<Denomination>();
+		try {
+			denominations = criteria.addOrder(Order.desc("denomination")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return denominations;
+	}
+
+	@Override
+	public void updateDenominations(Denomination denomination) throws Exception {
+		update(denomination);
+	}
+
+	@Override
+	public void deleteDenomination(Denomination denomination) throws Exception {
+		remove(denomination);
+	}
+
+	@Override
+	public void deleteDenomination(int id) throws Exception {
+		remove(getDenomination(id));
 	}
 
 	// @Override

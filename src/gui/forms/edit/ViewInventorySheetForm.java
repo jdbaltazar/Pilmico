@@ -1109,10 +1109,13 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 		}
 
-//		Breakdown breakdown = inventorySheet.getBreakdown();
-//		for (BreakdownLine bdl : breakdown.getBreakdownLines()) {
-//
-//		}
+		cashBreakdown.get(6).setViewFieldValues(inventorySheet.getBreakdown().getCoins(), inventorySheet.getBreakdown().getCoins());
+		cashBreakdown.get(7).setViewFieldValues(inventorySheet.getBreakdown().getCheck(), inventorySheet.getBreakdown().getCheck());
+
+		// Breakdown breakdown = inventorySheet.getBreakdown();
+		// for (BreakdownLine bdl : breakdown.getBreakdownLines()) {
+		//
+		// }
 
 		// for (int i = 0; i < 6; i++) {
 		//

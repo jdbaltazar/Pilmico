@@ -197,7 +197,7 @@ public class CenterPanel extends SoyPanel {
 			for (InventorySheetData isd : isds) {
 				InventorySheet is = new InventorySheet(isd);
 				entries[i][0] = is.getId() + "";
-				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(is.getDate());
+				entries[i][1] = DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(is.getDate());
 				entries[i][2] = String.format("%.2f", is.getActualCashOnHand());
 				entries[i][3] = InventorySheet.overOrShort(is.getActualCashCount(), is.getActualCashCount());
 				entries[i][4] = String.format("%.2f", Math.abs(is.getActualCashOnHand() - is.getActualCashCount()));
