@@ -32,10 +32,12 @@ import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 
+import util.DateFormatter;
 import util.MainFormLabel;
 import util.SimplePanel;
 import util.SpinnerDate;
 import util.TableHeaderLabel;
+import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
@@ -1040,9 +1042,7 @@ public class InventorySheetForm extends SimplePanel {
 				((PDControlScrollPane) component).getViewport().setOpaque(false);
 				((PDControlScrollPane) component).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 				((PDControlScrollPane) component).setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
 			}
-
 		}
 
 		double previousAcoh = 0d;
@@ -1093,6 +1093,12 @@ public class InventorySheetForm extends SimplePanel {
 		fillDeposit(deposits);
 
 		actualCashCount.setText(String.format("%.2f", new Double(0)));
+
+		pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet on "
+				+ DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(isd.getDate()));
+		assetsLabel.setToolTipText("Previous COH + Sales + Account Receivables + Account Receivables Payments + Cash Advance Payments");
+		liabilitiesLabel.setToolTipText("Expenses + Salary Releases + Cash Advances + Account Receivables + Discounts");
+		cohLabel.setToolTipText("Previous COH + Assets - Liabilities");
 
 		computationLabel.get(0).setText(String.format("%.2f", previousAcoh));
 		computationLabel.get(1).setText(String.format("%.2f", inventorySheet.getTotalAssets()));
@@ -1365,17 +1371,9 @@ public class InventorySheetForm extends SimplePanel {
 		actualCashCount.setText(String.format("%.2f", total));
 		summaryValues.get(1).setText(String.format("%.2f", total));
 		double acoh = Double.parseDouble(summaryValues.get(0).getText());
-		summaryValues.get(2).setText(String.format("%.2f", Math.abs(acoh - total)));
+		summaryValues.get(2).setText(String.format("%.2f", InventorySheet.overOrShortAmount(acoh, total)));
+		summary3Label.setText(InventorySheet.overOrShort(acoh, total));
 
-		if ((acoh - total) > 0) {
-			summary3Label.setText("SHORT");
-		} else {
-			if ((acoh - total) < 0) {
-				summary3Label.setText("OVER");
-			} else {
-				summary3Label.setText("OVER/SHORT");
-			}
-		}
 	}
 }
 

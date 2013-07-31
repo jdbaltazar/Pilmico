@@ -424,8 +424,4 @@ public class InventorySheetData {
 		return 0d;
 	}
 
-	public void finalize() {
-
-	}
-
 }

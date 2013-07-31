@@ -1,6 +1,7 @@
 package common.entity.inventorysheet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
+import common.entity.profile.Account;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
 import common.entity.salary.SalaryRelease;
@@ -24,6 +26,14 @@ import common.entity.sales.Sales;
 import common.entity.sales.SalesDetail;
 
 public class InventorySheet implements InventorySheetManager {
+
+	public static final String OVER_CAPS = "OVER";
+	public static final String SHORT_CAPS = "SHORT";
+	public static final String OVER_SHORT_CAPS = "OVER/SHORT";
+
+	public static final String OVER = "Over";
+	public static final String SHORT = "Short";
+	public static final String OVER_SHORT = "Over/Short";
 
 	// include all is related transactions here!!
 
@@ -40,6 +50,64 @@ public class InventorySheet implements InventorySheetManager {
 		this.inventorySheetData = inventorySheetData;
 		build();
 	}
+
+	// ///////////////////////////////// methods from inventory sheet data
+
+	public int getId() {
+		return inventorySheetData.getId();
+	}
+
+	public Date getDate() {
+		return inventorySheetData.getDate();
+	}
+
+	public void setDate(Date date) {
+		inventorySheetData.setDate(date);
+	}
+
+	public double getPreviousAcoh() {
+		return inventorySheetData.getPreviousAcoh();
+	}
+
+	public void setPreviousAcoh(double previousAcoh) {
+		inventorySheetData.setPreviousAcoh(previousAcoh);
+	}
+
+	@Override
+	public double getOverAmount() {
+		return inventorySheetData.getOverAmount();
+	}
+
+	public void setOverAmount(double overAmount) {
+		inventorySheetData.setOverAmount(overAmount);
+	}
+
+	@Override
+	public double getShortAmount() {
+		return inventorySheetData.getShortAmount();
+	}
+
+	public void setShortAmount(double shortAmount) {
+		inventorySheetData.setShortAmount(shortAmount);
+	}
+
+	public Account getIssuedBy() {
+		return inventorySheetData.getIssuedBy();
+	}
+
+	public void setIssuedBy(Account issuedBy) {
+		inventorySheetData.setIssuedBy(issuedBy);
+	}
+
+	public String getRemarks() {
+		return inventorySheetData.getRemarks();
+	}
+
+	public void setRemarks(String remarks) {
+		inventorySheetData.setRemarks(remarks);
+	}
+
+	// //////////////////////////////////
 
 	public InventorySheet(InventorySheetData inventorySheetData, Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales,
 			Set<AccountReceivable> accountReceivables, Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments,
@@ -126,8 +194,12 @@ public class InventorySheet implements InventorySheetManager {
 			Set<SalesDetail> salesDetails = s.getSalesDetails();
 			for (SalesDetail sd : salesDetails) {
 				InventorySheetDetail pi = productInventories.get(sd.getProduct().getId());
-				pi.setOffTakeInKilo(pi.getOffTakeInKilo() + sd.getQuantityInKilo());
-				pi.setOffTakeInSack(pi.getOffTakeInSack() + sd.getQuantityInSack());
+				pi.setCashAndCheckOffTakeInSack(pi.getCashAndCheckOffTakeInSack() + sd.getQuantityInSack());
+				pi.setCashAndCheckOffTakeInKilo(pi.getCashAndCheckOffTakeInKilo() + sd.getQuantityInKilo());
+				// pi.setOffTakeInKilo(pi.getOffTakeInKilo() +
+				// sd.getQuantityInKilo());
+				// pi.setOffTakeInSack(pi.getOffTakeInSack() +
+				// sd.getQuantityInSack());
 			}
 		}
 	}
@@ -138,8 +210,12 @@ public class InventorySheet implements InventorySheetManager {
 			Set<AccountReceivableDetail> arDetails = ar.getAccountReceivableDetails();
 			for (AccountReceivableDetail ard : arDetails) {
 				InventorySheetDetail pi = productInventories.get(ard.getProduct().getId());
-				pi.setOffTakeInKilo(pi.getOffTakeInKilo() + ard.getQuantityInKilo());
-				pi.setOffTakeInSack(pi.getOffTakeInSack() + ard.getQuantityInSack());
+				pi.setAccountReceivableOffTakeInSack(pi.getAccountReceivableOffTakeInSack() + ard.getQuantityInSack());
+				pi.setAccountReceivableOffTakeInKilo(pi.getAccountReceivableOffTakeInKilo() + ard.getQuantityInKilo());
+				// pi.setOffTakeInKilo(pi.getOffTakeInKilo() +
+				// ard.getQuantityInKilo());
+				// pi.setOffTakeInSack(pi.getOffTakeInSack() +
+				// ard.getQuantityInSack());
 			}
 		}
 	}
@@ -252,7 +328,11 @@ public class InventorySheet implements InventorySheetManager {
 
 	@Override
 	public double getOverallCostOfDeliveries() {
-		return 0;
+		double total = 0d;
+		for (Delivery d : inventorySheetData.getDeliveries()) {
+			total += d.getDeliveryAmount();
+		}
+		return total;
 	}
 
 	@Override
@@ -445,7 +525,7 @@ public class InventorySheet implements InventorySheetManager {
 	public double getCashAndCheckSalesAmountInSackForProduct(int productId) {
 		InventorySheetDetail isd = productInventories.get(productId);
 		if (isd != null)
-			return isd.getCombinedSalesAmountForSack();
+			return isd.getCashAndCheckOffTakeInSackAmount();
 		return 0d;
 	}
 
@@ -453,7 +533,7 @@ public class InventorySheet implements InventorySheetManager {
 	public double getCashAndCheckSalesAmountInKiloForProduct(int productId) {
 		InventorySheetDetail isd = productInventories.get(productId);
 		if (isd != null)
-			return isd.getCombinedSalesAmountForKilo();
+			return isd.getCashAndCheckOffTakeInKiloAmount();
 		return 0d;
 	}
 
@@ -616,16 +696,6 @@ public class InventorySheet implements InventorySheetManager {
 	}
 
 	@Override
-	public double getOverAmount() {
-		return 0;
-	}
-
-	@Override
-	public double getShortAmount() {
-		return 0;
-	}
-
-	@Override
 	public Set<Delivery> getDeliveries() {
 		return inventorySheetData.getDeliveries();
 	}
@@ -642,26 +712,36 @@ public class InventorySheet implements InventorySheetManager {
 
 	@Override
 	public double getAccountReceivablesAmountInSackForProduct(int productId) {
-		// TODO Auto-generated method stub
-		return 0;
+		InventorySheetDetail isd = productInventories.get(productId);
+		if (isd != null)
+			return isd.getAccountReceivableOffTakeInSackAmount();
+		return 0d;
 	}
 
 	@Override
 	public double getAccountReceivablesAmountInKiloForProduct(int productId) {
-		// TODO Auto-generated method stub
-		return 0;
+		InventorySheetDetail isd = productInventories.get(productId);
+		if (isd != null)
+			return isd.getAccountReceivableOffTakeInKiloAmount();
+		return 0d;
 	}
 
 	@Override
 	public double getAccountReceivablesAmountInSack() {
-		// TODO Auto-generated method stub
-		return 0;
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getAccountReceivablesAmountInSackForProduct(i);
+		}
+		return total;
 	}
 
 	@Override
 	public double getAccountReceivablesAmountInKilo() {
-		// TODO Auto-generated method stub
-		return 0;
+		double total = 0d;
+		for (int i = 0; i < maxId; i++) {
+			total += getAccountReceivablesAmountInKiloForProduct(i);
+		}
+		return total;
 	}
 
 	@Override
@@ -688,6 +768,34 @@ public class InventorySheet implements InventorySheetManager {
 
 	public InventorySheetData getInventorySheetData() {
 		return inventorySheetData;
+	}
+
+	public static String overOrShortCaps(double actualCashOnHand, double actualCashCount) {
+		if ((actualCashOnHand - actualCashCount) > 0) {
+			return SHORT_CAPS;
+		} else {
+			if ((actualCashOnHand - actualCashCount) < 0) {
+				return OVER_CAPS;
+			} else {
+				return OVER_SHORT_CAPS;
+			}
+		}
+	}
+
+	public static String overOrShort(double actualCashOnHand, double actualCashCount) {
+		if ((actualCashOnHand - actualCashCount) > 0) {
+			return SHORT;
+		} else {
+			if ((actualCashOnHand - actualCashCount) < 0) {
+				return OVER;
+			} else {
+				return OVER_SHORT;
+			}
+		}
+	}
+
+	public static double overOrShortAmount(double actualCashOnHand, double actualCashCount) {
+		return Math.abs(actualCashOnHand - actualCashCount);
 	}
 
 }
