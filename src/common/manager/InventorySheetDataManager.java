@@ -22,7 +22,9 @@ public interface InventorySheetDataManager {
 
 	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception;
 
-	public boolean isValid(Date date) throws Exception;
+	public boolean isValidFor(Date date) throws Exception;
+
+	public String getValidityRemarksFor(Date date) throws Exception;
 
 	// public double getPreviousActualCashOnHand() throws Exception;
 

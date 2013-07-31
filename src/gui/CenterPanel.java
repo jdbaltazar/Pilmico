@@ -469,9 +469,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][0] = d.getId() + "";
 				entries[i][1] = d.getInventorySheetData() == null ? "-" : d.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(d.getDate());
-				entries[i][3] =
-
-				String.format("%.2f", d.getDeliveryAmount());
+				entries[i][3] = String.format("%.2f", d.getDeliveryAmount());
 				entries[i][4] = d.getReceivedBy().getFirstPlusLastName();
 				entries[i][5] = d.isValid() ? "Yes" : "No";
 				// entries[i][6] = d.getRemarks();

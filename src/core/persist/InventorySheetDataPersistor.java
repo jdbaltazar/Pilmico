@@ -13,6 +13,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import util.DateFormatter;
+import util.Utility;
+
 import common.entity.dailyexpenses.Expense;
 import common.entity.inventorysheet.Denomination;
 import common.entity.inventorysheet.InventorySheetData;
@@ -100,7 +103,7 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	 * the most recent inventory sheet
 	 */
 	@Override
-	public boolean isValid(Date date) throws Exception {
+	public boolean isValidFor(Date date) throws Exception {
 		InventorySheetData isd = getMostRecentInventorySheetData();
 		if (isd == null)
 			return true;
@@ -109,6 +112,28 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 		if (date.before(lowerBound) || date.compareTo(lowerBound) == 0 || date.after(upperBound))
 			return false;
 		return true;
+	}
+
+	/*
+	 * Check if the date is not a future date and date is not equal/earlier than
+	 * the most recent inventory sheet
+	 */
+
+	@Override
+	public String getValidityRemarksFor(Date date) throws Exception {
+		InventorySheetData isd = getMostRecentInventorySheetData();
+		if (isd == null)
+			return "Valid Date";
+		Date lowerBound = DateWithoutTime.getDateWithoutTime(isd.getDate());
+		Date upperBound = DateWithoutTime.getDateWithoutTime(new Date());
+		if (date.compareTo(lowerBound) == 0)
+			return "An Inventory Sheet for this date already exists!";
+		if (date.before(lowerBound))
+			return "An Inventory Sheet exists for " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate())
+					+ " exists. Inserting earlier Inventory Sheet not allowed";
+		if (date.after(upperBound))
+			return "Adding Inventory Sheet for future date not allowed";
+		return "Valid Date";
 	}
 
 	@Override

@@ -1011,10 +1011,10 @@ public class InventorySheetForm extends SimplePanel {
 				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
 				try {
 					Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
-
-					System.out.println("breakdown check: " + breakdown.getCheck());
-					System.out.println("breakdown coins: " + breakdown.getCoins());
-					System.out.println("IS successfully saved!!!!!!!!!!!!!1");
+					for (Product p : products) {
+						p.resetBeginningInventory();
+						Manager.productManager.updateProduct(p);
+					}
 
 				} catch (Exception e1) {
 					e1.printStackTrace();

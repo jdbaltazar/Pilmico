@@ -199,6 +199,10 @@ public class SalesForm extends SimplePanel {
 				formDate = ((SpinnerDateModel) date.getModel()).getDate();
 				
 				try {
+					
+					
+					
+					
 					if (Manager.inventorySheetDataManager
 							.getInventorySheetDataWithThisDate(DateWithoutTime
 									.getDateWithoutTime(formDate)) != null){
