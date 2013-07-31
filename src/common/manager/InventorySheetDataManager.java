@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.inventorysheet.InventorySheetData;
@@ -17,6 +18,8 @@ public interface InventorySheetDataManager {
 	public void updateInventorySheetData(InventorySheetData inventorySheetData) throws Exception;
 
 	public void deleteInventorySheetData(InventorySheetData inventorySheetData) throws Exception;
+
+	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception;
 
 	// public double getPreviousActualCashOnHand() throws Exception;
 

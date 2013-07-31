@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Denomination {
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

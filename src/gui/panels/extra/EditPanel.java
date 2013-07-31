@@ -41,6 +41,7 @@ import common.entity.delivery.Delivery;
 import common.entity.deposit.Bank;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
+import common.entity.inventorysheet.InventorySheet;
 import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
@@ -255,12 +256,10 @@ public class EditPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
 			add(new ViewSalaryForm((SalaryRelease) o), BorderLayout.CENTER);
 		}
-		
+
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
-			ViewInventorySheetForm vis = new ViewInventorySheetForm();
-			
+			ViewInventorySheetForm vis = new ViewInventorySheetForm((InventorySheet) o);
 			try {
-				vis.build();
 				add(vis, BorderLayout.CENTER);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -140,7 +140,7 @@ public class TableUtilPanel extends SoyPanel {
 
 				if (isds.size() < 2) {
 					JOptionPane.showMessageDialog(Values.mainFrame,
-							"No Inventory Sheet found! \nAt least two (2) Inventory Sheets needed for graphing.", "Notice",
+							"Insufficient data! \nAt least two (2) Inventory Sheets needed for graphing.", "Notice",
 							JOptionPane.INFORMATION_MESSAGE);
 					// Values.centerPanel.changeTable(Values.SALES);
 				} else {

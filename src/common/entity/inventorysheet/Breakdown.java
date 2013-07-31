@@ -25,7 +25,7 @@ public class Breakdown {
 	@Column
 	private double coins;
 
-	@Column
+	@Column(name = "check_amount")
 	private double check;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
