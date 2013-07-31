@@ -10,6 +10,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,6 +26,7 @@ public class SimplePanel extends JPanel {
 	public String amount;
 	public IconLabel dateStatus;
 	public boolean validDate;
+	public Date formDate;
 
 	/** Stroke size. it is recommended to set it to 1 for better view */
 	protected int strokeSize = 1;

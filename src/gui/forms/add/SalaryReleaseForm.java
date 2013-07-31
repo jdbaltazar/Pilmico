@@ -146,6 +146,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		issuedBy = new DefaultEntryLabel("");
 		issuedFor = new FormDropdown();
 		
+		grossPay = new DefaultEntryLabel("");
 		refreshEmployee();
 
 		if (issuedFor.getItemCount() > 0)
