@@ -233,16 +233,22 @@ public class RowPanel extends JPanel {
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)) {
 						if (Values.salesForm.hasMultipleProduct())
 							Values.salesForm.setErrorText("No multiple product entry allowed ");
+						
+						Values.salesForm.setProductQuantities(p.getQuantityInSack(), p.getQuantityInKilo());
 					}
 
 					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES)) {
 						if (Values.accountReceivablesForm.hasMultipleProduct())
 							Values.accountReceivablesForm.setErrorText("No multiple product entry allowed ");
+						
+						Values.accountReceivablesForm.setProductQuantities(p.getQuantityInSack(), p.getQuantityInKilo());
 					}
 
 					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS)) {
 						if (Values.pulloutForm.hasMultipleProduct())
 							Values.pulloutForm.setErrorText("No multiple product entry allowed ");
+						
+						Values.pulloutForm.setProductQuantities(p.getQuantityInSack(), p.getQuantityInKilo());
 					}
 
 					else if (Values.tableUtilPanel.getLabel().contains(Tables.DELIVERIES)) {

@@ -27,6 +27,8 @@ public class SimplePanel extends JPanel {
 	public IconLabel dateStatus;
 	public boolean validDate;
 	public Date formDate;
+	
+	public double qtySack, qtyKG;
 
 	/** Stroke size. it is recommended to set it to 1 for better view */
 	protected int strokeSize = 1;

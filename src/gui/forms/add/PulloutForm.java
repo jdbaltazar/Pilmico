@@ -114,8 +114,8 @@ public class PulloutForm extends SimplePanel {
 
 		date = new SpinnerDate(Values.dateFormat);
 
+		error = new ErrorLabel();
 		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
-
 		date.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -128,6 +128,7 @@ public class PulloutForm extends SimplePanel {
 					dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "This date is valid", true);
 				else
 					dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), "Future date not allowed", false);
+				determineDateStatus();
 			}
 		});
 
@@ -265,16 +266,14 @@ public class PulloutForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		save = new SoyButton("Save");
 
-		error = new ErrorLabel();
-
 		save.setBounds(290, 270, 80, 30);
 
-		error.setBounds(365, 260, 260, 22);
+		error.setBounds(325, 297, 300, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()) {
+				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
 
 					boolean valid = true;
 					for (RowPanel rp : rowPanel) {
@@ -390,22 +389,68 @@ public class PulloutForm extends SimplePanel {
 		return false;
 	}
 
+	private void determineDateStatus() {
+
+		formDate = ((SpinnerDateModel) date.getModel()).getDate();
+
+		try {
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), Manager.inventorySheetDataManager.getValidityRemarksFor(formDate),
+						false);
+				error.setText("Date is invalid ");
+			}
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "Valid date", true);
+				error.setText("");
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private boolean hasInvalidQuantity() {
+
+		for (int i = 0; i < rowPanel.size(); i++) {
+
+			if (rowPanel.get(i).getQuantityInSack() > qtySack) {
+
+				msg = "Invalid sack qty. Only " + qtySack + " left for product in row " + (i + 1) + " ";
+
+				return true;
+			}
+
+			if (rowPanel.get(i).getQuantityInKilo() > qtyKG) {
+				msg = "Invalid sack kg. Only " + qtyKG + " left for product in row " + (i + 1) + " ";
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private boolean isValidated() {
 
 		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
+			formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
-			msg = "Future date not allowed ";
+			try {
+				if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+					msg = "Date is invalid ";
+					return false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-			return false;
+			if (productsPanel.getComponentCount() == 0) {
+				msg = "Put at least one product ";
+				return false;
+			}
 		}
-
-		if (productsPanel.getComponentCount() == 0) {
-
-			msg = "Put at least one product ";
-
-			return false;
-		}
-
 		return true;
 
 	}
@@ -427,4 +472,8 @@ public class PulloutForm extends SimplePanel {
 
 	}
 
+	public void setProductQuantities(double qtySack, double qtyKG) {
+		this.qtySack = qtySack;
+		this.qtyKG = qtyKG;
+	}
 }

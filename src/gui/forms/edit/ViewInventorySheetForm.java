@@ -3,6 +3,8 @@ package gui.forms.edit;
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
+import gui.forms.util.ViewFormBorder;
+import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewportDragScrollListener;
 import gui.popup.UtilityPopup;
 
@@ -110,7 +112,7 @@ public class ViewInventorySheetForm extends EditFormPanel {
 	private JLabel actualCashCount;
 
 	private MainFormLabel dateLabel;
-	private SpinnerDate date;
+	private ViewFormField date;
 
 	// private JButton inputPCOH;
 
@@ -188,7 +190,7 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 		dateLabel = new MainFormLabel("Date:");
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()));
 
 		productLabel = new TableHeaderLabel("Products");
 		productLabel2 = new TableHeaderLabel("Products");
@@ -520,7 +522,7 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		// TODO Auto-generated method stub
 
 		dateLabel.setBounds(startX, startY, 40, 20);
-		date.setBounds(startX + dateLabel.getWidth(), startY + 2, 150, 20);
+		date.setBounds(startX + dateLabel.getWidth(), startY, 120, 20);
 
 		sectionLabel.get(0).setText("INVENTORY");
 		sectionLabel.get(0).setBounds(startX, dateLabel.getY() + dateLabel.getHeight() + 30, 150, 20);
@@ -945,11 +947,13 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		isEditPanel.add(actualCashCount);
 
 		isPane.setBounds(10, 10, PANE_WIDTH, PANE_HEIGHT);
+		
 		navigationPanel.setBounds(isPane.getWidth() - 190, isPane.getY() + isPane.getHeight() - 100, 200, 100);
 
 		isPane.setOpaque(false);
 		isPane.getViewport().setOpaque(false);
-		isPane.setBorder(BorderFactory.createEmptyBorder());
+		//isPane.setBorder(BorderFactory.createEmptyBorder());
+		isPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 
 		/*
 		 * save.addMouseListener(new MouseAdapter() { public void

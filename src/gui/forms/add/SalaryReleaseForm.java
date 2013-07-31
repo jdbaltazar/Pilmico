@@ -115,7 +115,9 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		date = new SpinnerDate(Values.dateFormat);
 		
+		error = new ErrorLabel();
 		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		determineDateStatus();
 		
 		date.addChangeListener(new ChangeListener() {
 			
@@ -123,15 +125,7 @@ public class SalaryReleaseForm extends SimplePanel {
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
-				validDate = !((SpinnerDateModel) date.getModel()).getDate()
-						.after(new Date());
-				if (validDate)
-					dateStatus.setIconToolTip(new ImageIcon(
-							"images/valid_date.png"), "This date is valid", true);
-				else
-					dateStatus.setIconToolTip(new ImageIcon(
-							"images/invalid_date2.png"),
-							"Future date not allowed", false);
+				determineDateStatus();
 			}
 		});
 
@@ -307,8 +301,6 @@ public class SalaryReleaseForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		save = new SoyButton("Save");
 
-		error = new ErrorLabel();
-
 		save.setBounds(310, LABEL_Y + 270, 80, 30);
 
 		error.setBounds(430, 250, 250, 22);
@@ -400,13 +392,44 @@ public class SalaryReleaseForm extends SimplePanel {
 		return false;
 	}
 	
+	private void determineDateStatus(){
+		
+		formDate = ((SpinnerDateModel) date.getModel()).getDate();
+		
+		try {
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
+				dateStatus.setIconToolTip(new ImageIcon(
+						"images/invalid_date2.png"),
+						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
+				error.setText("Date is invalid ");
+			}
+			
+			else{
+				dateStatus.setIconToolTip(new ImageIcon(
+						"images/valid_date.png"), "Valid date", true);
+				error.setText("");
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private boolean isValidated() {
 		
-		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
+		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
-			msg = "Future date not allowed ";
+		try {
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-			return false;
+				msg = "Date is invalid ";
+
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		if (issuedFor.getModel().getSelectedItem() == null) {

@@ -1,6 +1,7 @@
 package gui.forms.add;
 
 import gui.forms.util.DateWithoutTime;
+import gui.forms.util.FormDropdown;
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
@@ -26,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -82,6 +84,8 @@ public class InventorySheetForm extends SimplePanel {
 
 	private ViewportDragScrollListener v1;
 	private JViewport view;
+	
+	private ArrayList<Date> validDates = new ArrayList<Date>();
 
 	private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
 	private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
@@ -113,7 +117,7 @@ public class InventorySheetForm extends SimplePanel {
 	private JLabel actualCashCount;
 
 	private MainFormLabel dateLabel;
-	private SpinnerDate date;
+	private FormDropdown date;
 
 	private SoyButton save;
 
@@ -149,6 +153,7 @@ public class InventorySheetForm extends SimplePanel {
 	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
 	private InventorySheet inventorySheet;
+	private DefaultComboBoxModel model;
 
 	public InventorySheetForm() {
 		super("Add Inventory Sheet");
@@ -190,8 +195,11 @@ public class InventorySheetForm extends SimplePanel {
 
 		dateLabel = new MainFormLabel("Date:");
 
-		date = new SpinnerDate("dd MMM yyyy");
-
+		date = new FormDropdown();
+		validDates.add(new Date());
+		model = new DefaultComboBoxModel(validDates.toArray());
+		date.setModel(model);
+		
 		productLabel = new TableHeaderLabel("Products");
 		productLabel2 = new TableHeaderLabel("Products");
 
@@ -522,7 +530,7 @@ public class InventorySheetForm extends SimplePanel {
 		// TODO Auto-generated method stub
 
 		dateLabel.setBounds(startX, startY, 40, 20);
-		date.setBounds(startX + dateLabel.getWidth(), startY + 2, 150, 20);
+		date.setBounds(startX + dateLabel.getWidth(), startY, 180, 20);
 
 		sectionLabel.get(0).setText("INVENTORY");
 		sectionLabel.get(0).setBounds(startX, dateLabel.getY() + dateLabel.getHeight() + 30, 150, 20);

@@ -125,15 +125,16 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 		InventorySheetData isd = getMostRecentInventorySheetData();
 		if (isd == null)
 			return "Valid Date";
+		
 		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
 		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
 		if (date.compareTo(lowerBound) == 0)
-			return "An Inventory Sheet for this date already exists!";
+			return "An Inventory Sheet for this date already exists";
 		if (date.before(lowerBound))
 			return "An Inventory Sheet exists for " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate())
-					+ " exists. Inserting earlier Inventory Sheet not allowed";
+					+ ". Inserting earlier Inventory Sheet not allowed";
 		if (date.after(upperBound))
-			return "Adding Inventory Sheet for future date not allowed";
+			return "Future dates not allowed";
 		return "Valid Date";
 	}
 
