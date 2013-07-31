@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -81,7 +80,8 @@ public class EditEmployeeForm extends EditFormPanel {
 	private void fillEntries() {
 
 		try {
-			List<Designation> designations = Manager.employeePersonManager.getDesignations();
+			List<Designation> designations = Manager.isAuthorized() ? Manager.employeePersonManager.getAllDesignations() : Manager.employeePersonManager
+					.getDesignations();
 			for (Designation d : designations) {
 				designation.addItem(d);
 			}
@@ -99,7 +99,7 @@ public class EditEmployeeForm extends EditFormPanel {
 
 			for (int i = 0; i < designation.getItemCount(); i++) {
 				Designation d = (Designation) designation.getItemAt(i);
-				if (d.getId() == employee.getId()) {
+				if (d.getId() == employee.getDesignation().getId()) {
 					designation.setSelectedIndex(i);
 					break;
 				}
@@ -116,6 +116,16 @@ public class EditEmployeeForm extends EditFormPanel {
 			startDate.setValue(employee.getStartingDate() != null ? employee.getStartingDate() : new Date());
 			fields.get(5).setText(String.format("%.2f", employee.getSalary()));
 			fields.get(6).setText(employee.getRemarks());
+
+			if (Manager.loggedInAccount.getEmployee() != null && employee.getId() == Manager.loggedInAccount.getEmployee().getId()) {
+				fields.get(0).setEditable(Manager.isAuthorized());
+				fields.get(1).setEditable(Manager.isAuthorized());
+				fields.get(5).setEditable(Manager.isAuthorized());
+				designation.setEnabled(Manager.isAuthorized());
+				employmentStatus.setEnabled(Manager.isAuthorized());
+				labels.get(9).setVisible(Manager.isAuthorized());
+				fields.get(6).setVisible(Manager.isAuthorized());
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -312,10 +322,8 @@ public class EditEmployeeForm extends EditFormPanel {
 		balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), false, false);
 
 		balloonTip.getCloseButton().addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				employmentHistory.setEnabled(true);
 			}
 		});

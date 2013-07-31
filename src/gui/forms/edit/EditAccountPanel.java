@@ -82,7 +82,7 @@ public class EditAccountPanel extends EditFormPanel {
 
 		status = new JLabel();
 		deactivate = new SBButton("deactivate.png", "deactivate2.png", "Deactivate Account");
-		activate = new SBButton("activate.png", "activate.png", "Reactivate Account");
+		activate = new SBButton("activate.png", "activate2.png", "Reactivate Account");
 
 		deactivate.addActionListener(new ActionListener() {
 			
@@ -212,7 +212,7 @@ public class EditAccountPanel extends EditFormPanel {
 		ImageIcon icon = account.isActive() ? new ImageIcon("images/active.png") : new ImageIcon("images/inactive.png");
 		status.setIcon(icon);
 		
-		status.setToolTipText(account.isActive() ? "Active" : "Inactive");
+		status.setToolTipText(account.isActive() ? "Active: Can login" : "Inactive: Cannot login");
 	}
 
 	private void update() {

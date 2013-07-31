@@ -96,7 +96,7 @@ public class EmployeeForm extends SimplePanel {
 
 		employmentStatus = new FormDropdown();
 		designation = new FormDropdown();
-		
+
 		salary = new JNumericField("*Salary");
 		salary.setMaxLength(10);
 
@@ -123,7 +123,7 @@ public class EmployeeForm extends SimplePanel {
 				y = 0;
 			}
 
-			if (i != 5 && i != 6 && i != 7 && i!=8 && i != 10) {
+			if (i != 5 && i != 6 && i != 7 && i != 8 && i != 10) {
 				fields.add(new FormField(Tables.employeeFormLabel[i], 100, Color.white, Color.gray));
 				fields.get(ctr).setBounds(x1, initY + y, 170, 25);
 				panel.add(fields.get(ctr));
@@ -145,7 +145,7 @@ public class EmployeeForm extends SimplePanel {
 				startD.setBounds(x1, initY + y - 7, 100, 11);
 				startDate.setBounds(x1, initY + y + 5, 170, 20);
 			}
-			
+
 			if (i == 8) {
 				salary.setBounds(x1, initY + y, 170, 25);
 			}
@@ -174,32 +174,34 @@ public class EmployeeForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				try {
+				if (isValidated()) {
+					try {
 
-					Employee employee = new Employee(new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3)
-							.getText(), fields.get(4).getText(), false), (Designation) designation.getSelectedItem(), (EmploymentStatus) employmentStatus
-							.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double.parseDouble(salary.getText()), fields
-							.get(5).getText(), null);
+						Employee employee = new Employee(new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields
+								.get(3).getText(), fields.get(4).getText(), false), (Designation) designation.getSelectedItem(),
+								(EmploymentStatus) employmentStatus.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double
+										.parseDouble(salary.getText()), fields.get(5).getText(), null);
 
-					Manager.employeePersonManager.addEmployee(employee);
+						Manager.employeePersonManager.addEmployee(employee);
 
-					Values.centerPanel.changeTable(Values.EMPLOYEES);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
+						Values.centerPanel.changeTable(Values.EMPLOYEES);
+						new SuccessPopup("Add").setVisible(true);
+						clearFields();
 
-					Values.salaryReleaseForm.refreshEmployee();
-					Values.cashAdvanceForm.refreshEmployee();
-					Values.accountForm.refreshEmployee();
-					
-					Values.caPaymentForm.refreshDropdown(true);
-					Values.arPaymentForm.refreshDropdown(true);
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+						Values.salaryReleaseForm.refreshEmployee();
+						Values.cashAdvanceForm.refreshEmployee();
+						Values.accountForm.refreshEmployee();
+
+						if (Values.caPaymentForm != null)
+							Values.caPaymentForm.refreshDropdown(true);
+						if (Values.arPaymentForm != null)
+							Values.arPaymentForm.refreshDropdown(true);
+
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
 					error.setText(msg);
 
 			}
@@ -216,7 +218,7 @@ public class EmployeeForm extends SimplePanel {
 		panel.add(status);
 		panel.add(startD);
 		panel.add(endD);
-		
+
 		panel.add(salary);
 
 		panel.add(employmentStatus);
@@ -236,7 +238,8 @@ public class EmployeeForm extends SimplePanel {
 	private void fillEntries() {
 
 		try {
-			List<Designation> designations = Manager.employeePersonManager.getDesignations();
+			List<Designation> designations = Manager.isAuthorized() ? Manager.employeePersonManager.getAllDesignations() : Manager.employeePersonManager
+					.getDesignations();
 			for (Designation d : designations) {
 				designation.addItem(d);
 			}
@@ -263,29 +266,28 @@ public class EmployeeForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if(fields.get(0).getText().equals("")){
-			
+		if (fields.get(0).getText().equals("")) {
+
 			msg = "Last Name is required";
-			
+
 			return false;
 		}
-		
-		if(fields.get(1).getText().equals("")){
-			
+
+		if (fields.get(1).getText().equals("")) {
+
 			msg = "First Name is required";
-			
+
 			return false;
 		}
-		
-		if(salary.getText().equals("")){
+
+		if (salary.getText().equals("")) {
 			msg = "Salary is required";
-			
+
 			return false;
 		}
 
 		return true;
 	}
-
 
 	public void refreshDropdown() {
 		try {

@@ -1,5 +1,8 @@
 package core.persist;
 
+import gui.forms.util.DateWithoutTime;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,22 +73,42 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@SuppressWarnings("unchecked")
 	@Override
 	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception {
-		Session session = HibernateUtil.startSession();
-		Criteria criteria = session.createCriteria(InventorySheetData.class);
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<InventorySheetData> inventorySheetsData = new ArrayList<InventorySheetData>();
-		InventorySheetData isd = null;
-		try {
-			inventorySheetsData = criteria.add(Restrictions.like("date", date)).addOrder(Order.desc("date")).list();
-			if (inventorySheetsData.size() > 0) {
-				isd = inventorySheetsData.get(0);
-			}
-		} catch (HibernateException ex) {
-			ex.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return isd;
+
+		throw new Exception("Deprecated by JD. Do not use!");
+		// Session session = HibernateUtil.startSession();
+		// Criteria criteria = session.createCriteria(InventorySheetData.class);
+		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		// List<InventorySheetData> inventorySheetsData = new
+		// ArrayList<InventorySheetData>();
+		// InventorySheetData isd = null;
+		// try {
+		// inventorySheetsData = criteria.add(Restrictions.like("date",
+		// date)).addOrder(Order.desc("date")).list();
+		// if (inventorySheetsData.size() > 0) {
+		// isd = inventorySheetsData.get(0);
+		// }
+		// } catch (HibernateException ex) {
+		// ex.printStackTrace();
+		// } finally {
+		// session.close();
+		// }
+		// return isd;
+	}
+
+	/*
+	 * Check if the date is not a future date and date is not equal/earlier than
+	 * the most recent inventory sheet
+	 */
+	@Override
+	public boolean isValid(Date date) throws Exception {
+		InventorySheetData isd = getMostRecentInventorySheetData();
+		if (isd == null)
+			return true;
+		Date lowerBound = DateWithoutTime.getDateWithoutTime(isd.getDate());
+		Date upperBound = DateWithoutTime.getDateWithoutTime(new Date());
+		if (date.before(lowerBound) || date.compareTo(lowerBound) == 0 || date.after(upperBound))
+			return false;
+		return true;
 	}
 
 	@Override
