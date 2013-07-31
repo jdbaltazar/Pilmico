@@ -1,6 +1,7 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.popup.SuccessPopup;
@@ -32,6 +33,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import common.entity.product.Product;
 import common.entity.pullout.PullOut;
@@ -108,7 +111,28 @@ public class PulloutForm extends SimplePanel {
 
 		icon = new ImageIcon("images/util.png");
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new SpinnerDate(Values.dateFormat);
+
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		
+		date.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				validDate = !((SpinnerDateModel) date.getModel()).getDate()
+						.after(new Date());
+				if (validDate)
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/valid_date.png"), "This date is valid", true);
+				else
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/invalid_date2.png"),
+							"Future date not allowed", false);
+			}
+		});
+
 
 		issuedByLabel = new MainFormLabel("Issued by:");
 		dateLabel = new MainFormLabel("Date:");
@@ -141,6 +165,7 @@ public class PulloutForm extends SimplePanel {
 
 		dateLabel.setBounds(40, 50, 40, 20);// 15x,12y
 		date.setBounds(85, 50, 150, 20);
+		dateStatus.setBounds(240, 52, 16, 16);
 
 		issuedByLabel.setBounds(300, 50, 70, 20);
 		issuedBy.setBounds(375, 50, 180, 20);
@@ -177,6 +202,7 @@ public class PulloutForm extends SimplePanel {
 
 		panel.add(dateLabel);
 		panel.add(date);
+		panel.add(dateStatus);
 
 		panel.add(issuedByLabel);
 		panel.add(issuedBy);
@@ -352,6 +378,13 @@ public class PulloutForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
+		
+		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
+
+			msg = "Future date not allowed ";
+
+			return false;
+		}
 
 		if (productsPanel.getComponentCount() == 0) {
 

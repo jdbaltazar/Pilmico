@@ -1,6 +1,7 @@
 package gui.forms.add;
 
 import gui.forms.util.FormDropdown;
+import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
@@ -31,6 +32,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.dailyexpenses.DailyExpensesDetail;
@@ -103,10 +106,30 @@ public class ExpensesForm extends SimplePanel {
 		type = new FormDropdown();
 
 		icon = new ImageIcon("images/util.png");
+		issueDate = new SpinnerDate(Values.dateFormat);
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
-		issueDate = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new SpinnerDate(Values.dateFormat);
 
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		
+		date.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				validDate = !((SpinnerDateModel) date.getModel()).getDate()
+						.after(new Date());
+				if (validDate)
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/valid_date.png"), "This date is valid", true);
+				else
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/invalid_date2.png"),
+							"Future date not allowed", false);
+			}
+		});
+		
 		issuedByLabel = new MainFormLabel("Issued by:");
 		typeLabel = new MainFormLabel("Type:");
 		dateLabel = new MainFormLabel("Date:");
@@ -152,6 +175,7 @@ public class ExpensesForm extends SimplePanel {
 
 		dateLabel.setBounds(350, LABEL_Y + 40, 40, 20);
 		date.setBounds(395, LABEL_Y + 40, 150, 20);
+		dateStatus.setBounds(550, LABEL_Y + 42, 16, 16);
 
 		issuedByLabel.setBounds(350, LABEL_Y + 75, 70, 20);
 		issuedBy.setBounds(430, LABEL_Y + 75, 150, 20);
@@ -196,6 +220,7 @@ public class ExpensesForm extends SimplePanel {
 
 		panel.add(dateLabel);
 		panel.add(date);
+		panel.add(dateStatus);
 
 		panel.add(issuedByLabel);
 		panel.add(issuedBy);
@@ -318,6 +343,13 @@ public class ExpensesForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
+		
+		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
+
+			msg = "Future date not allowed ";
+
+			return false;
+		}
 
 		if (expensesPanel.getComponentCount() == 0) {
 
