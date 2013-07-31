@@ -1,6 +1,7 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.popup.SuccessPopup;
@@ -33,6 +34,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -128,7 +131,28 @@ public class DeliveryForm extends SimplePanel {
 
 		icon = new ImageIcon("images/util.png");
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new SpinnerDate(Values.dateFormat);
+
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		
+		date.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				validDate = !((SpinnerDateModel) date.getModel()).getDate()
+						.after(new Date());
+				if (validDate)
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/valid_date.png"), "This date is valid", true);
+				else
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/invalid_date2.png"),
+							"Future date not allowed", false);
+			}
+		});
+
 
 		termsLabel = new MainFormLabel("Terms:");
 		ponumLabel = new MainFormLabel("PO_No:");
@@ -200,6 +224,7 @@ public class DeliveryForm extends SimplePanel {
 
 		dateLabel.setBounds(49, 12, 40, 20); // 15
 		date.setBounds(88, 10, 150, 20);
+		dateStatus.setBounds(243, 12, 16, 16);
 
 		receivedByLabel.setBounds(305, 12, 85, 20);// 260
 		receivedBy.setBounds(378, 10, 200, 20);
@@ -254,6 +279,7 @@ public class DeliveryForm extends SimplePanel {
 
 		panel.add(dateLabel);
 		panel.add(date);
+		panel.add(dateStatus);
 
 		panel.add(receivedByLabel);
 		panel.add(receivedBy);
@@ -495,13 +521,12 @@ public class DeliveryForm extends SimplePanel {
 	
 	private boolean isValidated() {
 
-		/*if (supplierCombo.getModel().getSelectedItem() == null) {
+		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
 
-			msg = "Select an account";
+			msg = "Future date not allowed ";
 
 			return false;
-
-		}*/
+		}
 
 		if (productsPanel.getComponentCount() == 0) {
 

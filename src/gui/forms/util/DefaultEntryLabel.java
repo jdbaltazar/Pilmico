@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.java.balloontip.BalloonTip;
@@ -12,14 +13,21 @@ import net.java.balloontip.utils.ToolTipUtils;
 
 public class DefaultEntryLabel extends JLabel{
 	
+	private String label;
+	private BalloonTip balloonTip;
+	
 	public DefaultEntryLabel(String label){
 		super(label);
+		
+		this.label = label;
 		
 		init();
 	}
 	
 	public DefaultEntryLabel(String label, boolean edit){
 		super(label);
+		
+		this.label = label;
 		
 		init();
 		setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#006600")));
@@ -33,9 +41,9 @@ public class DefaultEntryLabel extends JLabel{
 		
 		RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.white, Color.black);
 
-		final BalloonTip balloonTip = new BalloonTip(
+		balloonTip = new BalloonTip(
 				this,
-				new JLabel(this.getText()),
+				new JLabel(label),
 				style,
 				BalloonTip.Orientation.LEFT_ABOVE,
 				BalloonTip.AttachLocation.NORTH,
@@ -44,6 +52,14 @@ public class DefaultEntryLabel extends JLabel{
 			);
 		
 		ToolTipUtils.balloonToToolTip(balloonTip, 10, 3000);
+	}
+	
+	public void setToolTip(String text) {
+		
+		balloonTip.refreshLocation();
+		balloonTip.setContents(new JLabel(text));
+		
+		setText(text);
 	}
 
 }

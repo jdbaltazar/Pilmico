@@ -2,6 +2,7 @@ package gui.forms.add;
 
 import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
+import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
@@ -34,6 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import common.entity.dailyexpenses.DailyExpensesDetail;
 import common.entity.dailyexpenses.Expense;
@@ -110,7 +113,27 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		icon = new ImageIcon("images/util.png");
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new SpinnerDate(Values.dateFormat);
+		
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		
+		date.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				validDate = !((SpinnerDateModel) date.getModel()).getDate()
+						.after(new Date());
+				if (validDate)
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/valid_date.png"), "This date is valid", true);
+				else
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/invalid_date2.png"),
+							"Future date not allowed", false);
+			}
+		});
 
 		dateLabel = new MainFormLabel("Date:");
 		issuedByLabel = new MainFormLabel("Issued by:");
@@ -119,10 +142,18 @@ public class SalaryReleaseForm extends SimplePanel {
 		payLabel = new MainFormLabel("Net Pay:");
 
 		netPay = new DefaultEntryLabel("");
-		grossPay = new DefaultEntryLabel("");
-
+		
 		issuedBy = new DefaultEntryLabel("");
 		issuedFor = new FormDropdown();
+		
+		grossPay = new DefaultEntryLabel("");
+		refreshEmployee();
+
+		if (issuedFor.getItemCount() > 0)
+			grossPay = new DefaultEntryLabel(String.format("%.2f",
+					((Employee) issuedFor.getSelectedItem()).getSalary()));
+		else
+			grossPay = new DefaultEntryLabel("");
 
 		feesLabel = new TableHeaderLabel("Fees");
 		amountLabel = new TableHeaderLabel("Amount");
@@ -141,6 +172,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		dateLabel.setBounds(70, 55, 40, 20);
 		date.setBounds(115, 55, 180, 20);
+		dateStatus.setBounds(300, 57, 16, 16);
 
 		issuedByLabel.setBounds(42, 95, 70, 20);
 		issuedBy.setBounds(115, 95, 180, 20);
@@ -188,19 +220,18 @@ public class SalaryReleaseForm extends SimplePanel {
 			}
 		});
 
-		refreshEmployee();
-
 		issuedFor.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				Employee emp = (Employee) issuedFor.getSelectedItem();
-				grossPay.setText(String.format("%.2f", emp.getSalary()));
+				grossPay.setToolTip(String.format("%.2f", emp.getSalary()));
 			}
 		});
 
 		panel.add(dateLabel);
 		panel.add(date);
+		panel.add(dateStatus);
 
 		panel.add(issuedForLabel);
 		panel.add(issuedFor);
@@ -350,7 +381,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		Employee emp = (Employee) issuedFor.getSelectedItem();
 		if (emp != null)
 			salaryLabel.setToolTipText("To edit salary, go to: Profiles>Employees>" + emp.getFirstPlusLastName());
-		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
+		issuedBy.setToolTip(Manager.loggedInAccount.getFirstPlusLastName());
 		refreshDate();
 		refreshEmployee();
 	}
@@ -370,6 +401,13 @@ public class SalaryReleaseForm extends SimplePanel {
 	}
 	
 	private boolean isValidated() {
+		
+		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
+
+			msg = "Future date not allowed ";
+
+			return false;
+		}
 		
 		if (issuedFor.getModel().getSelectedItem() == null) {
 
@@ -415,7 +453,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 			if (issuedFor.getItemCount() > 0) {
 				issuedFor.setSelectedIndex(0);
-				grossPay.setText(String.format("%.2f", ((Employee) issuedFor.getSelectedItem()).getSalary()));
+				grossPay.setToolTip(String.format("%.2f", ((Employee) issuedFor.getSelectedItem()).getSalary()));
 			}
 
 		} catch (Exception e) {

@@ -4,6 +4,7 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
+import gui.forms.util.IconLabel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
@@ -21,6 +22,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -30,12 +32,15 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
 import util.JNumericField;
 import util.SBButton;
 import util.SimplePanel;
+import util.SpinnerDate;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
@@ -122,22 +127,28 @@ public class DepositForm extends SimplePanel {
 
 		issuedBy = new DefaultEntryLabel(Manager.loggedInAccount.getFirstPlusLastName());
 
-		date = new JSpinner(new SpinnerDateModel());
-		JSpinner.DateEditor timeEditor2 = new JSpinner.DateEditor(date, "MMMM dd, yyyy hh:mm:ss a");
-		date.setEditor(timeEditor2);
-		date.setValue(new Date());
-		date.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
-		date.setBorder(BorderFactory.createEmptyBorder());
+		date = new SpinnerDate(Values.dateFormat);
 
-		JComponent editor = date.getEditor();
-		if (editor instanceof JSpinner.DefaultEditor) {
-			JSpinner.DefaultEditor defEditor = (JSpinner.DefaultEditor) editor;
-			JFormattedTextField tf = defEditor.getTextField();
-			if (tf != null) {
-				tf.setForeground(new Color(25, 117, 117));
-				tf.setHorizontalAlignment(SwingConstants.CENTER);
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		
+		date.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				validDate = !((SpinnerDateModel) date.getModel()).getDate()
+						.after(new Date());
+				if (validDate)
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/valid_date.png"), "This date is valid", true);
+				else
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/invalid_date2.png"),
+							"Future date not allowed", false);
 			}
-		}
+		});
+
 
 		depositorCombo = new FormDropdown();
 		refreshDropdowns(false);
@@ -158,6 +169,7 @@ public class DepositForm extends SimplePanel {
 			if (i == 0) {
 				dateLabel.setBounds(x1, initY + y - 7, 200, 11);
 				date.setBounds(x1, initY + y + 5, 200, 20);
+				dateStatus.setBounds(x1 + 205, initY + y + 7, 16, 16);
 			}
 			if (i == 5) {
 				issuedByLabel.setBounds(x1, initY + y - 7, 200, 11);
@@ -247,6 +259,7 @@ public class DepositForm extends SimplePanel {
 
 		panel.add(issuedBy);
 		panel.add(date);
+		panel.add(dateStatus);
 
 		panel.add(fwd);
 		panel.add(fwd2);
@@ -285,6 +298,13 @@ public class DepositForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
+		
+		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())) {
+
+			msg = "Future date not allowed ";
+
+			return false;
+		}
 		
 		amount = fields.get(0).getText();
 

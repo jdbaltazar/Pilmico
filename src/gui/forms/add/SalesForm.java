@@ -2,7 +2,9 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown.ColorArrowUI;
+import gui.forms.util.DateWithoutTime;
 import gui.forms.util.FormField;
+import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
@@ -35,6 +37,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import common.entity.product.Product;
@@ -116,8 +120,10 @@ public class SalesForm extends SimplePanel {
 
 		icon = new ImageIcon("images/util.png");
 
-		date = new SpinnerDate("MMM dd, yyyy hh:mm a");
-		issueDate = new SpinnerDate("MMM dd, yyyy hh:mm a");
+		date = new SpinnerDate(Values.dateFormat);
+		issueDate = new SpinnerDate(Values.dateFormat);
+		
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
 
 		issuedaTLabel = new MainFormLabel("Issued at:");
 		issuedOnLabel = new MainFormLabel("Issued on:");
@@ -181,6 +187,53 @@ public class SalesForm extends SimplePanel {
 
 		dateLabel.setBounds(15, 12, 40, 20);
 		date.setBounds(60, 10, 150, 20);
+		
+		dateStatus.setBounds(215, 12, 16, 16);
+		date.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				
+				formDate = ((SpinnerDateModel) date.getModel()).getDate();
+				
+				try {
+					if (Manager.inventorySheetDataManager
+							.getInventorySheetDataWithThisDate(DateWithoutTime
+									.getDateWithoutTime(formDate)) != null){
+						dateStatus.setIconToolTip(new ImageIcon(
+								"images/invalid_date2.png"),
+								"An Inventory Sheet with this date already exists", false);
+					}
+					
+					else if(formDate.after(new Date())){
+						dateStatus.setIconToolTip(new ImageIcon(
+								"images/invalid_date2.png"),
+								"Future date not allowed", false);
+					}
+					
+					else
+						dateStatus.setIconToolTip(new ImageIcon(
+								"images/valid_date.png"), "This date is valid", true);
+						
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				/*validDate = !formDate.after(new Date());
+				
+				if (validDate)
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/valid_date.png"), "This date is valid", true);
+				else
+					dateStatus.setIconToolTip(new ImageIcon(
+							"images/invalid_date2.png"),
+							"Future date not allowed", false);*/
+			}
+		});
 
 		cashierLabel.setBounds(260, 12, 60, 20);
 		cashier.setBounds(330, 10, 200, 20);
@@ -258,6 +311,7 @@ public class SalesForm extends SimplePanel {
 
 		panel.add(dateLabel);
 		panel.add(date);
+		panel.add(dateStatus);
 
 		panel.add(cashierLabel);
 		panel.add(cashier);
@@ -537,10 +591,12 @@ public class SalesForm extends SimplePanel {
 	
 	private boolean isValidated() {
 		
-		if(((SpinnerDateModel) date.getModel()).getDate().after(new Date())){
-			
+		if (((SpinnerDateModel) date.getModel()).getDate().after(new Date())
+				|| ((SpinnerDateModel) issueDate.getModel()).getDate().after(
+						new Date())) {
+
 			msg = "Future date not allowed ";
-			
+
 			return false;
 		}
 		

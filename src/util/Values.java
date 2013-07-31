@@ -144,6 +144,7 @@ public class Values {
 	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
 	public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 
+	public static String dateFormat = "dd MMM yyyy hh:mm a";
 	// public static Color gradient1 = new Color(249,255,249);
 	// public static Color gradient2 = new Color(240,255,240);
 

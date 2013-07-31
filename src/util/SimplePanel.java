@@ -1,5 +1,7 @@
 package util;
 
+import gui.forms.util.IconLabel;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,7 +10,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Date;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -19,6 +24,9 @@ public class SimplePanel extends JPanel {
 	private String label = "";
 	
 	public String amount;
+	public IconLabel dateStatus;
+	public boolean validDate;
+	public Date formDate;
 
 	/** Stroke size. it is recommended to set it to 1 for better view */
 	protected int strokeSize = 1;

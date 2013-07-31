@@ -10,6 +10,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
+import javax.swing.text.DefaultFormatter;
 
 public class SpinnerDate extends JSpinner{
 	
@@ -24,7 +25,7 @@ public class SpinnerDate extends JSpinner{
 		setValue(new Date());
 		setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		setBorder(BorderFactory.createEmptyBorder());
-
+		
 		JComponent editor = getEditor();
 		if (editor instanceof JSpinner.DefaultEditor) {
 			JSpinner.DefaultEditor defEditor = (JSpinner.DefaultEditor) editor;
@@ -35,6 +36,10 @@ public class SpinnerDate extends JSpinner{
 				tf.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
+		
+		JFormattedTextField field = (JFormattedTextField) editor.getComponent(0);
+	    DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+	    formatter.setCommitsOnValidEdit(true);
 	}
 
 }
