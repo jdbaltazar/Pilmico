@@ -156,8 +156,8 @@ public class InventorySheetForm extends SimplePanel {
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
 		inputPCOH = new JButton("+");
+		inputPCOH.setToolTipText("Input previous cash on hand");
 
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
@@ -1008,6 +1008,9 @@ public class InventorySheetForm extends SimplePanel {
 				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
 				try {
 					Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
+
+					System.out.println("breakdown check: " + breakdown.getCheck());
+					System.out.println("breakdown coins: " + breakdown.getCoins());
 					System.out.println("IS successfully saved!!!!!!!!!!!!!1");
 
 				} catch (Exception e1) {
@@ -1136,6 +1139,9 @@ public class InventorySheetForm extends SimplePanel {
 		summaryValues.get(1).setText(String.format("%.2f", inventorySheet.getActualCashCount()));
 		summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
 		summary3Label.setText("OVER/SHORT");
+
+		updateCashOnHandSummary();
+		updateActualCashCountAndSummary();
 
 	}
 
