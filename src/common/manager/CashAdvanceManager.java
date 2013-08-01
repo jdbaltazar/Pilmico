@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.cashadvance.CAPayment;
@@ -20,10 +21,18 @@ public interface CashAdvanceManager {
 	public List<CashAdvance> getInvalidCashAdvances() throws Exception;
 
 	public List<CashAdvance> getPendingCashAdvances() throws Exception;
-	
+
 	public void updateCashAdvance(CashAdvance cashAdvance) throws Exception;
 
 	public void deleteCashAdvance(CashAdvance cashAdvance) throws Exception;
+
+	public List<CashAdvance> getAllCashAdvancesOn(Date date) throws Exception;
+
+	public List<CashAdvance> getValidCashAdvancesOn(Date date) throws Exception;
+
+	public List<CashAdvance> getInvalidCashAdvancesOn(Date date) throws Exception;
+
+	public List<CashAdvance> getPendingCashAdvancesOn(Date date) throws Exception;
 
 	// cash advance payments
 
@@ -38,9 +47,17 @@ public interface CashAdvanceManager {
 	public List<CAPayment> getInvalidCAPayments() throws Exception;
 
 	public List<CAPayment> getPendingCAPayments() throws Exception;
-	
+
 	public void updateCAPayment(CAPayment caPayment) throws Exception;
 
 	public void deleteCAPayment(CAPayment caPayment) throws Exception;
+
+	public List<CAPayment> getAllCAPaymentsOn(Date date) throws Exception;
+
+	public List<CAPayment> getValidCAPaymentsOn(Date date) throws Exception;
+
+	public List<CAPayment> getInvalidCAPaymentsOn(Date date) throws Exception;
+
+	public List<CAPayment> getPendingCAPaymentsOn(Date date) throws Exception;
 
 }

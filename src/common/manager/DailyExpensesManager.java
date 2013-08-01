@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.dailyexpenses.DailyExpenses;
@@ -43,6 +44,14 @@ public interface DailyExpensesManager {
 	public void deleteDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
 
 	public void deleteDailyExpenses(int id) throws Exception;
+	
+	public List<DailyExpenses> getAllDailyExpensesOn(Date date) throws Exception;
+
+	public List<DailyExpenses> getValidDailyExpensesOn(Date date) throws Exception;
+
+	public List<DailyExpenses> getInvalidDailyExpensesOn(Date date) throws Exception;
+
+	public List<DailyExpenses> getPendingDailyExpensesOn(Date date) throws Exception;
 
 	// expense
 

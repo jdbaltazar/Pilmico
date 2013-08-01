@@ -1,6 +1,9 @@
 package core.persist;
 
+import gui.forms.util.DateTool;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -154,4 +157,82 @@ public class DepositPersistor extends Persistor implements DepositManager {
 		remove(bankAccount);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deposit> getAllDepositsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Deposit.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Deposit> deposits = new ArrayList<Deposit>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deposits = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deposit> getValidDepositsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Deposit.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Deposit> deposits = new ArrayList<Deposit>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deposits = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deposit> getInvalidDepositsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Deposit.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Deposit> deposits = new ArrayList<Deposit>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deposits = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", false))
+					.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deposit> getPendingDepositsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Deposit.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Deposit> deposits = new ArrayList<Deposit>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deposits = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
+	}
 }

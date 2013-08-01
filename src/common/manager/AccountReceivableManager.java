@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.accountreceivable.ARPayment;
@@ -21,6 +22,14 @@ public interface AccountReceivableManager {
 
 	public List<AccountReceivable> getPendingAccountReceivables() throws Exception;
 
+	public List<AccountReceivable> getAllAccountReceivablesOn(Date date) throws Exception;
+
+	public List<AccountReceivable> getValidAccountReceivablesOn(Date date) throws Exception;
+
+	public List<AccountReceivable> getInvalidAccountReceivablesOn(Date date) throws Exception;
+
+	public List<AccountReceivable> getPendingAccountReceivablesOn(Date date) throws Exception;
+
 	public void updateAccountReceivable(AccountReceivable accountReceivable) throws Exception;
 
 	public void deleteAccountReceivable(AccountReceivable accountReceivable) throws Exception;
@@ -40,6 +49,14 @@ public interface AccountReceivableManager {
 	public List<ARPayment> getInvalidARPayments() throws Exception;
 
 	public List<ARPayment> getPendingARPayments() throws Exception;
+
+	public List<ARPayment> getAllARPaymentsOn(Date date) throws Exception;
+
+	public List<ARPayment> getValidARPaymentsOn(Date date) throws Exception;
+
+	public List<ARPayment> getInvalidARPaymentsOn(Date date) throws Exception;
+
+	public List<ARPayment> getPendingARPaymentsOn(Date date) throws Exception;
 
 	public void updateARPayment(ARPayment arPayment) throws Exception;
 

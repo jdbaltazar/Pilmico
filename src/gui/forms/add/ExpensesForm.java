@@ -335,11 +335,11 @@ public class ExpensesForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText("str");
+				error.setText(str);
 			}
 
 			else {
-				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "Valid date", true);
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
 

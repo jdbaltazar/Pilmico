@@ -1,6 +1,9 @@
 package core.persist;
 
+import gui.forms.util.DateTool;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -203,6 +206,165 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 	@Override
 	public void deleteCAPayment(CAPayment caPayment) throws Exception {
 		remove(caPayment);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CashAdvance> getAllCashAdvancesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cashAdvances = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date"))
+					.list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CashAdvance> getValidCashAdvancesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cashAdvances = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CashAdvance> getInvalidCashAdvancesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cashAdvances = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CashAdvance> getPendingCashAdvancesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cashAdvances = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getAllCAPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CAPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CAPayment> cAPayments = new ArrayList<CAPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cAPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cAPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getValidCAPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CAPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CAPayment> cAPayments = new ArrayList<CAPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cAPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cAPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getInvalidCAPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CAPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CAPayment> cAPayments = new ArrayList<CAPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cAPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", false))
+					.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cAPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getPendingCAPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CAPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CAPayment> cAPayments = new ArrayList<CAPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			cAPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cAPayments;
 	}
 
 }

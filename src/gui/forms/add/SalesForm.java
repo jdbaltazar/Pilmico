@@ -2,7 +2,7 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown.ColorArrowUI;
-import gui.forms.util.DateWithoutTime;
+import gui.forms.util.DateTool;
 import gui.forms.util.FormField;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;

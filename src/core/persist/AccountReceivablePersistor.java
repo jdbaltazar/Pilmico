@@ -1,6 +1,9 @@
 package core.persist;
 
+import gui.forms.util.DateTool;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -103,6 +106,86 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		return accountReceivables;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getAllAccountReceivablesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			accountReceivables = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date"))
+					.list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getValidAccountReceivablesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			accountReceivables = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getInvalidAccountReceivablesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			accountReceivables = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getPendingAccountReceivablesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			accountReceivables = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
 	@Override
 	public void updateAccountReceivable(AccountReceivable accountReceivable) throws Exception {
 		update(accountReceivable);
@@ -195,6 +278,85 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		List<ARPayment> arPayments = new ArrayList<ARPayment>();
 		try {
 			arPayments = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getAllARPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			arPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getValidARPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			arPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getInvalidARPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			arPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", false))
+					.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getPendingARPaymentsOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			arPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

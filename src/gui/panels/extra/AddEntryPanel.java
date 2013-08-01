@@ -90,7 +90,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private JScrollPane dummyPane;
 
 	private JPanel motherPanel, motherPanel2;
-	
+
 	private ArrayList<JPanel> formPanels = new ArrayList<JPanel>();
 	private JLabel backToPrevious;
 
@@ -324,7 +324,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			if (currHeight == minHeight)
 				isRunning = false;
 		}
-		
+
 		formPanels.clear();
 		showAllComponents(false);
 		Values.menuPanel.setVisible(true);
@@ -397,7 +397,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
-//			deposit.fillEntries();
+			// deposit.fillEntries();
 			deposit.setVisible(true);
 			formPanels.add(deposit);
 		}
@@ -424,14 +424,15 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			// Values.salesOrderForm.refreshDate();
 			sales.setVisible(true);
-			//motherPanel = sales;
+			// motherPanel = sales;
 			formPanels.add(sales);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
 			// Values.salesOrderForm.refreshDate();
 			try {
-				inventorySheetForm.build();
+				inventorySheetForm.build(); // by default, use the earliest possible
+														// date
 				inventorySheetForm.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -486,7 +487,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	}
 
 	public void linkPanel(int value) {
-		
+
 		showAllComponents(false);
 
 		dummyPane.setVisible(true);
@@ -525,18 +526,18 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}
 
 	}
-	
-	public void back(){
-		
+
+	public void back() {
+
 		showAllComponents(false);
-		
+
 		if (formPanels.size() >= 2) {
 			formPanels.get(formPanels.size() - 2).setVisible(true);
-			
-			formPanels.remove(formPanels.size()-1);
+
+			formPanels.remove(formPanels.size() - 1);
 		}
-		
-		if(formPanels.size() > 1){
+
+		if (formPanels.size() > 1) {
 			dummyPane.setVisible(true);
 			checkBox.setVisible(false);
 		}

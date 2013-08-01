@@ -1,12 +1,11 @@
 package gui.forms.add;
 
-import gui.forms.util.DateWithoutTime;
+import gui.forms.util.DateTool;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewportDragScrollListener;
-import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -21,7 +20,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,12 +32,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
 
 import util.DateFormatter;
 import util.MainFormLabel;
 import util.SimplePanel;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Utility;
 import util.Values;
@@ -68,6 +64,10 @@ import common.manager.Manager;
 
 public class InventorySheetForm extends SimplePanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 540257659970499141L;
 	// 780x430
 	private int startX = 15, startY = 17, PANE_WIDTH = 760, PANE_HEIGHT = 390, TOTAL_LABEL_WIDTH = 100, TABLE_GAP = 50, TAB = 150, SECTION_GAP = 100,
 			LABEL_GAP = 30, TOTAL_FORMS_OVERALL = 12;
@@ -84,7 +84,7 @@ public class InventorySheetForm extends SimplePanel {
 
 	private ViewportDragScrollListener v1;
 	private JViewport view;
-	
+
 	private ArrayList<Date> validDates = new ArrayList<Date>();
 
 	private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
@@ -199,7 +199,7 @@ public class InventorySheetForm extends SimplePanel {
 		validDates.add(new Date());
 		model = new DefaultComboBoxModel(validDates.toArray());
 		date.setModel(model);
-		
+
 		productLabel = new TableHeaderLabel("Products");
 		productLabel2 = new TableHeaderLabel("Products");
 
@@ -969,19 +969,8 @@ public class InventorySheetForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				Date d = ((SpinnerDateModel) date.getModel()).getDate();
-
-				// Calendar cal = Calendar.getInstance();
-				// cal.setTime(d);
-				// // Set time fields to zero
-				// cal.set(Calendar.HOUR_OF_DAY, 0);
-				// cal.set(Calendar.MINUTE, 0);
-				// cal.set(Calendar.SECOND, 0);
-				// cal.set(Calendar.MILLISECOND, 0);
-
-				d = DateWithoutTime.getInstance().getDateWithoutTime(d);
-
-				inventorySheet.getInventorySheetData().setDate(d);
+				Date d = (Date) date.getSelectedItem();
+				inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
 				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				inventorySheet.getInventorySheetData().setOverAmount(0d);
 				inventorySheet.getInventorySheetData().setShortAmount(0d);
@@ -1092,6 +1081,7 @@ public class InventorySheetForm extends SimplePanel {
 		}
 
 		products = Manager.productManager.getProducts();
+
 		deliveries = Manager.deliveryManager.getPendingDeliveries();
 		pullOuts = Manager.pullOutManager.getPendingPullOuts();
 		sales = Manager.salesManager.getPendingSales();
