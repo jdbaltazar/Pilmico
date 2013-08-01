@@ -22,7 +22,7 @@ public interface SalesManager {
 	public void updateSales(Sales sales) throws Exception;
 
 	public void deleteSales(Sales sales) throws Exception;
-	
+
 	public List<Sales> getAllSalesOn(Date date) throws Exception;
 
 	public List<Sales> getValidSalesOn(Date date) throws Exception;

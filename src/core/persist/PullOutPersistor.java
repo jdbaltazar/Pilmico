@@ -57,8 +57,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
-			pullOuts = criteria.add(Restrictions.eq("valid", true))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -75,8 +74,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
-			pullOuts = criteria.add(Restrictions.eq("valid", false))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -93,9 +91,8 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<PullOut> pullOuts = new ArrayList<PullOut>();
 		try {
-			pullOuts = criteria.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date"))
+					.list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -124,9 +121,7 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			pullOuts = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -145,11 +140,8 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			pullOuts = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -168,10 +160,8 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			pullOuts = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", false))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -190,11 +180,8 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			pullOuts = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			pullOuts = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

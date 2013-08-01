@@ -17,8 +17,7 @@ import common.entity.salary.FeeDeduction;
 import common.entity.salary.SalaryRelease;
 import common.manager.SalaryReleaseManager;
 
-public class SalaryReleasePersistor extends Persistor implements
-		SalaryReleaseManager {
+public class SalaryReleasePersistor extends Persistor implements SalaryReleaseManager {
 
 	@Override
 	public void addSalaryRelease(SalaryRelease salaryRelease) throws Exception {
@@ -55,8 +54,7 @@ public class SalaryReleasePersistor extends Persistor implements
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<SalaryRelease> salaryReleases = new ArrayList<SalaryRelease>();
 		try {
-			salaryReleases = criteria.add(Restrictions.eq("valid", true))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -73,8 +71,7 @@ public class SalaryReleasePersistor extends Persistor implements
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<SalaryRelease> salaryReleases = new ArrayList<SalaryRelease>();
 		try {
-			salaryReleases = criteria.add(Restrictions.eq("valid", false))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -91,9 +88,8 @@ public class SalaryReleasePersistor extends Persistor implements
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<SalaryRelease> salaryReleases = new ArrayList<SalaryRelease>();
 		try {
-			salaryReleases = criteria.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date"))
+					.list();
 
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
@@ -104,14 +100,12 @@ public class SalaryReleasePersistor extends Persistor implements
 	}
 
 	@Override
-	public void updateSalaryRelease(SalaryRelease salaryRelease)
-			throws Exception {
+	public void updateSalaryRelease(SalaryRelease salaryRelease) throws Exception {
 		update(salaryRelease);
 	}
 
 	@Override
-	public void deleteSalaryRelease(SalaryRelease salaryRelease)
-			throws Exception {
+	public void deleteSalaryRelease(SalaryRelease salaryRelease) throws Exception {
 		remove(salaryRelease);
 	}
 
@@ -172,8 +166,7 @@ public class SalaryReleasePersistor extends Persistor implements
 		Criteria criteria = session.createCriteria(FeeDeduction.class);
 		List<FeeDeduction> fDeductions = new ArrayList<FeeDeduction>();
 		try {
-			fDeductions = criteria.add(Restrictions.eq("fee.id", feeId))
-					.addOrder(Order.desc("id")).list();
+			fDeductions = criteria.add(Restrictions.eq("fee.id", feeId)).addOrder(Order.desc("id")).list();
 			if (fDeductions.size() > 0) {
 				return fDeductions.get(0).getAmount();
 			}
@@ -188,8 +181,7 @@ public class SalaryReleasePersistor extends Persistor implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SalaryRelease> getAllSalaryReleasesOn(Date date)
-			throws Exception {
+	public List<SalaryRelease> getAllSalaryReleasesOn(Date date) throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(SalaryRelease.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -197,9 +189,8 @@ public class SalaryReleasePersistor extends Persistor implements
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date"))
+					.list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -210,8 +201,7 @@ public class SalaryReleasePersistor extends Persistor implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SalaryRelease> getValidSalaryReleasesOn(Date date)
-			throws Exception {
+	public List<SalaryRelease> getValidSalaryReleasesOn(Date date) throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(SalaryRelease.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -219,11 +209,8 @@ public class SalaryReleasePersistor extends Persistor implements
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -234,8 +221,7 @@ public class SalaryReleasePersistor extends Persistor implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SalaryRelease> getInvalidSalaryReleasesOn(Date date)
-			throws Exception {
+	public List<SalaryRelease> getInvalidSalaryReleasesOn(Date date) throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(SalaryRelease.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -243,10 +229,8 @@ public class SalaryReleasePersistor extends Persistor implements
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", false))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -257,8 +241,7 @@ public class SalaryReleasePersistor extends Persistor implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SalaryRelease> getPendingSalaryReleasesOn(Date date)
-			throws Exception {
+	public List<SalaryRelease> getPendingSalaryReleasesOn(Date date) throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(SalaryRelease.class);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -266,11 +249,8 @@ public class SalaryReleasePersistor extends Persistor implements
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			salaryReleases = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

@@ -57,8 +57,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
-			sales = criteria.add(Restrictions.eq("valid", true))
-					.addOrder(Order.desc("date")).list();
+			sales = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -75,8 +74,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
-			sales = criteria.add(Restrictions.eq("valid", false))
-					.addOrder(Order.desc("date")).list();
+			sales = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -93,9 +91,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Sales> sales = new ArrayList<Sales>();
 		try {
-			sales = criteria.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			sales = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -124,9 +120,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			sales = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.addOrder(Order.desc("date")).list();
+			sales = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -145,11 +139,8 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			sales = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			sales = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -168,9 +159,7 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			sales = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", false))
+			sales = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", false))
 					.addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
@@ -190,11 +179,8 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			sales = criteria.add(Restrictions.ge("date", lowerBound))
-					.add(Restrictions.lt("date", upperBound))
-					.add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData"))
-					.addOrder(Order.desc("date")).list();
+			sales = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
