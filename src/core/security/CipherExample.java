@@ -24,8 +24,8 @@ public class CipherExample {
 	public static void main(String[] args) {
 		try {
 			String key = "PilmicoStore2013"; // needs to be at least 8
-												// characters
-												// for DES
+			// characters
+			// for DES
 
 			FileInputStream fis = new FileInputStream("data/pilmico-create.sql");
 			FileOutputStream fos = new FileOutputStream("data/encrypted.txt");
