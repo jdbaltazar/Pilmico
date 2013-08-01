@@ -83,7 +83,7 @@ public class DepositForm extends SimplePanel {
 		super("Add Deposit");
 		addComponents();
 		fillEntries();
-		
+
 		Values.depositForm = this;
 	}
 
@@ -117,7 +117,7 @@ public class DepositForm extends SimplePanel {
 				Values.addEntryPanel.linkPanel(Values.BANK);
 			}
 		});
-		
+
 		fwd2.addActionListener(new ActionListener() {
 
 			@Override
@@ -126,7 +126,7 @@ public class DepositForm extends SimplePanel {
 				Values.addEntryPanel.linkPanel(Values.BANK);
 			}
 		});
-		
+
 		fwd3.addActionListener(new ActionListener() {
 
 			@Override
@@ -149,18 +149,17 @@ public class DepositForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
 			}
 		});
-
 
 		depositorCombo = new FormDropdown();
 		refreshDropdowns(false);
@@ -196,7 +195,7 @@ public class DepositForm extends SimplePanel {
 			if (i == 2) {
 				fwd2.setBounds(x1 + 76, initY + y - 11, 16, 16);
 				bankAcctLabel.setBounds(x1, initY + y - 7, 200, 11);
-				
+
 				x1 += 250;
 
 				y = -63;
@@ -209,13 +208,14 @@ public class DepositForm extends SimplePanel {
 				depositorCombo.setBounds(x1, initY + y + 5, 200, 20);
 			}
 
-//			if (i == 6) {
-//				remarks = new FormField(Tables.depositFormLabel[i], 100, Color.white, Color.gray);
-//				remarks.setBounds(x1, initY + y, 200, 25);
-//			}
+			// if (i == 6) {
+			// remarks = new FormField(Tables.depositFormLabel[i], 100,
+			// Color.white, Color.gray);
+			// remarks.setBounds(x1, initY + y, 200, 25);
+			// }
 		}
 
-		clear.setBounds(289, 208, 80, 30);//y258
+		clear.setBounds(289, 208, 80, 30);// y258
 		save.setBounds(180, 208, 80, 30); // 48
 
 		error.setBounds(315, 177, 170, 22);
@@ -239,26 +239,23 @@ public class DepositForm extends SimplePanel {
 
 					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 					uP.setVisible(true);
-					
+
 					if (!uP.isClosed()) {
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					Deposit deposit = new Deposit(d,
-							(BankAccount) bankAcctCombo.getSelectedItem(),
-							Double.parseDouble(fields.get(0).getText()),
-							(Employee) depositorCombo.getSelectedItem(),
-							Manager.loggedInAccount, true, "");
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						Deposit deposit = new Deposit(d, (BankAccount) bankAcctCombo.getSelectedItem(), Double.parseDouble(fields.get(0).getText()),
+								(Employee) depositorCombo.getSelectedItem(), Manager.loggedInAccount, true, "");
 
-					deposit.setRemarks(uP.getInput());
-					try {
-						Manager.depositManager.addDeposit(deposit);
+						deposit.setRemarks(uP.getInput());
+						try {
+							Manager.depositManager.addDeposit(deposit);
 
-						Values.centerPanel.changeTable(Values.DEPOSITS);
-						new SuccessPopup("Add").setVisible(true);
-						clearFields();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+							Values.centerPanel.changeTable(Values.DEPOSITS);
+							new SuccessPopup("Add").setVisible(true);
+							clearFields();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				} else
 					error.setText(msg);
@@ -287,14 +284,14 @@ public class DepositForm extends SimplePanel {
 
 		panel.add(bankAcctLabel);
 
-//		panel.add(remarks);
+		// panel.add(remarks);
 
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(10, 38, 520, 260);//310h
+		scrollPane.setBounds(10, 38, 520, 260);// 310h
 
 		add(scrollPane);
 
@@ -305,28 +302,26 @@ public class DepositForm extends SimplePanel {
 			fields.get(i).setText("");
 
 		error.setText("");
-		
+
 		refreshDropdowns(true);
 	}
 
-	private void determineDateStatus(){
-		
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -334,25 +329,24 @@ public class DepositForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
-
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				return false;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		amount = fields.get(0).getText();
 
-		//if (bankCombo.getModel().getSelectedItem() == null) {
-		if(bankCombo.getSelectedIndex() == -1){
+		// if (bankCombo.getModel().getSelectedItem() == null) {
+		if (bankCombo.getSelectedIndex() == -1) {
 
 			msg = "Bank is required ";
 
@@ -366,18 +360,18 @@ public class DepositForm extends SimplePanel {
 
 			return false;
 		}
-		
+
 		if (depositorCombo.getModel().getSelectedItem() == null) {
 
 			msg = "Depositor is required ";
 
 			return false;
 		}
-		
-		if(amount.equals("")){
-			
+
+		if (amount.equals("")) {
+
 			msg = "Amount is required ";
-			
+
 			return false;
 		}
 
@@ -386,25 +380,25 @@ public class DepositForm extends SimplePanel {
 	}
 
 	public void refreshDropdowns(boolean remove) {
-		
-		if(remove){
+
+		if (remove) {
 			panel.remove(bankCombo);
 			panel.remove(bankAcctCombo);
 		}
-		
+
 		try {
 			bankCombo = new JComboBox(new DefaultComboBoxModel(Manager.depositManager.getBanks().toArray()));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		bankCombo.setEditable(true);
 		bankComboField = (JTextField) bankCombo.getEditor().getEditorComponent();
 		bankComboField.setText("");
 		bankComboField.setOpaque(false);
 		bankComboField.addKeyListener(new ComboKeyHandler(bankCombo));
-		
+
 		try {
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
 			depositorCombo.setModel(model);
@@ -412,12 +406,12 @@ public class DepositForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			if (bankCombo.getItemCount() > 0) {
 				bankCombo.setSelectedIndex(0);
 				Bank b = (Bank) bankCombo.getItemAt(0);
-				
+
 				model = new DefaultComboBoxModel((new ArrayList<BankAccount>(b.getBankAccounts()).toArray()));
 			}
 
@@ -425,24 +419,23 @@ public class DepositForm extends SimplePanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		bankAcctCombo = new JComboBox(model);
 		bankAcctCombo.setEditable(true);
 		bankAcctComboField = (JTextField) bankAcctCombo.getEditor().getEditorComponent();
 		bankAcctComboField.setText("");
 		bankAcctComboField.setOpaque(false);
-		bankAcctComboField.addKeyListener(new ComboKeyHandler(bankAcctCombo));		
-		
+		bankAcctComboField.addKeyListener(new ComboKeyHandler(bankAcctCombo));
+
 		depositorCombo.setSelectedIndex(0);
-		
+
 		bankCombo.setSelectedIndex(-1);
 		bankAcctCombo.setSelectedIndex(-1);
-		
+
 		bankCombo.setBounds(40, 86, 200, 20);
 		bankAcctCombo.setBounds(40, 149, 200, 20);
-		
+
 		panel.add(bankCombo);
 		panel.add(bankAcctCombo);
 	}
 }
-

@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.pullout.PullOut;
@@ -15,8 +16,16 @@ public interface PullOutManager {
 	public List<PullOut> getValidPullOuts() throws Exception;
 
 	public List<PullOut> getInvalidPullOuts() throws Exception;
-	
+
 	public List<PullOut> getPendingPullOuts() throws Exception;
+
+	public List<PullOut> getAllPullOutsOn(Date date) throws Exception;
+
+	public List<PullOut> getValidPullOutsOn(Date date) throws Exception;
+
+	public List<PullOut> getInvalidPullOutsOn(Date date) throws Exception;
+
+	public List<PullOut> getPendingPullOutsOn(Date date) throws Exception;
 
 	public void updatePullOut(PullOut pullOut) throws Exception;
 

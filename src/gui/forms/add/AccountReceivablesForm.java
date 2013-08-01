@@ -21,7 +21,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -40,15 +39,11 @@ import javax.swing.event.ChangeListener;
 
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
-import common.entity.dailyexpenses.DailyExpensesDetail;
-import common.entity.dailyexpenses.Expense;
 import common.entity.product.Product;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
 import util.ErrorLabel;
-import util.FormCheckbox;
-import util.MainFormField;
 import util.MainFormLabel;
 import util.SBButton;
 import util.SimplePanel;
@@ -133,18 +128,17 @@ public class AccountReceivablesForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
 			}
 		});
-
 
 		issuedByLabel = new MainFormLabel("Issued by:");
 		amountLabel = new MainFormLabel("Amount:");
@@ -332,6 +326,14 @@ public class AccountReceivablesForm extends SimplePanel {
 
 						try {
 							Manager.accountReceivableManager.addAccountReceivable(ar);
+
+							for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
+								Product pd = ard.getProduct();
+								pd.setQuantityInSack(pd.getQuantityInSack() - ard.getQuantityInSack());
+								pd.setQuantityInKilo(pd.getQuantityInKilo() - ard.getQuantityInKilo());
+								Manager.productManager.updateProduct(pd);
+							}
+
 							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
 							new SuccessPopup("Add").setVisible(true);
 							clearForm();
@@ -403,59 +405,57 @@ public class AccountReceivablesForm extends SimplePanel {
 		return false;
 	}
 
-	private void determineDateStatus(){
-		
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private boolean hasInvalidQuantity(){
-		
+	private boolean hasInvalidQuantity() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			
-			if(rowPanel.get(i).getQuantityInSack() > qtySack){
-				
-				msg = "Invalid sack qty. Only "+qtySack+" left for product in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInSack() > qtySack) {
+
+				msg = "Invalid sack qty. Only " + qtySack + " left for product in row " + (i + 1) + " ";
+
 				return true;
 			}
-			
-			if(rowPanel.get(i).getQuantityInKilo() > qtyKG){
-				msg = "Invalid sack kg. Only "+qtyKG+" left for product in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInKilo() > qtyKG) {
+				msg = "Invalid sack kg. Only " + qtyKG + " left for product in row " + (i + 1) + " ";
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -529,8 +529,8 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		panel.add(customerCombo);
 	}
-	
-	public void setProductQuantities(double qtySack, double qtyKG){
+
+	public void setProductQuantities(double qtySack, double qtyKG) {
 		this.qtySack = qtySack;
 		this.qtyKG = qtyKG;
 	}

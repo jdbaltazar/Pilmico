@@ -1,6 +1,6 @@
 package core.persist;
 
-import gui.forms.util.DateWithoutTime;
+import gui.forms.util.DateTool;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import org.hibernate.criterion.Restrictions;
 
 import util.DateFormatter;
 import util.Utility;
+import util.Values;
 
 import common.entity.dailyexpenses.Expense;
 import common.entity.inventorysheet.Denomination;
@@ -105,11 +106,20 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@Override
 	public boolean isValidFor(Date date) throws Exception {
 		InventorySheetData isd = getMostRecentInventorySheetData();
-		if (isd == null)
+		if (isd == null) {
+			// disallow future dates
+			Date tomorrow = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(new Date()));
+			if (date.compareTo(tomorrow) >= 0)
+				return false;
 			return true;
-		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
-		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
-		if (date.before(lowerBound) || date.compareTo(lowerBound) == 0 || date.after(upperBound))
+		}
+		Date lowerBound = DateTool.getDateWithoutTime(isd.getDate());
+		Date upperBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(new Date()));
+		if (date.compareTo(lowerBound) == 0)
+			return false;
+		if (date.before(lowerBound))
+			return false;
+		if (date.compareTo(upperBound) >= 0)
 			return false;
 		return true;
 	}
@@ -122,19 +132,23 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@Override
 	public String getValidityRemarksFor(Date date) throws Exception {
 		InventorySheetData isd = getMostRecentInventorySheetData();
-		if (isd == null)
-			return "Valid Date";
-		
-		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
-		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
+		if (isd == null) {
+			// disallow future dates
+			Date tomorrow = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(new Date()));
+			if (date.compareTo(tomorrow) >= 0)
+				return Values.FUTURE_DATE_NOT_ALLOWED;
+			return Values.VALID_DATE;
+		}
+		Date lowerBound = DateTool.getDateWithoutTime(isd.getDate());
+		Date upperBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(new Date()));
 		if (date.compareTo(lowerBound) == 0)
-			return "An Inventory Sheet for this date already exists";
+			return Values.DATE_HAS_INVENTORY_SHEET;
 		if (date.before(lowerBound))
-			return "An Inventory Sheet exists for " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate())
-					+ ". Inserting earlier Inventory Sheet not allowed";
-		if (date.after(upperBound))
-			return "Future dates not allowed";
-		return "Valid Date";
+			return Values.INVENTORY_SHEET_EXISTS_FOR + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate()) + ". "
+					+ Values.INSERTING_EARLIER_INVENTORY_SHEET_NOT_ALLOWED;
+		if (date.compareTo(upperBound) >= 0)
+			return Values.FUTURE_DATE_NOT_ALLOWED;
+		return Values.VALID_DATE;
 	}
 
 	@Override

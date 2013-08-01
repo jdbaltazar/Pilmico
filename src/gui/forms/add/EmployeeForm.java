@@ -97,7 +97,7 @@ public class EmployeeForm extends SimplePanel {
 		employmentStatus = new FormDropdown();
 		designation = new FormDropdown();
 
-		salary = new JNumericField("*Salary");
+		salary = new JNumericField("*Salary (per month)");
 		salary.setMaxLength(10);
 
 		try {

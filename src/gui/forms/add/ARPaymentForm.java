@@ -16,21 +16,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -78,7 +74,7 @@ public class ARPaymentForm extends SimplePanel {
 	public ARPaymentForm() {
 		super("Add AR Payment");
 		addComponents();
-		
+
 		Values.arPaymentForm = this;
 	}
 
@@ -124,18 +120,17 @@ public class ARPaymentForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
 			}
 		});
-
 
 		refreshDropdown(false);
 
@@ -272,24 +267,22 @@ public class ARPaymentForm extends SimplePanel {
 		error.setText("");
 	}
 
-	private void determineDateStatus(){
-		
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -297,13 +290,13 @@ public class ARPaymentForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -328,20 +321,17 @@ public class ARPaymentForm extends SimplePanel {
 			panel.remove(customerRepCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager
-					.getPersons().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
 
 		customerRepCombo = new JComboBox(model);
 		customerRepCombo.setEditable(true);
-		customerRepComboField = (JTextField) customerRepCombo.getEditor()
-				.getEditorComponent();
+		customerRepComboField = (JTextField) customerRepCombo.getEditor().getEditorComponent();
 		customerRepComboField.setText("");
 		customerRepComboField.setOpaque(false);
-		customerRepComboField.addKeyListener(new ComboKeyHandler(
-				customerRepCombo));
+		customerRepComboField.addKeyListener(new ComboKeyHandler(customerRepCombo));
 
 		customerRepCombo.setSelectedIndex(-1);
 

@@ -245,6 +245,22 @@ public class Product {
 		this.quantityInKilo = quantityInKilo;
 	}
 
+	public boolean validQuantityInSackResult(double quantityInSackToBeSubtracted) {
+		if ((quantityInSack - quantityInSackToBeSubtracted) >= 0)
+			return true;
+		return false;
+	}
+
+	public boolean validQuantityInKiloResult(double quantityInKiloToBeSubtracted) {
+		if ((quantityInKilo - quantityInKiloToBeSubtracted) >= 0)
+			return true;
+		return false;
+	}
+
+	public boolean validQuantityResult(double quantityInSackToBeSubtracted, double quantityInKiloToBeSubtracted) {
+		return validQuantityInSackResult(quantityInSackToBeSubtracted) && validQuantityInKiloResult(quantityInKiloToBeSubtracted);
+	}
+
 	public double getDisplayInSack() {
 		return displayInSack;
 	}

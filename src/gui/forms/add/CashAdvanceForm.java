@@ -36,13 +36,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import common.entity.cashadvance.CashAdvance;
-import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.manager.Manager;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
-import util.FormCheckbox;
 import util.JNumericField;
 import util.SBButton;
 import util.SimplePanel;
@@ -116,18 +114,17 @@ public class CashAdvanceForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
 			}
 		});
-
 
 		issuedFor = new FormDropdown();
 		refreshEmployee();
@@ -188,31 +185,31 @@ public class CashAdvanceForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				if (isValidated()) {
-					
+
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
 
 					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 					uP.setVisible(true);
-					
+
 					if (!uP.isClosed()) {
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					Employee emp = (Employee) issuedFor.getSelectedItem();
-					CashAdvance cashAdvance = new CashAdvance(d, Double.parseDouble(fields.get(0).getText()), emp, Double.parseDouble(fields.get(0)
-							.getText()), Manager.loggedInAccount);
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						Employee emp = (Employee) issuedFor.getSelectedItem();
+						CashAdvance cashAdvance = new CashAdvance(d, Double.parseDouble(fields.get(0).getText()), emp, Double.parseDouble(fields.get(0)
+								.getText()), Manager.loggedInAccount);
 
-					cashAdvance.setRemarks(uP.getInput());
-					try {
-						Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
+						cashAdvance.setRemarks(uP.getInput());
+						try {
+							Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
 
-						Values.centerPanel.changeTable(Values.CASH_ADVANCE);
-						new SuccessPopup("Add").setVisible(true);
+							Values.centerPanel.changeTable(Values.CASH_ADVANCE);
+							new SuccessPopup("Add").setVisible(true);
 
-						clearFields();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+							clearFields();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				} else
 					error.setText(msg);
@@ -244,43 +241,39 @@ public class CashAdvanceForm extends SimplePanel {
 		error.setText("");
 	}
 
-	private void determineDateStatus(){
-		
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
 
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				return false;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -307,7 +300,6 @@ public class CashAdvanceForm extends SimplePanel {
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
 			issuedFor.setModel(model);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

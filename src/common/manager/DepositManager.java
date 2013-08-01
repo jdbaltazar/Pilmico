@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.deposit.Bank;
@@ -21,6 +22,14 @@ public interface DepositManager {
 	public List<Deposit> getInvalidDeposits() throws Exception;
 
 	public List<Deposit> getPendingDeposits() throws Exception;
+
+	public List<Deposit> getAllDepositsOn(Date date) throws Exception;
+
+	public List<Deposit> getValidDepositsOn(Date date) throws Exception;
+
+	public List<Deposit> getInvalidDepositsOn(Date date) throws Exception;
+
+	public List<Deposit> getPendingDepositsOn(Date date) throws Exception;
 
 	public void updateDeposit(Deposit deposit) throws Exception;
 

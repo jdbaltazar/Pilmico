@@ -1,7 +1,6 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
-import gui.forms.util.FormDropdown;
 import gui.forms.util.IconLabel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
@@ -17,21 +16,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -45,10 +40,8 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-import common.entity.cashadvance.CashAdvance;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.product.Product;
-import common.entity.profile.Employee;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
@@ -80,7 +73,7 @@ public class DiscountForm extends SimplePanel {
 		super("Add Discount");
 		addComponents();
 		fillEntries();
-		
+
 		Values.discountForm = this;
 	}
 
@@ -106,7 +99,7 @@ public class DiscountForm extends SimplePanel {
 				Values.addEntryPanel.linkPanel(Values.PRODUCTS);
 			}
 		});
-		
+
 		fwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -131,11 +124,11 @@ public class DiscountForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
@@ -143,7 +136,6 @@ public class DiscountForm extends SimplePanel {
 			}
 		});
 
-		
 		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 40; i < num; i++, y += 53) {
 
@@ -175,7 +167,7 @@ public class DiscountForm extends SimplePanel {
 			if (i == 3) {
 				fwd2.setBounds(x1 + 53, initY + y - 11, 16, 16);
 				customerLabel.setBounds(x1, initY + y - 7, 200, 11);
-				
+
 			}
 		}
 
@@ -203,16 +195,12 @@ public class DiscountForm extends SimplePanel {
 
 					if (!uP.isClosed()) {
 						Date d = ((SpinnerDateModel) date.getModel()).getDate();
-						DiscountIssue discountIssue = new DiscountIssue(d,
-								(Product) productCombo.getSelectedItem(),
-								Double.parseDouble(fields.get(0).getText()),
-								Manager.loggedInAccount, (Person) customerCombo
-										.getSelectedItem(), true, "");
+						DiscountIssue discountIssue = new DiscountIssue(d, (Product) productCombo.getSelectedItem(), Double.parseDouble(fields.get(0)
+								.getText()), Manager.loggedInAccount, (Person) customerCombo.getSelectedItem(), true, "");
 
 						discountIssue.setRemarks(uP.getInput());
 						try {
-							Manager.discountIssueManager
-									.addDiscountIssue(discountIssue);
+							Manager.discountIssueManager.addDiscountIssue(discountIssue);
 							Values.centerPanel.changeTable(Values.DISCOUNTS);
 							new SuccessPopup("Add").setVisible(true);
 							clearFields();
@@ -271,24 +259,22 @@ public class DiscountForm extends SimplePanel {
 		error.setText("");
 	}
 
-	private void determineDateStatus(){
-		
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -296,13 +282,13 @@ public class DiscountForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -322,47 +308,46 @@ public class DiscountForm extends SimplePanel {
 	}
 
 	public void refreshDropdown(boolean remove) {
-		
-		if(remove){
+
+		if (remove) {
 			panel.remove(customerCombo);
 			panel.remove(productCombo);
 		}
-		
-		
-		 try {
-				model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			} catch (Exception e3) {
-				// TODO Auto-generated catch block
-				e3.printStackTrace();
-			}
 
-			customerCombo = new JComboBox(model);
-			customerCombo.setEditable(true);
-			customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
-			customerComboField.setText("");
-			customerComboField.setOpaque(false);
-			customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
+		try {
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+		} catch (Exception e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
 
-			try {
-				model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
-			} catch (Exception e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
+		customerCombo = new JComboBox(model);
+		customerCombo.setEditable(true);
+		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
+		customerComboField.setText("");
+		customerComboField.setOpaque(false);
+		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
-			productCombo = new JComboBox(model);
-			productCombo.setEditable(true);
-			productComboField = (JTextField) productCombo.getEditor().getEditorComponent();
-			productComboField.setText("");
-			productComboField.setOpaque(false);
-			productComboField.addKeyListener(new ComboKeyHandler(productCombo));
-			
+		try {
+			model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		productCombo = new JComboBox(model);
+		productCombo.setEditable(true);
+		productComboField = (JTextField) productCombo.getEditor().getEditorComponent();
+		productComboField.setText("");
+		productComboField.setOpaque(false);
+		productComboField.addKeyListener(new ComboKeyHandler(productCombo));
+
 		productCombo.setSelectedIndex(-1);
 		customerCombo.setSelectedIndex(-1);
-		
+
 		productCombo.setBounds(40, 137, 200, 20);
 		customerCombo.setBounds(40, 190, 200, 20);
-		
+
 		panel.add(productCombo);
 		panel.add(customerCombo);
 	}

@@ -1,6 +1,9 @@
 package core.persist;
 
+import gui.forms.util.DateTool;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -245,6 +248,86 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		}
 
 		return 0d;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getAllDailyExpensesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DailyExpenses> dailyExpenses = new ArrayList<DailyExpenses>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			dailyExpenses = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date"))
+					.list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return dailyExpenses;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getValidDailyExpensesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DailyExpenses> dailyExpenses = new ArrayList<DailyExpenses>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			dailyExpenses = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return dailyExpenses;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getInvalidDailyExpensesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DailyExpenses> dailyExpenses = new ArrayList<DailyExpenses>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			dailyExpenses = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return dailyExpenses;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getPendingDailyExpensesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DailyExpenses> dailyExpenses = new ArrayList<DailyExpenses>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			dailyExpenses = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return dailyExpenses;
 	}
 
 }

@@ -1,6 +1,9 @@
 package core.persist;
 
+import gui.forms.util.DateTool;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -88,9 +91,26 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		try {
-			deliveries = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date"))
+			deliveries = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deliveries;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Delivery> getAccountedDeliveries() throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		try {
+			deliveries = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNotNull("inventorySheetData")).addOrder(Order.desc("date"))
 					.list();
-			
+
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -107,6 +127,85 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 	@Override
 	public void deleteDelivery(Delivery delivery) throws Exception {
 		remove(delivery);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Delivery> getAllDeliveriesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deliveries = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deliveries;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Delivery> getValidDeliveriesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deliveries = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deliveries;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Delivery> getInvalidDeliveriesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deliveries = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", false))
+					.addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deliveries;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Delivery> getPendingDeliveriesOn(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Delivery.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		try {
+			Date lowerBound = DateTool.getDateWithoutTime(date);
+			Date upperBound = DateTool.getTomorrowDate(lowerBound);
+			deliveries = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deliveries;
 	}
 
 }

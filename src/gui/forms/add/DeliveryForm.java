@@ -102,24 +102,24 @@ public class DeliveryForm extends SimplePanel {
 		supplierFwd = new SBButton("forward.png", "forward.png", "Add new supplier");
 		productFwd = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
-		
+
 		supplierFwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.linkPanel(Values.SUPPLIERS);
 			}
 		});
-		
+
 		productFwd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Values.addEntryPanel.linkPanel(Values.PRODUCTS);
 			}
-		});		
+		});
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -134,19 +134,31 @@ public class DeliveryForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
-				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				// <<<<<<< HEAD
+				// // System.out.println("Date: "+((SpinnerDateModel)
+				// // date.getModel()).getDate());
+				// validDate = !((SpinnerDateModel)
+				// date.getModel()).getDate().after(new Date());
+				// if (validDate)
+				// dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"),
+				// "This date is valid", true);
+				// else
+				// dateStatus.setIconToolTip(new
+				// ImageIcon("images/invalid_date2.png"), "Future date not allowed",
+				// false);
+				// System.out.println("Date: "+((SpinnerDateModel)
+				// date.getModel()).getDate());
 				determineDateStatus();
 			}
 		});
-
 
 		termsLabel = new MainFormLabel("Terms:");
 		ponumLabel = new MainFormLabel("PO_No:");
@@ -174,7 +186,7 @@ public class DeliveryForm extends SimplePanel {
 		deleteLabel = new TableHeaderLabel(icon);
 
 		refreshSupplier(false);
-		
+
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
 		productsPanel.setOpaque(false);
@@ -384,8 +396,7 @@ public class DeliveryForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if (isValidated() && !hasMultipleProduct()
-						&& !hasBlankProduct() && !hasZeroQuantity()) {
+				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasZeroQuantity()) {
 
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
@@ -395,34 +406,29 @@ public class DeliveryForm extends SimplePanel {
 
 					if (!uP.isClosed()) {
 						try {
-							Date d = ((SpinnerDateModel) date.getModel())
-									.getDate();
-							Supplier supplier = (Supplier) supplierCombo
-									.getSelectedItem();
+							Date d = ((SpinnerDateModel) date.getModel()).getDate();
+							Supplier supplier = (Supplier) supplierCombo.getSelectedItem();
 							Store store;
 							store = Manager.storeManager.getStore();
-							Delivery delivery = new Delivery(d, supplier,
-									store, delivery_no.getText(), po_no
-											.getText(), terms.getText(),
+							Delivery delivery = new Delivery(d, supplier, store, delivery_no.getText(), po_no.getText(), terms.getText(),
 									Manager.loggedInAccount);
 
 							for (RowPanel rp : rowPanel) {
 								Product p = rp.getSelectedProduct();
-								System.out.println("qty in kilo: "
-										+ rp.getQuantityInKilo());
-								System.out.println("qty in sack: "
-										+ rp.getQuantityInSack());
-								delivery.addDeliveryDetail(new DeliveryDetail(
-										delivery, p,
-										p.getCurrentPricePerKilo(), p
-												.getCurrentPricePerSack(), rp
-												.getQuantityInKilo(), rp
-												.getQuantityInSack()));
+								delivery.addDeliveryDetail(new DeliveryDetail(delivery, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
+										.getQuantityInKilo(), rp.getQuantityInSack()));
 							}
-							
-							delivery.setRemarks(uP.getInput());
 
+							delivery.setRemarks(uP.getInput());
 							Manager.deliveryManager.addDelivery(delivery);
+
+							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
+								Product p = dd.getProduct();
+								p.setQuantityInSack(p.getQuantityInSack() + dd.getQuantityInSack());
+								p.setQuantityInKilo(p.getQuantityInKilo() + dd.getQuantityInKilo());
+								Manager.productManager.updateProduct(p);
+							}
+
 							Values.centerPanel.changeTable(Values.DELIVERY);
 							new SuccessPopup("Add").setVisible(true);
 							clearForm();
@@ -442,78 +448,75 @@ public class DeliveryForm extends SimplePanel {
 
 	}
 
-	public void setErrorText(String msg){
+	public void setErrorText(String msg) {
 		error.setText(msg);
 	}
-	
-	public boolean hasMultipleProduct(){
-		
+
+	public boolean hasMultipleProduct() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
 			for (int j = i + 1; j < rowPanel.size(); j++) {
-				
-				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel
-						.get(j).getProductCombo().getSelectedIndex()) {
+
+				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel.get(j).getProductCombo().getSelectedIndex()) {
 					msg = "No multiple product entry allowed ";
-					
+
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
-	private boolean hasBlankProduct(){
-		
+	private boolean hasBlankProduct() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			if(rowPanel.get(i).getProductCombo().getSelectedIndex() == -1){
-				
+			if (rowPanel.get(i).getProductCombo().getSelectedIndex() == -1) {
+
 				JTextField field = (JTextField) rowPanel.get(i).getProductCombo().getEditor().getEditorComponent();
 				System.out.println(field.getText());
-				
-				if(!field.getText().equals(""))
-					msg = "Unknown product found in row "+(i+1)+" ";
+
+				if (!field.getText().equals(""))
+					msg = "Unknown product found in row " + (i + 1) + " ";
 				else
-					msg = "No product indicated in row "+(i+1)+" ";
+					msg = "No product indicated in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private boolean hasZeroQuantity(){
-		
+
+	private boolean hasZeroQuantity() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			
-			if(rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d){
-				msg = "Both quantities should not be 0 in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d) {
+				msg = "Both quantities should not be 0 in row " + (i + 1) + " ";
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private void determineDateStatus(){
-		
+
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -521,7 +524,7 @@ public class DeliveryForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
@@ -555,7 +558,7 @@ public class DeliveryForm extends SimplePanel {
 		po_no.setText("");
 		delivery_no.setText("");
 		terms.setText("");
-		
+
 		error.setText("");
 
 		supplierCombo.setSelectedIndex(-1);
@@ -566,13 +569,12 @@ public class DeliveryForm extends SimplePanel {
 	}
 
 	public void refreshSupplier(boolean remove) {
-		
-		if(remove)
+
+		if (remove)
 			panel.remove(supplierCombo);
 
 		try {
-			 model = new
-			 DefaultComboBoxModel(Manager.supplierManager.getSuppliers().toArray());
+			model = new DefaultComboBoxModel(Manager.supplierManager.getSuppliers().toArray());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -590,11 +592,11 @@ public class DeliveryForm extends SimplePanel {
 		supplierCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		supplierCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		supplierCombo.setOpaque(false);
-		
+
 		supplierCombo.setSelectedIndex(-1);
-		
+
 		supplierCombo.setBounds(85, 56, 220, 20);
-		
+
 		panel.add(supplierCombo);
 	}
 }

@@ -23,8 +23,9 @@ public class CipherExample {
 
 	public static void main(String[] args) {
 		try {
-			String key = "PilmicoStore2013"; // needs to be at least 8 characters
-														// for DES
+			String key = "PilmicoStore2013"; // needs to be at least 8
+			// characters
+			// for DES
 
 			FileInputStream fis = new FileInputStream("data/pilmico-create.sql");
 			FileOutputStream fos = new FileOutputStream("data/encrypted.txt");
@@ -56,7 +57,8 @@ public class CipherExample {
 		// DESKeySpec dks = new DESKeySpec(key.getBytes());
 		// SecretKeyFactory skf = SecretKeyFactory.getInstance("AES");
 		// SecretKey desKey = skf.generateSecret(dks);
-		// Cipher cipher = Cipher.getInstance("DES"); // DES/ECB/PKCS5Padding for
+		// Cipher cipher = Cipher.getInstance("DES"); // DES/ECB/PKCS5Padding
+		// for
 		// SunJCE
 
 		Cipher cipher = Cipher.getInstance(ALGORITHM);

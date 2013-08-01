@@ -2,7 +2,7 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown.ColorArrowUI;
-import gui.forms.util.DateWithoutTime;
+import gui.forms.util.DateTool;
 import gui.forms.util.FormField;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
@@ -122,9 +122,9 @@ public class SalesForm extends SimplePanel {
 
 		date = new SpinnerDate(Values.dateFormat);
 		issueDate = new SpinnerDate(Values.dateFormat);
-		
+
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
 
 		issuedaTLabel = new MainFormLabel("Issued at:");
@@ -189,10 +189,10 @@ public class SalesForm extends SimplePanel {
 
 		dateLabel.setBounds(15, 12, 40, 20);
 		date.setBounds(60, 10, 150, 20);
-		
+
 		dateStatus.setBounds(215, 12, 16, 16);
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
@@ -271,7 +271,6 @@ public class SalesForm extends SimplePanel {
 
 		showUnrequired(false);
 
-		
 		add(showRequired);
 
 		panel.add(dateLabel);
@@ -291,7 +290,7 @@ public class SalesForm extends SimplePanel {
 		panel.add(issueDate);
 
 		panel.add(customerLabel);
-		
+
 		panel.add(customerFwd);
 
 		panel.add(issuedaTLabel);
@@ -341,31 +340,46 @@ public class SalesForm extends SimplePanel {
 
 		add(scrollPane);
 	}
-	
-	private void determineDateStatus(){
-		
+
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			// if
+			// (Manager.inventorySheetDataManager.getInventorySheetDataWithThisDate(DateWithoutTime.getInstance().getDateWithoutTime(formDate))
+			// != null) {
+			// dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"),
+			// "An Inventory Sheet with this date already exists", false);
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+			// <<<<<<< HEAD
+			//
+			// else if (formDate.after(new Date())) {
+			// dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"),
+			// "Future date not allowed", false);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+			// <<<<<<< HEAD
+			//
+			// else
+			// dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"),
+			// "This date is valid", true);
+			//
+			// =======
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void alternateRows() {
 
 		for (int i = 0; i < rowPanel.size(); i++)
@@ -439,7 +453,7 @@ public class SalesForm extends SimplePanel {
 
 		alternateRows();
 	}
-	
+
 	private void updateList(int removedRow) {
 
 		for (int i = removedRow + 1; i < rowPanel.size(); i++) {
@@ -467,43 +481,46 @@ public class SalesForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
-				if (isValidated() && !hasMultipleProduct()
-						&& !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
-					
+
+				// if (isValidated() && !hasMultipleProduct() && !hasBlankProduct()
+				// && !hasZeroQuantity()) {
+
+				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
+
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
 
 					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 					uP.setVisible(true);
-					
+
 					if (!uP.isClosed()) {
 
 						Date d = ((SpinnerDateModel) date.getModel()).getDate();
 						System.out.println("date: " + d.toString());
-						Date d2 = ((SpinnerDateModel) issueDate.getModel())
-								.getDate();
+						Date d2 = ((SpinnerDateModel) issueDate.getModel()).getDate();
 						Person p = null;
 						if (customerCombo.getSelectedItem() != null) {
 							p = (Person) customerCombo.getSelectedItem();
 						}
-						Sales s = new Sales(d, p, rc_no.getText(), issuedAt
-								.getText(), d2, receipt_no.getText(),
-								Manager.loggedInAccount);
+						Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), d2, receipt_no.getText(), Manager.loggedInAccount);
 
 						s.setRemarks(uP.getInput());
-						
+
 						for (RowPanel rp : rowPanel) {
 							Product product = rp.getSelectedProduct();
-							s.addSalesDetail(new SalesDetail(s, product,
-									product.getCurrentPricePerKilo(), product
-											.getCurrentPricePerSack(), rp
-											.getQuantityInKilo(), rp
-											.getQuantityInSack()));
+							s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
+									.getQuantityInKilo(), rp.getQuantityInSack()));
 						}
 
 						try {
 							Manager.salesManager.addSales(s);
+
+							for (SalesDetail sd : s.getSalesDetails()) {
+								Product pd = sd.getProduct();
+								pd.setQuantityInSack(pd.getQuantityInSack() - sd.getQuantityInSack());
+								pd.setQuantityInKilo(pd.getQuantityInKilo() - sd.getQuantityInKilo());
+								Manager.productManager.updateProduct(pd);
+							}
 							Values.centerPanel.changeTable(Values.SALES);
 							new SuccessPopup("Add").setVisible(true);
 							clearForm();
@@ -521,90 +538,101 @@ public class SalesForm extends SimplePanel {
 		add(error);
 
 	}
-	
-	public void setErrorText(String msg){
+
+	public void setErrorText(String msg) {
 		error.setText(msg);
 	}
-	
-	public boolean hasMultipleProduct(){
-		
+
+	public boolean hasMultipleProduct() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
 			for (int j = i + 1; j < rowPanel.size(); j++) {
-				
-				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel
-						.get(j).getProductCombo().getSelectedIndex()) {
+
+				if (rowPanel.get(i).getProductCombo().getSelectedIndex() == rowPanel.get(j).getProductCombo().getSelectedIndex()) {
 					msg = "No multiple product entry allowed ";
-					
+
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
-	private boolean hasBlankProduct(){
-		
+	private boolean hasBlankProduct() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			if(rowPanel.get(i).getProductCombo().getSelectedIndex() == -1){
-				
+			if (rowPanel.get(i).getProductCombo().getSelectedIndex() == -1) {
+
 				JTextField field = (JTextField) rowPanel.get(i).getProductCombo().getEditor().getEditorComponent();
 				System.out.println(field.getText());
-				
-				if(!field.getText().equals(""))
-					msg = "Unknown product found in row "+(i+1)+" ";
+
+				if (!field.getText().equals(""))
+					msg = "Unknown product found in row " + (i + 1) + " ";
 				else
-					msg = "No product indicated in row "+(i+1)+" ";
+					msg = "No product indicated in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private boolean hasInvalidQuantity(){
-		
+
+	// <<<<<<< HEAD
+	//
+	// private boolean hasZeroQuantity() {
+	//
+	// =======
+
+	private boolean hasInvalidQuantity() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			
-			if(rowPanel.get(i).getQuantityInSack() > qtySack){
-				
-				msg = "Invalid sack qty. Only "+qtySack+" left for product in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInSack() > qtySack) {
+
+				msg = "Invalid sack qty. Only " + qtySack + " left for product in row " + (i + 1) + " ";
+
 				return true;
 			}
-			
-			if(rowPanel.get(i).getQuantityInKilo() > qtyKG){
-				msg = "Invalid sack kg. Only "+qtyKG+" left for product in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInKilo() > qtyKG) {
+				msg = "Invalid sack kg. Only " + qtyKG + " left for product in row " + (i + 1) + " ";
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private boolean hasZeroQuantity(){
-		
+
+	private boolean hasZeroQuantity() {
+
 		for (int i = 0; i < rowPanel.size(); i++) {
-			
-			if(rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d){
-				msg = "Both quantities should not be 0 in row "+(i+1)+" ";
-				
+
+			if (rowPanel.get(i).getQuantityInKilo() == 0d && rowPanel.get(i).getQuantityInSack() == 0d) {
+				msg = "Both quantities should not be 0 in row " + (i + 1) + " ";
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean isValidated() {
-		
+		// <<<<<<< HEAD
+		//
+		// if (((SpinnerDateModel) date.getModel()).getDate().after(new Date()) ||
+		// ((SpinnerDateModel) issueDate.getModel()).getDate().after(new Date()))
+		// {
+		// =======
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -612,15 +640,12 @@ public class SalesForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		if (((SpinnerDateModel) issueDate.getModel()).getDate().after(
-						new Date())) {
 
+		if (((SpinnerDateModel) issueDate.getModel()).getDate().after(new Date())) {
 			msg = "Issued on date not allowed ";
-
 			return false;
 		}
-		
+
 		if (productsPanel.getComponentCount() == 0) {
 
 			msg = "Put at least one product ";
@@ -640,11 +665,11 @@ public class SalesForm extends SimplePanel {
 		rc_no.setText("");
 		receipt_no.setText("");
 		issuedAt.setText("");
-		
+
 		error.setText("");
 
 		refreshCustomer(true);
-		
+
 		showUnrequired(false);
 	}
 
@@ -653,10 +678,10 @@ public class SalesForm extends SimplePanel {
 	}
 
 	public void refreshCustomer(boolean remove) {
-		
-		if(remove)
+
+		if (remove)
 			panel.remove(customerCombo);
-		
+
 		try {
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
 			customerCombo = new JComboBox(model);
@@ -664,7 +689,7 @@ public class SalesForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		customerCombo.setUI(ColorArrowUI.createUI(this));
 		customerCombo.setEditable(true);
 		customerComboField = (JTextField) customerCombo.getEditor().getEditorComponent();
@@ -676,18 +701,18 @@ public class SalesForm extends SimplePanel {
 		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
-		
+
 		customerCombo.setSelectedIndex(-1);
-		
+
 		customerCombo.setBounds(85, 58, 220, 20);
-		
+
 		panel.add(customerCombo);
-		
+
 		panel.revalidate();
 		panel.updateUI();
 	}
-	
-	public void setProductQuantities(double qtySack, double qtyKG){
+
+	public void setProductQuantities(double qtySack, double qtyKG) {
 		this.qtySack = qtySack;
 		this.qtyKG = qtyKG;
 	}

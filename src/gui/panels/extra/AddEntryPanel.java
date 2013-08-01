@@ -17,16 +17,12 @@ import gui.forms.add.ProfileForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
-import gui.forms.add.SalesOrderForm;
-import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
 import gui.list.AccountTypeList;
 import gui.list.CategoryList;
 import gui.list.ConditionList;
-import gui.list.LogTypeList;
 import gui.list.NoteTypeList;
 import gui.list.UnitList;
-import gui.popup.NotesPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -74,7 +70,6 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private UnitList unitList;
 	private ConditionList conditionList;
 	private CategoryList categoryList;
-	private StockPurchasePanel stockPurchase;
 	private SalesForm sales;
 	private CashAdvanceForm cashAdvanceForm;
 	private ProfileForm profileForm;
@@ -95,7 +90,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private JScrollPane dummyPane;
 
 	private JPanel motherPanel, motherPanel2;
-	
+
 	private ArrayList<JPanel> formPanels = new ArrayList<JPanel>();
 	private JLabel backToPrevious;
 
@@ -144,7 +139,6 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		conditionList = new ConditionList();
 		categoryList = new CategoryList();
 
-		stockPurchase = new StockPurchasePanel();
 		expensesForm = new ExpensesForm();
 		sales = new SalesForm();
 
@@ -330,7 +324,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			if (currHeight == minHeight)
 				isRunning = false;
 		}
-		
+
 		formPanels.clear();
 		showAllComponents(false);
 		Values.menuPanel.setVisible(true);
@@ -403,7 +397,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
-//			deposit.fillEntries();
+			// deposit.fillEntries();
 			deposit.setVisible(true);
 			formPanels.add(deposit);
 		}
@@ -430,14 +424,15 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			// Values.salesOrderForm.refreshDate();
 			sales.setVisible(true);
-			//motherPanel = sales;
+			// motherPanel = sales;
 			formPanels.add(sales);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
 			// Values.salesOrderForm.refreshDate();
 			try {
-				inventorySheetForm.build();
+				inventorySheetForm.build(); // by default, use the earliest possible
+														// date
 				inventorySheetForm.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -492,7 +487,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	}
 
 	public void linkPanel(int value) {
-		
+
 		showAllComponents(false);
 
 		dummyPane.setVisible(true);
@@ -531,18 +526,18 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}
 
 	}
-	
-	public void back(){
-		
+
+	public void back() {
+
 		showAllComponents(false);
-		
+
 		if (formPanels.size() >= 2) {
 			formPanels.get(formPanels.size() - 2).setVisible(true);
-			
-			formPanels.remove(formPanels.size()-1);
+
+			formPanels.remove(formPanels.size() - 1);
 		}
-		
-		if(formPanels.size() > 1){
+
+		if (formPanels.size() > 1) {
 			dummyPane.setVisible(true);
 			checkBox.setVisible(false);
 		}

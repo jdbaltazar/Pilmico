@@ -111,18 +111,18 @@ public class ExpensesForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
 			}
 		});
-		
+
 		issuedByLabel = new MainFormLabel("Issued by:");
 		typeLabel = new MainFormLabel("Type:");
 		dateLabel = new MainFormLabel("Date:");
@@ -280,50 +280,44 @@ public class ExpensesForm extends SimplePanel {
 
 					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 					uP.setVisible(true);
-					
-					if (!uP.isClosed()) {
-					
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					DailyExpenses de = new DailyExpenses(d,
-							(DailyExpensesType) (type.getSelectedItem()),
-							Manager.loggedInAccount);
 
-					for (RowPanel rp : rowPanel) {
-						String exp = rp.getSelectedExpense();
-						Expense expense = null;
-						try {
-							expense = Manager.dailyExpenseManager
-									.searchExpense(exp);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-						if (expense == null) {
+					if (!uP.isClosed()) {
+
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						DailyExpenses de = new DailyExpenses(d, (DailyExpensesType) (type.getSelectedItem()), Manager.loggedInAccount);
+
+						for (RowPanel rp : rowPanel) {
+							String exp = rp.getSelectedExpense();
+							Expense expense = null;
 							try {
-								expense = new Expense(exp);
-								Manager.dailyExpenseManager
-										.addExpenses(expense);
+								expense = Manager.dailyExpenseManager.searchExpense(exp);
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
+							if (expense == null) {
+								try {
+									expense = new Expense(exp);
+									Manager.dailyExpenseManager.addExpenses(expense);
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							}
+							de.addDailyExpenseDetail(new DailyExpensesDetail(de, expense, rp.getExpenseAmount()));
 						}
-						de.addDailyExpenseDetail(new DailyExpensesDetail(de,
-								expense, rp.getExpenseAmount()));
-					}
-					
-					de.setRemarks(uP.getInput());
 
-					try {
-						Manager.dailyExpenseManager.addDailyExpenses(de);
-						Values.centerPanel.changeTable(Values.EXPENSES);
-						new SuccessPopup("Add").setVisible(true);
-						clearForm();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						de.setRemarks(uP.getInput());
+
+						try {
+							Manager.dailyExpenseManager.addDailyExpenses(de);
+							Values.centerPanel.changeTable(Values.EXPENSES);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
-					}
-				}
-				else
+				} else
 					error.setText(msg);
 			}
 		});
@@ -332,25 +326,23 @@ public class ExpensesForm extends SimplePanel {
 		add(error);
 
 	}
-	
-	private void determineDateStatus(){
-		
+
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -358,13 +350,13 @@ public class ExpensesForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -383,31 +375,31 @@ public class ExpensesForm extends SimplePanel {
 		return true;
 
 	}
-	
-	private boolean hasBlankEntry(){
-		
-		for(int i = 0; i < rowPanel.size(); i++){
+
+	private boolean hasBlankEntry() {
+
+		for (int i = 0; i < rowPanel.size(); i++) {
 			JTextField field = (JTextField) rowPanel.get(i).getExpensesCombo().getEditor().getEditorComponent();
-			
-			if(field.getText().equals("")){
-				msg = "Blank entry in row "+(i+1)+" ";
+
+			if (field.getText().equals("")) {
+				msg = "Blank entry in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private boolean hasZeroQuantity(){
-		
-		for(int i = 0; i < rowPanel.size(); i++){
-			
-			if(rowPanel.get(i).getExpenseAmount() == 0d){
-				msg = "0 amount found in row "+(i+1)+" ";
+
+	private boolean hasZeroQuantity() {
+
+		for (int i = 0; i < rowPanel.size(); i++) {
+
+			if (rowPanel.get(i).getExpenseAmount() == 0d) {
+				msg = "0 amount found in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

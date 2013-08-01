@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -45,6 +46,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.border.AbstractBorder;
 
+import common.entity.delivery.DeliveryDetail;
 import common.entity.product.Product;
 import common.entity.profile.Person;
 import common.entity.sales.Sales;
@@ -116,7 +118,7 @@ public class ViewSalesForm extends EditFormPanel {
 
 		status = new JLabel(s, null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
-		
+
 		remarks = new RemarksLabel("");
 
 		issuedaTLabel = new ViewFormLabel("Issued at:");
@@ -218,8 +220,8 @@ public class ViewSalesForm extends EditFormPanel {
 		add(status);
 		add(remarks);
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (sales.getInventorySheetData() != null) {
@@ -247,7 +249,6 @@ public class ViewSalesForm extends EditFormPanel {
 		status.setIcon(icon);
 
 	}
-
 
 	private void alternateRows() {
 
@@ -298,7 +299,6 @@ public class ViewSalesForm extends EditFormPanel {
 
 		error = new ErrorLabel();
 
-
 		error.setBounds(305, 340, 200, 30);
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
@@ -306,26 +306,51 @@ public class ViewSalesForm extends EditFormPanel {
 
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
 
-				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
-				uP.setVisible(true);
+				boolean valid = true;
+				for (SalesDetail dd : sales.getSalesDetails()) {
+					Product p = dd.getProduct();
+					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
+						valid = false;
+				}
 
-				if (!uP.getInput().equals("")) {
-					sales.setValid(false);
-					sales.setRemarks(uP.getInput());
+				if (valid) {
 
-					try {
-						Manager.salesManager.updateSales(sales);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
+
+					UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+					uP.setVisible(true);
+
+					if (!uP.getInput().equals("")) {
+						sales.setValid(false);
+						sales.setRemarks(uP.getInput());
+
+						try {
+							Manager.salesManager.updateSales(sales);
+
+							for (SalesDetail sd : sales.getSalesDetails()) {
+								Product p = sd.getProduct();
+								p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
+								p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
+								Manager.productManager.updateProduct(p);
+							}
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Invalidation").setVisible(true);
+						Values.centerPanel.changeTable(Values.SALES);
 					}
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.SALES);
+				} else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"Invalidating this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
+									+ "\ninvalidate other forms (Pullouts or Account Receivables) or add a Delivery to proceed", "Not Allowed",
+							JOptionPane.WARNING_MESSAGE);
+
 				}
 			}
 		});
@@ -334,9 +359,9 @@ public class ViewSalesForm extends EditFormPanel {
 		add(error);
 
 	}
-	
-	private void initLabelEntries(){
-		
+
+	private void initLabelEntries() {
+
 		date = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getDate()));
 		cashier = new ViewFormField(sales.getCashier().getFirstPlusLastName());
 		rc_no = new ViewFormField(sales.getRcNo());
@@ -350,9 +375,9 @@ public class ViewSalesForm extends EditFormPanel {
 
 		voidBtn.setVisible(sales.getInventorySheetData() != null ? false : sales.isValid());
 
-		if(sales.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+sales.getRemarks());
-		
+		if (sales.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + sales.getRemarks());
+
 		Set<SalesDetail> salesDetails = sales.getSalesDetails();
 		for (SalesDetail sd : salesDetails) {
 			rowPanel.add(new EditRowPanel(sd, productsPanel, Values.SALES));
@@ -362,9 +387,9 @@ public class ViewSalesForm extends EditFormPanel {
 			productsPanel.updateUI();
 			productsPanel.revalidate();
 		}
-		
-		if(!sales.isValid())
-			remarks.setText("-"+sales.getRemarks());
+
+		if (!sales.isValid())
+			remarks.setText("-" + sales.getRemarks());
 
 	}
 }

@@ -18,8 +18,6 @@ import gui.forms.add.ProductForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
-import gui.forms.add.SalesOrderForm;
-import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
 import gui.forms.edit.EditBankForm;
 import gui.forms.edit.EditEmployeeForm;
@@ -57,7 +55,6 @@ public class Values {
 	public static MainFrame mainFrame;
 	public static AddEntryPanel addEntryPanel;
 	public static TableUtilPanel tableUtilPanel;
-	public static StockPurchasePanel stockPurchasePanel;
 	public static SalesForm salesForm;
 	public static NotesPopup notesPopup;
 	public static MenuPanel menuPanel;
@@ -170,5 +167,15 @@ public class Values {
 	public static String[] stockHeader = { "Stock Number", "Name", "Category", "Brand", "Selling Price", " " };
 
 	public static String[] stockPurchaseHeader = { "Stock Purchased", "Quantity", "Purchase Price", "Date Purchased", };
+
+	public static final String VALID_DATE = "Valid Date";
+
+	public static final String FUTURE_DATE_NOT_ALLOWED = "Future Date NOT Allowed";
+
+	public static final String DATE_HAS_INVENTORY_SHEET = "An Inventory Sheet for this date already exists";
+
+	public static final String INVENTORY_SHEET_EXISTS_FOR = "An Inventory Sheet exists for ";
+
+	public static final String INSERTING_EARLIER_INVENTORY_SHEET_NOT_ALLOWED = "Inserting earlier Inventory Sheet not allowed";
 
 }

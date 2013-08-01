@@ -1,5 +1,6 @@
 package common.manager;
 
+import java.util.Date;
 import java.util.List;
 
 import common.entity.salary.Fee;
@@ -18,6 +19,14 @@ public interface SalaryReleaseManager {
 	public List<SalaryRelease> getInvalidSalaryReleases() throws Exception;
 
 	public List<SalaryRelease> getPendingSalaryReleases() throws Exception;
+
+	public List<SalaryRelease> getAllSalaryReleasesOn(Date date) throws Exception;
+
+	public List<SalaryRelease> getValidSalaryReleasesOn(Date date) throws Exception;
+
+	public List<SalaryRelease> getInvalidSalaryReleasesOn(Date date) throws Exception;
+
+	public List<SalaryRelease> getPendingSalaryReleasesOn(Date date) throws Exception;
 
 	public void updateSalaryRelease(SalaryRelease salaryRelease) throws Exception;
 
