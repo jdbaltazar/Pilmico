@@ -16,6 +16,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.ColumnSizer;
+import util.ColumnsAutoSizer;
 import util.DateFormatter;
 import util.Tables;
 import util.Utility;
@@ -92,20 +94,24 @@ public class CenterPanel extends SoyPanel {
 			add(new MenuPanel(), BorderLayout.PAGE_END);
 			fillProducts();
 
+			ColumnSizer.resizeColumns(Values.tablePanel.getSoyTable(), Values.PRODUCTS);
+
 			break;
 
 		case Values.PRODUCTS:
-			// add(tableUtilPanel, BorderLayout.PAGE_END);
+
 			fillProducts();
+			
 			break;
 
 		case Values.PULLOUT:
-			// add(tableUtilPanel, BorderLayout.PAGE_END);
+			
 			fillPullout();
 			break;
 
 		case Values.ACCOUNT_RECEIVABLES:
 			fillAR();
+			
 			break;
 
 		case Values.AR_PAYMENTS:
@@ -180,7 +186,10 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		}
-
+		
+		if(val != Values.HOME)
+			ColumnSizer.resizeColumns(Values.tablePanel.getSoyTable(), val);
+		
 		// repaint();
 		// validate();
 		revalidate();
@@ -262,7 +271,9 @@ public class CenterPanel extends SoyPanel {
 			e.printStackTrace();
 		}
 		
-		Values.tablePanel.getSoyTable().removeColumn(Values.tablePanel.getSoyTable().getColumnModel().getColumn(5));
+//		Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setPreferredWidth(5);
+//		ColumnsAutoSizer.sizeColumnsToFit(Values.tablePanel.getSoyTable());
+		
 	}
 
 	private void fillAR_Payments() {
@@ -706,6 +717,7 @@ public class CenterPanel extends SoyPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 
 	}
 

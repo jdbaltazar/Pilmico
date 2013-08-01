@@ -19,6 +19,7 @@ import gui.forms.util.FormField;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import common.entity.product.Category;
 import common.entity.sales.Sales;
@@ -41,6 +42,7 @@ public class UtilityPopup extends JDialog {
 	private JPanel panel;
 	private SBButton close;
 	private ErrorLabel utilityLabel;
+	private JProgressBar progressBar;
 	
 	private boolean isClosed = false, verified = false;
 	

@@ -35,12 +35,16 @@ public class DatabaseTool {
 
 	public static boolean backup(String dbUserName, String dbPassword, String dbName, String path) {
 
-		String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
+//		String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
+		String executeCmd = "mysqldump -u " + dbUserName  + " --add-drop-database -B " + dbName + " -r " + path;
 		Process runtimeProcess;
 		try {
 			System.out.println(executeCmd);// this out put works in mysql shell
 			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+			
+			
 			int processComplete = runtimeProcess.waitFor();
+			System.out.println("process complete: "+processComplete);
 
 			if (processComplete == 0) {
 				System.out.println("Backup created successfully");

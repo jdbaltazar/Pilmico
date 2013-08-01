@@ -157,8 +157,8 @@ public class TopPanel extends SoyPanel {
 				// TODO Auto-generated method stub
 
 
+				balloonTip.setVisible(!balloonTip.isVisible());
 				if (Manager.loggedInAccount == null) {
-					balloonTip.setVisible(!balloonTip.isVisible());
 				}
 			}
 		});

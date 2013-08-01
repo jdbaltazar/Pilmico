@@ -6,9 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
+import net.java.balloontip.utils.ToolTipUtils;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -38,11 +43,19 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 
 	private boolean valid = true;
 //	private int alertOnQuantity, quantity, itemId;
+	
+	public RowHighlightRenderer(){
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		
+		table.setToolTipText(table.getValueAt(
+				table.convertRowIndexToModel(row),
+				table.convertColumnIndexToModel(column)).toString());
 
 		setHorizontalAlignment(SwingConstants.CENTER);
 
