@@ -16,21 +16,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -46,7 +42,6 @@ import util.soy.SoyButton;
 
 import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
-import common.entity.profile.Person;
 import common.manager.Manager;
 
 public class CAPaymentForm extends SimplePanel {
@@ -78,7 +73,7 @@ public class CAPaymentForm extends SimplePanel {
 	public CAPaymentForm() {
 		super("Add CA Payment");
 		addComponents();
-		
+
 		Values.caPaymentForm = this;
 	}
 
@@ -124,18 +119,17 @@ public class CAPaymentForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
 			}
 		});
-
 
 		refreshDropdown(false);
 
@@ -193,25 +187,25 @@ public class CAPaymentForm extends SimplePanel {
 
 					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
 					uP.setVisible(true);
-					
-					if (!uP.isClosed()) {
-					Date d = ((SpinnerDateModel) date.getModel()).getDate();
-					CAPayment caPayment = new CAPayment(cashAdvance, d, Double.parseDouble(fields.get(0).getText()), null, Manager.loggedInAccount, true,
-							"");
 
-					caPayment.setRemarks(uP.getInput());
-					try {
-						Manager.cashAdvanceManager.addCAPayment(caPayment);
-						cashAdvance.addCAPayment(caPayment);
-						Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
-						if (Values.viewCAForm != null)
-							Values.viewCAForm.fillEntries();
-						Values.centerPanel.changeTable(Values.CA_PAYMENTS);
-						new SuccessPopup("Add").setVisible(true);
-						clearFields();
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+					if (!uP.isClosed()) {
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						CAPayment caPayment = new CAPayment(cashAdvance, d, Double.parseDouble(fields.get(0).getText()), null, Manager.loggedInAccount,
+								true, "");
+
+						caPayment.setRemarks(uP.getInput());
+						try {
+							Manager.cashAdvanceManager.addCAPayment(caPayment);
+							cashAdvance.addCAPayment(caPayment);
+							Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
+							if (Values.viewCAForm != null)
+								Values.viewCAForm.fillEntries();
+							Values.centerPanel.changeTable(Values.CA_PAYMENTS);
+							new SuccessPopup("Add").setVisible(true);
+							clearFields();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				} else
 					error.setText(msg);
@@ -230,7 +224,7 @@ public class CAPaymentForm extends SimplePanel {
 		panel.add(dateLabel);
 		panel.add(date);
 		panel.add(dateStatus);
-		
+
 		panel.add(customerRepLabel);
 
 		panel.add(caIDLabel);
@@ -263,24 +257,22 @@ public class CAPaymentForm extends SimplePanel {
 		error.setText("");
 	}
 
-	private void determineDateStatus(){
-		
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -288,13 +280,13 @@ public class CAPaymentForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -319,8 +311,7 @@ public class CAPaymentForm extends SimplePanel {
 			panel.remove(employeeRepCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager
-					.getPersons().toArray());
+			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
 			// issuedBy = new FormDropdown();
 			// issuedBy.setModel(model);
 		} catch (Exception e2) {
@@ -329,12 +320,10 @@ public class CAPaymentForm extends SimplePanel {
 
 		employeeRepCombo = new JComboBox(model);
 		employeeRepCombo.setEditable(true);
-		employeeRepComboField = (JTextField) employeeRepCombo.getEditor()
-				.getEditorComponent();
+		employeeRepComboField = (JTextField) employeeRepCombo.getEditor().getEditorComponent();
 		employeeRepComboField.setText("");
 		employeeRepComboField.setOpaque(false);
-		employeeRepComboField.addKeyListener(new ComboKeyHandler(
-				employeeRepCombo));
+		employeeRepComboField.addKeyListener(new ComboKeyHandler(employeeRepCombo));
 
 		employeeRepCombo.setSelectedIndex(-1);
 

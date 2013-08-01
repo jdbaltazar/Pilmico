@@ -124,7 +124,7 @@ public class SalesForm extends SimplePanel {
 		issueDate = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
 
 		issuedaTLabel = new MainFormLabel("Issued at:");
@@ -352,9 +352,9 @@ public class SalesForm extends SimplePanel {
 			// dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"),
 			// "An Inventory Sheet with this date already exists", false);
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), Manager.inventorySheetDataManager.getValidityRemarksFor(formDate),
-						false);
-				error.setText("Date is invalid ");
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
 			// <<<<<<< HEAD
 			//
@@ -363,7 +363,7 @@ public class SalesForm extends SimplePanel {
 			// "Future date not allowed", false);
 
 			else {
-				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "Valid date", true);
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
 			// <<<<<<< HEAD
@@ -517,8 +517,8 @@ public class SalesForm extends SimplePanel {
 
 							for (SalesDetail sd : s.getSalesDetails()) {
 								Product pd = sd.getProduct();
-								pd.setQuantityInSack(pd.getQuantityInSack() + sd.getQuantityInSack());
-								pd.setQuantityInKilo(pd.getQuantityInKilo() + sd.getQuantityInKilo());
+								pd.setQuantityInSack(pd.getQuantityInSack() - sd.getQuantityInSack());
+								pd.setQuantityInKilo(pd.getQuantityInKilo() - sd.getQuantityInKilo());
 								Manager.productManager.updateProduct(pd);
 							}
 							Values.centerPanel.changeTable(Values.SALES);
@@ -632,7 +632,7 @@ public class SalesForm extends SimplePanel {
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -642,9 +642,7 @@ public class SalesForm extends SimplePanel {
 		}
 
 		if (((SpinnerDateModel) issueDate.getModel()).getDate().after(new Date())) {
-
 			msg = "Issued on date not allowed ";
-
 			return false;
 		}
 

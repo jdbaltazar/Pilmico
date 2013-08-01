@@ -63,20 +63,20 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-//		add(new LoginPanel());
+		add(new LoginPanel());
 
-		 try {
-		 Manager.getInstance().login("manager", "pilmico".toCharArray());
-		 } catch (Exception e) { // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		 changeTable(Values.HOME);
+		// try {
+		// Manager.getInstance().login("manager", "pilmico".toCharArray());
+		// } catch (Exception e) { // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		 if (val != Values.HOME)
+		// if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 
@@ -261,7 +261,7 @@ public class CenterPanel extends SoyPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		Values.tablePanel.getSoyTable().removeColumn(Values.tablePanel.getSoyTable().getColumnModel().getColumn(5));
 	}
 
@@ -314,7 +314,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][4] = String.format("%.2f", ar.getBalance()) + "/" + String.format("%.2f", ar.getAccountReceivablesAmount());
 				entries[i][5] = ar.getIssuedBy().getFirstPlusLastName();
 				entries[i][6] = ar.isValid() ? "Yes" : "No";
-//				entries[i][7] = ar.getRemarks();
+				// entries[i][7] = ar.getRemarks();
 
 				i++;
 			}

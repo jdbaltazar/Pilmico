@@ -1,9 +1,7 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
-import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
@@ -25,7 +23,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -43,7 +40,6 @@ import common.entity.pullout.PullOutDetail;
 import common.manager.Manager;
 
 import util.ErrorLabel;
-import util.MainFormField;
 import util.MainFormLabel;
 import util.SBButton;
 import util.SimplePanel;
@@ -115,7 +111,7 @@ public class PulloutForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		date.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -124,10 +120,12 @@ public class PulloutForm extends SimplePanel {
 				// System.out.println("Date: "+((SpinnerDateModel)
 				// date.getModel()).getDate());
 				validDate = !((SpinnerDateModel) date.getModel()).getDate().after(new Date());
-				if (validDate)
-					dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "This date is valid", true);
-				else
-					dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), "Future date not allowed", false);
+				// if (validDate)
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
+				// else
+				// dateStatus.setIconToolTip(new
+				// ImageIcon("images/invalid_date2.png"), "Future date not allowed",
+				// false);
 				determineDateStatus();
 			}
 		});
@@ -395,9 +393,10 @@ public class PulloutForm extends SimplePanel {
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), Manager.inventorySheetDataManager.getValidityRemarksFor(formDate),
-						false);
-				error.setText("Date is invalid ");
+
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
 
 			else {
@@ -439,7 +438,7 @@ public class PulloutForm extends SimplePanel {
 
 			try {
 				if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-					msg = "Date is invalid ";
+					msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 					return false;
 				}
 			} catch (Exception e) {

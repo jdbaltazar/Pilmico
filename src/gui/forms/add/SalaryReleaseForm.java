@@ -7,9 +7,7 @@ import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
@@ -22,13 +20,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -38,19 +34,13 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import common.entity.dailyexpenses.DailyExpensesDetail;
-import common.entity.dailyexpenses.Expense;
-import common.entity.product.Product;
-import common.entity.profile.Designation;
 import common.entity.profile.Employee;
 import common.entity.salary.Fee;
 import common.entity.salary.FeeDeduction;
 import common.entity.salary.SalaryRelease;
-import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.ErrorLabel;
-import util.MainFormField;
 import util.MainFormLabel;
 import util.SBButton;
 import util.SimplePanel;
@@ -114,17 +104,18 @@ public class SalaryReleaseForm extends SimplePanel {
 		icon = new ImageIcon("images/util.png");
 
 		date = new SpinnerDate(Values.dateFormat);
-		
+
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
-		
+
 		date.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
-				//System.out.println("Date: "+((SpinnerDateModel) date.getModel()).getDate());
+				// System.out.println("Date: "+((SpinnerDateModel)
+				// date.getModel()).getDate());
 				determineDateStatus();
 			}
 		});
@@ -136,16 +127,15 @@ public class SalaryReleaseForm extends SimplePanel {
 		payLabel = new MainFormLabel("Net Pay:");
 
 		netPay = new DefaultEntryLabel("");
-		
+
 		issuedBy = new DefaultEntryLabel("");
 		issuedFor = new FormDropdown();
-		
+
 		grossPay = new DefaultEntryLabel("");
 		refreshEmployee();
 
 		if (issuedFor.getItemCount() > 0)
-			grossPay = new DefaultEntryLabel(String.format("%.2f",
-					((Employee) issuedFor.getSelectedItem()).getSalary()));
+			grossPay = new DefaultEntryLabel(String.format("%.2f", ((Employee) issuedFor.getSelectedItem()).getSalary()));
 		else
 			grossPay = new DefaultEntryLabel("");
 
@@ -307,7 +297,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
+
 				if (isValidated() && !hasBlankEntry() && !hasZeroQuantity()) {
 
 					PointerInfo a = MouseInfo.getPointerInfo();
@@ -320,9 +310,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 						Date d = ((SpinnerDateModel) date.getModel()).getDate();
 						Employee emp = (Employee) issuedFor.getSelectedItem();
-						SalaryRelease salaryRelease = new SalaryRelease(d, emp,
-								emp.getSalary(), Manager.loggedInAccount, true,
-								"");
+						SalaryRelease salaryRelease = new SalaryRelease(d, emp, emp.getSalary(), Manager.loggedInAccount, true, "");
 
 						for (RowPanel rp : feesRowPanel) {
 							String f = rp.getSelectedFee();
@@ -340,15 +328,13 @@ public class SalaryReleaseForm extends SimplePanel {
 									e1.printStackTrace();
 								}
 							}
-							salaryRelease.addFeeDeduction(new FeeDeduction(fee,
-									salaryRelease, rp.getFeeAmout()));
+							salaryRelease.addFeeDeduction(new FeeDeduction(fee, salaryRelease, rp.getFeeAmout()));
 						}
 
 						salaryRelease.setRemarks(uP.getInput());
-						
+
 						try {
-							Manager.salaryReleaseManager
-									.addSalaryRelease(salaryRelease);
+							Manager.salaryReleaseManager.addSalaryRelease(salaryRelease);
 
 							Values.centerPanel.changeTable(Values.SALARY);
 							new SuccessPopup("Add").setVisible(true);
@@ -377,39 +363,37 @@ public class SalaryReleaseForm extends SimplePanel {
 		refreshDate();
 		refreshEmployee();
 	}
-	
-	private boolean hasBlankEntry(){
-		
-		for(int i = 0; i < feesRowPanel.size(); i++){
+
+	private boolean hasBlankEntry() {
+
+		for (int i = 0; i < feesRowPanel.size(); i++) {
 			JTextField field = (JTextField) feesRowPanel.get(i).getFeesCombo().getEditor().getEditorComponent();
-			
-			if(field.getText().equals("")){
-				msg = "Blank entry in row "+(i+1)+" ";
+
+			if (field.getText().equals("")) {
+				msg = "Blank entry in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	private void determineDateStatus(){
-		
+
+	private void determineDateStatus() {
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
-		
+
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)){
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/invalid_date2.png"),
-						Manager.inventorySheetDataManager.getValidityRemarksFor(formDate), false);
-				error.setText("Date is invalid ");
+			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
-			
-			else{
-				dateStatus.setIconToolTip(new ImageIcon(
-						"images/valid_date.png"), "Valid date", true);
+
+			else {
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
-				
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -417,13 +401,13 @@ public class SalaryReleaseForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 
-				msg = "Date is invalid ";
+				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -431,26 +415,27 @@ public class SalaryReleaseForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		if (issuedFor.getModel().getSelectedItem() == null) {
 
 			msg = "No employee selected ";
 
 			return false;
 		}
-		
+
 		return true;
 	}
-	private boolean hasZeroQuantity(){
-		
-		for(int i = 0; i < feesRowPanel.size(); i++){
-			
-			if(feesRowPanel.get(i).getFeeAmout() == 0d){
-				msg = "0 amount found in row "+(i+1)+" ";
+
+	private boolean hasZeroQuantity() {
+
+		for (int i = 0; i < feesRowPanel.size(); i++) {
+
+			if (feesRowPanel.get(i).getFeeAmout() == 0d) {
+				msg = "0 amount found in row " + (i + 1) + " ";
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

@@ -227,27 +227,29 @@ public class RowPanel extends JPanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
-					priceSack.setToolTip(priceSack, p.getCurrentPricePerSack() + "");
-					priceKG.setToolTip(priceKG, p.getCurrentPricePerKilo() + "");
+					priceSack.setToolTip(priceSack, String.format("%.2f", p.getCurrentPricePerSack()) + "");
+					priceKG.setToolTip(priceKG, String.format("%.2f", p.getCurrentPricePerKilo()) + "");
+					quantitySack.setToolTipText(String.format("%.2f", p.getQuantityInSack()) + " sack/s of " + p.getName() + " remaining");
+					quantityKG.setToolTipText(String.format("%.2f", p.getQuantityInKilo()) + " kilo/s of " + p.getName() + " remaining");
 
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)) {
 						if (Values.salesForm.hasMultipleProduct())
 							Values.salesForm.setErrorText("No multiple product entry allowed ");
-						
+
 						Values.salesForm.setProductQuantities(p.getQuantityInSack(), p.getQuantityInKilo());
 					}
 
 					else if (Values.tableUtilPanel.getLabel().contains(Tables.ACCOUNT_RECEIVABLES)) {
 						if (Values.accountReceivablesForm.hasMultipleProduct())
 							Values.accountReceivablesForm.setErrorText("No multiple product entry allowed ");
-						
+
 						Values.accountReceivablesForm.setProductQuantities(p.getQuantityInSack(), p.getQuantityInKilo());
 					}
 
 					else if (Values.tableUtilPanel.getLabel().contains(Tables.PULLOUTS)) {
 						if (Values.pulloutForm.hasMultipleProduct())
 							Values.pulloutForm.setErrorText("No multiple product entry allowed ");
-						
+
 						Values.pulloutForm.setProductQuantities(p.getQuantityInSack(), p.getQuantityInKilo());
 					}
 
@@ -343,14 +345,14 @@ public class RowPanel extends JPanel {
 	}
 
 	private void addBankAccountRow() {
-		
-		if(label.equals(Tables.BANK_EDIT)){
-		
+
+		if (label.equals(Tables.BANK_EDIT)) {
+
 			BankAccount bankAcct = (BankAccount) object;
-			
+
 			bankAccount.setText(bankAcct.getAccountNo());
 		}
-		
+
 		deleteRow.setActionCommand(command);
 		deleteRow.addActionListener(new ActionListener() {
 
@@ -358,11 +360,9 @@ public class RowPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (label.equals(Tables.BANK))
-					Values.bankForm.removeRow(Integer.parseInt(e
-							.getActionCommand()));
+					Values.bankForm.removeRow(Integer.parseInt(e.getActionCommand()));
 				else
-					Values.editBankForm.removeRow(Integer.parseInt(e
-							.getActionCommand()));
+					Values.editBankForm.removeRow(Integer.parseInt(e.getActionCommand()));
 			}
 		});
 

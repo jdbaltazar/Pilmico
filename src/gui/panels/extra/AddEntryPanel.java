@@ -17,16 +17,12 @@ import gui.forms.add.ProfileForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
-import gui.forms.add.SalesOrderForm;
-import gui.forms.add.StockPurchasePanel;
 import gui.forms.add.SupplierForm;
 import gui.list.AccountTypeList;
 import gui.list.CategoryList;
 import gui.list.ConditionList;
-import gui.list.LogTypeList;
 import gui.list.NoteTypeList;
 import gui.list.UnitList;
-import gui.popup.NotesPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -74,7 +70,6 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private UnitList unitList;
 	private ConditionList conditionList;
 	private CategoryList categoryList;
-	private StockPurchasePanel stockPurchase;
 	private SalesForm sales;
 	private CashAdvanceForm cashAdvanceForm;
 	private ProfileForm profileForm;
@@ -144,7 +139,6 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		conditionList = new ConditionList();
 		categoryList = new CategoryList();
 
-		stockPurchase = new StockPurchasePanel();
 		expensesForm = new ExpensesForm();
 		sales = new SalesForm();
 

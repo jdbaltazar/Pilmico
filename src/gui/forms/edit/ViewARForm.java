@@ -40,6 +40,8 @@ import net.java.balloontip.styles.RoundedBalloonStyle;
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
+import common.entity.product.Product;
+import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.DateFormatter;
@@ -256,35 +258,59 @@ public class ViewARForm extends EditFormPanel {
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if (accountReceivable.getValidArPayments().size() == 0) {
-					PointerInfo a = MouseInfo.getPointerInfo();
-					Point b = a.getLocation();
-					UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
-					uP.setVisible(true);
+				boolean valid = true;
+				for (AccountReceivableDetail dd : accountReceivable.getAccountReceivableDetails()) {
+					Product p = dd.getProduct();
+					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
+						valid = false;
+				}
 
-					if (!uP.getInput().equals("")) {
-						accountReceivable.setValid(false);
-						accountReceivable.setRemarks(uP.getInput());
+				if (valid) {
 
-						try {
-							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
-						} catch (Exception e1) {
-							e1.printStackTrace();
+					if (accountReceivable.getValidArPayments().size() == 0) {
+						PointerInfo a = MouseInfo.getPointerInfo();
+						Point b = a.getLocation();
+						UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+						uP.setVisible(true);
+
+						if (!uP.getInput().equals("")) {
+							accountReceivable.setValid(false);
+							accountReceivable.setRemarks(uP.getInput());
+
+							try {
+								Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+
+								for (AccountReceivableDetail sd : accountReceivable.getAccountReceivableDetails()) {
+									Product p = sd.getProduct();
+									p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
+									p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
+									Manager.productManager.updateProduct(p);
+								}
+
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+
+							Values.editPanel.startAnimation();
+							new SuccessPopup("Invalidation").setVisible(true);
+							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
 						}
 
-						Values.editPanel.startAnimation();
-						new SuccessPopup("Invalidation").setVisible(true);
-						Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
-					}
+					} else {
 
+						JOptionPane.showMessageDialog(Values.mainFrame, "Please invalidate ALL payments for this transaction in order to proceed",
+								"Not Allowed", JOptionPane.ERROR_MESSAGE);
+
+						if (balloonTip == null)
+							initBalloonTip();
+						balloonTip.setVisible(true);
+
+					}
 				} else {
 
-					JOptionPane.showMessageDialog(Values.mainFrame, "Please invalidate ALL payments for this transaction in order to proceed",
-							"Not Allowed", JOptionPane.ERROR_MESSAGE);
-
-					if (balloonTip == null)
-						initBalloonTip();
-					balloonTip.setVisible(true);
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"Invalidating this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
+									+ "\ninvalidate other forms (Pullouts or Sales) or add a Delivery to proceed", "Not Allowed", JOptionPane.WARNING_MESSAGE);
 
 				}
 			}

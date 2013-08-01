@@ -15,6 +15,7 @@ import org.hibernate.criterion.Restrictions;
 
 import util.DateFormatter;
 import util.Utility;
+import util.Values;
 
 import common.entity.dailyexpenses.Expense;
 import common.entity.inventorysheet.Denomination;
@@ -105,9 +106,13 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@Override
 	public boolean isValidFor(Date date) throws Exception {
 		InventorySheetData isd = getMostRecentInventorySheetData();
-		
-		if (isd == null)
+		if (isd == null) {
+			// disallow future dates
+			Date now = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
+			if (date.compareTo(now) > 0)
+				return false;
 			return true;
+		}
 		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
 		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
 		if (date.before(lowerBound) || date.compareTo(lowerBound) == 0 || date.after(upperBound))
@@ -123,19 +128,23 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	@Override
 	public String getValidityRemarksFor(Date date) throws Exception {
 		InventorySheetData isd = getMostRecentInventorySheetData();
-		if (isd == null)
-			return "Valid Date";
-		
+		if (isd == null) {
+			// disallow future dates
+			Date now = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
+			if (date.compareTo(now) > 0)
+				return Values.FUTURE_DATE_NOT_ALLOWED;
+			return Values.VALID_DATE;
+		}
 		Date lowerBound = DateWithoutTime.getInstance().getDateWithoutTime(isd.getDate());
 		Date upperBound = DateWithoutTime.getInstance().getDateWithoutTime(new Date());
 		if (date.compareTo(lowerBound) == 0)
-			return "An Inventory Sheet for this date already exists";
+			return Values.DATE_HAS_INVENTORY_SHEET;
 		if (date.before(lowerBound))
-			return "An Inventory Sheet exists for " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate())
-					+ ". Inserting earlier Inventory Sheet not allowed";
+			return Values.INVENTORY_SHEET_EXISTS_FOR + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(isd.getDate()) + ". "
+					+ Values.INSERTING_EARLIER_INVENTORY_SHEET_NOT_ALLOWED;
 		if (date.after(upperBound))
-			return "Future dates not allowed";
-		return "Valid Date";
+			return Values.FUTURE_DATE_NOT_ALLOWED;
+		return Values.VALID_DATE;
 	}
 
 	@Override
@@ -197,7 +206,6 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 	public void deleteDenomination(int id) throws Exception {
 		remove(getDenomination(id));
 	}
-
 
 	// @Override
 	// public double getPreviousActualCashOnHand() throws Exception {

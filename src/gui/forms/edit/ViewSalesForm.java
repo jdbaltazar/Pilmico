@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -45,6 +46,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.border.AbstractBorder;
 
+import common.entity.delivery.DeliveryDetail;
 import common.entity.product.Product;
 import common.entity.profile.Person;
 import common.entity.sales.Sales;
@@ -304,32 +306,51 @@ public class ViewSalesForm extends EditFormPanel {
 
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
 
-				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
-				uP.setVisible(true);
+				boolean valid = true;
+				for (SalesDetail dd : sales.getSalesDetails()) {
+					Product p = dd.getProduct();
+					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
+						valid = false;
+				}
 
-				if (!uP.getInput().equals("")) {
-					sales.setValid(false);
-					sales.setRemarks(uP.getInput());
+				if (valid) {
 
-					try {
-						Manager.salesManager.updateSales(sales);
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-						for (SalesDetail sd : sales.getSalesDetails()) {
-							Product p = sd.getProduct();
-							p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
-							p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
-							Manager.productManager.updateProduct(p);
+					UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+					uP.setVisible(true);
+
+					if (!uP.getInput().equals("")) {
+						sales.setValid(false);
+						sales.setRemarks(uP.getInput());
+
+						try {
+							Manager.salesManager.updateSales(sales);
+
+							for (SalesDetail sd : sales.getSalesDetails()) {
+								Product p = sd.getProduct();
+								p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
+								p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
+								Manager.productManager.updateProduct(p);
+							}
+						} catch (Exception e1) {
+							e1.printStackTrace();
 						}
-					} catch (Exception e1) {
-						e1.printStackTrace();
+
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Invalidation").setVisible(true);
+						Values.centerPanel.changeTable(Values.SALES);
 					}
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Invalidation").setVisible(true);
-					Values.centerPanel.changeTable(Values.SALES);
+				} else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"Invalidating this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
+									+ "\ninvalidate other forms (Pullouts or Account Receivables) or add a Delivery to proceed", "Not Allowed",
+							JOptionPane.WARNING_MESSAGE);
+
 				}
 			}
 		});

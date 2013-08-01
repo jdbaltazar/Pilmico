@@ -299,14 +299,14 @@ public class ViewDeliveryForm extends EditFormPanel {
 		voidBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				boolean validResult = true;
+				boolean valid = true;
 				for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 					Product p = dd.getProduct();
 					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
-						validResult = false;
+						valid = false;
 				}
 
-				if (validResult) {
+				if (valid) {
 
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
@@ -339,7 +339,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 					JOptionPane.showMessageDialog(Values.mainFrame,
 							"Invalidating this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
-									+ "\ninvalidate other forms (Pullouts, Sales or Account Receivables) to increment quantity", "Not Allowed",
+									+ "\ninvalidate other forms (Pullouts, Sales or Account Receivables) to proceed", "Not Allowed",
 							JOptionPane.WARNING_MESSAGE);
 				}
 			}

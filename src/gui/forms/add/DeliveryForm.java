@@ -134,7 +134,7 @@ public class DeliveryForm extends SimplePanel {
 		date = new SpinnerDate(Values.dateFormat);
 
 		error = new ErrorLabel();
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "This date is valid");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		determineDateStatus();
 
 		date.addChangeListener(new ChangeListener() {
@@ -507,13 +507,13 @@ public class DeliveryForm extends SimplePanel {
 
 		try {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), Manager.inventorySheetDataManager.getValidityRemarksFor(formDate),
-						false);
-				error.setText("Date is invalid ");
+				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
+				error.setText(str);
 			}
 
 			else {
-				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "Valid date", true);
+				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
 				error.setText("");
 			}
 
