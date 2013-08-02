@@ -1,4 +1,4 @@
-package gui.popup;
+package gui.popup;	
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -63,7 +63,8 @@ public class UtilityPopup extends JDialog {
 		
 		addWindowListener( new WindowAdapter() {
 		    public void windowOpened( WindowEvent e ){
-		        username.requestFocus();
+		    	if(username!=null)
+		    		username.requestFocus();
 		    }
 		}); 
 	}

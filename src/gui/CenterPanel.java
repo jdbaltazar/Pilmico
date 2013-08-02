@@ -90,8 +90,8 @@ public class CenterPanel extends SoyPanel {
 			// add(tableUtilPanel, BorderLayout.PAGE_END);
 
 			add(new AddEntryPanel(), BorderLayout.PAGE_START);
-			add(new EditPanel(), BorderLayout.LINE_START);
 			add(new MenuPanel(), BorderLayout.PAGE_END);
+			add(new EditPanel(), BorderLayout.LINE_START);
 			fillProducts();
 
 			ColumnSizer.resizeColumns(Values.tablePanel.getSoyTable(), Values.PRODUCTS);
