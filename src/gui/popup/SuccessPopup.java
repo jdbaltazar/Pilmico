@@ -78,10 +78,13 @@ public class SuccessPopup extends JDialog implements Runnable{
 			dispose();
 			Values.mainFrame.dimScreen(false);
 			
-			if(Values.addEntryPanel.getDummyPane().isVisible())
-				Values.addEntryPanel.back();
-			else if(Values.addEntryPanel.isCloseSelected() && action.equals("Add") && mode == 0)
-				Values.addEntryPanel.startAnimation();
+			if (Values.addEntryPanel != null) {
+				if (Values.addEntryPanel.getDummyPane().isVisible())
+					Values.addEntryPanel.back();
+				else if (Values.addEntryPanel.isCloseSelected()
+						&& action.equals("Add") && mode == 0)
+					Values.addEntryPanel.startAnimation();
+			}
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();

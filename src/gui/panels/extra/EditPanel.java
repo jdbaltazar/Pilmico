@@ -27,6 +27,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -68,7 +70,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 	private boolean isRunning;
 	private ImageIcon icon;
 
-	private boolean hide = false;
+	private boolean hide = false, ISLinked = false;
 
 	public EditPanel() {
 		init();
@@ -170,8 +172,21 @@ public class EditPanel extends SoyPanel implements Runnable {
 				isRunning = false;
 		}
 
+		
 		if (getComponentCount() != 0)
 			remove(getComponent(getComponentCount() - 1));
+
+		new Timer().schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (ISLinked) {
+					Values.addEntryPanel.startAnimation();
+					Values.addEntryPanel.showComponent();
+				}
+				ISLinked = false;
+			}
+		}, 400);
+		
 	}
 
 	private void showPanel() {
@@ -285,6 +300,10 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 	public void setHide(boolean hide) {
 		this.hide = hide;
+	}
+	
+	public void setISLinked(boolean ISLinked){
+		this.ISLinked = ISLinked;
 	}
 
 }

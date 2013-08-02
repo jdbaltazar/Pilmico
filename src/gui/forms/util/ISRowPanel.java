@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -203,9 +205,17 @@ public class ISRowPanel extends JPanel {
 				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
 					if(mc.getClickCount() == 2){
-						Values.editPanel.setHide(false);
-						Values.editPanel.startAnimation();
-						Values.editPanel.showComponent(object2, Values.SALES);
+						Values.addEntryPanel.startAnimation();
+						
+						new Timer().schedule(new TimerTask() {
+							@Override
+							public void run() {
+								Values.editPanel.setISLinked(true);
+								Values.editPanel.setHide(false);
+								Values.editPanel.startAnimation();
+								Values.editPanel.showComponent(object2, Values.SALES);
+							}
+						}, 400);
 					}
 				}
 			});
