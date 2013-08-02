@@ -1107,8 +1107,13 @@ public class InventorySheetForm extends SimplePanel {
 		validDates = DateTool.addUniqueDatesRemoveTime(validDates, depositsDates);
 
 		validDates = DateTool.sortDateEarliestFirst(validDates);
+		
 
 		if (validDates.size() > 0) {
+			for(int i = 0; i < validDates.size(); i++){
+				DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(i));
+			}
+			
 			date.setModel(new DefaultComboBoxModel(validDates.toArray()));
 		}
 	}
@@ -1148,6 +1153,8 @@ public class InventorySheetForm extends SimplePanel {
 			}
 		}
 
+		DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d);
+		
 		date.addItem(d);
 		fillEntries(d);
 

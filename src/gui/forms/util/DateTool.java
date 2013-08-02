@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import util.DateFormatter;
+import util.Utility;
+
 public class DateTool {
 
 	public static Date getDateWithoutTime(Date date) {
@@ -77,6 +80,7 @@ public class DateTool {
 			sorted.add(earliest);
 			dates.remove(dates.indexOf(earliest));
 		}
+		
 		return sorted;
 	}
 
