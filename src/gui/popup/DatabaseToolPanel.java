@@ -31,8 +31,8 @@ public class DatabaseToolPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 3477930157370335456L;
 	private SBButton close, backup, recover;
-	private JPanel panel;
-
+	private UtilityPopup uP;
+	
 	public DatabaseToolPanel() {
 
 		init();
@@ -64,13 +64,13 @@ public class DatabaseToolPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-//				PointerInfo a = MouseInfo.getPointerInfo();
-//				Point b = a.getLocation();
-//
-//				UtilityPopup uP = new UtilityPopup(b, Values.DATABASE);
-//				uP.setVisible(true);
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
 
-//				if (uP.isVerified()) {
+				uP = new UtilityPopup(b, Values.DATABASE);
+				uP.setVisible(true);
+
+				if (uP.isVerified() && !uP.isClosed()) {
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Backup Database");
 					fc.setSelectedFile(new File("backup.sql"));
@@ -89,8 +89,11 @@ public class DatabaseToolPanel extends JPanel {
 							// t.tbBackup("pilmico", "root", "123456",
 							// file.getCanonicalPath());
 
-							DatabaseTool.backup("root", "", "pilmico",
-									file.getCanonicalPath());
+//							DatabaseTool.backup("root", "", "pilmico",
+//									file.getCanonicalPath());
+							
+							DatabaseTool.getInstance().backup(uP.getUsername(), uP.getPassword(), "pilmico",
+									file.getCanonicalPath(), uP);
 
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -98,7 +101,7 @@ public class DatabaseToolPanel extends JPanel {
 						}
 
 					}
-//				}
+				}
 			}
 		});
 

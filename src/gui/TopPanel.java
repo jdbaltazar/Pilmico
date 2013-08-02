@@ -282,4 +282,8 @@ public class TopPanel extends SoyPanel {
 		return balloonTip;
 	}
 
+	public void closeBalloonPanel(){
+		if(balloonTip!=null)
+			balloonTip.setVisible(false);
+	}
 }

@@ -402,6 +402,14 @@ public class ISRowPanel extends JPanel {
 
 	}
 
+	public SimpleNumericField getField() {
+		return field;
+	}
+
+	public JLabel getTotalLabel() {
+		return totalLabel;
+	}
+
 	private void drawViewCashBreakDown() {
 
 		JLabel money, x, eq;
