@@ -30,6 +30,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -202,14 +203,11 @@ public class InventorySheetForm extends SimplePanel {
 		// model = new DefaultComboBoxModel<Date>();
 		// date.setModel(model);
 		date.addItemListener(new ItemListener() {
-
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				System.out.println("aaaaaaaaaaaaaaaaaa");
 
 				try {
 					build();
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -802,9 +800,10 @@ public class InventorySheetForm extends SimplePanel {
 
 				if (uP.getInput().equals("")) {
 					computationLabel.get(0).setText("0.00");
-				} else
+				} else {
 					computationLabel.get(0).setText(uP.getInput());
-
+				}
+				inventorySheet.setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				updateCashOnHandSummary();
 			}
 		});
@@ -823,7 +822,7 @@ public class InventorySheetForm extends SimplePanel {
 			cashBreakdownPanel.updateUI();
 			cashBreakdownPanel.revalidate();
 		}
-		
+
 		accLabel.setBounds(cashBreakdownPanel.getX(), cashBreakdownPanel.getHeight() + cashBreakdownPanel.getY(), 200, 30);
 		actualCashCount.setBounds(accLabel.getX() + accLabel.getWidth(), accLabel.getY(), cashBreakdownPanel.getWidth() - accLabel.getWidth(), 30);
 
@@ -1110,7 +1109,7 @@ public class InventorySheetForm extends SimplePanel {
 		}
 	}
 
-	public void build() throws Exception {
+	public boolean build() throws Exception {
 
 		Component[] components = isPanel.getComponents();
 		for (Component component : components) {
@@ -1122,24 +1121,38 @@ public class InventorySheetForm extends SimplePanel {
 			}
 		}
 
-		// loadDatesOfPendingTransactions();
+		if (date.getItemCount() > 0) {
+			Date selectedDate = (Date) date.getSelectedItem();
+			System.out.println("selected date: " + selectedDate.toString());
+			fillEntries(selectedDate);
+			return true;
+		}
 
-		// if (validDates.size() > 0) {
-		//
-		// date.setModel(new DefaultComboBoxModel(validDates.toArray()));
+		return false;
+	}
 
-		// date.setSelectedIndex(0);
+	@SuppressWarnings("unchecked")
+	public void build(Date d) throws Exception {
 
-		Date selectedDate = (Date) date.getSelectedItem();
-		System.out.println("selected date: " + selectedDate.toString());
-		fillEntries(selectedDate);
+		Component[] components = isPanel.getComponents();
+		for (Component component : components) {
+			if (component instanceof PDControlScrollPane) {
+				((PDControlScrollPane) component).setOpaque(false);
+				((PDControlScrollPane) component).getViewport().setOpaque(false);
+				((PDControlScrollPane) component).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				((PDControlScrollPane) component).setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			}
+		}
 
-		// for(Date d: validDates)
-		// System.out.println(d.toString());
+		date.addItem(d);
+		fillEntries(d);
 
 	}
 
-	public void fillEntries(Date date) throws Exception {
+	private void fillEntries(Date date) throws Exception {
+
+		clearForm();
+
 		double previousAcoh = 0d;
 		InventorySheetData isd = Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
 
@@ -1197,7 +1210,7 @@ public class InventorySheetForm extends SimplePanel {
 			pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet");
 		}
 		assetsLabel.setToolTipText("Previous COH + Sales + Account Receivables + Account Receivables Payments + Cash Advance Payments");
-		liabilitiesLabel.setToolTipText("Expenses + Salary Releases + Cash Advances + Account Receivables + Discounts");
+		liabilitiesLabel.setToolTipText("Expenses + Salary Releases + Cash Advances + Account Receivables + Discounts + Deposits");
 		cohLabel.setToolTipText("Previous COH + Assets - Liabilities");
 
 		computationLabel.get(0).setText(String.format("%.2f", previousAcoh));
@@ -1210,6 +1223,7 @@ public class InventorySheetForm extends SimplePanel {
 		summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
 		summary3Label.setText("OVER/SHORT");
 
+		inventorySheet.setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 		updateCashOnHandSummary();
 		updateActualCashCountAndSummary();
 	}
@@ -1473,11 +1487,11 @@ public class InventorySheetForm extends SimplePanel {
 		summary3Label.setText(InventorySheet.overOrShortCaps(acoh, total));
 
 	}
-	
-	private void clearForm(){
+
+	private void clearForm() {
 		productsInventory.clear();
 		productsInventory2.clear();
-		
+
 		salesInventory.clear();
 		deliveryInventory.clear();
 		arInventory.clear();
@@ -1489,7 +1503,7 @@ public class InventorySheetForm extends SimplePanel {
 		discountInventory.clear();
 		salaryInventory.clear();
 		depositInventory.clear();
-		
+
 		productsPanel.removeAll();
 		productsPanel2.removeAll();
 		salesPanel.removeAll();
@@ -1503,8 +1517,8 @@ public class InventorySheetForm extends SimplePanel {
 		discountPanel.removeAll();
 		salaryPanel.removeAll();
 		depositPanel.removeAll();
-		
-		for(int i = 0; i < cashBreakdown.size(); i++){
+
+		for (int i = 0; i < cashBreakdown.size(); i++) {
 			cashBreakdown.get(i).getField().setText("0");
 			cashBreakdown.get(i).getTotalLabel().setText("0.0");
 		}

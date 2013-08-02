@@ -6,32 +6,20 @@ import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewportDragScrollListener;
-import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -41,12 +29,9 @@ import common.entity.dailyexpenses.DailyExpenses;
 import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
-import common.entity.inventorysheet.Breakdown;
 import common.entity.inventorysheet.BreakdownLine;
 import common.entity.inventorysheet.Denomination;
 import common.entity.inventorysheet.InventorySheet;
-import common.entity.inventorysheet.InventorySheetData;
-import common.entity.inventorysheet.InventorySheetDataDetail;
 import common.entity.inventorysheet.InventorySheetDetail;
 import common.entity.product.Product;
 import common.entity.pullout.PullOut;
@@ -57,14 +42,16 @@ import common.manager.Manager;
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.MainFormLabel;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Utility;
 import util.Values;
-import util.soy.SoyButton;
 
 public class ViewInventorySheetForm extends EditFormPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5867984969180118185L;
 	// 780x430
 	private int startX = 15, startY = 17, PANE_WIDTH = 780, PANE_HEIGHT = 360, TOTAL_LABEL_WIDTH = 100, TABLE_GAP = 50, TAB = 150, SECTION_GAP = 100,
 			LABEL_GAP = 30, TOTAL_FORMS_OVERALL = 12;
@@ -121,14 +108,13 @@ public class ViewInventorySheetForm extends EditFormPanel {
 			dateSaleslabel, cashierLabel, grossSalesLabel, dateDellabel, delReceivedByLabel, grossDelLabel, dateARlabel, arIssuedByLabel, grossARLabel,
 			dateARPaymentlabel, arPaymentIssuedByLabel, grossARPaymentLabel, dateCAPaymentlabel, caPaymentIssuedByLabel, grossCAPaymentLabel,
 			datePulloutlabel, pulloutIssuedByLabel, grossPulloutLabel, dateExpenseslabel, expensesIssuedByLabel, grossExpensesLabel, dateCAlabel,
-			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateAR2label, ar2IssuedByLabel, grossAR2Label, dateSalarylabel,
-			salaryIssuedForLabel, salaryAmountLabel, dateDepositlabel, depositorLabel, depositAmountLabel;
+			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateSalarylabel, salaryIssuedForLabel, salaryAmountLabel,
+			dateDepositlabel, depositorLabel, depositAmountLabel;
 	private SubTableHeaderLabel begInvtyLabel, onDisplayLabel, delLabel, poLabel, endInvtyLabel, offtakeLabel, priceLabel, salesLabel, salesFormLabel,
 			overallSalesLabel, arFormLabel, overallARLabel, deliveryFormLabel, overallDelLabel, arPaymentFormLabel, overallARPaymentLabel,
 			caPaymentFormLabel, overallCAPaymentLabel, pullOutFormLabel, overallPulloutLabel, expensesFormLabel, overallExpensesLabel, caFormLabel,
-			overallCALabel, discountFormLabel, overallDiscountLabel, ar2FormLabel, overallAR2Label, salaryFormLabel, overallSalaryLabel,
-			depositFormLabel, overallDepositLabel, assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label,
-			accLabel;
+			overallCALabel, discountFormLabel, overallDiscountLabel, salaryFormLabel, overallSalaryLabel, depositFormLabel, overallDepositLabel,
+			assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label, accLabel;
 
 	private List<Product> products;
 	// private List<Delivery> deliveries;
@@ -389,12 +375,6 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 		discountPane = new PDControlScrollPane();
 		discountPane.setViewportView(discountPanel);
-
-		ar2FormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", 2);
-		dateAR2label = new TableHeaderLabel("Date");
-		ar2IssuedByLabel = new TableHeaderLabel("Customer");
-		grossAR2Label = new TableHeaderLabel("Amount");
-		overallAR2Label = new SubTableHeaderLabel("OVERALL");
 
 		ar2Panel = new JPanel();
 		ar2Panel.setOpaque(false);
@@ -1002,7 +982,6 @@ public class ViewInventorySheetForm extends EditFormPanel {
 	}
 
 	private void fillTables() {
-		// TODO Auto-generated method stub
 		// productsPanel.setPreferredSize(new Dimension(salesLabel.getX() +
 		// salesLabel.getWidth() - productLabel.getX(),
 		// productsPanel.getComponentCount() * ROW_HEIGHT));

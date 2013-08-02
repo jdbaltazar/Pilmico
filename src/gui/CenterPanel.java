@@ -101,17 +101,17 @@ public class CenterPanel extends SoyPanel {
 		case Values.PRODUCTS:
 
 			fillProducts();
-			
+
 			break;
 
 		case Values.PULLOUT:
-			
+
 			fillPullout();
 			break;
 
 		case Values.ACCOUNT_RECEIVABLES:
 			fillAR();
-			
+
 			break;
 
 		case Values.AR_PAYMENTS:
@@ -186,10 +186,10 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		}
-		
-		if(val != Values.HOME)
+
+		if (val != Values.HOME)
 			ColumnSizer.resizeColumns(Values.tablePanel.getSoyTable(), val);
-		
+
 		// repaint();
 		// validate();
 		revalidate();
@@ -713,7 +713,6 @@ public class CenterPanel extends SoyPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
