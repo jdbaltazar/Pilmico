@@ -64,13 +64,13 @@ public class DatabaseToolPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
+//				PointerInfo a = MouseInfo.getPointerInfo();
+//				Point b = a.getLocation();
+//
+//				UtilityPopup uP = new UtilityPopup(b, Values.DATABASE);
+//				uP.setVisible(true);
 
-				UtilityPopup uP = new UtilityPopup(b, Values.DATABASE);
-				uP.setVisible(true);
-
-				if (uP.isVerified()) {
+//				if (uP.isVerified()) {
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Backup Database");
 					fc.setSelectedFile(new File("backup.sql"));
@@ -89,7 +89,7 @@ public class DatabaseToolPanel extends JPanel {
 							// t.tbBackup("pilmico", "root", "123456",
 							// file.getCanonicalPath());
 
-							DatabaseTool.backup("root", "123456", "pilmico",
+							DatabaseTool.backup("root", "", "pilmico",
 									file.getCanonicalPath());
 
 						} catch (IOException e) {
@@ -98,7 +98,7 @@ public class DatabaseToolPanel extends JPanel {
 						}
 
 					}
-				}
+//				}
 			}
 		});
 

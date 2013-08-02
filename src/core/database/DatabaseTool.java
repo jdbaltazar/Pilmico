@@ -44,7 +44,10 @@ public class DatabaseTool {
 		try {
 			System.out.println(executeCmd);// this out put works in mysql shell
 			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+			
+			
 			int processComplete = runtimeProcess.waitFor();
+			System.out.println("process complete: "+processComplete);
 
 			if (processComplete == 0) {
 				System.out.println("Backup created successfully");
