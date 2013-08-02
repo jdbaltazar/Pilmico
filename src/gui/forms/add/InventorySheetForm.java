@@ -1019,7 +1019,6 @@ public class InventorySheetForm extends SimplePanel {
 					}
 				}
 
-				
 				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
 				inventorySheet.finalize();
 
@@ -1029,6 +1028,8 @@ public class InventorySheetForm extends SimplePanel {
 						p.resetBeginningInventory();
 						Manager.productManager.updateProduct(p);
 					}
+
+					// insert code here to invalidate "sandwiched" transactions
 
 				} catch (Exception e1) {
 					e1.printStackTrace();

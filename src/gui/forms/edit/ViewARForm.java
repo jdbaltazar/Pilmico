@@ -284,6 +284,8 @@ public class ViewARForm extends EditFormPanel {
 									Product p = sd.getProduct();
 									p.incrementQuantityInSack(sd.getQuantityInSack());
 									p.incrementQuantityInKilo(sd.getQuantityInKilo());
+									p.setQuantitySoldTodayInSack(p.getQuantitySoldTodayInSack() - sd.getQuantityInSack());
+									p.setQuantitySoldTodayInKilo(p.getQuantitySoldTodayInKilo() - sd.getQuantityInKilo());
 									Manager.productManager.updateProduct(p);
 								}
 

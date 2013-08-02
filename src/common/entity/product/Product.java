@@ -333,7 +333,9 @@ public class Product {
 		return quantitySoldTodayInSack;
 	}
 
-	public void setQuantitySoldTodayInSack(double quantitySoldTodayInSack) {
+	public void setQuantitySoldTodayInSack(double quantitySoldTodayInSack) throws Exception {
+		if (this.quantitySoldTodayInSack < 0d)
+			throw new Exception("Cannot set sold sack qty for product: " + id + " \nValue cannot be negative");
 		this.quantitySoldTodayInSack = quantitySoldTodayInSack;
 	}
 
@@ -341,7 +343,9 @@ public class Product {
 		return quantitySoldTodayInKilo;
 	}
 
-	public void setQuantitySoldTodayInKilo(double quantitySoldTodayInKilo) {
+	public void setQuantitySoldTodayInKilo(double quantitySoldTodayInKilo) throws Exception {
+		if (this.quantitySoldTodayInKilo < 0d)
+			throw new Exception("Cannot set sold kilo qty for product: " + id + " \nValue cannot be negative");
 		this.quantitySoldTodayInKilo = quantitySoldTodayInKilo;
 	}
 

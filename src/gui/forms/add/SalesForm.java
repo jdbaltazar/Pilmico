@@ -520,6 +520,8 @@ public class SalesForm extends SimplePanel {
 								Product pd = sd.getProduct();
 								pd.decrementQuantityInSack(sd.getQuantityInSack());
 								pd.decrementQuantityInKilo(sd.getQuantityInKilo());
+								pd.setQuantitySoldTodayInSack(pd.getQuantitySoldTodayInSack() + sd.getQuantityInSack());
+								pd.setQuantitySoldTodayInKilo(pd.getQuantitySoldTodayInKilo() + sd.getQuantityInKilo());
 								Manager.productManager.updateProduct(pd);
 							}
 							Values.centerPanel.changeTable(Values.SALES);
