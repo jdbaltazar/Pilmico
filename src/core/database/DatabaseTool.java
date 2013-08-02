@@ -1,5 +1,8 @@
 package core.database;
 
+import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
+
 import java.io.BufferedReader;
 
 import java.io.File;
@@ -10,12 +13,28 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
+import util.Values;
+
 import core.persist.HibernateUtil;
 
 public class DatabaseTool {
 
 	public static final String RESET_FILE = "data/pilmico-create.sql";
+	public static Process runtimeProcess;
+	private static UtilityPopup uP;
+	private Thread thread;
+	private static DatabaseTool ins;
+	
+	public static DatabaseTool getInstance(){
 
+		if(ins == null)
+			ins = new DatabaseTool();
+		
+		return ins;
+	}
+	
 	static {
 		try {
 			Class.forName(HibernateUtil.DRIVER_NAME).newInstance();
@@ -33,28 +52,77 @@ public class DatabaseTool {
 		return DriverManager.getConnection(HibernateUtil.URL + dbName, userName, password);
 	}
 
-	public static boolean backup(String dbUserName, String dbPassword, String dbName, String path) {
+	public boolean backup(String dbUserName, String dbPassword, String dbName, String path, UtilityPopup uP) {
 
+		DatabaseTool.uP = uP;
+		
 		String executeCmd = "mysqldump -u " + dbUserName;
 		if (!dbPassword.equals(""))
 			executeCmd = executeCmd + " -p" + dbPassword;
 		executeCmd = executeCmd + " --add-drop-database -B " + dbName + " -r " + path;
 
-		Process runtimeProcess;
 		try {
 			System.out.println(executeCmd);// this out put works in mysql shell
 			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
 			
-			
-			int processComplete = runtimeProcess.waitFor();
-			System.out.println("process complete: "+processComplete);
+//			int processComplete = 1;
+			thread = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					
+					boolean isRunning = true;
+					
+					while (isRunning) {
+						try {
+							int processComplete = runtimeProcess.waitFor();
 
-			if (processComplete == 0) {
-				System.out.println("Backup created successfully");
-				return true;
-			} else {
-				System.out.println("Could not create the backup");
-			}
+							if (processComplete == 0) {
+								DatabaseTool.uP.dispose();
+								new SuccessPopup("Backup").setVisible(true);
+								Values.topPanel.closeBalloonPanel();
+								isRunning = false;
+
+							} else {
+								DatabaseTool.uP.dispose();
+								JOptionPane.showMessageDialog(Values.mainFrame,
+										"Could not create the backup", "Error",
+										JOptionPane.ERROR_MESSAGE);
+								isRunning = false;
+							}
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+			
+			thread.start();
+			uP.showProgressBar();
+			
+			
+			/*while(processComplete != 0){
+				
+				processComplete = runtimeProcess.waitFor();
+
+				if (processComplete == 0) {
+					//System.out.println("Backup created successfully");
+					uP.dispose();
+					new SuccessPopup("Backup").setVisible(true);
+				} else {
+//				System.out.println("Could not create the backup");
+					uP.dispose();
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"Could not create the backup", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}*/
+			
+			
+//			System.out.println("process complete: "+processComplete);
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -165,5 +233,5 @@ public class DatabaseTool {
 	public static void reset(String dbUserName, String dbPassword, String dbName) throws SQLException {
 		update(dbUserName, dbPassword, dbName, RESET_FILE);
 	}
-
+	
 }

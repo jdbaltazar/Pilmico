@@ -13,12 +13,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 
 import gui.forms.util.FormField;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
@@ -57,6 +60,12 @@ public class UtilityPopup extends JDialog {
 		this.utility = utility;
 		init();
 		addComponents();
+		
+		addWindowListener( new WindowAdapter() {
+		    public void windowOpened( WindowEvent e ){
+		        username.requestFocus();
+		    }
+		}); 
 	}
 
 	private void init() {
@@ -133,17 +142,26 @@ public class UtilityPopup extends JDialog {
 			username = new FormField("Root username", 100, Color.white, Color.gray);
 
 			password.setForeground(Color.white);
+			password.setText("");
 
 			utilityLabel.setForeground(Color.decode("#FF4500"));
 			utilityLabel.setText("*Required");
+			
+			progressBar = new JProgressBar();
+	        progressBar.setIndeterminate(true);
 
 			username.setBounds(5, 20, 150, 20);
 			password.setBounds(5, 45, 150, 20);
+			
+			progressBar.setBounds(5, 20, 150, 12);
 
 			close.setBounds(142, 2, 16, 16);
+			
+			progressBar.setVisible(false);
 
 			panel.add(username);
 			panel.add(password);
+			panel.add(progressBar);
 		}
 
 		else {
@@ -212,13 +230,17 @@ public class UtilityPopup extends JDialog {
 				try {
 					if (username.getText().equals(SecurityTool.decryptString(Credentials.getInstance().getUsername()))
 							&& password.getText().equals(SecurityTool.decryptString(Credentials.getInstance().getPassword()))) {
-						password.setText("");
+//							&& password.getText().equals(" ")) {
+						System.out.println("VERIFIED ROOT");
+						
+//						password.setText("");
 						verified = true;
-						setClosed(true);
-						Values.mainFrame.dimScreen(false);
-						dispose();
-
+//						setClosed(true);
+//						Values.mainFrame.dimScreen(false);
+						setVisible(false);
 					}
+					else
+						utilityLabel.setText("Try again");
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -256,6 +278,26 @@ public class UtilityPopup extends JDialog {
 		add(close);
 		add(panel);
 	}
+	
+	public void showProgressBar(){
+		progressBar.setVisible(true);
+		
+		close.setVisible(false);
+		username.setVisible(false);
+		password.setVisible(false);
+		
+		utilityLabel.setForeground(Color.GREEN.darker().darker());
+		utilityLabel.setText("Please wait..");
+		
+		setSize(165, 45);
+		
+		panel.revalidate();
+		panel.updateUI();
+		
+		revalidate();
+		
+		setVisible(true);
+	}
 
 	public String getInput() {
 		return input;
@@ -277,12 +319,12 @@ public class UtilityPopup extends JDialog {
 		this.verified = verified;
 	}
 
-	public FormField getPassword() {
-		return password;
+	public String getPassword() {
+		return password.getText();
 	}
 
-	public FormField getUsername() {
-		return username;
+	public String getUsername() {
+		return username.getText();
 	}
 
 }

@@ -4,6 +4,7 @@ import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.DateTool;
 import gui.forms.util.FormField;
+import gui.forms.util.ISRowPanel;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
@@ -717,3 +718,37 @@ public class SalesForm extends SimplePanel {
 		this.qtyKG = qtyKG;
 	}
 }
+
+/*
+ * private JPanel isPanel, productsPanel, productsPanel2, salesPanel, delPanel, arPanel, arPaymentPanel, 
+ * caPaymentPanel, pulloutPanel, expensesPanel,
+			caPanel, discountPanel, ar2Panel, salaryPanel, depositPanel, cashBreakdownPanel;
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
+private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
+
+private ArrayList<ISRowPanel> productsInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> productsInventory2 = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> salesInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> deliveryInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> arInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> arPaymentInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> caPaymentInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> pullOutInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> expensesInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> caInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> discountInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> salaryInventory = new ArrayList<ISRowPanel>();
+private ArrayList<ISRowPanel> depositInventory = new ArrayList<ISRowPanel>();*/
