@@ -331,8 +331,8 @@ public class ViewSalesForm extends EditFormPanel {
 
 							for (SalesDetail sd : sales.getSalesDetails()) {
 								Product p = sd.getProduct();
-								p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
-								p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
+								p.incrementQuantityInSack(sd.getQuantityInSack());
+								p.incrementQuantityInKilo(sd.getQuantityInKilo());
 								Manager.productManager.updateProduct(p);
 							}
 						} catch (Exception e1) {

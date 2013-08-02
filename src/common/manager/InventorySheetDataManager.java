@@ -20,7 +20,8 @@ public interface InventorySheetDataManager {
 
 	public void deleteInventorySheetData(InventorySheetData inventorySheetData) throws Exception;
 
-	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception;
+	// public InventorySheetData getInventorySheetDataWithThisDate(Date date)
+	// throws Exception;
 
 	public boolean isValidFor(Date date) throws Exception;
 

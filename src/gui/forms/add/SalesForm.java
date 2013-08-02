@@ -518,8 +518,8 @@ public class SalesForm extends SimplePanel {
 
 							for (SalesDetail sd : s.getSalesDetails()) {
 								Product pd = sd.getProduct();
-								pd.setQuantityInSack(pd.getQuantityInSack() - sd.getQuantityInSack());
-								pd.setQuantityInKilo(pd.getQuantityInKilo() - sd.getQuantityInKilo());
+								pd.decrementQuantityInSack(sd.getQuantityInSack());
+								pd.decrementQuantityInKilo(sd.getQuantityInKilo());
 								Manager.productManager.updateProduct(pd);
 							}
 							Values.centerPanel.changeTable(Values.SALES);
@@ -720,9 +720,10 @@ public class SalesForm extends SimplePanel {
 }
 
 /*
- * private JPanel isPanel, productsPanel, productsPanel2, salesPanel, delPanel, arPanel, arPaymentPanel, 
- * caPaymentPanel, pulloutPanel, expensesPanel,
-			caPanel, discountPanel, ar2Panel, salaryPanel, depositPanel, cashBreakdownPanel;
+ * private JPanel isPanel, productsPanel, productsPanel2, salesPanel, delPanel,
+ * arPanel, arPaymentPanel, caPaymentPanel, pulloutPanel, expensesPanel,
+ * caPanel, discountPanel, ar2Panel, salaryPanel, depositPanel,
+ * cashBreakdownPanel;
  * 
  * 
  * 
@@ -736,19 +737,22 @@ public class SalesForm extends SimplePanel {
  * 
  * 
  * 
- * private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
-private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
-
-private ArrayList<ISRowPanel> productsInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> productsInventory2 = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> salesInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> deliveryInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> arInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> arPaymentInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> caPaymentInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> pullOutInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> expensesInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> caInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> discountInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> salaryInventory = new ArrayList<ISRowPanel>();
-private ArrayList<ISRowPanel> depositInventory = new ArrayList<ISRowPanel>();*/
+ * private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>(); private
+ * ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
+ * 
+ * private ArrayList<ISRowPanel> productsInventory = new
+ * ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> productsInventory2 =
+ * new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> salesInventory =
+ * new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> deliveryInventory
+ * = new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> arInventory =
+ * new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> arPaymentInventory
+ * = new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel>
+ * caPaymentInventory = new ArrayList<ISRowPanel>(); private
+ * ArrayList<ISRowPanel> pullOutInventory = new ArrayList<ISRowPanel>(); private
+ * ArrayList<ISRowPanel> expensesInventory = new ArrayList<ISRowPanel>();
+ * private ArrayList<ISRowPanel> caInventory = new ArrayList<ISRowPanel>();
+ * private ArrayList<ISRowPanel> discountInventory = new
+ * ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> salaryInventory = new
+ * ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> depositInventory = new
+ * ArrayList<ISRowPanel>();
+ */

@@ -304,8 +304,8 @@ public class PulloutForm extends SimplePanel {
 
 								for (RowPanel rp : rowPanel) {
 									Product product = rp.getSelectedProduct();
-									product.setQuantityInSack(product.getQuantityInSack() - rp.getQuantityInSack());
-									product.setQuantityInKilo(product.getQuantityInKilo() - rp.getQuantityInKilo());
+									product.decrementQuantityInSack(rp.getQuantityInSack());
+									product.decrementQuantityInKilo(rp.getQuantityInKilo());
 									Manager.productManager.updateProduct(product);
 								}
 

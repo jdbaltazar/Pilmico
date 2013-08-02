@@ -74,30 +74,30 @@ public class InventorySheetDataPersistor extends Persistor implements InventoryS
 		remove(inventorySheetData);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception {
-
-		throw new Exception("Deprecated by JD. Do not use!");
-		// Session session = HibernateUtil.startSession();
-		// Criteria criteria = session.createCriteria(InventorySheetData.class);
-		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		// List<InventorySheetData> inventorySheetsData = new
-		// ArrayList<InventorySheetData>();
-		// InventorySheetData isd = null;
-		// try {
-		// inventorySheetsData = criteria.add(Restrictions.like("date",
-		// date)).addOrder(Order.desc("date")).list();
-		// if (inventorySheetsData.size() > 0) {
-		// isd = inventorySheetsData.get(0);
-		// }
-		// } catch (HibernateException ex) {
-		// ex.printStackTrace();
-		// } finally {
-		// session.close();
-		// }
-		// return isd;
-	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public InventorySheetData getInventorySheetDataWithThisDate(Date date) throws Exception {
+//
+//		throw new Exception("Deprecated by JD. Do not use!");
+//		// Session session = HibernateUtil.startSession();
+//		// Criteria criteria = session.createCriteria(InventorySheetData.class);
+//		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//		// List<InventorySheetData> inventorySheetsData = new
+//		// ArrayList<InventorySheetData>();
+//		// InventorySheetData isd = null;
+//		// try {
+//		// inventorySheetsData = criteria.add(Restrictions.like("date",
+//		// date)).addOrder(Order.desc("date")).list();
+//		// if (inventorySheetsData.size() > 0) {
+//		// isd = inventorySheetsData.get(0);
+//		// }
+//		// } catch (HibernateException ex) {
+//		// ex.printStackTrace();
+//		// } finally {
+//		// session.close();
+//		// }
+//		// return isd;
+//	}
 
 	/*
 	 * Check if the date is not a future date and date is not equal/earlier than

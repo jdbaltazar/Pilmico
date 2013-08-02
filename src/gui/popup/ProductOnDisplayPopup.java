@@ -94,8 +94,8 @@ public class ProductOnDisplayPopup extends JDialog {
 
 				for (RowPanel rp : rowPanel) {
 					Product p = rp.getOnDisplayProduct();
-					p.setDisplayInSack(rp.getOnDisplayInSack());
-					p.setDisplayInKilo(rp.getOnDisplayInKilo());
+					p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
+					p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo());
 					try {
 						Manager.productManager.updateProduct(p);
 					} catch (Exception e) {
