@@ -12,6 +12,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import util.DateFormatter;
+import util.Utility;
+
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
@@ -234,5 +237,24 @@ public class DepositPersistor extends Persistor implements DepositManager {
 			session.close();
 		}
 		return deposits;
+	}
+
+	@Override
+	public List<Date> getDatesOfPendingDeposits() throws Exception {
+		List<Deposit> deposits = getPendingDeposits();
+		List<Date> dates = new ArrayList<Date>();
+		for (Deposit deposit : deposits) {
+			Date date = DateTool.getDateWithoutTime(deposit.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
 	}
 }

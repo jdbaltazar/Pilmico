@@ -31,4 +31,6 @@ public interface SalesManager {
 
 	public List<Sales> getPendingSalesOn(Date date) throws Exception;
 
+	public List<Date> getDatesOfPendingSales() throws Exception;
+
 }

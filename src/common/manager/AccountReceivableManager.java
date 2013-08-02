@@ -36,6 +36,8 @@ public interface AccountReceivableManager {
 
 	public void deleteAccountReceivable(int accountReceivableId) throws Exception;
 
+	public List<Date> getDatesOfPendingAccountReceivables() throws Exception;
+
 	// account receivable payments
 
 	public void addARPayment(ARPayment arPayment) throws Exception;
@@ -63,4 +65,6 @@ public interface AccountReceivableManager {
 	public void deleteARPayment(ARPayment arPayment) throws Exception;
 
 	public void deleteARPayment(int arPaymentId) throws Exception;
+
+	public List<Date> getDatesOfPendingARPayments() throws Exception;
 }

@@ -34,6 +34,8 @@ public interface CashAdvanceManager {
 
 	public List<CashAdvance> getPendingCashAdvancesOn(Date date) throws Exception;
 
+	public List<Date> getDatesOfPendingCashAdvances() throws Exception;
+
 	// cash advance payments
 
 	public void addCAPayment(CAPayment caPayment) throws Exception;
@@ -60,4 +62,5 @@ public interface CashAdvanceManager {
 
 	public List<CAPayment> getPendingCAPaymentsOn(Date date) throws Exception;
 
+	public List<Date> getDatesOfPendingCAPayments() throws Exception;
 }

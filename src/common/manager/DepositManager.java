@@ -35,6 +35,8 @@ public interface DepositManager {
 
 	public void deleteDeposit(Deposit deposit) throws Exception;
 
+	public List<Date> getDatesOfPendingDeposits() throws Exception;
+
 	// bank
 
 	public void addBank(Bank bank) throws Exception;

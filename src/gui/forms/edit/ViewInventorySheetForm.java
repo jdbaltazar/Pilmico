@@ -947,12 +947,12 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		isEditPanel.add(actualCashCount);
 
 		isPane.setBounds(10, 10, PANE_WIDTH, PANE_HEIGHT);
-		
+
 		navigationPanel.setBounds(isPane.getWidth() - 190, isPane.getY() + isPane.getHeight() - 100, 200, 100);
 
 		isPane.setOpaque(false);
 		isPane.getViewport().setOpaque(false);
-		//isPane.setBorder(BorderFactory.createEmptyBorder());
+		// isPane.setBorder(BorderFactory.createEmptyBorder());
 		isPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
 
 		/*

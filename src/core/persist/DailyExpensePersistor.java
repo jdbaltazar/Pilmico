@@ -330,4 +330,23 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		return dailyExpenses;
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingDailyExpenses() throws Exception {
+		List<DailyExpenses> dailyExpenses = getPendingDailyExpenses();
+		List<Date> dates = new ArrayList<Date>();
+		for (DailyExpenses dailyExpense : dailyExpenses) {
+			Date date = DateTool.getDateWithoutTime(dailyExpense.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
 }

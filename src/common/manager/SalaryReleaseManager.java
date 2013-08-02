@@ -32,6 +32,8 @@ public interface SalaryReleaseManager {
 
 	public void deleteSalaryRelease(SalaryRelease salaryRelease) throws Exception;
 
+	public List<Date> getDatesOfPendingSalaryReleases() throws Exception;
+
 	// fee
 
 	public void addFees(Fee fee) throws Exception;

@@ -31,4 +31,6 @@ public interface PullOutManager {
 
 	public void deletePullOut(PullOut pullOut) throws Exception;
 
+	public List<Date> getDatesOfPendingPullOuts() throws Exception;
+	
 }

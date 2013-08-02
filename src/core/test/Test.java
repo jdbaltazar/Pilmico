@@ -83,12 +83,23 @@ public class Test {
 		// System.out.println("Tom: " +
 		// DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(DateTool.getTomorrowDate(d)));
 
+		// try {
+		// System.out.println("valid deliveries for today: " +
+		// Manager.deliveryManager.getValidDeliveriesOn(new Date()).size());
+		// System.out.println("valid deliveries: " +
+		// Manager.deliveryManager.getValidDeliveries().size());
+		// System.out.println("invalid deliveries for today: " +
+		// Manager.deliveryManager.getInvalidDeliveriesOn(new Date()).size());
+		// System.out.println("invalid deliveries: " +
+		// Manager.deliveryManager.getInvalidDeliveries().size());
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+
 		try {
-			System.out.println("valid deliveries for today: " + Manager.deliveryManager.getValidDeliveriesOn(new Date()).size());
-			System.out.println("valid deliveries: " + Manager.deliveryManager.getValidDeliveries().size());
-			System.out.println("invalid deliveries for today: " + Manager.deliveryManager.getInvalidDeliveriesOn(new Date()).size());
-			System.out.println("invalid deliveries: " + Manager.deliveryManager.getInvalidDeliveries().size());
+			System.out.println("size: " + Manager.depositManager.getDatesOfPendingDeposits().size());
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

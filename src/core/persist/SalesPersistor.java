@@ -189,4 +189,23 @@ public class SalesPersistor extends Persistor implements SalesManager {
 		return sales;
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingSales() throws Exception {
+		List<Sales> sales = getPendingSales();
+		List<Date> dates = new ArrayList<Date>();
+		for (Sales sale : sales) {
+			Date date = DateTool.getDateWithoutTime(sale.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
 }
