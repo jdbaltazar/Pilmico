@@ -32,7 +32,7 @@ public class DatabaseToolPanel extends JPanel {
 	private static final long serialVersionUID = 3477930157370335456L;
 	private SBButton close, backup, recover;
 	private UtilityPopup uP;
-	
+
 	public DatabaseToolPanel() {
 
 		init();
@@ -74,25 +74,18 @@ public class DatabaseToolPanel extends JPanel {
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Backup Database");
 					fc.setSelectedFile(new File("backup.sql"));
-					fc.addChoosableFileFilter(new FileNameExtensionFilter(
-							"MySQL Files", "sql"));
+					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter(
+							"MySQL Files", "sql");
+					fc.setFileFilter(sqlfilter);
+					fc.setAcceptAllFileFilterUsed(false);
 					int returnVal = fc.showSaveDialog(Values.mainFrame);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						File file = fc.getSelectedFile();
 						// This is where a real application would save the file.
 						try {
-							// DatabaseTool.backup("root", "123456", "pilmico",
-							// file.getCanonicalPath());
-
-							// Test t = new Test();
-							// t.tbBackup("pilmico", "root", "123456",
-							// file.getCanonicalPath());
-
-//							DatabaseTool.backup("root", "", "pilmico",
-//									file.getCanonicalPath());
-							
-							DatabaseTool.getInstance().backup(uP.getUsername(), uP.getPassword(), "pilmico",
+							DatabaseTool.getInstance().backup(uP.getUsername(),
+									uP.getPassword(), "pilmico",
 									file.getCanonicalPath(), uP);
 
 						} catch (IOException e) {
@@ -100,6 +93,9 @@ public class DatabaseToolPanel extends JPanel {
 							e.printStackTrace();
 						}
 
+					} else {
+						Values.mainFrame.dimScreen(false);
+						Values.topPanel.closeBalloonPanel();
 					}
 				}
 			}
@@ -113,16 +109,25 @@ public class DatabaseToolPanel extends JPanel {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
 
-				UtilityPopup uP = new UtilityPopup(b, Values.DATABASE);
+				uP = new UtilityPopup(b, Values.DATABASE);
 				uP.setVisible(true);
 
-				if (uP.isVerified()) {
+				if (uP.isVerified() && !uP.isClosed()) {
 
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Recover Database");
+
+					// DO NOT DELETE THESE COMMENTS
+
 					// fc.setSelectedFile(new File("backup.sql"));
-					fc.addChoosableFileFilter(new FileNameExtensionFilter(
-							"MySQL Files", "sql"));
+					// fc.addChoosableFileFilter(new FileNameExtensionFilter(
+					// "MySQL Files", "sql"));
+
+					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter(
+							"MySQL Files", "sql");
+					fc.setFileFilter(sqlfilter);
+					fc.setAcceptAllFileFilterUsed(false);
+
 					int returnVal = fc.showOpenDialog(Values.mainFrame);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -131,14 +136,18 @@ public class DatabaseToolPanel extends JPanel {
 
 						try {
 
-							DatabaseTool.decryptAndUpdate("root", "123456",
-									"pilmico", file.getCanonicalPath());
+							DatabaseTool.getInstance().decryptAndUpdate(
+									uP.getUsername(), uP.getPassword(),
+									"pilmico", file.getCanonicalPath(), uP);
 
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
+					} else {
+						Values.mainFrame.dimScreen(false);
+						Values.topPanel.closeBalloonPanel();
 					}
 
 				}

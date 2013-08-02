@@ -11,7 +11,7 @@ public class ColumnSizer {
 	
 	public static void resizeColumns(JTable table, int form){
 		
-		System.out.println("form: "+form);
+//		System.out.println("form: "+form);
 
 		switch(form){
 		
