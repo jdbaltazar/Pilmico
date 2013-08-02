@@ -259,4 +259,23 @@ public class SalaryReleasePersistor extends Persistor implements SalaryReleaseMa
 		return salaryReleases;
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingSalaryReleases() throws Exception {
+		List<SalaryRelease> salaryReleases = getPendingSalaryReleases();
+		List<Date> dates = new ArrayList<Date>();
+		for (SalaryRelease salaryRelease : salaryReleases) {
+			Date date = DateTool.getDateWithoutTime(salaryRelease.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
 }

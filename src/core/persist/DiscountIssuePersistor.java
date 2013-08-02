@@ -101,7 +101,7 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 	public void deleteDiscountIssue(DiscountIssue discountIssue) throws Exception {
 		remove(discountIssue);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DiscountIssue> getAllDiscountIssuesOn(Date date) throws Exception {
@@ -112,7 +112,8 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date")).list();
+			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).addOrder(Order.desc("date"))
+					.list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -131,8 +132,8 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -151,8 +152,8 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", false))
-					.addOrder(Order.desc("date")).list();
+			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -171,14 +172,33 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 		try {
 			Date lowerBound = DateTool.getDateWithoutTime(date);
 			Date upperBound = DateTool.getTomorrowDate(lowerBound);
-			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
-					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+			discountIssues = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
 			session.close();
 		}
 		return discountIssues;
+	}
+
+	@Override
+	public List<Date> getDatesOfPendingDiscountIssues() throws Exception {
+		List<DiscountIssue> discountIssues = getPendingDiscountIssues();
+		List<Date> dates = new ArrayList<Date>();
+		for (DiscountIssue discountIssue : discountIssues) {
+			Date date = DateTool.getDateWithoutTime(discountIssue.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
 	}
 
 }

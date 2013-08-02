@@ -380,4 +380,42 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		remove(getARPayment(arPaymentId));
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingAccountReceivables() throws Exception {
+		List<AccountReceivable> accountReceivables = getPendingAccountReceivables();
+		List<Date> dates = new ArrayList<Date>();
+		for (AccountReceivable accountReceivable : accountReceivables) {
+			Date date = DateTool.getDateWithoutTime(accountReceivable.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
+	@Override
+	public List<Date> getDatesOfPendingARPayments() throws Exception {
+		List<ARPayment> arPayments = getPendingARPayments();
+		List<Date> dates = new ArrayList<Date>();
+		for (ARPayment arPayment : arPayments) {
+			Date date = DateTool.getDateWithoutTime(arPayment.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
 }

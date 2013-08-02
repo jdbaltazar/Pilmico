@@ -367,4 +367,42 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 		return cAPayments;
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingCashAdvances() throws Exception {
+		List<CashAdvance> cashAdvances = getPendingCashAdvances();
+		List<Date> dates = new ArrayList<Date>();
+		for (CashAdvance cashAdvance : cashAdvances) {
+			Date date = DateTool.getDateWithoutTime(cashAdvance.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
+	@Override
+	public List<Date> getDatesOfPendingCAPayments() throws Exception {
+		List<CAPayment> caPayments = getPendingCAPayments();
+		List<Date> dates = new ArrayList<Date>();
+		for (CAPayment caPayment : caPayments) {
+			Date date = DateTool.getDateWithoutTime(caPayment.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
 }

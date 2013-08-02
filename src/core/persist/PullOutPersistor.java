@@ -189,4 +189,23 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		return pullOuts;
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingPullOuts() throws Exception {
+		List<PullOut> pullOuts = getPendingPullOuts();
+		List<Date> dates = new ArrayList<Date>();
+		for (PullOut pullOut : pullOuts) {
+			Date date = DateTool.getDateWithoutTime(pullOut.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
+
 }

@@ -431,6 +431,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
 			// Values.salesOrderForm.refreshDate();
 			try {
+
+				inventorySheetForm.loadDatesOfPendingTransactions();
 				inventorySheetForm.build(); // by default, use the earliest possible
 														// date
 				inventorySheetForm.setVisible(true);

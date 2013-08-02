@@ -13,6 +13,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import common.entity.delivery.Delivery;
+import common.entity.delivery.Delivery;
 import common.manager.DeliveryManager;
 
 public class DeliveryPersistor extends Persistor implements DeliveryManager {
@@ -208,4 +209,22 @@ public class DeliveryPersistor extends Persistor implements DeliveryManager {
 		return deliveries;
 	}
 
+	@Override
+	public List<Date> getDatesOfPendingDeliveries() throws Exception {
+		List<Delivery> deliveries = getPendingDeliveries();
+		List<Date> dates = new ArrayList<Date>();
+		for (Delivery delivery : deliveries) {
+			Date date = DateTool.getDateWithoutTime(delivery.getDate());
+			boolean found = false;
+			for (Date d : dates) {
+				if (d.compareTo(date) == 0) {
+					found = true;
+				}
+			}
+			if (!found) {
+				dates.add(date);
+			}
+		}
+		return dates;
+	}
 }

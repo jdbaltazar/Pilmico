@@ -17,6 +17,8 @@ import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -85,7 +87,7 @@ public class InventorySheetForm extends SimplePanel {
 	private ViewportDragScrollListener v1;
 	private JViewport view;
 
-	private ArrayList<Date> validDates = new ArrayList<Date>();
+	private List<Date> validDates = new ArrayList<Date>();
 
 	private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>();
 	private ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
@@ -196,9 +198,23 @@ public class InventorySheetForm extends SimplePanel {
 		dateLabel = new MainFormLabel("Date:");
 
 		date = new FormDropdown();
-		validDates.add(new Date());
-		model = new DefaultComboBoxModel(validDates.toArray());
-		date.setModel(model);
+		// validDates.add(new Date());
+		// model = new DefaultComboBoxModel<Date>();
+		// date.setModel(model);
+		date.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				System.out.println("aaaaaaaaaaaaaaaaaa");
+
+				try {
+					build();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		productLabel = new TableHeaderLabel("Products");
 		productLabel2 = new TableHeaderLabel("Products");
@@ -527,7 +543,6 @@ public class InventorySheetForm extends SimplePanel {
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
 
 		dateLabel.setBounds(startX, startY, 40, 20);
 		date.setBounds(startX + dateLabel.getWidth(), startY, 180, 20);
@@ -1059,6 +1074,42 @@ public class InventorySheetForm extends SimplePanel {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void loadDatesOfPendingTransactions() throws Exception {
+
+		List<Date> deliveriesDates = Manager.deliveryManager.getDatesOfPendingDeliveries();
+		List<Date> pullOutsDates = Manager.pullOutManager.getDatesOfPendingPullOuts();
+		List<Date> salesDates = Manager.salesManager.getDatesOfPendingSales();
+		List<Date> accountReceivablesDates = Manager.accountReceivableManager.getDatesOfPendingAccountReceivables();
+		List<Date> arPaymentsDates = Manager.accountReceivableManager.getDatesOfPendingARPayments();
+		List<Date> cashAdvancesDates = Manager.cashAdvanceManager.getDatesOfPendingCashAdvances();
+		List<Date> caPaymentsDates = Manager.cashAdvanceManager.getDatesOfPendingCAPayments();
+		List<Date> dailyExpensesDates = Manager.dailyExpenseManager.getDatesOfPendingDailyExpenses();
+		List<Date> salaryReleasesDates = Manager.salaryReleaseManager.getDatesOfPendingSalaryReleases();
+		List<Date> discountIssuesDates = Manager.discountIssueManager.getDatesOfPendingDiscountIssues();
+		List<Date> depositsDates = Manager.depositManager.getDatesOfPendingDeposits();
+
+		validDates = new ArrayList<Date>();
+
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, deliveriesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, pullOutsDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, salesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, accountReceivablesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, arPaymentsDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, cashAdvancesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, caPaymentsDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, dailyExpensesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, salaryReleasesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, discountIssuesDates);
+		validDates = DateTool.addUniqueDatesRemoveTime(validDates, depositsDates);
+
+		validDates = DateTool.sortDateEarliestFirst(validDates);
+
+		if (validDates.size() > 0) {
+			date.setModel(new DefaultComboBoxModel(validDates.toArray()));
+		}
+	}
+
 	public void build() throws Exception {
 
 		Component[] components = isPanel.getComponents();
@@ -1071,6 +1122,24 @@ public class InventorySheetForm extends SimplePanel {
 			}
 		}
 
+		// loadDatesOfPendingTransactions();
+
+		// if (validDates.size() > 0) {
+		//
+		// date.setModel(new DefaultComboBoxModel(validDates.toArray()));
+
+		// date.setSelectedIndex(0);
+
+		Date selectedDate = (Date) date.getSelectedItem();
+		System.out.println("selected date: " + selectedDate.toString());
+		fillEntries(selectedDate);
+
+		// for(Date d: validDates)
+		// System.out.println(d.toString());
+
+	}
+
+	public void fillEntries(Date date) throws Exception {
 		double previousAcoh = 0d;
 		InventorySheetData isd = Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
 
@@ -1082,17 +1151,17 @@ public class InventorySheetForm extends SimplePanel {
 
 		products = Manager.productManager.getProducts();
 
-		deliveries = Manager.deliveryManager.getPendingDeliveries();
-		pullOuts = Manager.pullOutManager.getPendingPullOuts();
-		sales = Manager.salesManager.getPendingSales();
-		accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivables();
-		arPayments = Manager.accountReceivableManager.getPendingARPayments();
-		cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvances();
-		caPayments = Manager.cashAdvanceManager.getPendingCAPayments();
-		dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpenses();
-		salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleases();
-		discountIssues = Manager.discountIssueManager.getPendingDiscountIssues();
-		deposits = Manager.depositManager.getPendingDeposits();
+		deliveries = Manager.deliveryManager.getPendingDeliveriesOn(date);
+		pullOuts = Manager.pullOutManager.getPendingPullOutsOn(date);
+		sales = Manager.salesManager.getPendingSalesOn(date);
+		accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesOn(date);
+		arPayments = Manager.accountReceivableManager.getPendingARPaymentsOn(date);
+		cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesOn(date);
+		caPayments = Manager.cashAdvanceManager.getPendingCAPaymentsOn(date);
+		dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesOn(date);
+		salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesOn(date);
+		discountIssues = Manager.discountIssueManager.getPendingDiscountIssuesOn(date);
+		deposits = Manager.depositManager.getPendingDepositsOn(date);
 
 		InventorySheetData inventorySheetData = new InventorySheetData();
 		inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0, Manager.loggedInAccount);
@@ -1143,7 +1212,6 @@ public class InventorySheetForm extends SimplePanel {
 
 		updateCashOnHandSummary();
 		updateActualCashCountAndSummary();
-
 	}
 
 	private void alternateRows(ArrayList<ISRowPanel> rowPanel) {

@@ -31,4 +31,6 @@ public interface DiscountIssueManager {
 
 	public void deleteDiscountIssue(DiscountIssue discountIssue) throws Exception;
 
+	public List<Date> getDatesOfPendingDiscountIssues() throws Exception;
+
 }

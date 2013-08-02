@@ -33,4 +33,5 @@ public interface DeliveryManager {
 
 	public void deleteDelivery(Delivery delivery) throws Exception;
 
+	public List<Date> getDatesOfPendingDeliveries() throws Exception;
 }
