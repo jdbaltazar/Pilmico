@@ -47,6 +47,7 @@ public class ISRowPanel extends JPanel {
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, y, table = 0, componentCount;
 	private Object object, object2;
 	private Color rowBkgrndColor;
+//	private JXLabel jxlabel;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
 
@@ -213,7 +214,7 @@ public class ISRowPanel extends JPanel {
 								Values.editPanel.setISLinked(true);
 								Values.editPanel.setHide(false);
 								Values.editPanel.startAnimation();
-								Values.editPanel.showComponent(object2, Values.SALES);
+								Values.editPanel.showComponent(object2, table);
 							}
 						}, 400);
 					}

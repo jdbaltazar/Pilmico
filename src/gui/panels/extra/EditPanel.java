@@ -180,6 +180,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 			@Override
 			public void run() {
 				if (ISLinked) {
+					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 					Values.addEntryPanel.startAnimation();
 					Values.addEntryPanel.showComponent();
 				}
