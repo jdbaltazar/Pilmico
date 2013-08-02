@@ -424,8 +424,8 @@ public class DeliveryForm extends SimplePanel {
 
 							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 								Product p = dd.getProduct();
-								p.setQuantityInSack(p.getQuantityInSack() + dd.getQuantityInSack());
-								p.setQuantityInKilo(p.getQuantityInKilo() + dd.getQuantityInKilo());
+								p.incrementQuantityInSack(dd.getQuantityInSack());
+								p.incrementQuantityInKilo(dd.getQuantityInKilo());
 								Manager.productManager.updateProduct(p);
 							}
 

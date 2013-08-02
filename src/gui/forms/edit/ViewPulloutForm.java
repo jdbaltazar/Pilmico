@@ -239,8 +239,8 @@ public class ViewPulloutForm extends EditFormPanel {
 
 						for (PullOutDetail pod : pullOut.getPullOutDetails()) {
 							Product p = pod.getProduct();
-							p.setQuantityInSack(p.getQuantityInSack() + pod.getQuantityInSack());
-							p.setQuantityInKilo(p.getQuantityInKilo() + pod.getQuantityInKilo());
+							p.incrementQuantityInSack(pod.getQuantityInSack());
+							p.incrementQuantityInKilo(pod.getQuantityInKilo());
 							Manager.productManager.updateProduct(p);
 						}
 					} catch (Exception e1) {

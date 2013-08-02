@@ -282,8 +282,8 @@ public class ViewARForm extends EditFormPanel {
 
 								for (AccountReceivableDetail sd : accountReceivable.getAccountReceivableDetails()) {
 									Product p = sd.getProduct();
-									p.setQuantityInSack(p.getQuantityInSack() + sd.getQuantityInSack());
-									p.setQuantityInKilo(p.getQuantityInKilo() + sd.getQuantityInKilo());
+									p.incrementQuantityInSack(sd.getQuantityInSack());
+									p.incrementQuantityInKilo(sd.getQuantityInKilo());
 									Manager.productManager.updateProduct(p);
 								}
 

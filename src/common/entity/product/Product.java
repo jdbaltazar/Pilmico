@@ -41,22 +41,22 @@ public class Product {
 	private boolean available;
 
 	@Column(name = "quantity_in_sack")
-	private double quantityInSack;
+	private double quantityOnStockInSack;
 
 	@Column(name = "quantity_in_kilo")
-	private double quantityInKilo;
+	private double quantityOnStockInKilo;
 
 	@Column(name = "display_in_sack")
-	private double displayInSack;
+	private double quantityOnDisplayInSack;
 
 	@Column(name = "display_in_kilo")
-	private double displayInKilo;
+	private double quantityOnDisplayInKilo;
 
 	@Column(name = "sold_today_in_sack")
-	private double soldTodayInSack;
+	private double quantitySoldTodayInSack;
 
 	@Column(name = "sold_today_in_kilo")
-	private double soldTodayInKilo;
+	private double quantitySoldTodayInKilo;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category")
@@ -76,19 +76,20 @@ public class Product {
 	}
 
 	public Product(String name, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available,
-			double quantityInSack, double quantityInKilo, double displayInSack, double displayInKilo, double soldTodayInSack, double soldTodayInKilo,
-			Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
+			double quantityOnStockInSack, double quantityOnStockInKilo, double quantityOnDisplayInSack, double quantityOnDisplayInKilo,
+			double quantitySoldTodayInSack, double quantitySoldTodayInKilo, Category category, boolean allowAllert, boolean alertUsingSack,
+			double alertOnQuantity) {
 		super();
 		this.name = name;
 		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
 		this.kilosPerSack = kilosPerSack;
 		this.available = available;
-		this.quantityInSack = quantityInSack;
-		this.quantityInKilo = quantityInKilo;
-		this.displayInSack = displayInSack;
-		this.displayInKilo = displayInKilo;
-		this.soldTodayInSack = soldTodayInSack;
-		this.soldTodayInKilo = soldTodayInKilo;
+		this.quantityOnStockInSack = quantityOnStockInSack;
+		this.quantityOnStockInKilo = quantityOnStockInKilo;
+		this.quantityOnDisplayInSack = quantityOnDisplayInSack;
+		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
+		this.quantitySoldTodayInSack = quantitySoldTodayInSack;
+		this.quantitySoldTodayInKilo = quantitySoldTodayInKilo;
 		this.category = category;
 		this.allowAllert = allowAllert;
 		this.alertUsingSack = alertUsingSack;
@@ -96,20 +97,21 @@ public class Product {
 	}
 
 	public Product(String name, String description, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack,
-			boolean available, double quantityInSack, double quantityInKilo, double displayInSack, double displayInKilo, double soldTodayInSack,
-			double soldTodayInKilo, Category category, boolean allowAllert, boolean alertUsingSack, double alertOnQuantity) {
+			boolean available, double quantityOnStockInSack, double quantityOnStockInKilo, double quantityOnDisplayInSack,
+			double quantityOnDisplayInKilo, double quantitySoldTodayInSack, double quantitySoldTodayInKilo, Category category, boolean allowAllert,
+			boolean alertUsingSack, double alertOnQuantity) {
 		super();
 		this.name = name;
 		this.description = description;
 		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
 		this.kilosPerSack = kilosPerSack;
 		this.available = available;
-		this.quantityInSack = quantityInSack;
-		this.quantityInKilo = quantityInKilo;
-		this.displayInSack = displayInSack;
-		this.displayInKilo = displayInKilo;
-		this.soldTodayInSack = soldTodayInSack;
-		this.soldTodayInKilo = soldTodayInKilo;
+		this.quantityOnStockInSack = quantityOnStockInSack;
+		this.quantityOnStockInKilo = quantityOnStockInKilo;
+		this.quantityOnDisplayInSack = quantityOnDisplayInSack;
+		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
+		this.quantitySoldTodayInSack = quantitySoldTodayInSack;
+		this.quantitySoldTodayInKilo = quantitySoldTodayInKilo;
 		this.category = category;
 		this.allowAllert = allowAllert;
 		this.alertUsingSack = alertUsingSack;
@@ -230,29 +232,75 @@ public class Product {
 	}
 
 	public double getQuantityInSack() {
-		return quantityInSack;
+		return quantityOnStockInSack + quantityOnDisplayInSack;
 	}
 
-	public void setQuantityInSack(double quantityInSack) {
-		this.quantityInSack = quantityInSack;
+	// public void setQuantityInSack2(double totalQuantityInSack) {
+	// this.quantityOnDisplayInSack = quantityOnDisplayInSack;
+	// }
+
+	public void incrementQuantityInSack(double incrementQuantityInSack) throws Exception {
+		if (incrementQuantityInSack < 0)
+			throw new Exception("Cannot increment sack qty of product: " + id + " /nIncrement value cannot be negative");
+		this.quantityOnStockInSack += incrementQuantityInSack;
+	}
+
+	public void decrementQuantityInSack(double decrementQuantityInSack) throws Exception {
+		if (decrementQuantityInSack > getQuantityInSack())
+			throw new Exception("Cannot decrement sack qty of product: " + id + " /nDecrement value cannot be greater than quantity");
+		if (decrementQuantityInSack > quantityOnStockInSack) {
+			decrementQuantityInSack -= quantityOnStockInSack;
+			quantityOnDisplayInSack -= decrementQuantityInSack;
+			quantityOnStockInSack = 0d;
+		} else {
+			quantityOnStockInSack -= decrementQuantityInSack;
+		}
+
+	}
+
+	public void setQuantityInSack(double totalQuantityInSack, double quantityOnDisplayInSack) {
+		this.quantityOnDisplayInSack = quantityOnDisplayInSack;
+		if ((totalQuantityInSack - quantityOnStockInSack > 0))
+			this.quantityOnStockInSack = totalQuantityInSack - quantityOnStockInSack;
 	}
 
 	public double getQuantityInKilo() {
-		return quantityInKilo;
+		return quantityOnStockInKilo + quantityOnDisplayInKilo;
 	}
 
-	public void setQuantityInKilo(double quantityInKilo) {
-		this.quantityInKilo = quantityInKilo;
+	public void incrementQuantityInKilo(double incrementQuantityInKilo) throws Exception {
+		if (incrementQuantityInKilo < 0)
+			throw new Exception("Cannot increment kilo qty of product: " + id + " /nIncrement value cannot be negative");
+		this.quantityOnStockInKilo += incrementQuantityInKilo;
+	}
+
+	public void decrementQuantityInKilo(double decrementQuantityInKilo) throws Exception {
+		if (decrementQuantityInKilo > getQuantityInKilo())
+			throw new Exception("Cannot decrement kilo qty of product: " + id + " /nDecrement value cannot be greater than quantity");
+		if (decrementQuantityInKilo > quantityOnStockInKilo) {
+			decrementQuantityInKilo -= quantityOnStockInKilo;
+			quantityOnDisplayInKilo -= decrementQuantityInKilo;
+			quantityOnStockInKilo = 0d;
+		} else {
+			quantityOnStockInKilo -= decrementQuantityInKilo;
+		}
+
+	}
+
+	public void setQuantityInKilo(double totalQuantityInKilo, double quantityOnDisplayInKilo) {
+		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
+		if ((totalQuantityInKilo - quantityOnStockInKilo > 0))
+			this.quantityOnStockInKilo = totalQuantityInKilo - quantityOnStockInKilo;
 	}
 
 	public boolean validQuantityInSackResult(double quantityInSackToBeSubtracted) {
-		if ((quantityInSack - quantityInSackToBeSubtracted) >= 0)
+		if ((getQuantityInSack() - quantityInSackToBeSubtracted) >= 0)
 			return true;
 		return false;
 	}
 
 	public boolean validQuantityInKiloResult(double quantityInKiloToBeSubtracted) {
-		if ((quantityInKilo - quantityInKiloToBeSubtracted) >= 0)
+		if ((getQuantityInKilo() - quantityInKiloToBeSubtracted) >= 0)
 			return true;
 		return false;
 	}
@@ -261,53 +309,53 @@ public class Product {
 		return validQuantityInSackResult(quantityInSackToBeSubtracted) && validQuantityInKiloResult(quantityInKiloToBeSubtracted);
 	}
 
-	public double getDisplayInSack() {
-		return displayInSack;
+	public double getQuantityOnDisplayInSack() {
+		return quantityOnDisplayInSack;
 	}
 
-	public void setDisplayInSack(double displayInSack) {
-		this.displayInSack = displayInSack;
+	public void setQuantityOnDisplayInSack(double quantityOnDisplayInSack) {
+		this.quantityOnDisplayInSack = quantityOnDisplayInSack;
 	}
 
-	public double getDisplayInKilo() {
-		return displayInKilo;
+	public double getQuantityOnDisplayInKilo() {
+		return quantityOnDisplayInKilo;
 	}
 
 	public boolean isOnDisplay() {
-		return (displayInSack != 0d || displayInKilo != 0d);
+		return (quantityOnDisplayInSack != 0d || quantityOnDisplayInKilo != 0d);
 	}
 
-	public void setDisplayInKilo(double displayInKilo) {
-		this.displayInKilo = displayInKilo;
+	public void setQuantityOnDisplayInKilo(double quantityOnDisplayInKilo) {
+		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
 	}
 
-	public double getSoldTodayInSack() {
-		return soldTodayInSack;
+	public double getQuantitySoldTodayInSack() {
+		return quantitySoldTodayInSack;
 	}
 
-	public void setSoldTodayInSack(double soldTodayInSack) {
-		this.soldTodayInSack = soldTodayInSack;
+	public void setQuantitySoldTodayInSack(double quantitySoldTodayInSack) {
+		this.quantitySoldTodayInSack = quantitySoldTodayInSack;
 	}
 
-	public double getSoldTodayInKilo() {
-		return soldTodayInKilo;
+	public double getQuantitySoldTodayInKilo() {
+		return quantitySoldTodayInKilo;
 	}
 
-	public void setSoldTodayInKilo(double soldTodayInKilo) {
-		this.soldTodayInKilo = soldTodayInKilo;
+	public void setQuantitySoldTodayInKilo(double quantitySoldTodayInKilo) {
+		this.quantitySoldTodayInKilo = quantitySoldTodayInKilo;
 	}
 
 	public double getBeginningInventoryInSack() {
-		return quantityInSack + soldTodayInSack;
+		return getQuantityInSack() + quantitySoldTodayInSack;
 	}
 
 	public double getBeginningInventoryInKilo() {
-		return quantityInKilo + soldTodayInKilo;
+		return getQuantityInKilo() + quantitySoldTodayInKilo;
 	}
 
 	public void resetBeginningInventory() {
-		soldTodayInKilo = 0d;
-		soldTodayInSack = 0d;
+		quantitySoldTodayInSack = 0d;
+		quantitySoldTodayInKilo = 0d;
 	}
 
 	public Category getCategory() {

@@ -202,10 +202,10 @@ public class EditProductPanel extends EditFormPanel {
 				product.setName(fields.get(0).getText());
 				product.setDescription(fields.get(1).getText());
 				product.setKilosPerSack(Double.parseDouble(fields.get(2).getText()));
-				product.setQuantityInSack(Double.parseDouble(fields.get(3).getText()));
-				product.setQuantityInKilo(Double.parseDouble(fields.get(4).getText()));
-				product.setDisplayInSack(Double.parseDouble(fields.get(5).getText()));
-				product.setDisplayInKilo(Double.parseDouble(fields.get(6).getText()));
+				product.setQuantityOnDisplayInSack(Double.parseDouble(fields.get(5).getText()));
+				product.setQuantityOnDisplayInKilo(Double.parseDouble(fields.get(6).getText()));
+				product.setQuantityInSack(Double.parseDouble(fields.get(3).getText()), product.getQuantityInSack());
+				product.setQuantityInKilo(Double.parseDouble(fields.get(4).getText()), product.getQuantityInKilo());
 
 				double pricePerSack = Double.parseDouble(fields.get(7).getText());
 				double pricePerKilo = Double.parseDouble(fields.get(8).getText());
@@ -302,8 +302,8 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(2).setText(String.format("%.2f", product.getKilosPerSack()));
 		fields.get(3).setText(String.format("%.2f", product.getQuantityInSack()));
 		fields.get(4).setText(String.format("%.2f", product.getQuantityInKilo()));
-		fields.get(5).setText(String.format("%.2f", product.getDisplayInSack()));
-		fields.get(6).setText(String.format("%.2f", product.getDisplayInKilo()));
+		fields.get(5).setText(String.format("%.2f", product.getQuantityOnDisplayInSack()));
+		fields.get(6).setText(String.format("%.2f", product.getQuantityOnDisplayInKilo()));
 		fields.get(7).setText(String.format("%.2f", product.getCurrentPricePerSack()));
 		fields.get(7).setToolTipText(
 				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));

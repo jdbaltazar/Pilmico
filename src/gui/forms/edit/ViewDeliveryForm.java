@@ -321,8 +321,8 @@ public class ViewDeliveryForm extends EditFormPanel {
 							Manager.deliveryManager.updateDelivery(delivery);
 							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 								Product p = dd.getProduct();
-								p.setQuantityInSack(p.getQuantityInSack() - dd.getQuantityInSack());
-								p.setQuantityInKilo(p.getQuantityInKilo() - dd.getQuantityInKilo());
+								p.decrementQuantityInSack(dd.getQuantityInSack());
+								p.decrementQuantityInKilo(dd.getQuantityInKilo());
 								Manager.productManager.updateProduct(p);
 							}
 
