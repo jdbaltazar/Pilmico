@@ -23,6 +23,7 @@ import gui.list.CategoryList;
 import gui.list.ConditionList;
 import gui.list.NoteTypeList;
 import gui.list.UnitList;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -34,11 +35,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -431,11 +434,22 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
 			// Values.salesOrderForm.refreshDate();
 			try {
-
 				inventorySheetForm.loadDatesOfPendingTransactions();
-				inventorySheetForm.build(); // by default, use the earliest possible
-														// date
-				inventorySheetForm.setVisible(true);
+				if (inventorySheetForm.build()) { // default: use the earliest date
+					inventorySheetForm.setVisible(true);
+				} else {
+
+					// no transaction found
+					if (JOptionPane.showConfirmDialog(null, "No Transaction found! Continue?", "Warning!", JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+						inventorySheetForm.build(new Date());
+						inventorySheetForm.setVisible(true);
+					} else {
+
+						// go back
+
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

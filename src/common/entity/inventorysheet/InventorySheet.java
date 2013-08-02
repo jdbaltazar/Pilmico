@@ -675,7 +675,7 @@ public class InventorySheet implements InventorySheetManager {
 
 	@Override
 	public double getTotalAssets() {
-		return getPreviousAcoh() + getOverallCombinedSalesAmount() + inventorySheetData.getPreviousAcoh() + getOverallAccountReceivablesPayments()
+		return getPreviousAcoh() + getOverallCombinedSalesAmount() + getOverallAccountReceivables() + getOverallAccountReceivablesPayments()
 				+ getOverallCashAdvancesPayments();
 	}
 
