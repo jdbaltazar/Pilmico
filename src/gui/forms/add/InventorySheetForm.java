@@ -802,9 +802,10 @@ public class InventorySheetForm extends SimplePanel {
 
 				if (uP.getInput().equals("")) {
 					computationLabel.get(0).setText("0.00");
-				} else
+				} else {
 					computationLabel.get(0).setText(uP.getInput());
-
+				}
+				inventorySheet.setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				updateCashOnHandSummary();
 			}
 		});
@@ -1122,14 +1123,6 @@ public class InventorySheetForm extends SimplePanel {
 			}
 		}
 
-		// loadDatesOfPendingTransactions();
-
-		// if (validDates.size() > 0) {
-		//
-		// date.setModel(new DefaultComboBoxModel(validDates.toArray()));
-
-		// date.setSelectedIndex(0);
-
 		Date selectedDate = (Date) date.getSelectedItem();
 		System.out.println("selected date: " + selectedDate.toString());
 		fillEntries(selectedDate);
@@ -1210,6 +1203,7 @@ public class InventorySheetForm extends SimplePanel {
 		summaryValues.get(2).setText(String.format("%.2f", new Double(0)));
 		summary3Label.setText("OVER/SHORT");
 
+		inventorySheet.setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 		updateCashOnHandSummary();
 		updateActualCashCountAndSummary();
 	}
