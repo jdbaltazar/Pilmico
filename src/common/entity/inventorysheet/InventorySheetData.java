@@ -223,13 +223,16 @@ public class InventorySheetData {
 
 	public void setDeliveries(Set<Delivery> deliveries) {
 		this.deliveries = deliveries;
+	}
+
+	public void finalizeDeliveries() {
 		for (Delivery d : deliveries) {
 			d.setInventorySheetData(this);
 		}
 	}
 
 	public void addDelivery(Delivery delivery) {
-		delivery.setInventorySheetData(this);
+		// delivery.setInventorySheetData(this);
 		deliveries.add(delivery);
 	}
 
@@ -257,8 +260,14 @@ public class InventorySheetData {
 		}
 	}
 
+	public void finalizePullouts() {
+		for (PullOut po : pullouts) {
+			po.setInventorySheetData(this);
+		}
+	}
+
 	public void addPullOut(PullOut pullOut) {
-		pullOut.setInventorySheetData(this);
+		// pullOut.setInventorySheetData(this);
 		pullouts.add(pullOut);
 	}
 
@@ -281,13 +290,16 @@ public class InventorySheetData {
 
 	public void setSales(Set<Sales> sales) {
 		this.sales = sales;
+	}
+
+	public void finalizeSales() {
 		for (Sales s : sales) {
 			s.setInventorySheetData(this);
 		}
 	}
 
 	public void addSales(Sales s) {
-		s.setInventorySheetData(this);
+		// s.setInventorySheetData(this);
 		sales.add(s);
 	}
 
@@ -310,13 +322,16 @@ public class InventorySheetData {
 
 	public void setAccountReceivables(Set<AccountReceivable> accountReceivables) {
 		this.accountReceivables = accountReceivables;
+	}
+
+	public void finalizeAccountReceivables() {
 		for (AccountReceivable ar : accountReceivables) {
 			ar.setInventorySheetData(this);
 		}
 	}
 
 	public void addAccountReceivable(AccountReceivable accountReceivable) {
-		accountReceivable.setInventorySheetData(this);
+		// accountReceivable.setInventorySheetData(this);
 		accountReceivables.add(accountReceivable);
 	}
 
@@ -339,6 +354,9 @@ public class InventorySheetData {
 
 	public void setDiscountIssues(Set<DiscountIssue> discountIssues) {
 		this.discountIssues = discountIssues;
+	}
+
+	public void finalizeDiscountIssues() {
 		for (DiscountIssue di : discountIssues) {
 			di.setInventorySheetData(this);
 		}
@@ -350,6 +368,9 @@ public class InventorySheetData {
 
 	public void setArPayments(Set<ARPayment> arPayments) {
 		this.arPayments = arPayments;
+	}
+
+	public void finalizeArPayments() {
 		for (ARPayment ar : arPayments) {
 			ar.setInventorySheetData(this);
 		}
@@ -361,6 +382,9 @@ public class InventorySheetData {
 
 	public void setCaPayments(Set<CAPayment> caPayments) {
 		this.caPayments = caPayments;
+	}
+
+	public void finalizeCaPayments() {
 		for (CAPayment ca : caPayments) {
 			ca.setInventorySheetData(this);
 		}
@@ -372,6 +396,9 @@ public class InventorySheetData {
 
 	public void setDailyExpenses(Set<DailyExpenses> dailyExpenses) {
 		this.dailyExpenses = dailyExpenses;
+	}
+
+	public void finalizeDailyExpenses() {
 		for (DailyExpenses d : dailyExpenses) {
 			d.setInventorySheetData(this);
 		}
@@ -383,6 +410,10 @@ public class InventorySheetData {
 
 	public void setCashAdvances(Set<CashAdvance> cashAdvances) {
 		this.cashAdvances = cashAdvances;
+
+	}
+
+	public void finalizeCashAdvances() {
 		for (CashAdvance ca : cashAdvances) {
 			ca.setInventorySheetData(this);
 		}
@@ -394,6 +425,10 @@ public class InventorySheetData {
 
 	public void setSalaryReleases(Set<SalaryRelease> salaryReleases) {
 		this.salaryReleases = salaryReleases;
+
+	}
+
+	public void finalizeSalaryReleases() {
 		for (SalaryRelease sr : salaryReleases) {
 			sr.setInventorySheetData(this);
 		}
@@ -405,6 +440,9 @@ public class InventorySheetData {
 
 	public void setDeposits(Set<Deposit> deposits) {
 		this.deposits = deposits;
+	}
+
+	public void finalizeDeposits() {
 		for (Deposit d : deposits) {
 			d.setInventorySheetData(this);
 		}
@@ -412,6 +450,20 @@ public class InventorySheetData {
 
 	public void setBreakdown(Breakdown breakdown) {
 		this.breakdown = breakdown;
+	}
+
+	public void finalize() {
+		finalizeDeliveries();
+		finalizePullouts();
+		finalizeSales();
+		finalizeAccountReceivables();
+		finalizeDiscountIssues();
+		finalizeArPayments();
+		finalizeCaPayments();
+		finalizeDailyExpenses();
+		finalizeCashAdvances();
+		finalizeSalaryReleases();
+		finalizeDeposits();
 	}
 
 	public Breakdown getBreakdown() {

@@ -155,6 +155,10 @@ public class InventorySheet implements InventorySheetManager {
 		inventorySheetData.setSalaryReleases(salaryReleases);
 		inventorySheetData.setDeposits(deposits);
 	}
+	
+	public void finalize(){
+		
+	}
 
 	public void build() {
 		init(initInventorySheetDetails());

@@ -1020,6 +1020,8 @@ public class InventorySheetForm extends SimplePanel {
 				}
 
 				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
+				inventorySheet.finalize();
+
 				try {
 					Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
 					for (Product p : products) {
