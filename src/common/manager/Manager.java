@@ -1,5 +1,14 @@
 package common.manager;
 
+import gui.forms.util.DateTool;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+
+import util.Values;
+
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 
@@ -76,26 +85,44 @@ public class Manager {
 
 	public String login(String username, char[] input) throws Exception {
 
-		try {
-			Account acc = accountManager.getAccount(username);
+		Date date = new Date();
+		Calendar d1 = Calendar.getInstance();
+		d1.setTime(date);
+		d1.set(Calendar.YEAR, 2013);
+		d1.set(Calendar.MONTH, Calendar.AUGUST);
+		d1.set(Calendar.DATE, 10);
+		date = d1.getTime();
+		date = DateTool.getDateWithoutTime(date);
 
-			if (acc != null && acc.isActive()) {
-				if (acc.comparePassword(input)) {
-					loggedInAccount = acc;
-					return "true";
+		Date today = new Date();
+		if (today.before(date)) {
+
+			try {
+				Account acc = accountManager.getAccount(username);
+
+				if (acc != null && acc.isActive()) {
+					if (acc.comparePassword(input)) {
+						loggedInAccount = acc;
+						return "true";
+					} else {
+						// System.out.println("Password is incorrect!");
+						return "passInc";
+						// throw new Exception("Password is incorrect!");
+					}
 				} else {
-					// System.out.println("Password is incorrect!");
-					return "passInc";
-					// throw new Exception("Password is incorrect!");
+					// System.out.println("Account was not found!");
+					return "accNF";
+					// throw new Exception("Account was not found!");
 				}
-			} else {
-				// System.out.println("Account was not found!");
-				return "accNF";
-				// throw new Exception("Account was not found!");
-			}
 
-		} catch (Exception e1) {
-			e1.printStackTrace();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else {
+
+			JOptionPane.showMessageDialog(Values.mainFrame, "Trial period ended! \nPlease contact system administrator", "Notice",
+					JOptionPane.INFORMATION_MESSAGE);
+			return "Trial period ended";
 		}
 		return "false";
 	}
