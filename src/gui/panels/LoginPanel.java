@@ -21,6 +21,8 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
 
+import common.entity.log.Log;
+import common.entity.log.LogType;
 import common.entity.profile.Account;
 import common.manager.Manager;
 
@@ -184,6 +186,10 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 				}
 
 			} else {
+
+				String desc = Manager.loggedInAccount.getDesignationPlusFirstPlusLastName() + " logged in";
+				Log log = new Log(new LogType(LogType.SYSTEM), desc);
+				Manager.logManager.addLog(log);
 
 				Account acc = Manager.getInstance().getLoggedInAccount();
 				Values.footerPanel.setUserName(acc.getUsername() + "!");
