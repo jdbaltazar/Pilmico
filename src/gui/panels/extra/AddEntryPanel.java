@@ -443,20 +443,31 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 				} else {
 
+					JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nPlese add at least one (1) valid transaction.",
+							"Notice", JOptionPane.INFORMATION_MESSAGE);
 					
+					Values.addEntryPanel.startAnimation();
 					
 					// no transaction found
-					if (JOptionPane.showConfirmDialog(null, "No Transaction found! Continue?", "Warning!", JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-						
-						inventorySheetForm.build(new Date());
-						inventorySheetForm.setVisible(true);
+					// if (JOptionPane.showConfirmDialog(null,
+					// "No valid transaction found! Continue?", "Warning!",
+					// JOptionPane.YES_NO_OPTION,
+					// JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 
-					} else {
+					// JOptionPane.showMessageDialog(null,
+					// "No valid transaction found! Continue?", "Warning!",
+					// JOptionPane.OK_OPTION,
+					// JOptionPane.WARNING_MESSAGE)) ;
+					// {
 
-						// go back
+					// inventorySheetForm.build(new Date());
+					// inventorySheetForm.setVisible(true);
 
-					}
+					// } else {
+					//
+					// // go back
+					//
+					// }
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

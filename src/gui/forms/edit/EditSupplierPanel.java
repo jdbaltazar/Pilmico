@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import common.entity.supplier.Supplier;
+import common.manager.Manager;
 
 import util.EditFormPanel;
 import util.ErrorLabel;
@@ -39,12 +40,12 @@ public class EditSupplierPanel extends EditFormPanel {
 
 	private JPanel panel;
 	private JScrollPane scrollPane;
-	
+
 	private ErrorLabel error;
 
 	private String name, address;
 
-	private int y1 =30, y2 = 15, y3 = 85;
+	private int y1 = 30, y2 = 15, y3 = 85;
 
 	private Supplier supplier;
 	private JComboBox contactPersonCombo;
@@ -70,19 +71,19 @@ public class EditSupplierPanel extends EditFormPanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		
+
 		scrollPane = new JScrollPane(panel);
 
 		edit = new SoyButton("Edit");
 
 		error = new ErrorLabel();
-		
+
 		contactPersonCombo = new JComboBox();
-		
+
 		contactPersonCombo.setUI(ColorArrowUI.createUI(this));
 		contactPersonCombo.setEditable(true);
 		contactPersonComboField = (JTextField) contactPersonCombo.getEditor().getEditorComponent();
@@ -94,12 +95,10 @@ public class EditSupplierPanel extends EditFormPanel {
 		contactPersonCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		contactPersonCombo.setForeground(Color.GRAY);
 		contactPersonCombo.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#006600")));
-//		contactPersonCombo.setOpaque(false);
-		
+		// contactPersonCombo.setOpaque(false);
 
 		int labelsCtr = 0, fieldCtr = 0;
 		for (int i = 0, x = 10, y = 0; i < num; i++, y += y3) {
-
 
 			if (i != 0 && (i % 3) == 0) {
 				// x=0;
@@ -121,18 +120,18 @@ public class EditSupplierPanel extends EditFormPanel {
 				labelsCtr++;
 				fieldCtr++;
 			}
-			
-//			if (i == 4) {
-//				labels.add(new FormLabel(Values.supplierFormLabel[i]));
-//				labels.get(labelsCtr).setBounds(x, y2 + y, 100, 15);
-//
-//				contactPersonCombo.setBounds(x, y1 + y, 170, 25);
-//
-//				labels.get(labelsCtr).setVisible(false);
-//				contactPersonCombo.setVisible(false);
-//				
-//				labelsCtr++;
-//			}
+
+			// if (i == 4) {
+			// labels.add(new FormLabel(Values.supplierFormLabel[i]));
+			// labels.get(labelsCtr).setBounds(x, y2 + y, 100, 15);
+			//
+			// contactPersonCombo.setBounds(x, y1 + y, 170, 25);
+			//
+			// labels.get(labelsCtr).setVisible(false);
+			// contactPersonCombo.setVisible(false);
+			//
+			// labelsCtr++;
+			// }
 
 		}
 
@@ -143,16 +142,32 @@ public class EditSupplierPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				supplier.setName(fields.get(0).getText());
+				supplier.setAddress(fields.get(1).getText());
+				supplier.setTin(fields.get(2).getText());
+				supplier.setContactNo(fields.get(3).getText());
+				supplier.setRemarks(fields.get(4).getText());
+
+				try {
+					Manager.supplierManager.updateSupplier(supplier);
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Edit").setVisible(true);
+					Values.centerPanel.changeTable(Values.SUPPLIERS);
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
 		panel.add(contactPersonCombo);
-		
+
 		scrollPane.setBounds(197, 55, 425, 245);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		add(scrollPane);
 		add(edit);
 
@@ -164,7 +179,7 @@ public class EditSupplierPanel extends EditFormPanel {
 		fields.get(1).setText(supplier.getAddress());
 		fields.get(2).setText(supplier.getTin());
 		fields.get(3).setText(supplier.getContactNo());
-//		fields.get(4).setText(supplier.getContactPerson().getFirstPlusLastName());
+		// fields.get(4).setText(supplier.getContactPerson().getFirstPlusLastName());
 		fields.get(4).setText(supplier.getRemarks());
 	}
 

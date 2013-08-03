@@ -162,7 +162,7 @@ public class Values {
 
 	public static String[] employeeFormLabel = { "Last Name*", "First Name*", "Middle Name", "Designation*", "Address", "Contact No.", };
 
-	public static String[] supplierFormLabel = { "Name*", "Address", "TIN", "Contact No.", "Contact Person", "Remarks" };
+	public static String[] supplierFormLabel = { "Name*", "Address", "TIN", "Contact No.", "Remarks" };
 
 	public static String[] stockHeader = { "Stock Number", "Name", "Category", "Brand", "Selling Price", " " };
 

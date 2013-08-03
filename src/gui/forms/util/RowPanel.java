@@ -298,10 +298,12 @@ public class RowPanel extends JPanel {
 		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplayKG.setPrecision(2);
 		onDisplayKG.setText(product.getQuantityOnDisplayInKilo() == 0 ? "0" : String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+		onDisplayKG.setToolTipText(String.format("%.2f", product.getQuantityInKilo()) + " kilo/s of " + product.getName() + " remaining");
 
 		onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplaySack.setPrecision(2);
 		onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" : String.format("%.2f", product.getQuantityOnDisplayInSack()));
+		onDisplaySack.setToolTipText(String.format("%.2f", product.getQuantityInSack()) + " sack/s of " + product.getName() + " remaining");
 
 		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
 		onDisplaySack.setBounds(209, 5, 60, 20);
@@ -349,8 +351,8 @@ public class RowPanel extends JPanel {
 		if (label.equals(Tables.BANK_EDIT)) {
 
 			BankAccount bankAcct = (BankAccount) object;
-
 			bankAccount.setText(bankAcct.getAccountNo());
+			bankAccount.setEditable(false);
 		}
 
 		deleteRow.setActionCommand(command);
@@ -370,7 +372,9 @@ public class RowPanel extends JPanel {
 		deleteRow.setBounds(214, 9, 16, 16);
 
 		row.add(bankAccount);
-		row.add(deleteRow);
+		// if (!label.equals(Tables.BANK_EDIT)) {
+		// row.add(deleteRow);
+		// }
 
 		add(row);
 	}

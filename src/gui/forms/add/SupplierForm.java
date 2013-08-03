@@ -35,10 +35,10 @@ public class SupplierForm extends SimplePanel {
 	private static final long serialVersionUID = -4844447081011422390L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
-	private JComboBox personCombo;
+	// private JComboBox personCombo;
 	private JTextField personField;
 
-	private DropdownLabel contactPerson;
+	// private DropdownLabel contactPerson;
 	private DefaultComboBoxModel model;
 
 	private SBButton fwd;
@@ -52,18 +52,18 @@ public class SupplierForm extends SimplePanel {
 	public SupplierForm() {
 		super("Add Supplier");
 		addComponents();
-		//fillEntries();
+		// fillEntries();
 		Values.supplierForm = this;
 	}
 
 	public void fillEntries() {
 
-		try {
-			personCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
-			personCombo.setSelectedIndex(-1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			personCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
+//			personCombo.setSelectedIndex(-1);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
@@ -84,9 +84,9 @@ public class SupplierForm extends SimplePanel {
 			}
 		});
 
-		contactPerson = new DropdownLabel("Contact Person");
+		// contactPerson = new DropdownLabel("Contact Person");
 
-//		refreshCustomer(false);
+		// refreshCustomer(false);
 
 		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 70) {
 
@@ -98,13 +98,13 @@ public class SupplierForm extends SimplePanel {
 				y = 0;
 			}
 
-//			if (i != 4)
-				fields.get(i).setBounds(x1, 60 + y, 170, 25);
+			// if (i != 4)
+			fields.get(i).setBounds(x1, 60 + y, 170, 25);
 
-//			if (i == 4) {
-//				fwd.setBounds(x1 + 78, 49 + y, 16, 16);
-//				contactPerson.setBounds(x1, 60 + y - 7, 100, 11);
-//			}
+			// if (i == 4) {
+			// fwd.setBounds(x1 + 78, 49 + y, 16, 16);
+			// contactPerson.setBounds(x1, 60 + y - 7, 100, 11);
+			// }
 
 			add(fields.get(i));
 		}
@@ -125,38 +125,40 @@ public class SupplierForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				/*System.out.println("name: " + fields.get(0).getText());
-				System.out.println("address: " + fields.get(1).getText());
-				System.out.println("tin: " + fields.get(2).getText());
-				System.out.println("contactNo: " + fields.get(3).getText());
-				System.out.println("contactPerson: " + fields.get(4).getText());
-				System.out.println("remarks: " + fields.get(5).getText());*/
+				/*
+				 * System.out.println("name: " + fields.get(0).getText());
+				 * System.out.println("address: " + fields.get(1).getText());
+				 * System.out.println("tin: " + fields.get(2).getText());
+				 * System.out.println("contactNo: " + fields.get(3).getText());
+				 * System.out.println("contactPerson: " + fields.get(4).getText());
+				 * System.out.println("remarks: " + fields.get(4).getText());
+				 */
 
-				if(isValidated()){
-				Person person = null;
-				Supplier s = new Supplier(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText(), fields.get(3).getText(), person,
-						fields.get(5).getText());
+				if (isValidated()) {
+					Person person = null;
+					Supplier s = new Supplier(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText(), fields.get(3).getText(), person,
+							fields.get(4).getText());
 
-				try {
-					Manager.supplierManager.addSupplier(s);
-					Values.centerPanel.changeTable(Values.SUPPLIERS);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
+					try {
+						Manager.supplierManager.addSupplier(s);
+						Values.centerPanel.changeTable(Values.SUPPLIERS);
+						new SuccessPopup("Add").setVisible(true);
+						clearFields();
 
-					Values.deliveryForm.refreshSupplier(true);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+						Values.deliveryForm.refreshSupplier(true);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
 					error.setText(msg);
 
 			}
 		});
 
-		//add(fwd);
-		//add(contactPerson);
-		//add(personCombo);
+		// add(fwd);
+		// add(contactPerson);
+		// add(personCombo);
 
 		add(clear);
 		add(save);
@@ -166,13 +168,13 @@ public class SupplierForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
+
 		name = fields.get(0).getText();
-		
-		if (!name.equals("")){
+
+		if (!name.equals("")) {
 			return true;
 		}
-		
+
 		msg = "Name is required ";
 
 		return false;
@@ -189,29 +191,31 @@ public class SupplierForm extends SimplePanel {
 
 	public void refreshCustomer(boolean remove) {
 
-		if (remove)
-			remove(personCombo);
-
-		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			personCombo = new JComboBox(model);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		personCombo.setSelectedIndex(-1);
-
-		personCombo.setEditable(true);
-		personField = (JTextField) personCombo.getEditor().getEditorComponent();
-		personField.setText("");
-		personField.addKeyListener(new ComboKeyHandler(personCombo));
-
-		personCombo.setSelectedIndex(-1);
-
-		personCombo.setBounds(215, 135, 170, 20);
-
-		add(personCombo);
+		// if (remove)
+		// remove(personCombo);
+		//
+		// try {
+		// model = new
+		// DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+		// personCombo = new JComboBox(model);
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
+		// personCombo.setSelectedIndex(-1);
+		//
+		// personCombo.setEditable(true);
+		// personField = (JTextField)
+		// personCombo.getEditor().getEditorComponent();
+		// personField.setText("");
+		// personField.addKeyListener(new ComboKeyHandler(personCombo));
+		//
+		// personCombo.setSelectedIndex(-1);
+		//
+		// personCombo.setBounds(215, 135, 170, 20);
+		//
+		// add(personCombo);
 
 	}
 }

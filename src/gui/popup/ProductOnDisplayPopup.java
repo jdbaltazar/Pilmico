@@ -93,6 +93,7 @@ public class ProductOnDisplayPopup extends JDialog {
 			public void mouseClicked(MouseEvent m) {
 
 				for (RowPanel rp : rowPanel) {
+					// BETTER code here
 					Product p = rp.getOnDisplayProduct();
 					p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
 					p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo());
