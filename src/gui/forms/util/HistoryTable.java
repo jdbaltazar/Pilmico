@@ -38,6 +38,15 @@ public class HistoryTable extends JScrollPane {
 
 			setPreferredSize(new Dimension(390, 150));
 		}
+		else if(Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)){
+			sbTable.getColumnModel().getColumn(0).setMinWidth(150);
+			sbTable.getColumnModel().getColumn(0).setMaxWidth(150);
+			
+			sbTable.getColumnModel().getColumn(1).setMaxWidth(160);
+			sbTable.getColumnModel().getColumn(1).setMinWidth(160);
+
+			setPreferredSize(new Dimension(430, 150));
+		}
 		else{
 			sbTable.getColumnModel().getColumn(1).setMinWidth(160);
 			sbTable.getColumnModel().getColumn(1).setMaxWidth(160);

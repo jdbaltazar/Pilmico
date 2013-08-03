@@ -68,6 +68,7 @@ public class EmployeeForm extends SimplePanel {
 
 	public EmployeeForm() {
 		super("Add Employee");
+	
 		addComponents();
 		fillEntries();
 	}

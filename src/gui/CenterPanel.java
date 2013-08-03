@@ -90,8 +90,8 @@ public class CenterPanel extends SoyPanel {
 			// add(tableUtilPanel, BorderLayout.PAGE_END);
 
 			add(new AddEntryPanel(), BorderLayout.PAGE_START);
-			add(new MenuPanel(), BorderLayout.PAGE_END);
 			add(new EditPanel(), BorderLayout.LINE_START);
+			add(new MenuPanel(), BorderLayout.PAGE_END);
 			fillProducts();
 
 			ColumnSizer.resizeColumns(Values.tablePanel.getSoyTable(), Values.PRODUCTS);
@@ -139,6 +139,7 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		case Values.EMPLOYEES:
+			System.out.println("employeees here");
 			fillEmployees();
 			break;
 
@@ -641,6 +642,7 @@ public class CenterPanel extends SoyPanel {
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, employees, Tables.EMPLOYEES), Tables.EMPLOYEES), BorderLayout.CENTER);
 
+			System.out.println("employees again here");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -90,7 +90,6 @@ public class SBTable extends JTable implements MouseListener {
 		setShowGrid(false);
 		setOpaque(false);
 		setFont(new Font("Lucida Sans", Font.PLAIN, 12));
-		// removeColumn(getColumnModel().getColumn(getColumnCount()-1));
 
 		sorter = new TableRowSorter<MyTableModel>(model);
 		setRowSorter(sorter);

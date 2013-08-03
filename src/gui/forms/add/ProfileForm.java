@@ -89,7 +89,7 @@ public class ProfileForm extends SimplePanel {
 					clearFields();
 					
 					Values.salesForm.refreshCustomer(true);
-					Values.supplierForm.refreshCustomer(true);
+//					Values.supplierForm.refreshCustomer(true);
 					Values.accountReceivablesForm.refreshCustomer(true);
 					Values.discountForm.refreshDropdown(true);
 					Values.arPaymentForm.refreshDropdown(true);

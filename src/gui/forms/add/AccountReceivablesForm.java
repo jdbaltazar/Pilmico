@@ -296,7 +296,7 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		save.setBounds(290, 300, 80, 30);
 
-		error.setBounds(325, 297, 300, 22);
+		error.setBounds(325, 290, 300, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
