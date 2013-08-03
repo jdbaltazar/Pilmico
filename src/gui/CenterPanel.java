@@ -65,20 +65,23 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		// add(new LoginPanel());
+		 add(new LoginPanel());
 
-		try {
-			Manager.getInstance().login("manager", "pilmico".toCharArray());
-		} catch (Exception e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		changeTable(Values.HOME);
+		 //jd -> pyAmxijgjj7EEhIrn+JgRQ== 
+		 //mine -> K7H4xFqWVe0bKXypGARJvQ==
+		 
+//		try {
+//			Manager.getInstance().login("manager", "pilmico".toCharArray());
+//		} catch (Exception e) { // TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		if (val != Values.HOME)
+//		if (val != Values.HOME)
 			remove(getComponent(getComponentCount() - 1));
 		// remove(getComponent(0));
 

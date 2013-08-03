@@ -1,6 +1,7 @@
 package gui;
 
 import gui.forms.util.FormField;
+import gui.forms.util.ViewFormLabel;
 import gui.panels.TablePanel;
 import gui.popup.DatabaseToolPanel;
 import gui.popup.EditStoreInfoPopup;
@@ -54,7 +55,7 @@ public class TopPanel extends SoyPanel {
 	private BufferedImage image, image1;
 	private ImageIcon icon;
 	private JButton close, minimize, close2;
-	private JLabel cashIN, cashINLabel, cashOUT, cashOUTLabel;
+	private JLabel cashIN, cashINLabel, cashOUT, cashOUTLabel, trialLabel;
 	public static FormField searchField;
 
 	public SBButton store_info, tools;
@@ -82,6 +83,9 @@ public class TopPanel extends SoyPanel {
 		setLayout(null);
 
 		icon = new ImageIcon("images/search.png");
+		
+		trialLabel = new ViewFormLabel("Trial period only until 10 Aug 2013.");
+		trialLabel.setForeground(Color.decode("#E62E00"));
 
 		close2 = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		close = new SBButton("exit.png", "exit2.png", "Close");
@@ -157,8 +161,8 @@ public class TopPanel extends SoyPanel {
 				// TODO Auto-generated method stub
 
 
-				balloonTip.setVisible(!balloonTip.isVisible());
 				if (Manager.loggedInAccount == null) {
+					balloonTip.setVisible(!balloonTip.isVisible());
 				}
 			}
 		});
@@ -198,6 +202,8 @@ public class TopPanel extends SoyPanel {
 
 		cashOUTLabel.setBounds(540, 80, 90, 15);// 72
 		cashOUT.setBounds(635, 79, 160, 16);
+		
+		trialLabel.setBounds(540, 82, 250, 15);
 
 	}
 
@@ -241,11 +247,13 @@ public class TopPanel extends SoyPanel {
 		add(close);
 		add(minimize);
 
-		add(cashINLabel);
-		add(cashIN);
+//		add(cashINLabel);
+//		add(cashIN);
+		
+		add(trialLabel);
 
-		add(cashOUTLabel);
-		add(cashOUT);
+//		add(cashOUTLabel);
+//		add(cashOUT);
 
 	}
 

@@ -558,7 +558,7 @@ public class InventorySheetForm extends SimplePanel {
 	private void addComponents() {
 
 		dateLabel.setBounds(startX, startY, 40, 20);
-		dateDropdown.setBounds(startX + dateLabel.getWidth(), startY, 180, 20);
+		dateDropdown.setBounds(startX + dateLabel.getWidth(), startY, 110, 20);
 		
 		dateStatus.setBounds(dateDropdown.getWidth() + dateDropdown.getX() + 5, startY + 2, 16, 16);
 
@@ -1003,7 +1003,8 @@ public class InventorySheetForm extends SimplePanel {
 			public void mouseClicked(MouseEvent e) {
 
 				if(isValidated()){
-				Date d = (Date) dateDropdown.getSelectedItem();
+//				Date d = (Date) dateDropdown.getSelectedItem();
+				Date d = (Date) validDates.get(dateDropdown.getSelectedIndex());
 				inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
 				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				inventorySheet.getInventorySheetData().setOverAmount(0d);
