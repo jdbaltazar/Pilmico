@@ -3,9 +3,11 @@ package gui.forms.add;
 import gui.forms.util.DateTool;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.ISRowPanel;
+import gui.forms.util.IconLabel;
 import gui.forms.util.PDControlScrollPane;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewportDragScrollListener;
+import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
 import java.awt.Color;
@@ -15,6 +17,7 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -28,6 +31,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -120,11 +124,13 @@ public class InventorySheetForm extends SimplePanel {
 	private JLabel actualCashCount;
 
 	private MainFormLabel dateLabel;
-	private FormDropdown date;
+	private FormDropdown dateDropdown;
 
 	private SoyButton save;
 
 	private JButton inputPCOH;
+
+	private IconLabel dateStatus;
 
 	private TableHeaderLabel productLabel2, productLabel, sack1Label, kg1Label, sack2Label, kg2Label, sack3Label, kg3Label, sack4Label, kg4Label,
 			sack5Label, kg5Label, sack6Label, kg6Label, sack7Label, kg7Label, sack8Label, kg8Label, productTotalLabel, productTotalLabel2,
@@ -175,7 +181,8 @@ public class InventorySheetForm extends SimplePanel {
 		save = new SoyButton("Save");
 		save.setBounds(85, 45, 80, 30);
 
-		// navigationPanel.setBackground(Color.red);
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "");
+		dateStatus.setVisible(false);
 
 		isPanel = new JPanel();
 		isPanel.setLayout(null);
@@ -198,14 +205,21 @@ public class InventorySheetForm extends SimplePanel {
 
 		dateLabel = new MainFormLabel("Date:");
 
-		date = new FormDropdown();
+		dateDropdown = new FormDropdown();
 		// validDates.add(new Date());
 		// model = new DefaultComboBoxModel<Date>();
 		// date.setModel(model);
-		date.addItemListener(new ItemListener() {
+		dateDropdown.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 
+				if (dateDropdown.getSelectedIndex() != 0 && dateDropdown.getItemCount() != 1) {
+					dateStatus.setVisible(true);
+					dateStatus
+							.setWarningToolTip("Selecting date that is NOT the earliest is not recommended. Pending transactions prior to this date will be INVALIDATED if saved.");
+				} else {
+					dateStatus.setVisible(false);
+				}
 				try {
 					build();
 				} catch (Exception e) {
@@ -543,7 +557,9 @@ public class InventorySheetForm extends SimplePanel {
 	private void addComponents() {
 
 		dateLabel.setBounds(startX, startY, 40, 20);
-		date.setBounds(startX + dateLabel.getWidth(), startY, 180, 20);
+		dateDropdown.setBounds(startX + dateLabel.getWidth(), startY, 110, 20);
+
+		dateStatus.setBounds(dateDropdown.getWidth() + dateDropdown.getX() + 5, startY + 2, 16, 16);
 
 		sectionLabel.get(0).setText("INVENTORY");
 		sectionLabel.get(0).setBounds(startX, dateLabel.getY() + dateLabel.getHeight() + 30, 150, 20);
@@ -801,10 +817,11 @@ public class InventorySheetForm extends SimplePanel {
 				if (uP.getInput().equals("")) {
 					computationLabel.get(0).setText("0.00");
 				} else {
-					computationLabel.get(0).setText(uP.getInput());
+					computationLabel.get(0).setText(Double.parseDouble(uP.getInput()) + "");
 				}
 				inventorySheet.setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				updateCashOnHandSummary();
+				updateActualCashCountAndSummary();
 			}
 		});
 
@@ -837,7 +854,8 @@ public class InventorySheetForm extends SimplePanel {
 			summaryValues.get(i).setBounds(summary1Label.getX() + x, summary1Label.getY() + summary1Label.getHeight(), 176, 30);
 
 		isPanel.add(dateLabel);
-		isPanel.add(date);
+		isPanel.add(dateDropdown);
+		isPanel.add(dateStatus);
 
 		isPanel.add(productLabel);
 
@@ -983,58 +1001,66 @@ public class InventorySheetForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				Date d = (Date) validDates.get(date.getSelectedIndex());
-				inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
-				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
-				inventorySheet.getInventorySheetData().setOverAmount(0d);
-				inventorySheet.getInventorySheetData().setShortAmount(0d);
+				if (isValidated()) {
+					Date d = (Date) validDates.get(dateDropdown.getSelectedIndex());
+					inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
+					inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
+					inventorySheet.getInventorySheetData().setOverAmount(0d);
+					inventorySheet.getInventorySheetData().setShortAmount(0d);
 
-				double coh = Double.parseDouble(summaryValues.get(0).getText());
-				double acc = Double.parseDouble(summaryValues.get(1).getText());
-				if (coh > acc) {
-					inventorySheet.getInventorySheetData().setShortAmount(coh - acc);
-				} else if (coh < acc) {
-					inventorySheet.getInventorySheetData().setOverAmount(acc - coh);
-				}
+					double coh = Double.parseDouble(summaryValues.get(0).getText());
+					double acc = Double.parseDouble(summaryValues.get(1).getText());
+					if (coh > acc) {
+						inventorySheet.getInventorySheetData().setShortAmount(coh - acc);
+					} else if (coh < acc) {
+						inventorySheet.getInventorySheetData().setOverAmount(acc - coh);
+					}
 
-				inventorySheet.getInventorySheetData().setIssuedBy(Manager.loggedInAccount);
-				inventorySheet.getInventorySheetData().setRemarks("");
+					inventorySheet.getInventorySheetData().setIssuedBy(Manager.loggedInAccount);
+					inventorySheet.getInventorySheetData().setRemarks("");
 
-				// breakdown
-				Breakdown breakdown = new Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(), cashBreakdown.get(7)
-						.getCashBreakdownRowQuantity(), inventorySheet.getInventorySheetData());
+					// breakdown
+					Breakdown breakdown = new Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(), cashBreakdown.get(7)
+							.getCashBreakdownRowQuantity(), inventorySheet.getInventorySheetData());
 
-				for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 6; i++) {
+
+						try {
+
+							if (cashBreakdown.get(i).getCashBreakdownRowQuantity() != 0) {
+								Denomination den = Manager.inventorySheetDataManager.searchDenomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(
+										i));
+								if (den == null)
+									den = new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
+								breakdown.addBreakdownLine(new BreakdownLine(breakdown, den, cashBreakdown.get(i).getCashBreakdownRowQuantity()));
+							}
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+
+					inventorySheet.getInventorySheetData().setBreakdown(breakdown);
+					inventorySheet.finalize();
 
 					try {
-
-						if (cashBreakdown.get(i).getCashBreakdownRowQuantity() != 0) {
-							Denomination den = Manager.inventorySheetDataManager.searchDenomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
-							if (den == null)
-								den = new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
-							breakdown.addBreakdownLine(new BreakdownLine(breakdown, den, cashBreakdown.get(i).getCashBreakdownRowQuantity()));
+						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
+						for (Product p : products) {
+							p.resetBeginningInventory();
+							Manager.productManager.updateProduct(p);
 						}
+
+						// insert code here to invalidate "sandwiched" transactions
+
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
+
+					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
+					new SuccessPopup("Add").setVisible(true);
+
+					Rectangle rect = new Rectangle(0, 0, 10, 10);
+					isPanel.scrollRectToVisible(rect);
 				}
-
-				inventorySheet.getInventorySheetData().setBreakdown(breakdown);
-				inventorySheet.finalize();
-
-				try {
-					Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
-					for (Product p : products) {
-						p.resetBeginningInventory();
-						Manager.productManager.updateProduct(p);
-					}
-
-					// insert code here to invalidate "sandwiched" transactions
-
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-
 			}
 		});
 
@@ -1043,6 +1069,14 @@ public class InventorySheetForm extends SimplePanel {
 		add(navigationPanel);
 		add(isPane);
 
+	}
+
+	private boolean isValidated() {
+
+		// if(actualCashCount.getText().equals("0.00"))
+		// return false;
+
+		return true;
 	}
 
 	private void fillTables() {
@@ -1114,7 +1148,7 @@ public class InventorySheetForm extends SimplePanel {
 				dates.add(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(i)));
 			}
 
-			date.setModel(new DefaultComboBoxModel(dates.toArray()));
+			dateDropdown.setModel(new DefaultComboBoxModel(dates.toArray()));
 		}
 	}
 
@@ -1130,10 +1164,16 @@ public class InventorySheetForm extends SimplePanel {
 			}
 		}
 
-		if (date.getItemCount() > 0) {
+		// <<<<<<< HEAD
+		// if (dateDropdown.getItemCount() > 0) {
+		// Date selectedDate = (Date) dateDropdown.getSelectedItem();
+		// System.out.println("selected date: " + selectedDate.toString());
+		// fillEntries(selectedDate);
+		// =======
+		if (dateDropdown.getItemCount() > 0) {
 			// String selectedDate = (String) date.getSelectedItem();
 			// System.out.println("selected date: " + selectedDate);
-			fillEntries(validDates.get(date.getSelectedIndex()));
+			fillEntries(validDates.get(dateDropdown.getSelectedIndex()));
 			return true;
 		}
 
@@ -1155,9 +1195,9 @@ public class InventorySheetForm extends SimplePanel {
 
 		validDates = new ArrayList<Date>();
 		validDates.add(d);
-		date.removeAll();
-		date.addItem(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d));
-		fillEntries(validDates.get(date.getSelectedIndex()));
+		dateDropdown.removeAll();
+		dateDropdown.addItem(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d));
+		fillEntries(validDates.get(dateDropdown.getSelectedIndex()));
 
 	}
 

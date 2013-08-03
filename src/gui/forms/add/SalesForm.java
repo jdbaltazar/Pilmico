@@ -95,6 +95,10 @@ public class SalesForm extends SimplePanel {
 	private ErrorLabel error;
 	private String msg = "";
 	private SBButton customerFwd, productFwd;
+	
+	private Date issueDateContainer;
+	
+	private boolean issueDateChanged = false;
 
 	public SalesForm() {
 		// TODO Auto-generated constructor stub
@@ -198,6 +202,15 @@ public class SalesForm extends SimplePanel {
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
 				determineDateStatus();
+			}
+		});
+		
+		issueDate.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				issueDateChanged = true;
 			}
 		});
 
@@ -498,12 +511,17 @@ public class SalesForm extends SimplePanel {
 
 						Date d = ((SpinnerDateModel) date.getModel()).getDate();
 						System.out.println("date: " + d.toString());
-						Date d2 = ((SpinnerDateModel) issueDate.getModel()).getDate();
+						
+						if(issueDateChanged)
+							issueDateContainer = ((SpinnerDateModel) issueDate.getModel()).getDate();
+						else
+							issueDateContainer = null;
+						
 						Person p = null;
 						if (customerCombo.getSelectedItem() != null) {
 							p = (Person) customerCombo.getSelectedItem();
 						}
-						Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), d2, receipt_no.getText(), Manager.loggedInAccount);
+						Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), issueDateContainer, receipt_no.getText(), Manager.loggedInAccount);
 
 						s.setRemarks(uP.getInput());
 
@@ -667,6 +685,7 @@ public class SalesForm extends SimplePanel {
 		rowPanel.clear();
 		refreshDate();
 
+		issueDateChanged = false;
 		rc_no.setText("");
 		receipt_no.setText("");
 		issuedAt.setText("");
@@ -722,41 +741,3 @@ public class SalesForm extends SimplePanel {
 		this.qtyKG = qtyKG;
 	}
 }
-
-/*
- * private JPanel isPanel, productsPanel, productsPanel2, salesPanel, delPanel,
- * arPanel, arPaymentPanel, caPaymentPanel, pulloutPanel, expensesPanel,
- * caPanel, discountPanel, ar2Panel, salaryPanel, depositPanel,
- * cashBreakdownPanel;
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * private ArrayList<JLabel> computationLabel = new ArrayList<JLabel>(); private
- * ArrayList<ISRowPanel> cashBreakdown = new ArrayList<ISRowPanel>();
- * 
- * private ArrayList<ISRowPanel> productsInventory = new
- * ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> productsInventory2 =
- * new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> salesInventory =
- * new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> deliveryInventory
- * = new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> arInventory =
- * new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> arPaymentInventory
- * = new ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel>
- * caPaymentInventory = new ArrayList<ISRowPanel>(); private
- * ArrayList<ISRowPanel> pullOutInventory = new ArrayList<ISRowPanel>(); private
- * ArrayList<ISRowPanel> expensesInventory = new ArrayList<ISRowPanel>();
- * private ArrayList<ISRowPanel> caInventory = new ArrayList<ISRowPanel>();
- * private ArrayList<ISRowPanel> discountInventory = new
- * ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> salaryInventory = new
- * ArrayList<ISRowPanel>(); private ArrayList<ISRowPanel> depositInventory = new
- * ArrayList<ISRowPanel>();
- */

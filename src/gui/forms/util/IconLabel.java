@@ -21,6 +21,7 @@ public class IconLabel extends JLabel{
 	private JLabel jlabel;
 	MinimalBalloonStyle style2 = new MinimalBalloonStyle(Color.decode("#B2FEE1"), 7);
 	MinimalBalloonStyle style3 = new MinimalBalloonStyle(Color.decode("#FFD6D6"), 7);
+	MinimalBalloonStyle warningStyle = new MinimalBalloonStyle(Color.decode("#FFDB99"), 7);
 
 	public IconLabel(ImageIcon icon, String tooltip){
 		super(icon);
@@ -56,6 +57,18 @@ public class IconLabel extends JLabel{
 			balloonTip.setStyle(style2);
 		else
 			balloonTip.setStyle(style3);
+	}
+	
+	public void setWarningToolTip(String text) {
+		
+		setIcon(new ImageIcon("images/invalid_date.png"));
+		
+		jlabel.setText(text);
+		
+		balloonTip.refreshLocation();
+		balloonTip.setContents(jlabel);
+		
+		balloonTip.setStyle(warningStyle);
 	}
 
 }

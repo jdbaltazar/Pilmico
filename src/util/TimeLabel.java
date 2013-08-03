@@ -36,6 +36,6 @@ public class TimeLabel extends JLabel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		now = new Date();
-		setText(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(now));
+		setText(DateFormatter.getInstance().getFormat(Utility.DMYHMSAFormat).format(now));
 	}
 }
