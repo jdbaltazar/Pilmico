@@ -52,10 +52,9 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-		
-		table.setToolTipText(table.getValueAt(
-				table.convertRowIndexToModel(row),
-				table.convertColumnIndexToModel(column)).toString());
+
+		if(!table.getName().equals(Tables.EMPLOYEES))
+			table.setToolTipText(table.getValueAt(table.convertRowIndexToModel(row),table.convertColumnIndexToModel(column)).toString());
 
 		setHorizontalAlignment(SwingConstants.CENTER);
 

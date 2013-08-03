@@ -52,7 +52,7 @@ public class SupplierForm extends SimplePanel {
 	public SupplierForm() {
 		super("Add Supplier");
 		addComponents();
-		fillEntries();
+		//fillEntries();
 		Values.supplierForm = this;
 	}
 
@@ -86,11 +86,11 @@ public class SupplierForm extends SimplePanel {
 
 		contactPerson = new DropdownLabel("Contact Person");
 
-		refreshCustomer(false);
+//		refreshCustomer(false);
 
 		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 70) {
 
-			fields.add(new FormField(Values.supplierFormLabel[i], 100, Color.white, Color.gray));
+			fields.add(new FormField(Tables.supplierFormLabel[i], 100, Color.white, Color.gray));
 
 			if (i == 3) {
 				x1 = 215;
@@ -98,13 +98,13 @@ public class SupplierForm extends SimplePanel {
 				y = 0;
 			}
 
-			if (i != 4)
+//			if (i != 4)
 				fields.get(i).setBounds(x1, 60 + y, 170, 25);
 
-			if (i == 4) {
-				fwd.setBounds(x1 + 78, 49 + y, 16, 16);
-				contactPerson.setBounds(x1, 60 + y - 7, 100, 11);
-			}
+//			if (i == 4) {
+//				fwd.setBounds(x1 + 78, 49 + y, 16, 16);
+//				contactPerson.setBounds(x1, 60 + y - 7, 100, 11);
+//			}
 
 			add(fields.get(i));
 		}
@@ -154,9 +154,9 @@ public class SupplierForm extends SimplePanel {
 			}
 		});
 
-		add(fwd);
-		add(contactPerson);
-		add(personCombo);
+		//add(fwd);
+		//add(contactPerson);
+		//add(personCombo);
 
 		add(clear);
 		add(save);

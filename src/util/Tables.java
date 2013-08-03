@@ -45,7 +45,7 @@ public class Tables {
 	public static String[] employeeFormLabel = { "Last Name*", "First Name*", "Middle Name", "Address", "Contact No.", "Designation*",
 			"Employment Status*", "Starting Date", "Salary*", "Remarks", "End Date" };
 
-	public static String[] supplierFormLabel = { "Name*", "Address", "TIN", "Contact No.", "Contact Person", "Remarks" };
+	public static String[] supplierFormLabel = { "Name*", "Address", "TIN", "Contact No.", "Remarks" };
 
 	public static String[] cashAdvanceFormLabel = { "Date*", "Issued By*", "Issued For*", "Amount*", "Balance*" };
 

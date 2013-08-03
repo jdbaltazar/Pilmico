@@ -108,7 +108,7 @@ public class EditSupplierPanel extends EditFormPanel {
 				x += 230;
 			}
 
-			if (i != 4) {
+			if (i != 5) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Values.supplierFormLabel[i]));
 
@@ -122,14 +122,17 @@ public class EditSupplierPanel extends EditFormPanel {
 				fieldCtr++;
 			}
 			
-			if (i == 4) {
-				labels.add(new FormLabel(Values.supplierFormLabel[i]));
-				labels.get(labelsCtr).setBounds(x, y2 + y, 100, 15);
-
-				contactPersonCombo.setBounds(x, y1 + y, 170, 25);
-
-				labelsCtr++;
-			}
+//			if (i == 4) {
+//				labels.add(new FormLabel(Values.supplierFormLabel[i]));
+//				labels.get(labelsCtr).setBounds(x, y2 + y, 100, 15);
+//
+//				contactPersonCombo.setBounds(x, y1 + y, 170, 25);
+//
+//				labels.get(labelsCtr).setVisible(false);
+//				contactPersonCombo.setVisible(false);
+//				
+//				labelsCtr++;
+//			}
 
 		}
 
