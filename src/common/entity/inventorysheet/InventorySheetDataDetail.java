@@ -51,18 +51,32 @@ public class InventorySheetDataDetail {
 		super();
 	}
 
-	public InventorySheetDataDetail(InventorySheetData inventorySheetData, Product product, double beginningInventoryInSack,
-			double beginningInventoryInKilo, double onDisplayInSack, double onDisplayInKilo, double pricePerSack, double pricePerKilo) {
+	// public InventorySheetDataDetail(InventorySheetData inventorySheetData,
+	// Product product, double beginningInventoryInSack,
+	// double beginningInventoryInKilo, double onDisplayInSack, double
+	// onDisplayInKilo, double pricePerSack, double pricePerKilo) {
+	// super();
+	// this.inventorySheetData = inventorySheetData;
+	// this.product = product;
+	// this.beginningInventoryInSack = beginningInventoryInSack;
+	// this.beginningInventoryInKilo = beginningInventoryInKilo;
+	// this.onDisplayInSack = onDisplayInSack;
+	// this.onDisplayInKilo = onDisplayInKilo;
+	// this.pricePerSack = pricePerSack;
+	// this.pricePerKilo = pricePerKilo;
+	// }
+
+	public InventorySheetDataDetail(InventorySheetData inventorySheetData, Product product, double onDisplayInSack, double onDisplayInKilo,
+			double pricePerSack, double pricePerKilo) {
 		super();
 		this.inventorySheetData = inventorySheetData;
 		this.product = product;
-		this.beginningInventoryInSack = beginningInventoryInSack;
-		this.beginningInventoryInKilo = beginningInventoryInKilo;
+		this.beginningInventoryInSack = 0d;
+		this.beginningInventoryInKilo = 0d;
 		this.onDisplayInSack = onDisplayInSack;
 		this.onDisplayInKilo = onDisplayInKilo;
 		this.pricePerSack = pricePerSack;
 		this.pricePerKilo = pricePerKilo;
-
 	}
 
 	public int getId() {

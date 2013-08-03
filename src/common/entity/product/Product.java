@@ -235,9 +235,14 @@ public class Product {
 		return quantityOnStockInSack + quantityOnDisplayInSack;
 	}
 
-	// public void setQuantityInSack2(double totalQuantityInSack) {
-	// this.quantityOnDisplayInSack = quantityOnDisplayInSack;
-	// }
+
+	public double getQuantityOnStockInSack() {
+		return quantityOnStockInSack;
+	}
+
+	public double getQuantityOnStockInKilo() {
+		return quantityOnStockInKilo;
+	}
 
 	public void incrementQuantityInSack(double incrementQuantityInSack) throws Exception {
 		if (incrementQuantityInSack < 0)
@@ -329,33 +334,37 @@ public class Product {
 		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
 	}
 
-	public double getQuantitySoldTodayInSack() {
-		return quantitySoldTodayInSack;
-	}
+	// public double getQuantitySoldTodayInSack() {
+	// return quantitySoldTodayInSack;
+	// }
 
-	public void setQuantitySoldTodayInSack(double quantitySoldTodayInSack) throws Exception {
-		if (this.quantitySoldTodayInSack < 0d)
-			throw new Exception("Cannot set sold sack qty for product: " + id + " \nValue cannot be negative");
-		this.quantitySoldTodayInSack = quantitySoldTodayInSack;
-	}
+	// public void setQuantitySoldTodayInSack(double quantitySoldTodayInSack)
+	// throws Exception {
+	// if (this.quantitySoldTodayInSack < 0d)
+	// throw new Exception("Cannot set sold sack qty for product: " + id +
+	// " \nValue cannot be negative");
+	// this.quantitySoldTodayInSack = quantitySoldTodayInSack;
+	// }
 
-	public double getQuantitySoldTodayInKilo() {
-		return quantitySoldTodayInKilo;
-	}
+	// public double getQuantitySoldTodayInKilo() {
+	// return quantitySoldTodayInKilo;
+	// }
 
-	public void setQuantitySoldTodayInKilo(double quantitySoldTodayInKilo) throws Exception {
-		if (this.quantitySoldTodayInKilo < 0d)
-			throw new Exception("Cannot set sold kilo qty for product: " + id + " \nValue cannot be negative");
-		this.quantitySoldTodayInKilo = quantitySoldTodayInKilo;
-	}
+	// public void setQuantitySoldTodayInKilo(double quantitySoldTodayInKilo)
+	// throws Exception {
+	// if (this.quantitySoldTodayInKilo < 0d)
+	// throw new Exception("Cannot set sold kilo qty for product: " + id +
+	// " \nValue cannot be negative");
+	// this.quantitySoldTodayInKilo = quantitySoldTodayInKilo;
+	// }
 
-	public double getBeginningInventoryInSack() {
-		return getQuantityInSack() + quantitySoldTodayInSack;
-	}
-
-	public double getBeginningInventoryInKilo() {
-		return getQuantityInKilo() + quantitySoldTodayInKilo;
-	}
+	// public double getBeginningInventoryInSack() {
+	// return getQuantityInSack() + quantitySoldTodayInSack;
+	// }
+	//
+	// public double getBeginningInventoryInKilo() {
+	// return getQuantityInKilo() + quantitySoldTodayInKilo;
+	// }
 
 	public void resetBeginningInventory() {
 		quantitySoldTodayInSack = 0d;

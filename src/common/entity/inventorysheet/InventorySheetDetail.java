@@ -199,4 +199,15 @@ public class InventorySheetDetail {
 	public double getCombinedSalesAmountForKilo() {
 		return getOffTakeInKilo() * inventorySheetDataDetail.getPricePerKilo();
 	}
+
+	public void computeValues() {
+		double beginningInventoryInSack = (getProduct().getQuantityOnStockInSack() + getOffTakeInSack() + pulloutsInSack + getOnDisplayInSack())
+				- deliveriesInSack;
+		double beginningInventoryInKilo = (getProduct().getQuantityOnStockInKilo() + getOffTakeInKilo() + pulloutsInKilo + getOnDisplayInKilo())
+				- deliveriesInKilo;
+		inventorySheetDataDetail.setBeginningInventoryInSack(beginningInventoryInSack);
+		inventorySheetDataDetail.setBeginningInventoryInKilo(beginningInventoryInKilo);
+
+		System.out.println("beg inv in sack for product " + getProduct().getName() + ": " + beginningInventoryInSack);
+	}
 }

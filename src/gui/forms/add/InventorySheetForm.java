@@ -1107,13 +1107,12 @@ public class InventorySheetForm extends SimplePanel {
 		validDates = DateTool.addUniqueDatesRemoveTime(validDates, depositsDates);
 
 		validDates = DateTool.sortDateEarliestFirst(validDates);
-		
 
 		if (validDates.size() > 0) {
-			for(int i = 0; i < validDates.size(); i++){
+			for (int i = 0; i < validDates.size(); i++) {
 				DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(i));
 			}
-			
+
 			date.setModel(new DefaultComboBoxModel(validDates.toArray()));
 		}
 	}
@@ -1154,7 +1153,7 @@ public class InventorySheetForm extends SimplePanel {
 		}
 
 		DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d);
-		
+
 		date.addItem(d);
 		fillEntries(d);
 
@@ -1189,10 +1188,18 @@ public class InventorySheetForm extends SimplePanel {
 
 		InventorySheetData inventorySheetData = new InventorySheetData();
 		inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0, Manager.loggedInAccount);
+		// for (Product p : products) {
+		// inventorySheetData.addInventorySheetDataDetail(new
+		// InventorySheetDataDetail(inventorySheetData, p,
+		// p.getBeginningInventoryInSack(), p
+		// .getBeginningInventoryInKilo(), p.getQuantityOnDisplayInSack(),
+		// p.getQuantityInKilo(), p.getCurrentPricePerSack(), p
+		// .getCurrentPricePerKilo()));
+		// }
+
 		for (Product p : products) {
-			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, p.getBeginningInventoryInSack(), p
-					.getBeginningInventoryInKilo(), p.getQuantityOnDisplayInSack(), p.getQuantityInKilo(), p.getCurrentPricePerSack(), p
-					.getCurrentPricePerKilo()));
+			inventorySheetData.addInventorySheetDataDetail(new InventorySheetDataDetail(inventorySheetData, p, p.getQuantityOnDisplayInSack(), p
+					.getQuantityInKilo(), p.getCurrentPricePerSack(), p.getCurrentPricePerKilo()));
 		}
 
 		inventorySheet = new InventorySheet(inventorySheetData, new HashSet<Delivery>(deliveries), new HashSet<PullOut>(pullOuts), new HashSet<Sales>(

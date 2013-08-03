@@ -51,64 +51,6 @@ public class InventorySheet implements InventorySheetManager {
 		build();
 	}
 
-	// ///////////////////////////////// methods from inventory sheet data
-
-	public int getId() {
-		return inventorySheetData.getId();
-	}
-
-	public Date getDate() {
-		return inventorySheetData.getDate();
-	}
-
-	public void setDate(Date date) {
-		inventorySheetData.setDate(date);
-	}
-
-	public double getPreviousAcoh() {
-		return inventorySheetData.getPreviousAcoh();
-	}
-
-	public void setPreviousAcoh(double previousAcoh) {
-		inventorySheetData.setPreviousAcoh(previousAcoh);
-	}
-
-	@Override
-	public double getOverAmount() {
-		return inventorySheetData.getOverAmount();
-	}
-
-	public void setOverAmount(double overAmount) {
-		inventorySheetData.setOverAmount(overAmount);
-	}
-
-	@Override
-	public double getShortAmount() {
-		return inventorySheetData.getShortAmount();
-	}
-
-	public void setShortAmount(double shortAmount) {
-		inventorySheetData.setShortAmount(shortAmount);
-	}
-
-	public Account getIssuedBy() {
-		return inventorySheetData.getIssuedBy();
-	}
-
-	public void setIssuedBy(Account issuedBy) {
-		inventorySheetData.setIssuedBy(issuedBy);
-	}
-
-	public String getRemarks() {
-		return inventorySheetData.getRemarks();
-	}
-
-	public void setRemarks(String remarks) {
-		inventorySheetData.setRemarks(remarks);
-	}
-
-	// //////////////////////////////////
-
 	public InventorySheet(InventorySheetData inventorySheetData, Set<Delivery> deliveries, Set<PullOut> pullOuts, Set<Sales> sales,
 			Set<AccountReceivable> accountReceivables, Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments,
 			Set<DailyExpenses> dailyExpenses, Set<CashAdvance> cashAdvances, Set<SalaryRelease> salaryReleases, Set<Deposit> deposits) {
@@ -154,10 +96,8 @@ public class InventorySheet implements InventorySheetManager {
 		inventorySheetData.setCashAdvances(cashAdvances);
 		inventorySheetData.setSalaryReleases(salaryReleases);
 		inventorySheetData.setDeposits(deposits);
-	}
+		computeValues();
 
-	public void finalize() {
-		inventorySheetData.finalize();
 	}
 
 	public void build() {
@@ -228,6 +168,75 @@ public class InventorySheet implements InventorySheetManager {
 		return maxId;
 	}
 
+	public void computeValues() {
+		for (int i = 0; i < maxId; i++) {
+			InventorySheetDetail isd = productInventories.get(i);
+			if (isd != null)
+				isd.computeValues();
+		}
+	}
+
+	public void finalize() {
+		inventorySheetData.finalize();
+	}
+
+	// ///////////////////////////////// methods from inventory sheet data
+
+	public int getId() {
+		return inventorySheetData.getId();
+	}
+
+	public Date getDate() {
+		return inventorySheetData.getDate();
+	}
+
+	public void setDate(Date date) {
+		inventorySheetData.setDate(date);
+	}
+
+	public double getPreviousAcoh() {
+		return inventorySheetData.getPreviousAcoh();
+	}
+
+	public void setPreviousAcoh(double previousAcoh) {
+		inventorySheetData.setPreviousAcoh(previousAcoh);
+	}
+
+	@Override
+	public double getOverAmount() {
+		return inventorySheetData.getOverAmount();
+	}
+
+	public void setOverAmount(double overAmount) {
+		inventorySheetData.setOverAmount(overAmount);
+	}
+
+	@Override
+	public double getShortAmount() {
+		return inventorySheetData.getShortAmount();
+	}
+
+	public void setShortAmount(double shortAmount) {
+		inventorySheetData.setShortAmount(shortAmount);
+	}
+
+	public Account getIssuedBy() {
+		return inventorySheetData.getIssuedBy();
+	}
+
+	public void setIssuedBy(Account issuedBy) {
+		inventorySheetData.setIssuedBy(issuedBy);
+	}
+
+	public String getRemarks() {
+		return inventorySheetData.getRemarks();
+	}
+
+	public void setRemarks(String remarks) {
+		inventorySheetData.setRemarks(remarks);
+	}
+
+	// //////////////////////////////////
 	@Override
 	public double getBeginningInventoryInSackForProduct(int productId) {
 		InventorySheetDetail isd = productInventories.get(productId);
