@@ -4,6 +4,7 @@ import gui.forms.util.EditFormField;
 import gui.forms.util.FormField;
 import gui.forms.util.FormLabel;
 import gui.forms.util.RowPanel;
+import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -71,7 +72,7 @@ public class EditBankForm extends EditFormPanel {
 		init();
 		addComponents();
 		fillEntries();
-		
+
 		Values.editBankForm = this;
 	}
 
@@ -80,8 +81,8 @@ public class EditBankForm extends EditFormPanel {
 		fields.get(1).setText(bank.getAddress());
 		fields.get(2).setText(bank.getContactNo());
 
-		Set<BankAccount>bAccts = bank.getBankAccounts();
-		for(BankAccount ba: bAccts){
+		Set<BankAccount> bAccts = bank.getBankAccounts();
+		for (BankAccount ba : bAccts) {
 			accountRowPanel.add(new RowPanel(ba, bankAccountPanel, Tables.BANK_EDIT));
 			bankAccountPanel.add(accountRowPanel.get(accountRowPanel.size() - 1));
 			alternateRows();
@@ -156,7 +157,7 @@ public class EditBankForm extends EditFormPanel {
 			}
 		});
 
-		panel.add(addRow);
+		// panel.add(addRow);
 
 		panel.add(bankAccountLabel);
 		panel.add(deleteLabel);
@@ -219,6 +220,19 @@ public class EditBankForm extends EditFormPanel {
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				bank.setName(fields.get(0).getText());
+				bank.setAddress(fields.get(1).getText());
+				bank.setContactNo(fields.get(2).getText());
+
+				try {
+					Manager.depositManager.updateBank(bank);
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Edit").setVisible(true);
+					Values.centerPanel.changeTable(Values.BANK);
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 
 			}
 		});

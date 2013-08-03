@@ -1,13 +1,18 @@
 package common.entity.deposit;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class BankAccount {
@@ -23,6 +28,9 @@ public class BankAccount {
 
 	@Column(name = "account_no")
 	private String accountNo;
+
+	@OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Deposit> deposits = new HashSet<Deposit>();
 
 	public BankAccount() {
 		super();
@@ -56,6 +64,14 @@ public class BankAccount {
 
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
+	}
+
+	public Set<Deposit> getDeposits() {
+		return deposits;
+	}
+
+	public void setDeposits(Set<Deposit> deposits) {
+		this.deposits = deposits;
 	}
 
 	public String toString() {

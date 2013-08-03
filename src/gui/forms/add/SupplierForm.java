@@ -35,10 +35,10 @@ public class SupplierForm extends SimplePanel {
 	private static final long serialVersionUID = -4844447081011422390L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
-	private JComboBox personCombo;
+	// private JComboBox personCombo;
 	private JTextField personField;
 
-	private DropdownLabel contactPerson;
+	// private DropdownLabel contactPerson;
 	private DefaultComboBoxModel model;
 
 	private SBButton fwd;
@@ -58,12 +58,12 @@ public class SupplierForm extends SimplePanel {
 
 	public void fillEntries() {
 
-		try {
-			personCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
-			personCombo.setSelectedIndex(-1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			personCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
+//			personCombo.setSelectedIndex(-1);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
@@ -84,7 +84,7 @@ public class SupplierForm extends SimplePanel {
 			}
 		});
 
-		contactPerson = new DropdownLabel("Contact Person");
+		// contactPerson = new DropdownLabel("Contact Person");
 
 		// refreshCustomer(false);
 
@@ -191,29 +191,31 @@ public class SupplierForm extends SimplePanel {
 
 	public void refreshCustomer(boolean remove) {
 
-		if (remove)
-			remove(personCombo);
-
-		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
-			personCombo = new JComboBox(model);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		personCombo.setSelectedIndex(-1);
-
-		personCombo.setEditable(true);
-		personField = (JTextField) personCombo.getEditor().getEditorComponent();
-		personField.setText("");
-		personField.addKeyListener(new ComboKeyHandler(personCombo));
-
-		personCombo.setSelectedIndex(-1);
-
-		personCombo.setBounds(215, 135, 170, 20);
-
-		add(personCombo);
+		// if (remove)
+		// remove(personCombo);
+		//
+		// try {
+		// model = new
+		// DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+		// personCombo = new JComboBox(model);
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
+		// personCombo.setSelectedIndex(-1);
+		//
+		// personCombo.setEditable(true);
+		// personField = (JTextField)
+		// personCombo.getEditor().getEditorComponent();
+		// personField.setText("");
+		// personField.addKeyListener(new ComboKeyHandler(personCombo));
+		//
+		// personCombo.setSelectedIndex(-1);
+		//
+		// personCombo.setBounds(215, 135, 170, 20);
+		//
+		// add(personCombo);
 
 	}
 }

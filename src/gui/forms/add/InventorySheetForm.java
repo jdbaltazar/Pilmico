@@ -1152,7 +1152,10 @@ public class InventorySheetForm extends SimplePanel {
 				((PDControlScrollPane) component).setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			}
 		}
+
+		validDates = new ArrayList<Date>();
 		validDates.add(d);
+		date.removeAll();
 		date.addItem(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d));
 		fillEntries(validDates.get(date.getSelectedIndex()));
 

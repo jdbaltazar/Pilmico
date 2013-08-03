@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.ColumnSizer;
-import util.ColumnsAutoSizer;
 import util.DateFormatter;
 import util.Tables;
 import util.Utility;

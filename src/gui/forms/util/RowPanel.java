@@ -351,8 +351,8 @@ public class RowPanel extends JPanel {
 		if (label.equals(Tables.BANK_EDIT)) {
 
 			BankAccount bankAcct = (BankAccount) object;
-
 			bankAccount.setText(bankAcct.getAccountNo());
+			bankAccount.setEditable(false);
 		}
 
 		deleteRow.setActionCommand(command);
@@ -372,7 +372,9 @@ public class RowPanel extends JPanel {
 		deleteRow.setBounds(214, 9, 16, 16);
 
 		row.add(bankAccount);
-		row.add(deleteRow);
+		// if (!label.equals(Tables.BANK_EDIT)) {
+		// row.add(deleteRow);
+		// }
 
 		add(row);
 	}
