@@ -1109,11 +1109,12 @@ public class InventorySheetForm extends SimplePanel {
 		validDates = DateTool.sortDateEarliestFirst(validDates);
 
 		if (validDates.size() > 0) {
+			List<String> dates = new ArrayList<String>();
 			for (int i = 0; i < validDates.size(); i++) {
-				DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(i));
+				dates.add(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(i)));
 			}
 
-			date.setModel(new DefaultComboBoxModel(validDates.toArray()));
+			date.setModel(new DefaultComboBoxModel(dates.toArray()));
 		}
 	}
 
@@ -1130,9 +1131,9 @@ public class InventorySheetForm extends SimplePanel {
 		}
 
 		if (date.getItemCount() > 0) {
-			Date selectedDate = (Date) date.getSelectedItem();
-			System.out.println("selected date: " + selectedDate.toString());
-			fillEntries(selectedDate);
+			// String selectedDate = (String) date.getSelectedItem();
+			// System.out.println("selected date: " + selectedDate);
+			fillEntries(validDates.get(date.getSelectedIndex()));
 			return true;
 		}
 
@@ -1151,11 +1152,9 @@ public class InventorySheetForm extends SimplePanel {
 				((PDControlScrollPane) component).setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			}
 		}
-
-		DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d);
-
-		date.addItem(d);
-		fillEntries(d);
+		validDates.add(d);
+		date.addItem(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(d));
+		fillEntries(validDates.get(date.getSelectedIndex()));
 
 	}
 

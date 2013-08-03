@@ -298,10 +298,12 @@ public class RowPanel extends JPanel {
 		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplayKG.setPrecision(2);
 		onDisplayKG.setText(product.getQuantityOnDisplayInKilo() == 0 ? "0" : String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+		onDisplayKG.setToolTipText(String.format("%.2f", product.getQuantityInKilo()) + " kilo/s of " + product.getName() + " remaining");
 
 		onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplaySack.setPrecision(2);
 		onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" : String.format("%.2f", product.getQuantityOnDisplayInSack()));
+		onDisplaySack.setToolTipText(String.format("%.2f", product.getQuantityInSack()) + " sack/s of " + product.getName() + " remaining");
 
 		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
 		onDisplaySack.setBounds(209, 5, 60, 20);
