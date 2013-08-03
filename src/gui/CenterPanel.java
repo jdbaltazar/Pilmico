@@ -34,6 +34,7 @@ import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
+import common.entity.log.Log;
 import common.entity.product.Product;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
@@ -721,13 +722,20 @@ public class CenterPanel extends SoyPanel {
 
 		try {
 			String[] headers = { "Date", "Description" };
-			String[][] entries = { { "June 21, 2013", "dummy_acct logged in" } };
+			List<Log> logs = Manager.logManager.getAllLogs();
+			String[][] entries = new String[logs.size()][headers.length];
 			// String[][] entries = new String[1][headers.length];
+			int i = 0;
+			for (Log l : logs) {
+				entries[i][0] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(l.getDate());
+				entries[i][1] = l.getDescription();
+				i++;
+			}
 
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMinWidth(200);
 			Values.tablePanel.getSoyTable().getColumnModel().getColumn(0).setMaxWidth(200);
 
-			add(new TableUtilPanel(new TablePanel(entries, headers, null, Tables.LOGS), "LOGS"), BorderLayout.CENTER);
+			add(new TableUtilPanel(new TablePanel(entries, headers, logs, Tables.LOGS), "LOGS"), BorderLayout.CENTER);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
