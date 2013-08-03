@@ -1,10 +1,7 @@
 package gui.forms.edit;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.RemarksLabel;
-import gui.forms.util.RowPanel;
-import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.HistoryTable;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
@@ -41,7 +38,6 @@ import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.product.Product;
-import common.entity.sales.SalesDetail;
 import common.manager.Manager;
 
 import util.DateFormatter;
@@ -284,6 +280,10 @@ public class ViewARForm extends EditFormPanel {
 									Product p = sd.getProduct();
 									p.incrementQuantityInSack(sd.getQuantityInSack());
 									p.incrementQuantityInKilo(sd.getQuantityInKilo());
+									// p.setQuantitySoldTodayInSack(p.getQuantitySoldTodayInSack()
+									// - sd.getQuantityInSack());
+									// p.setQuantitySoldTodayInKilo(p.getQuantitySoldTodayInKilo()
+									// - sd.getQuantityInKilo());
 									Manager.productManager.updateProduct(p);
 								}
 

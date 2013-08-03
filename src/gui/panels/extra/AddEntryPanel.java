@@ -436,14 +436,20 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			try {
 				inventorySheetForm.loadDatesOfPendingTransactions();
 				if (inventorySheetForm.build()) { // default: use the earliest date
+
 					inventorySheetForm.setVisible(true);
+
 				} else {
 
+					
+					
 					// no transaction found
 					if (JOptionPane.showConfirmDialog(null, "No Transaction found! Continue?", "Warning!", JOptionPane.YES_NO_OPTION,
 							JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+						
 						inventorySheetForm.build(new Date());
 						inventorySheetForm.setVisible(true);
+
 					} else {
 
 						// go back
