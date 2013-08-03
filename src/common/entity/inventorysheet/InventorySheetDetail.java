@@ -208,6 +208,7 @@ public class InventorySheetDetail {
 		inventorySheetDataDetail.setBeginningInventoryInSack(beginningInventoryInSack);
 		inventorySheetDataDetail.setBeginningInventoryInKilo(beginningInventoryInKilo);
 
-		System.out.println("beg inv in sack for product " + getProduct().getName() + ": " + beginningInventoryInSack);
+		// System.out.println("beg inv in sack for product " +
+		// getProduct().getName() + ": " + beginningInventoryInSack);
 	}
 }
