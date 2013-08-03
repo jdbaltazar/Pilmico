@@ -176,6 +176,6 @@ public class Values {
 
 	public static final String INVENTORY_SHEET_EXISTS_FOR = "An Inventory Sheet exists for ";
 
-	public static final String INSERTING_EARLIER_INVENTORY_SHEET_NOT_ALLOWED = "Inserting earlier Inventory Sheet not allowed";
+	public static final String INSERTING_EARLIER_INVENTORY_SHEET_NOT_ALLOWED = "Inserting earlier Inventory Sheet NOT allowed";
 
 }
