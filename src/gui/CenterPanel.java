@@ -71,7 +71,7 @@ public class CenterPanel extends SoyPanel {
 		 //mine -> K7H4xFqWVe0bKXypGARJvQ==
 		 
 //		try {
-//			Manager.getInstance().login("manager", "pilmico".toCharArray());
+//			Manager.getInstance().login("", "".toCharArray());
 //		} catch (Exception e) { // TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
