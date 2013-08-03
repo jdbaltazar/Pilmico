@@ -370,7 +370,12 @@ public class ViewSalesForm extends EditFormPanel {
 		cashier = new ViewFormField(sales.getCashier().getFirstPlusLastName());
 		rc_no = new ViewFormField(sales.getRcNo());
 		receipt_no = new ViewFormField(sales.getReceiptNo());
-		issueDate = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
+		
+		if(sales.getIssuedOn() != null)
+			issueDate = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
+		else
+			issueDate = new ViewFormField("");
+		
 		customerCombo = new ViewFormField(sales.getCustomerFirstPlusLastName());
 		issuedAt = new ViewFormField(sales.getIssuedAt());
 	}

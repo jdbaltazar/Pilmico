@@ -304,6 +304,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	}
 
 	public void startAnimation() {
+//		/refreshDates();
+		
 		isRunning = true;
 		thread = new Thread(this);
 		thread.start();
@@ -498,6 +500,10 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		unitList.setVisible(true);
 		conditionList.setVisible(true);
 		categoryList.setVisible(true);
+	}
+	
+	private void refreshDates(){
+		sales.refreshDate();
 	}
 
 	private void showAllComponents(boolean truth) {

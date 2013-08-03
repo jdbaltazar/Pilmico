@@ -206,19 +206,19 @@ public class ISRowPanel extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
-					if(mc.getClickCount() == 2){
-						Values.addEntryPanel.startAnimation();
-						
-						new Timer().schedule(new TimerTask() {
-							@Override
-							public void run() {
-								Values.editPanel.setISLinked(true);
-								Values.editPanel.setHide(false);
-								Values.editPanel.startAnimation();
-								Values.editPanel.showLinkedComponent(object2, table);
-							}
-						}, 400);
-					}
+//					if(mc.getClickCount() == 2){
+//						Values.addEntryPanel.startAnimation();
+//						
+//						new Timer().schedule(new TimerTask() {
+//							@Override
+//							public void run() {
+//								Values.editPanel.setISLinked(true);
+//								Values.editPanel.setHide(false);
+//								Values.editPanel.startAnimation();
+//								Values.editPanel.showLinkedComponent(object2, table);
+//							}
+//						}, 400);
+//					}
 				}
 			});
 			row.add(formField.get(i));
@@ -331,19 +331,19 @@ public class ISRowPanel extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
-					if(mc.getClickCount() == 2){
-						Values.addEntryPanel.startAnimation();
-						
-						new Timer().schedule(new TimerTask() {
-							@Override
-							public void run() {
-								Values.editPanel.setISLinked(true);
-								Values.editPanel.setHide(false);
-								Values.editPanel.startAnimation();
-								Values.editPanel.showLinkedComponent(discount, table);
-							}
-						}, 400);
-					}
+//					if(mc.getClickCount() == 2){
+//						Values.addEntryPanel.startAnimation();
+//						
+//						new Timer().schedule(new TimerTask() {
+//							@Override
+//							public void run() {
+//								Values.editPanel.setISLinked(true);
+//								Values.editPanel.setHide(false);
+//								Values.editPanel.startAnimation();
+//								Values.editPanel.showLinkedComponent(discount, table);
+//							}
+//						}, 400);
+//					}
 
 				}
 			});
