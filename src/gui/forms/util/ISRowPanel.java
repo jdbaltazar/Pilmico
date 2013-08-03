@@ -47,6 +47,7 @@ public class ISRowPanel extends JPanel {
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, y, table = 0, componentCount;
 	private Object object, object2;
 	private Color rowBkgrndColor;
+	private DiscountIssue discount;
 //	private JXLabel jxlabel;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
@@ -214,7 +215,7 @@ public class ISRowPanel extends JPanel {
 								Values.editPanel.setISLinked(true);
 								Values.editPanel.setHide(false);
 								Values.editPanel.startAnimation();
-								Values.editPanel.showComponent(object2, table);
+								Values.editPanel.showLinkedComponent(object2, table);
 							}
 						}, 400);
 					}
@@ -302,7 +303,7 @@ public class ISRowPanel extends JPanel {
 
 	private void drawDiscountRow() {
 
-		DiscountIssue discount = (DiscountIssue) object;
+		discount = (DiscountIssue) object;
 		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discount.getDate())));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
 
@@ -328,8 +329,21 @@ public class ISRowPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
+				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
+					if(mc.getClickCount() == 2){
+						Values.addEntryPanel.startAnimation();
+						
+						new Timer().schedule(new TimerTask() {
+							@Override
+							public void run() {
+								Values.editPanel.setISLinked(true);
+								Values.editPanel.setHide(false);
+								Values.editPanel.startAnimation();
+								Values.editPanel.showLinkedComponent(discount, table);
+							}
+						}, 400);
+					}
 
 				}
 			});

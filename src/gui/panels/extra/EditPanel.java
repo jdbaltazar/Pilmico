@@ -284,19 +284,58 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 	}
 	
-	public void showComponent(Object o, int mode) {
-		
-		switch (mode){
-		
+	public void showLinkedComponent(Object o, int mode) {
+
+		switch (mode) {
+
 		case Values.SALES:
-				add(new ViewSalesForm((Sales) o), BorderLayout.CENTER);
+			add(new ViewSalesForm((Sales) o), BorderLayout.CENTER);
 			break;
-			
+
+		case Values.PULLOUT:
+			add(new ViewPulloutForm((PullOut) o), BorderLayout.CENTER);
+			break;
+
+		case Values.ACCOUNT_RECEIVABLES:
+			add(new ViewARForm((AccountReceivable) o), BorderLayout.CENTER);
+			break;
+
+		case Values.AR_PAYMENTS:
+			add(new ViewARPaymentForm((ARPayment) o), BorderLayout.CENTER);
+			break;
+
+		case Values.DELIVERY:
+			add(new ViewDeliveryForm((Delivery) o), BorderLayout.CENTER);
+			break;
+
+		case Values.CASH_ADVANCE:
+			add(new ViewCAForm((CashAdvance) o), BorderLayout.CENTER);
+			break;
+
+		case Values.SALARY:
+			add(new ViewSalaryForm((SalaryRelease) o), BorderLayout.CENTER);
+			break;
+
+		case Values.EXPENSES:
+			add(new ViewExpensesForm((DailyExpenses) o), BorderLayout.CENTER);
+			break;
+
+		case Values.DISCOUNTS:
+			add(new ViewDiscountForm((DiscountIssue) o), BorderLayout.CENTER);
+			break;
+
+		case Values.DEPOSITS:
+			add(new ViewDepositForm((Deposit) o), BorderLayout.CENTER);
+			break;
+
+		case Values.CA_PAYMENTS:
+			add(new ViewCAPaymentForm((CAPayment) o), BorderLayout.CENTER);
+			break;
+
 		default:
 			break;
 		}
-		
-		
+
 	}
 
 	public void setHide(boolean hide) {

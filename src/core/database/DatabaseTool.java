@@ -26,6 +26,7 @@ public class DatabaseTool {
 	private static UtilityPopup uP;
 	private Thread thread;
 	private static DatabaseTool ins;
+	private static String dbUserName, dbPassword, dbName,filePath;
 	
 	public static DatabaseTool getInstance(){
 
@@ -80,7 +81,7 @@ public class DatabaseTool {
 
 							if (processComplete == 0) {
 								DatabaseTool.uP.dispose();
-								new SuccessPopup("Backup").setVisible(true);
+								new SuccessPopup("DB Backup").setVisible(true);
 								Values.topPanel.closeBalloonPanel();
 								isRunning = false;
 
@@ -102,35 +103,14 @@ public class DatabaseTool {
 			thread.start();
 			uP.showProgressBar();
 			
-			
-			/*while(processComplete != 0){
-				
-				processComplete = runtimeProcess.waitFor();
-
-				if (processComplete == 0) {
-					//System.out.println("Backup created successfully");
-					uP.dispose();
-					new SuccessPopup("Backup").setVisible(true);
-				} else {
-//				System.out.println("Could not create the backup");
-					uP.dispose();
-					JOptionPane.showMessageDialog(Values.mainFrame,
-							"Could not create the backup", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}*/
-			
-			
-//			System.out.println("process complete: "+processComplete);
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return false;
 	}
 
-	public static void decryptAndUpdate(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
-		update(dbUserName, dbPassword, dbName, filePath);
+	public void decryptAndUpdate(String dbUserName, String dbPassword, String dbName, String filePath, UtilityPopup uP) throws SQLException {
+		update(dbUserName, dbPassword, dbName, filePath, uP);
 	}
 
 	public File encryptFile(File file) {
@@ -184,54 +164,86 @@ public class DatabaseTool {
 
 	}
 
-	public static void update(String dbUserName, String dbPassword, String dbName, String filePath) throws SQLException {
+	public void update(String dbUserName, String dbPassword, String dbName, String filePath, UtilityPopup uP) throws SQLException {
 
-		HibernateUtil.endSession();
+		DatabaseTool.uP = uP;
+		DatabaseTool.dbUserName = dbUserName;
+		DatabaseTool.dbPassword = dbPassword;
+		DatabaseTool.dbName = dbName;
+		DatabaseTool.filePath = filePath;
 
-		String s = new String();
-		StringBuffer sb = new StringBuffer();
+		thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				boolean isRunning = true;
+				
+				while (isRunning) {
+					
+					HibernateUtil.endSession();
+					
+					
+					String s = new String();
+					StringBuffer sb = new StringBuffer();
 
-		try {
-			FileReader fr = new FileReader(new File(filePath));
-			BufferedReader br = new BufferedReader(fr);
+					try {
+						FileReader fr = new FileReader(new File(DatabaseTool.filePath));
+						BufferedReader br = new BufferedReader(fr);
 
-			while ((s = br.readLine()) != null) {
-				sb.append(s + "\n");
-			}
-			br.close();
+						while ((s = br.readLine()) != null) {
+							sb.append(s + "\n");
+						}
+						br.close();
 
-			// here is our splitter ! We use ";" as a delimiter for each request
-			// then we are sure to have well formed statements
-			String[] inst = sb.toString().split(";");
+						// here is our splitter ! We use ";" as a delimiter for each request
+						// then we are sure to have well formed statements
+						String[] inst = sb.toString().split(";");
 
-			Connection c = DatabaseTool.getConnection(dbUserName, dbPassword, dbName);
-			Statement st = c.createStatement();
+						Connection c = DatabaseTool.getConnection(DatabaseTool.dbUserName, DatabaseTool.dbPassword, DatabaseTool.dbName);
+						Statement st = c.createStatement();
 
-			for (int i = 0; i < inst.length; i++) {
-				// we ensure that there is no spaces before or after the request
-				// string
-				// in order to not execute empty statements
-				if (!inst[i].trim().equals("")) {
-					st.executeUpdate(inst[i]);
-					System.out.println(">>" + inst[i]);
+						for (int i = 0; i < inst.length; i++) {
+							// we ensure that there is no spaces before or after the request
+							// string
+							// in order to not execute empty statements
+							if (!inst[i].trim().equals("")) {
+								st.executeUpdate(inst[i]);
+								System.out.println(">>" + inst[i]);
+							}
+							
+						}
+						
+						DatabaseTool.uP.dispose();
+						new SuccessPopup("DB Recovery").setVisible(true);
+						Values.topPanel.closeBalloonPanel();
+						
+						isRunning = false;
+
+						HibernateUtil.startSession();
+
+					} catch (Exception e) {
+						System.out.println("*** Error : " + e.toString());
+						System.out.println("*** ");
+						System.out.println("*** Error : ");
+						e.printStackTrace();
+						System.out.println("################################################");
+						System.out.println(sb.toString());
+					}
+
+
 				}
 			}
-
-		} catch (Exception e) {
-			System.out.println("*** Error : " + e.toString());
-			System.out.println("*** ");
-			System.out.println("*** Error : ");
-			e.printStackTrace();
-			System.out.println("################################################");
-			System.out.println(sb.toString());
-		}
-
-		HibernateUtil.startSession();
-
+		});
+		
+		thread.start();
+		uP.showProgressBar();
+		
 	}
 
-	public static void reset(String dbUserName, String dbPassword, String dbName) throws SQLException {
-		update(dbUserName, dbPassword, dbName, RESET_FILE);
+	public void reset(String dbUserName, String dbPassword, String dbName) throws SQLException {
+		update(dbUserName, dbPassword, dbName, RESET_FILE, uP);
 	}
 	
 }
