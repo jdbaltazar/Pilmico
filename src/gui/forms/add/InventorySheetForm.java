@@ -983,7 +983,7 @@ public class InventorySheetForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				Date d = (Date) date.getSelectedItem();
+				Date d = (Date) validDates.get(date.getSelectedIndex());
 				inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
 				inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
 				inventorySheet.getInventorySheetData().setOverAmount(0d);
