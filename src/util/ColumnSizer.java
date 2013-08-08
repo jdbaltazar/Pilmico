@@ -84,6 +84,10 @@ public class ColumnSizer {
 			break;
 
 		case Values.LOGS:
+			
+			table.getColumnModel().getColumn(0).setMinWidth(200);
+			table.getColumnModel().getColumn(0).setMaxWidth(200);
+			
 			break;
 
 		case Values.CA_PAYMENTS:

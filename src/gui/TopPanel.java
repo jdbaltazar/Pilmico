@@ -84,7 +84,7 @@ public class TopPanel extends SoyPanel {
 
 		icon = new ImageIcon("images/search.png");
 		
-		trialLabel = new ViewFormLabel("Trial period only until 10 Aug 2013.");
+		trialLabel = new ViewFormLabel("Trial period lasts until 10 Aug 2013 only.");
 		trialLabel.setForeground(Color.decode("#E62E00"));
 
 		close2 = new SBButton("dialog_close.png", "dialog_close.png", "Close");
@@ -203,7 +203,7 @@ public class TopPanel extends SoyPanel {
 		cashOUTLabel.setBounds(540, 80, 90, 15);// 72
 		cashOUT.setBounds(635, 79, 160, 16);
 		
-		trialLabel.setBounds(540, 82, 250, 15);
+		trialLabel.setBounds(490, 82, 300, 15);
 
 	}
 

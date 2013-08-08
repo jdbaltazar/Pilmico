@@ -110,10 +110,6 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		add(login);
 
 		add(error);
-
-		userName.setText("manager");
-		password.setText("pilmico");
-
 	}
 
 	@Override
