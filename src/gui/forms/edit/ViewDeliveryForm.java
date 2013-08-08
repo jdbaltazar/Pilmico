@@ -302,12 +302,12 @@ public class ViewDeliveryForm extends EditFormPanel {
 				boolean valid = true;
 				for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 					Product p = dd.getProduct();
-					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
-						valid = false;
+					// if (!p.validQuantityResult(dd.getQuantityInSack(),
+					// dd.getQuantityInKilo()))
+					// valid = false;
 				}
 
 				if (valid) {
-
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
 					UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
@@ -321,8 +321,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 							Manager.deliveryManager.updateDelivery(delivery);
 							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 								Product p = dd.getProduct();
-								p.decrementQuantityInSack(dd.getQuantityInSack());
-								p.decrementQuantityInKilo(dd.getQuantityInKilo());
+								p.decrementQuantity(dd.getQuantityInSack(), dd.getQuantityInKilo());
 								Manager.productManager.updateProduct(p);
 							}
 

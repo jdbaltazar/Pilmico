@@ -329,10 +329,7 @@ public class AccountReceivablesForm extends SimplePanel {
 
 							for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
 								Product pd = ard.getProduct();
-								pd.decrementQuantityInSack(ard.getQuantityInSack());
-								pd.decrementQuantityInKilo(ard.getQuantityInKilo());
-								//pd.setQuantitySoldTodayInSack(pd.getQuantitySoldTodayInSack() + ard.getQuantityInSack());
-								//pd.setQuantitySoldTodayInKilo(pd.getQuantitySoldTodayInKilo() + ard.getQuantityInKilo());
+								pd.decrementQuantity(ard.getQuantityInSack(), ard.getQuantityInKilo());
 								Manager.productManager.updateProduct(pd);
 							}
 

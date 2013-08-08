@@ -103,12 +103,12 @@ public class ProductForm extends SimplePanel {
 		quantityKG = new NumericTextField("Quantity*", 12, Color.white, Color.GRAY);
 
 		cbox1 = new FormCheckbox("Available?*");
-		cbox2 = new FormCheckbox("Alert using sack?*");
+		cbox2 = new FormCheckbox("Allow alert?*");
 
 		cbox1.setSelected(true);
 		cbox2.setSelected(true);
 
-		cbox2.setToolTipText("if not ticked, kilo/s will be used ");
+		cbox2.setToolTipText("show alert if out of stock?");
 
 		int ctr = 0, ctr2 = 0;
 
@@ -211,16 +211,22 @@ public class ProductForm extends SimplePanel {
 				double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
 				double alertOnQuantity = Double.parseDouble(numfields.get(7).getText());
 
+				// Product p = new Product(name, description, new Date(),
+				// pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(),
+				// quantityInSack,
+				// quantityInKilo, displayInSack, displayInKilo, 0d, 0d, (Category)
+				// category.getSelectedItem(), true, cbox2.isSelected(),
+				// alertOnQuantity);
+
 				Product p = new Product(name, description, new Date(), pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(), quantityInSack,
-						quantityInKilo, displayInSack, displayInKilo, 0d, 0d, (Category) category.getSelectedItem(), true, cbox2.isSelected(),
-						alertOnQuantity);
+						quantityInKilo, displayInSack, displayInKilo, (Category) category.getSelectedItem(), cbox2.isSelected());
 
 				try {
 					Manager.productManager.addProduct(p);
 					Values.centerPanel.changeTable(Values.PRODUCTS);
 					new SuccessPopup("Add").setVisible(true);
 					clearFields();
-					
+
 					Values.discountForm.refreshDropdown(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -247,11 +253,11 @@ public class ProductForm extends SimplePanel {
 						uP.setVisible(true);
 
 						if (!uP.getInput().equals("")) {
-							//insert code here for adding category
-							 Manager.productManager.addCategory(new Category(uP.getInput()));
-							 updateCategories();
-							 
-							 new SuccessPopup("Add", 1).setVisible(true);
+							// insert code here for adding category
+							Manager.productManager.addCategory(new Category(uP.getInput()));
+							updateCategories();
+
+							new SuccessPopup("Add", 1).setVisible(true);
 						}
 						// Category c = new Category(fwd.getText());
 						// category.addItem(c);
@@ -287,7 +293,7 @@ public class ProductForm extends SimplePanel {
 	private void clearFields() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
-		
+
 		for (int i = 0; i < numfields.size(); i++)
 			fields.get(i).setText("");
 
@@ -310,7 +316,7 @@ public class ProductForm extends SimplePanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		category.setSelectedIndex(0);
 	}
 

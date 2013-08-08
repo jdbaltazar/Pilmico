@@ -48,8 +48,7 @@ public class DatabaseToolPanel extends JPanel {
 
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		backup = new SBButton("backup.png", "backup2.png", "Backup Database");
-		recover = new SBButton("recover.png", "recover2.png",
-				"Database Recovery");
+		recover = new SBButton("recover.png", "recover2.png", "Database Recovery");
 
 	}
 
@@ -73,9 +72,8 @@ public class DatabaseToolPanel extends JPanel {
 				if (uP.isVerified() && !uP.isClosed()) {
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Backup Database");
-					fc.setSelectedFile(new File("backup.sql"));
-					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter(
-							"MySQL Files", "sql");
+					fc.setSelectedFile(new File("backup.pilmico"));
+					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", "pilmico");
 					fc.setFileFilter(sqlfilter);
 					fc.setAcceptAllFileFilterUsed(false);
 					int returnVal = fc.showSaveDialog(Values.mainFrame);
@@ -84,9 +82,7 @@ public class DatabaseToolPanel extends JPanel {
 						File file = fc.getSelectedFile();
 						// This is where a real application would save the file.
 						try {
-							DatabaseTool.getInstance().backup(uP.getUsername(),
-									uP.getPassword(), "pilmico",
-									file.getCanonicalPath(), uP);
+							DatabaseTool.backup(uP.getUsername(), uP.getPassword(), "pilmico", file.getCanonicalPath(), uP);
 
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -123,8 +119,7 @@ public class DatabaseToolPanel extends JPanel {
 					// fc.addChoosableFileFilter(new FileNameExtensionFilter(
 					// "MySQL Files", "sql"));
 
-					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter(
-							"MySQL Files", "sql");
+					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", "pilmico");
 					fc.setFileFilter(sqlfilter);
 					fc.setAcceptAllFileFilterUsed(false);
 
@@ -136,9 +131,7 @@ public class DatabaseToolPanel extends JPanel {
 
 						try {
 
-							DatabaseTool.getInstance().decryptAndUpdate(
-									uP.getUsername(), uP.getPassword(),
-									"pilmico", file.getCanonicalPath(), uP);
+							DatabaseTool.getInstance().decryptAndUpdate(uP.getUsername(), uP.getPassword(), "pilmico", file.getCanonicalPath(), uP);
 
 						} catch (SQLException e1) {
 							e1.printStackTrace();

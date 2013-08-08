@@ -536,12 +536,7 @@ public class SalesForm extends SimplePanel {
 
 							for (SalesDetail sd : s.getSalesDetails()) {
 								Product pd = sd.getProduct();
-								pd.decrementQuantityInSack(sd.getQuantityInSack());
-								pd.decrementQuantityInKilo(sd.getQuantityInKilo());
-								// pd.setQuantitySoldTodayInSack(pd.getQuantitySoldTodayInSack()
-								// + sd.getQuantityInSack());
-								// pd.setQuantitySoldTodayInKilo(pd.getQuantitySoldTodayInKilo()
-								// + sd.getQuantityInKilo());
+								pd.decrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
 								Manager.productManager.updateProduct(pd);
 							}
 							Values.centerPanel.changeTable(Values.SALES);

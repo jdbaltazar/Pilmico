@@ -276,8 +276,9 @@ public class PulloutForm extends SimplePanel {
 					boolean valid = true;
 					for (RowPanel rp : rowPanel) {
 						Product product = rp.getSelectedProduct();
-						if (!product.validQuantityResult(rp.getQuantityInSack(), rp.getQuantityInKilo()))
-							valid = false;
+						// if (!product.validQuantityResult(rp.getQuantityInSack(),
+						// rp.getQuantityInKilo()))
+						// valid = false;
 					}
 
 					if (valid) {
@@ -304,8 +305,7 @@ public class PulloutForm extends SimplePanel {
 
 								for (RowPanel rp : rowPanel) {
 									Product product = rp.getSelectedProduct();
-									product.decrementQuantityInSack(rp.getQuantityInSack());
-									product.decrementQuantityInKilo(rp.getQuantityInKilo());
+									product.decrementQuantity(rp.getQuantityInSack(), rp.getQuantityInKilo());
 									Manager.productManager.updateProduct(product);
 								}
 

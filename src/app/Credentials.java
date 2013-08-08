@@ -33,7 +33,6 @@ public class Credentials {
 			credentials = new Credentials();
 			FileInputStream fis = new FileInputStream(hibernateConnectionCredentialsFileName);
 			xs.fromXML(fis, credentials);
-
 		}
 		return credentials;
 	}

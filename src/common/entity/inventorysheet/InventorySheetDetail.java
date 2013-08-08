@@ -201,10 +201,8 @@ public class InventorySheetDetail {
 	}
 
 	public void computeValues() {
-		double beginningInventoryInSack = (getProduct().getQuantityOnStockInSack() + getOffTakeInSack() + pulloutsInSack + getOnDisplayInSack())
-				- deliveriesInSack;
-		double beginningInventoryInKilo = (getProduct().getQuantityOnStockInKilo() + getOffTakeInKilo() + pulloutsInKilo + getOnDisplayInKilo())
-				- deliveriesInKilo;
+		double beginningInventoryInSack = (getProduct().getQuantityInSack() + getOffTakeInSack() + pulloutsInSack) - deliveriesInSack;
+		double beginningInventoryInKilo = (getProduct().getQuantityInKilo() + getOffTakeInKilo() + pulloutsInKilo) - deliveriesInKilo;
 		inventorySheetDataDetail.setBeginningInventoryInSack(beginningInventoryInSack);
 		inventorySheetDataDetail.setBeginningInventoryInKilo(beginningInventoryInKilo);
 
