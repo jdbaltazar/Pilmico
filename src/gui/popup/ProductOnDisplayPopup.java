@@ -21,6 +21,7 @@ import javax.swing.ScrollPaneConstants;
 import common.entity.product.Product;
 import common.manager.Manager;
 
+import util.ErrorLabel;
 import util.SBButton;
 import util.SimplePanel;
 import util.TableHeaderLabel;
@@ -41,7 +42,7 @@ public class ProductOnDisplayPopup extends JDialog {
 	private SoyButton update;
 
 	private SBButton close;
-	private final int ROW_WIDTH = 392, ROW_HEIGHT = 30, LABEL_HEIGHT = 25, LABEL_Y = 50, PRODUCTS_PANE_Y = 74;
+	private final int ROW_WIDTH = 392, ROW_HEIGHT = 30, LABEL_HEIGHT = 25, LABEL_Y = 47, PRODUCTS_PANE_Y = 70;
 
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, productLabel, deleteLabel;
 
@@ -50,6 +51,9 @@ public class ProductOnDisplayPopup extends JDialog {
 	private ImageIcon icon;
 
 	private List<Product> products;
+	
+	private ErrorLabel error;
+	private String msg;
 
 	public ProductOnDisplayPopup() {
 		init();
@@ -69,6 +73,8 @@ public class ProductOnDisplayPopup extends JDialog {
 	}
 
 	private void addComponents() {
+		
+		error = new ErrorLabel();
 
 		icon = new ImageIcon("images/util.png");
 		close = new SBButton("close.png", "close.png", "Close");
@@ -81,6 +87,7 @@ public class ProductOnDisplayPopup extends JDialog {
 				// onDisplayPanel.removeAll();
 				// onDisplayPanel.updateUI();
 				// onDisplayPanel.revalidate();
+				error.setText("");
 				Values.mainFrame.dimScreen(false);
 				setVisible(false);
 			}
@@ -92,21 +99,26 @@ public class ProductOnDisplayPopup extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent m) {
 
-				for (RowPanel rp : rowPanel) {
-					// BETTER code here
-					Product p = rp.getOnDisplayProduct();
-					p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
-					p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo());
-					try {
-						Manager.productManager.updateProduct(p);
-					} catch (Exception e) {
-						e.printStackTrace();
+				if (isValidated()) {
+					for (RowPanel rp : rowPanel) {
+						// BETTER code here
+						Product p = rp.getOnDisplayProduct();
+						p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
+						p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo());
+						try {
+							Manager.productManager.updateProduct(p);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-				}
 
-				Values.centerPanel.changeTable(Values.PRODUCTS);
-				dispose();
-				Values.mainFrame.dimScreen(false);
+					error.setText("");
+					dispose();
+					Values.centerPanel.changeTable(Values.PRODUCTS);
+					new SuccessPopup("Update").setVisible(true);
+					Values.mainFrame.dimScreen(false);
+				} else
+					error.setText(msg);
 			}
 		});
 		update.setBounds(185, 212, 80, 30);
@@ -142,8 +154,11 @@ public class ProductOnDisplayPopup extends JDialog {
 		// productsPane.setBorder(BorderFactory.createEmptyBorder());
 
 		productsPane.setBounds(24, PRODUCTS_PANE_Y, ROW_WIDTH - 1, 120);
+		
+		error.setBounds(productsPane.getX(), productsPane.getY() + productsPane.getHeight(), productsPane.getWidth(), 22);
 
 		panel.add(productsPane);
+		panel.add(error);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
 		panel.add(productLabel);
@@ -152,6 +167,30 @@ public class ProductOnDisplayPopup extends JDialog {
 
 		add(close);
 		add(panel);
+	}
+	
+	private boolean isValidated(){
+		
+		for(int i = 0; i < rowPanel.size(); i++){
+			
+			if(rowPanel.get(i).getOnDisplayInKilo() >  rowPanel.get(i).getOnDisplayProduct().getQuantityInKilo()){
+				
+				msg = "kg on display should not be greater than overall kg quantity in row "+(i+1);
+				
+				return false;
+			}
+			
+			if(rowPanel.get(i).getOnDisplayInSack() >  rowPanel.get(i).getOnDisplayProduct().getQuantityInSack()){
+				
+				msg = "sk on display should not be greater than overall sk quantity in row "+(i+1);
+				
+				return false;
+			}
+
+			
+		}
+		
+		return true;
 	}
 
 	public void fillTable(List<Product> products) {

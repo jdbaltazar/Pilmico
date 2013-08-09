@@ -84,7 +84,7 @@ public class TopPanel extends SoyPanel {
 
 		icon = new ImageIcon("images/search.png");
 		
-		trialLabel = new ViewFormLabel("Trial period lasts until 10 Aug 2013 only.");
+		trialLabel = new ViewFormLabel("Trial period lasts until 19 Aug 2013 only.");
 		trialLabel.setForeground(Color.decode("#E62E00"));
 
 		close2 = new SBButton("dialog_close.png", "dialog_close.png", "Close");

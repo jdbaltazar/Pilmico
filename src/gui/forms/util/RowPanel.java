@@ -316,7 +316,8 @@ public class RowPanel extends JPanel {
 		// row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
 		// Color.LIGHT_GRAY));
 
-		if (product.getQuantityOnDisplayInKilo() == 0d && product.getQuantityOnDisplayInKilo() == 0d) {
+		if (product.getQuantityOnDisplayInKilo() == 0d
+				|| product.getQuantityOnDisplayInKilo() == 0d) {
 			row.setBackground(Color.decode("#E0EBEB"));
 		} else
 			row.setBackground(Color.decode("#BFFF80"));
@@ -377,10 +378,6 @@ public class RowPanel extends JPanel {
 		// }
 
 		add(row);
-	}
-
-	public FormField getBankAccount() {
-		return bankAccount;
 	}
 
 	private void addExpensesRow() {
@@ -543,6 +540,10 @@ public class RowPanel extends JPanel {
 
 	public double getOnDisplayInKilo() {
 		return Double.parseDouble(onDisplayKG.getText());
+	}
+	
+	public FormField getBankAccount() {
+		return bankAccount;
 	}
 
 }

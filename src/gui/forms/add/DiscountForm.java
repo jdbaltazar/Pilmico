@@ -91,6 +91,7 @@ public class DiscountForm extends SimplePanel {
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new product");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new customer");
+		
 		fwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -100,7 +101,7 @@ public class DiscountForm extends SimplePanel {
 			}
 		});
 
-		fwd.addActionListener(new ActionListener() {
+		fwd2.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

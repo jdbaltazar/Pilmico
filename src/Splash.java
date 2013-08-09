@@ -54,14 +54,12 @@ public class Splash extends JFrame implements PropertyChangeListener {
 			public void run() {
 				try {
 
-					// Splash frame = new Splash();
-					// frame.setVisible(true);
+					 Splash frame = new Splash();
+					 frame.setVisible(true);
 
-					// Manager.getInstance();
-					MainFrame mainFrame = new MainFrame();
-					mainFrame.showFrame();
-
-					// new DBPassword().setVisible(true);
+//					 Manager.getInstance();
+//					MainFrame mainFrame = new MainFrame();
+//					mainFrame.showFrame();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -83,12 +81,12 @@ public class Splash extends JFrame implements PropertyChangeListener {
 		setVisible(true);
 
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+//		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(null);
 
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(0);
-		progressBar.setBounds(0, getHeight() - 10, getWidth(), 10);
+		progressBar.setBounds(0, getHeight() - 7, getWidth(), 10);
 		contentPane.add(progressBar);
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -96,8 +94,8 @@ public class Splash extends JFrame implements PropertyChangeListener {
 		task.addPropertyChangeListener(this);
 		task.execute();
 
-		background = new JLabel(new ImageIcon("images/splash3.png"));
-		background.setBounds(0, 0, getWidth() + 1, getHeight() - 10);
+		background = new JLabel(new ImageIcon("images/pilmico_splash.png"));
+		background.setBounds(0, 0, getWidth(), getHeight() - 7);
 		contentPane.add(background);
 
 		setContentPane(contentPane);
