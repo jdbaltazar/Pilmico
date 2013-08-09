@@ -2,15 +2,20 @@ package core.test;
 
 import gui.forms.util.DateTool;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import util.DateFormatter;
 import util.Utility;
@@ -19,6 +24,7 @@ import common.entity.inventorysheet.InventorySheetData;
 import common.manager.Manager;
 
 import app.Credentials;
+import app.DatabaseSettings;
 import core.database.DatabaseTool;
 import core.security.SecurityTool;
 
@@ -76,6 +82,17 @@ public class Test {
 
 	public static void main(String[] args) {
 
+		double s = 12121.39999;
+		// double t = 12;
+		// double s = u / t;
+
+		System.out.println("numbr: " + s);
+		s = Math.round(s * 100.0) / 100.0;
+		System.out.println("2 decimal: " + s);
+		System.out.println("int: " + Math.floor(s));
+		double q = Math.round((s - Math.floor(s)) * 100.0) / 100.0d;
+		System.out.println("fraction: " + q);
+
 		// Date d = new Date();
 		//
 		// System.out.println("Today: " +
@@ -96,12 +113,13 @@ public class Test {
 		// e.printStackTrace();
 		// }
 
-		try {
-			System.out.println("size: " + Manager.depositManager.getDatesOfPendingDeposits().size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// try {
+		// System.out.println("size: " +
+		// Manager.depositManager.getDatesOfPendingDeposits().size());
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		// InventorySheetData isd;
 		// try {
@@ -247,7 +265,29 @@ public class Test {
 		// System.out.println("connection: " + c.getHibernateConnectionUrl());
 		//
 		// } catch (FileNotFoundException ex) {
-		// ex.printStackTrace();
+		// // ex.printStackTrace();
+		// }
+
+		try {
+			System.out.println("filePath: " + DatabaseSettings.getInstance().getFilePath());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// XStream xs = new XStream(new DomDriver());
+		// xs.alias("filepath", DatabaseSettings.class);
+		// DatabaseSettings dbs = new DatabaseSettings();
+		//
+		// try {
+		// FileInputStream fis = new FileInputStream("config.xml");
+		// xs.fromXML(fis, c);
+		//
+		// // print the data from the object that has been read
+		// System.out.println("connection: " + c.getHibernateConnectionUrl());
+		//
+		// } catch (FileNotFoundException ex) {
+		// // ex.printStackTrace();
 		// }
 
 		// String dbUserName = "root";

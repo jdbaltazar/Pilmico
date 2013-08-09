@@ -6,7 +6,9 @@ import gui.popup.UtilityPopup;
 import java.io.BufferedReader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 import java.sql.SQLException;
 import java.sql.DriverManager;
@@ -18,24 +20,23 @@ import javax.swing.JOptionPane;
 import util.Values;
 
 import core.persist.HibernateUtil;
+import core.security.SecurityTool;
 
 public class DatabaseTool {
 
 	public static final String RESET_FILE = "data/pilmico-create.sql";
 	public static Process runtimeProcess;
 	private static UtilityPopup uP;
-	private Thread thread;
+	// private Thread thread;
 	private static DatabaseTool ins;
-	private static String dbUserName, dbPassword, dbName,filePath;
-	
-	public static DatabaseTool getInstance(){
+	private static String dbUserName, dbPassword, dbName, filePath;
 
-		if(ins == null)
+	public static DatabaseTool getInstance() {
+		if (ins == null)
 			ins = new DatabaseTool();
-		
 		return ins;
 	}
-	
+
 	static {
 		try {
 			Class.forName(HibernateUtil.DRIVER_NAME).newInstance();
@@ -53,10 +54,11 @@ public class DatabaseTool {
 		return DriverManager.getConnection(HibernateUtil.URL + dbName, userName, password);
 	}
 
-	public boolean backup(String dbUserName, String dbPassword, String dbName, String path, UtilityPopup uP) {
+	public static boolean backup(String dbUserName, String dbPassword, String dbName, String path, UtilityPopup uP) {
 
 		DatabaseTool.uP = uP;
-		
+
+		filePath = path;
 		String executeCmd = "mysqldump -u " + dbUserName;
 		if (!dbPassword.equals(""))
 			executeCmd = executeCmd + " -p" + dbPassword;
@@ -65,31 +67,58 @@ public class DatabaseTool {
 		try {
 			System.out.println(executeCmd);// this out put works in mysql shell
 			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
-			
-//			int processComplete = 1;
-			thread = new Thread(new Runnable() {
-				
+
+			// int processComplete = 1;
+			Thread thread = new Thread(new Runnable() {
+
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
-					
 					boolean isRunning = true;
-					
+
 					while (isRunning) {
 						try {
 							int processComplete = runtimeProcess.waitFor();
 
 							if (processComplete == 0) {
-								DatabaseTool.uP.dispose();
+								try {
+
+									// read file and store contents
+									// clear file
+									// encrypt the contents
+									// write to file
+
+									String s = new String();
+									StringBuffer sb = new StringBuffer();
+
+									FileReader fr = new FileReader(filePath);
+									BufferedReader br = new BufferedReader(fr);
+
+									while ((s = br.readLine()) != null) {
+										sb.append(SecurityTool.encryptString(s) + "\n");
+									}
+									br.close();
+
+								} catch (FileNotFoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+
+								if (DatabaseTool.uP != null)
+									DatabaseTool.uP.dispose();
 								new SuccessPopup("DB Backup").setVisible(true);
 								Values.topPanel.closeBalloonPanel();
 								isRunning = false;
 
 							} else {
-								DatabaseTool.uP.dispose();
-								JOptionPane.showMessageDialog(Values.mainFrame,
-										"Could not create the backup", "Error",
-										JOptionPane.ERROR_MESSAGE);
+								if (DatabaseTool.uP != null)
+									DatabaseTool.uP.dispose();
+								JOptionPane.showMessageDialog(Values.mainFrame, "Could not create the backup", "Error", JOptionPane.ERROR_MESSAGE);
 								isRunning = false;
 							}
 						} catch (InterruptedException e) {
@@ -99,10 +128,11 @@ public class DatabaseTool {
 					}
 				}
 			});
-			
+
 			thread.start();
-			uP.showProgressBar();
-			
+			if (uP != null)
+				uP.showProgressBar();
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -172,19 +202,18 @@ public class DatabaseTool {
 		DatabaseTool.dbName = dbName;
 		DatabaseTool.filePath = filePath;
 
-		thread = new Thread(new Runnable() {
-			
+		Thread thread = new Thread(new Runnable() {
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				
+
 				boolean isRunning = true;
-				
+
 				while (isRunning) {
-					
+
 					HibernateUtil.endSession();
-					
-					
+
 					String s = new String();
 					StringBuffer sb = new StringBuffer();
 
@@ -197,7 +226,8 @@ public class DatabaseTool {
 						}
 						br.close();
 
-						// here is our splitter ! We use ";" as a delimiter for each request
+						// here is our splitter ! We use ";" as a delimiter for each
+						// request
 						// then we are sure to have well formed statements
 						String[] inst = sb.toString().split(";");
 
@@ -205,20 +235,21 @@ public class DatabaseTool {
 						Statement st = c.createStatement();
 
 						for (int i = 0; i < inst.length; i++) {
-							// we ensure that there is no spaces before or after the request
+							// we ensure that there is no spaces before or after the
+							// request
 							// string
 							// in order to not execute empty statements
 							if (!inst[i].trim().equals("")) {
 								st.executeUpdate(inst[i]);
 								System.out.println(">>" + inst[i]);
 							}
-							
+
 						}
-						
+
 						DatabaseTool.uP.dispose();
 						new SuccessPopup("DB Recovery").setVisible(true);
 						Values.topPanel.closeBalloonPanel();
-						
+
 						isRunning = false;
 
 						HibernateUtil.startSession();
@@ -232,18 +263,17 @@ public class DatabaseTool {
 						System.out.println(sb.toString());
 					}
 
-
 				}
 			}
 		});
-		
+
 		thread.start();
 		uP.showProgressBar();
-		
+
 	}
 
 	public void reset(String dbUserName, String dbPassword, String dbName) throws SQLException {
 		update(dbUserName, dbPassword, dbName, RESET_FILE, uP);
 	}
-	
+
 }

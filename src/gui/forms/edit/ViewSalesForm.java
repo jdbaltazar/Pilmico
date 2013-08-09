@@ -310,8 +310,9 @@ public class ViewSalesForm extends EditFormPanel {
 				boolean valid = true;
 				for (SalesDetail dd : sales.getSalesDetails()) {
 					Product p = dd.getProduct();
-					if (!p.validQuantityResult(dd.getQuantityInSack(), dd.getQuantityInKilo()))
-						valid = false;
+					// if (!p.validQuantityResult(dd.getQuantityInSack(),
+					// dd.getQuantityInKilo()))
+					//		valid = false;
 				}
 
 				if (valid) {
@@ -331,12 +332,7 @@ public class ViewSalesForm extends EditFormPanel {
 
 							for (SalesDetail sd : sales.getSalesDetails()) {
 								Product pd = sd.getProduct();
-								pd.incrementQuantityInSack(sd.getQuantityInSack());
-								pd.incrementQuantityInKilo(sd.getQuantityInKilo());
-								// pd.setQuantitySoldTodayInSack(pd.getQuantitySoldTodayInSack()
-								// - sd.getQuantityInSack());
-								// pd.setQuantitySoldTodayInKilo(pd.getQuantitySoldTodayInKilo()
-								// - sd.getQuantityInKilo());
+								pd.incrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
 								Manager.productManager.updateProduct(pd);
 							}
 						} catch (Exception e1) {
@@ -370,12 +366,12 @@ public class ViewSalesForm extends EditFormPanel {
 		cashier = new ViewFormField(sales.getCashier().getFirstPlusLastName());
 		rc_no = new ViewFormField(sales.getRcNo());
 		receipt_no = new ViewFormField(sales.getReceiptNo());
-		
-		if(sales.getIssuedOn() != null)
+
+		if (sales.getIssuedOn() != null)
 			issueDate = new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(sales.getIssuedOn()));
 		else
 			issueDate = new ViewFormField("");
-		
+
 		customerCombo = new ViewFormField(sales.getCustomerFirstPlusLastName());
 		issuedAt = new ViewFormField(sales.getIssuedAt());
 	}

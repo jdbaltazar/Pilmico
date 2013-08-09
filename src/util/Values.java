@@ -156,7 +156,7 @@ public class Values {
 	public static Color INVALIDATED_COLOR = new Color(255, 245, 245);
 
 	public static String[] productFormLabel = { "Name*", "Description", "For Sale?*", "Unit*", "Selling Price (per kilo)*",
-			"Selling Price (per sack)*", "Quantity (in kg)*", "Display (in kg)*", "Category*", "Allow Alert?*", "Alert on Quantity*" };
+			"Selling Price (per sack)*", "Quantity (in kg)*", "Display (in kg)*", "Category*", "Allow Alert?*" };
 
 	public static String[] accountFormLabel = { "Account Type*", "Employee", "Username*", "Password*" };
 

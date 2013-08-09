@@ -49,31 +49,33 @@ public class SecurityTool {
 		return key;
 	}
 
-	public static CipherInputStream encryptFile(File file) throws Exception {
-		Cipher cipher = Cipher.getInstance(ALGORITHM);
-		cipher.init(Cipher.ENCRYPT_MODE, generateKey());
-
-		CipherInputStream cipherInputStream = new CipherInputStream(new FileInputStream(file), cipher);
-		return cipherInputStream;
-	}
-
-	public static CipherInputStream decryptFile(File file) throws Exception {
-		Cipher cipher = Cipher.getInstance(ALGORITHM);
-		cipher.init(Cipher.DECRYPT_MODE, generateKey());
-		return new CipherInputStream(new FileInputStream(file), cipher);
-	}
-
-	public static File writeToFile(InputStream is, File file) throws IOException {
-		OutputStream os = new FileOutputStream(file);
-		byte[] bytes = new byte[64];
-		int numBytes;
-		while ((numBytes = is.read(bytes)) != -1) {
-			os.write(bytes, 0, numBytes);
-		}
-		os.flush();
-		os.close();
-		is.close();
-
-		return file;
-	}
+	// public static CipherInputStream encryptFile(File file) throws Exception {
+	// Cipher cipher = Cipher.getInstance(ALGORITHM);
+	// cipher.init(Cipher.ENCRYPT_MODE, generateKey());
+	//
+	// CipherInputStream cipherInputStream = new CipherInputStream(new
+	// FileInputStream(file), cipher);
+	// return cipherInputStream;
+	// }
+	//
+	// public static CipherInputStream decryptFile(File file) throws Exception {
+	// Cipher cipher = Cipher.getInstance(ALGORITHM);
+	// cipher.init(Cipher.DECRYPT_MODE, generateKey());
+	// return new CipherInputStream(new FileInputStream(file), cipher);
+	// }
+	//
+	// public static File writeToFile(InputStream is, File file) throws
+	// IOException {
+	// OutputStream os = new FileOutputStream(file);
+	// byte[] bytes = new byte[64];
+	// int numBytes;
+	// while ((numBytes = is.read(bytes)) != -1) {
+	// os.write(bytes, 0, numBytes);
+	// }
+	// os.flush();
+	// os.close();
+	// is.close();
+	//
+	// return file;
+	// }
 }

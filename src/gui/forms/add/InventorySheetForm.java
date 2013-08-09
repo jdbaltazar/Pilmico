@@ -24,6 +24,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -39,6 +41,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
+
+import app.Credentials;
+import app.DatabaseSettings;
 
 import util.DateFormatter;
 import util.MainFormLabel;
@@ -68,6 +73,7 @@ import common.entity.pullout.PullOut;
 import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
+import core.database.DatabaseTool;
 
 public class InventorySheetForm extends SimplePanel {
 
@@ -1044,14 +1050,24 @@ public class InventorySheetForm extends SimplePanel {
 
 					try {
 						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
-						for (Product p : products) {
-							p.resetBeginningInventory();
-							Manager.productManager.updateProduct(p);
-						}
 
 						// insert code here to invalidate "sandwiched" transactions
 
 					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+					// backup database
+					try {
+
+						DatabaseTool.backup(Credentials.getInstance().getUsername(), Credentials.getInstance().getPassword(), Credentials.getInstance()
+								.getDatabaseName(), DatabaseSettings.getInstance().getFilePath(), null);
+
+						// DatabaseTool.getInstance().defaultBackup(Credentials.getInstance().getUsername(),
+						// Credentials.getInstance().getPassword(),
+						// Credentials.getInstance().getDatabaseName());
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
@@ -1270,7 +1286,7 @@ public class InventorySheetForm extends SimplePanel {
 		else {
 			pcohLabel.setToolTipText("Cash On Hand from last Inventory Sheet");
 		}
-		assetsLabel.setToolTipText("Previous COH + Sales + Account Receivables + Account Receivables Payments + Cash Advance Payments");
+		assetsLabel.setToolTipText("Sales + Account Receivables + Account Receivables Payments + Cash Advance Payments");
 		liabilitiesLabel.setToolTipText("Expenses + Salary Releases + Cash Advances + Account Receivables + Discounts + Deposits");
 		cohLabel.setToolTipText("Previous COH + Assets - Liabilities");
 
