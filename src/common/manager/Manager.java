@@ -2,16 +2,25 @@ package common.manager;
 
 import gui.forms.util.DateTool;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import util.Values;
 
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 
+import core.database.DatabaseTool;
 import core.persist.AccountPersistor;
 import core.persist.AccountReceivablePersistor;
 import core.persist.CashAdvancePersistor;
@@ -20,6 +29,7 @@ import core.persist.DeliveryPersistor;
 import core.persist.DepositPersistor;
 import core.persist.DiscountIssuePersistor;
 import core.persist.EmployeePersonPersistor;
+import core.persist.HibernateUtil;
 import core.persist.InventorySheetDataPersistor;
 import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
@@ -103,6 +113,7 @@ public class Manager {
 				if (acc != null && acc.isActive()) {
 					if (acc.comparePassword(input)) {
 						loggedInAccount = acc;
+						DatabaseTool.executeUpdates();
 						return "true";
 					} else {
 						// System.out.println("Password is incorrect!");

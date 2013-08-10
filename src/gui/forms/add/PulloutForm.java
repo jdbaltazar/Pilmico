@@ -86,6 +86,7 @@ public class PulloutForm extends SimplePanel {
 		Values.pulloutForm = this;
 	};
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void init() {
 
 		fwdProduct = new SBButton("forward.png", "forward.png", "Add new product");

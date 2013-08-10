@@ -91,7 +91,8 @@ public class Test {
 		// e1.printStackTrace();
 		// }
 
-		DatabaseTool.backup("root", "123456", "pilmico", "D:/Pilmico/backup.pilmico");
+		// DatabaseTool.backup("root", "123456", "pilmico",
+		// "D:/Pilmico/backup.pilmico");
 
 		// double s = 12121.39999;
 		// // double t = 12;

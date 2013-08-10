@@ -1074,13 +1074,9 @@ public class InventorySheetForm extends SimplePanel {
 						// .getDatabaseName(),
 						// DatabaseSettings.getInstance().getFilePath());
 
-						DatabaseTool.backup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+						DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
 								SecurityTool.decryptString(Credentials.getInstance().getPassword()), Credentials.getInstance().getDatabaseName(),
 								DatabaseSettings.getInstance().getFilePath(), null);
-
-						// DatabaseTool.getInstance().defaultBackup(Credentials.getInstance().getUsername(),
-						// Credentials.getInstance().getPassword(),
-						// Credentials.getInstance().getDatabaseName());
 					} catch (FileNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

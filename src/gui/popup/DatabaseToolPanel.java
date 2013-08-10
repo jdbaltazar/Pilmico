@@ -7,12 +7,16 @@ import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import app.Credentials;
+import app.DatabaseSettings;
 
 import common.manager.Manager;
 
@@ -71,6 +75,11 @@ public class DatabaseToolPanel extends JPanel {
 
 				if (uP.isVerified() && !uP.isClosed()) {
 					JFileChooser fc = new JFileChooser();
+					try {
+						fc.setSelectedFile(new File(DatabaseSettings.getInstance().getFilePath()));
+					} catch (FileNotFoundException e2) {
+						e2.printStackTrace();
+					}
 					fc.setDialogTitle("Backup Database");
 					fc.setSelectedFile(new File("backup.pilmico"));
 					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", "pilmico");
@@ -82,7 +91,11 @@ public class DatabaseToolPanel extends JPanel {
 						File file = fc.getSelectedFile();
 						// This is where a real application would save the file.
 						try {
-							DatabaseTool.backup(uP.getUsername(), uP.getPassword(), "pilmico", file.getCanonicalPath(), uP);
+							// DatabaseTool.backup(uP.getUsername(), uP.getPassword(),
+							// Credentials.getInstance().getDatabaseName(),
+							// file.getCanonicalPath(), uP);
+							DatabaseTool.encryptedBackup(uP.getUsername(), uP.getPassword(), Credentials.getInstance().getDatabaseName(),
+									file.getCanonicalPath(), uP);
 
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -111,6 +124,11 @@ public class DatabaseToolPanel extends JPanel {
 				if (uP.isVerified() && !uP.isClosed()) {
 
 					JFileChooser fc = new JFileChooser();
+					try {
+						fc.setSelectedFile(new File(DatabaseSettings.getInstance().getFilePath()));
+					} catch (FileNotFoundException e2) {
+						e2.printStackTrace();
+					}
 					fc.setDialogTitle("Recover Database");
 
 					// DO NOT DELETE THESE COMMENTS
@@ -131,7 +149,7 @@ public class DatabaseToolPanel extends JPanel {
 
 						try {
 
-							DatabaseTool.getInstance().decryptAndUpdate(uP.getUsername(), uP.getPassword(), "pilmico", file.getCanonicalPath(), uP);
+							DatabaseTool.getInstance().decryptedUpdate(uP.getUsername(), uP.getPassword(), "pilmico", file.getCanonicalPath(), uP);
 
 						} catch (SQLException e1) {
 							e1.printStackTrace();
