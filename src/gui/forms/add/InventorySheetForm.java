@@ -25,7 +25,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -36,7 +35,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -144,14 +142,13 @@ public class InventorySheetForm extends SimplePanel {
 			dateSaleslabel, cashierLabel, grossSalesLabel, dateDellabel, delReceivedByLabel, grossDelLabel, dateARlabel, arIssuedByLabel, grossARLabel,
 			dateARPaymentlabel, arPaymentIssuedByLabel, grossARPaymentLabel, dateCAPaymentlabel, caPaymentIssuedByLabel, grossCAPaymentLabel,
 			datePulloutlabel, pulloutIssuedByLabel, grossPulloutLabel, dateExpenseslabel, expensesIssuedByLabel, grossExpensesLabel, dateCAlabel,
-			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateAR2label, ar2IssuedByLabel, grossAR2Label, dateSalarylabel,
-			salaryIssuedForLabel, salaryAmountLabel, dateDepositlabel, depositorLabel, depositAmountLabel;
+			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateSalarylabel, salaryIssuedForLabel, salaryAmountLabel,
+			dateDepositlabel, depositorLabel, depositAmountLabel;
 	private SubTableHeaderLabel begInvtyLabel, onDisplayLabel, delLabel, poLabel, endInvtyLabel, offtakeLabel, priceLabel, salesLabel, salesFormLabel,
 			overallSalesLabel, arFormLabel, overallARLabel, deliveryFormLabel, overallDelLabel, arPaymentFormLabel, overallARPaymentLabel,
 			caPaymentFormLabel, overallCAPaymentLabel, pullOutFormLabel, overallPulloutLabel, expensesFormLabel, overallExpensesLabel, caFormLabel,
-			overallCALabel, discountFormLabel, overallDiscountLabel, ar2FormLabel, overallAR2Label, salaryFormLabel, overallSalaryLabel,
-			depositFormLabel, overallDepositLabel, assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label,
-			accLabel;
+			overallCALabel, discountFormLabel, overallDiscountLabel, salaryFormLabel, overallSalaryLabel, depositFormLabel, overallDepositLabel,
+			assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label, accLabel;
 
 	private List<Product> products;
 	private List<Delivery> deliveries;
@@ -169,7 +166,7 @@ public class InventorySheetForm extends SimplePanel {
 	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
 	private InventorySheet inventorySheet;
-	private DefaultComboBoxModel model;
+//	private DefaultComboBoxModel model;
 
 	public InventorySheetForm() {
 		super("Add Inventory Sheet");
@@ -433,11 +430,11 @@ public class InventorySheetForm extends SimplePanel {
 		discountPane = new PDControlScrollPane();
 		discountPane.setViewportView(discountPanel);
 
-		ar2FormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", 2);
-		dateAR2label = new TableHeaderLabel("Date");
-		ar2IssuedByLabel = new TableHeaderLabel("Customer");
-		grossAR2Label = new TableHeaderLabel("Amount");
-		overallAR2Label = new SubTableHeaderLabel("OVERALL");
+		// ar2FormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", 2);
+		// dateAR2label = new TableHeaderLabel("Date");
+		// ar2IssuedByLabel = new TableHeaderLabel("Customer");
+		// grossAR2Label = new TableHeaderLabel("Amount");
+		// overallAR2Label = new SubTableHeaderLabel("OVERALL");
 
 		ar2Panel = new JPanel();
 		ar2Panel.setOpaque(false);
@@ -1063,22 +1060,11 @@ public class InventorySheetForm extends SimplePanel {
 					// backup database
 					try {
 
-						// DatabaseTool.backup(Credentials.getInstance().getUsername(),
-						// Credentials.getInstance().getPassword(),
-						// Credentials.getInstance()
-						// .getDatabaseName(), "D:/Pilmico");
-						//
-						// DatabaseTool.backup(Credentials.getInstance().getUsername(),
-						// Credentials.getInstance().getPassword(),
-						// Credentials.getInstance()
-						// .getDatabaseName(),
-						// DatabaseSettings.getInstance().getFilePath());
-
 						DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
 								SecurityTool.decryptString(Credentials.getInstance().getPassword()), Credentials.getInstance().getDatabaseName(),
 								DatabaseSettings.getInstance().getFilePath(), null);
+
 					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (Exception e2) {
 						// TODO Auto-generated catch block
@@ -1109,37 +1095,41 @@ public class InventorySheetForm extends SimplePanel {
 		return true;
 	}
 
-	private void fillTables() {
-		// TODO Auto-generated method stub
-		// productsPanel.setPreferredSize(new Dimension(salesLabel.getX() +
-		// salesLabel.getWidth() - productLabel.getX(),
-		// productsPanel.getComponentCount() * ROW_HEIGHT));
-
-		for (int i = 0; i < 28; i++) {
-			productsInventory.add(new ISRowPanel(null, productsPanel, Values.PRODUCTS));
-			productsPanel.add(productsInventory.get(i));
-
-			productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(), productsPanel.getComponentCount() * ROW_HEIGHT));
-			productsPanel.updateUI();
-			productsPanel.revalidate();
-		}
-
-		alternateRows(productsInventory);
-
-		// System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
-
-		for (int i = 0; i < 3; i++) {
-			salesInventory.add(new ISRowPanel(null, salesPanel, Values.SALES));
-			salesPanel.add(salesInventory.get(i));
-
-			salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(), salesPanel.getComponentCount() * ROW_HEIGHT));
-			salesPanel.updateUI();
-			salesPanel.revalidate();
-		}
-
-		alternateRows(salesInventory);
-
-	}
+	// private void fillTables() {
+	// // TODO Auto-generated method stub
+	// // productsPanel.setPreferredSize(new Dimension(salesLabel.getX() +
+	// // salesLabel.getWidth() - productLabel.getX(),
+	// // productsPanel.getComponentCount() * ROW_HEIGHT));
+	//
+	// for (int i = 0; i < 28; i++) {
+	// productsInventory.add(new ISRowPanel(null, productsPanel,
+	// Values.PRODUCTS));
+	// productsPanel.add(productsInventory.get(i));
+	//
+	// productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(),
+	// productsPanel.getComponentCount() * ROW_HEIGHT));
+	// productsPanel.updateUI();
+	// productsPanel.revalidate();
+	// }
+	//
+	// alternateRows(productsInventory);
+	//
+	// //
+	// System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
+	//
+	// for (int i = 0; i < 3; i++) {
+	// salesInventory.add(new ISRowPanel(null, salesPanel, Values.SALES));
+	// salesPanel.add(salesInventory.get(i));
+	//
+	// salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(),
+	// salesPanel.getComponentCount() * ROW_HEIGHT));
+	// salesPanel.updateUI();
+	// salesPanel.revalidate();
+	// }
+	//
+	// alternateRows(salesInventory);
+	//
+	// }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void loadDatesOfPendingTransactions() throws Exception {

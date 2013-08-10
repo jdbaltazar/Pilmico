@@ -18,12 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import app.Credentials;
 import app.DatabaseSettings;
 
-import common.manager.Manager;
-
 import core.database.DatabaseTool;
-import core.persist.HibernateUtil;
-import core.test.FileChooserDemo;
-import core.test.Test;
 
 import util.SBButton;
 import util.Values;

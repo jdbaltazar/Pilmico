@@ -2,11 +2,7 @@ package core.security;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.Key;
 
 import javax.crypto.Cipher;
@@ -49,45 +45,6 @@ public class SecurityTool {
 		Key key = new SecretKeySpec(KEY.getBytes(ENCODING), ALGORITHM);
 		return key;
 	}
-
-	// public static CipherInputStream encryptFile(File file) throws Exception {
-	// Cipher cipher = Cipher.getInstance(ALGORITHM);
-	// cipher.init(Cipher.ENCRYPT_MODE, generateKey());
-	//
-	// CipherInputStream cipherInputStream = new CipherInputStream(new
-	// FileInputStream(file), cipher);
-	// return cipherInputStream;
-	// }
-	//
-	// public static CipherInputStream decryptFile(File file) throws Exception {
-	// Cipher cipher = Cipher.getInstance(ALGORITHM);
-	// cipher.init(Cipher.DECRYPT_MODE, generateKey());
-	// return new CipherInputStream(new FileInputStream(file), cipher);
-	// }
-	//
-	// public static File writeToFile(InputStream is, File file) throws
-	// IOException {
-	// OutputStream os = new FileOutputStream(file);
-	// byte[] bytes = new byte[64];
-	// int numBytes;
-	// while ((numBytes = is.read(bytes)) != -1) {
-	// os.write(bytes, 0, numBytes);
-	// }
-	// os.flush();
-	// os.close();
-	// is.close();
-	//
-	// return file;
-	// }
-
-	// private byte[] getKeyBytes(final byte[] key) throws Exception {
-	//
-	//
-	// byte[] keyBytes = new byte[16];
-	// System.arraycopy(key, 0, keyBytes, 0, Math.min(key.length,
-	// keyBytes.length));
-	// return keyBytes;
-	// }
 
 	private static Cipher getCipherEncrypt() throws Exception {
 		byte[] keyBytes = KEY.getBytes(ENCODING);
