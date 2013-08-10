@@ -114,7 +114,7 @@ public class Breakdown {
 	}
 
 	public double getActualCashCount() {
-		double total = 0d;
+		double total = coins + check;
 		for (BreakdownLine bdl : breakdownLines) {
 			total += bdl.getAmount();
 		}

@@ -82,16 +82,27 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		double s = 12121.39999;
-		// double t = 12;
-		// double s = u / t;
+		// try {
+		// DatabaseTool.backup(Credentials.getInstance().getUsername(),
+		// Credentials.getInstance().getPassword(), Credentials.getInstance()
+		// .getDatabaseName(), "D:/Pilmico/backup.pilmico");
+		// } catch (FileNotFoundException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
-		System.out.println("numbr: " + s);
-		s = Math.round(s * 100.0) / 100.0;
-		System.out.println("2 decimal: " + s);
-		System.out.println("int: " + Math.floor(s));
-		double q = Math.round((s - Math.floor(s)) * 100.0) / 100.0d;
-		System.out.println("fraction: " + q);
+		DatabaseTool.backup("root", "123456", "pilmico", "D:/Pilmico/backup.pilmico");
+
+		// double s = 12121.39999;
+		// // double t = 12;
+		// // double s = u / t;
+		//
+		// System.out.println("numbr: " + s);
+		// s = Math.round(s * 100.0) / 100.0;
+		// System.out.println("2 decimal: " + s);
+		// System.out.println("int: " + Math.floor(s));
+		// double q = Math.round((s - Math.floor(s)) * 100.0) / 100.0d;
+		// System.out.println("fraction: " + q);
 
 		// Date d = new Date();
 		//

@@ -56,6 +56,7 @@ public class DatabaseTool {
 
 	public static boolean backup(String dbUserName, String dbPassword, String dbName, String path, UtilityPopup uP) {
 
+		HibernateUtil.endSession();
 		DatabaseTool.uP = uP;
 
 		filePath = path;
@@ -136,6 +137,44 @@ public class DatabaseTool {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+
+		HibernateUtil.startSession();
+		return false;
+	}
+
+	public static boolean backup(String dbUserName, String dbPassword, String dbName, String path) {
+
+		HibernateUtil.endSession();
+
+		filePath = path;
+
+		System.out.println("path: " + filePath);
+		String executeCmd = "mysqldump -u " + dbUserName;
+		if (!dbPassword.equals(""))
+			executeCmd = executeCmd + " -p" + dbPassword;
+		executeCmd = executeCmd + " --add-drop-database -B " + dbName + " -r " + path;
+
+		System.out.println("cmd: " + executeCmd);
+
+		Process runtimeProcess;
+		try {
+			System.out.println(executeCmd);// this output works in mysql shell
+			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+
+			int processComplete = runtimeProcess.waitFor();
+			System.out.println("process complete: " + processComplete);
+
+			if (processComplete == 0) {
+				System.out.println("Backup created successfully");
+				return true;
+			} else {
+				System.out.println("Could not create the backup");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		HibernateUtil.startSession();
 		return false;
 	}
 

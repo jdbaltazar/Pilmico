@@ -74,6 +74,7 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
 import core.database.DatabaseTool;
+import core.security.SecurityTool;
 
 public class InventorySheetForm extends SimplePanel {
 
@@ -1050,8 +1051,10 @@ public class InventorySheetForm extends SimplePanel {
 
 					try {
 						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
+						if (validDates.size() > 0) {
+							// insert code here to invalidate "sandwiched" transactions
 
-						// insert code here to invalidate "sandwiched" transactions
+						}
 
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -1060,8 +1063,20 @@ public class InventorySheetForm extends SimplePanel {
 					// backup database
 					try {
 
-						DatabaseTool.backup(Credentials.getInstance().getUsername(), Credentials.getInstance().getPassword(), Credentials.getInstance()
-								.getDatabaseName(), DatabaseSettings.getInstance().getFilePath(), null);
+						// DatabaseTool.backup(Credentials.getInstance().getUsername(),
+						// Credentials.getInstance().getPassword(),
+						// Credentials.getInstance()
+						// .getDatabaseName(), "D:/Pilmico");
+						//
+						// DatabaseTool.backup(Credentials.getInstance().getUsername(),
+						// Credentials.getInstance().getPassword(),
+						// Credentials.getInstance()
+						// .getDatabaseName(),
+						// DatabaseSettings.getInstance().getFilePath());
+
+						DatabaseTool.backup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+								SecurityTool.decryptString(Credentials.getInstance().getPassword()), Credentials.getInstance().getDatabaseName(),
+								DatabaseSettings.getInstance().getFilePath(), null);
 
 						// DatabaseTool.getInstance().defaultBackup(Credentials.getInstance().getUsername(),
 						// Credentials.getInstance().getPassword(),
@@ -1069,6 +1084,9 @@ public class InventorySheetForm extends SimplePanel {
 					} catch (FileNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					} catch (Exception e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
 					}
 
 					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
@@ -1143,6 +1161,7 @@ public class InventorySheetForm extends SimplePanel {
 		List<Date> depositsDates = Manager.depositManager.getDatesOfPendingDeposits();
 
 		validDates = new ArrayList<Date>();
+		dateDropdown.removeAll();
 
 		validDates = DateTool.addUniqueDatesRemoveTime(validDates, deliveriesDates);
 		validDates = DateTool.addUniqueDatesRemoveTime(validDates, pullOutsDates);

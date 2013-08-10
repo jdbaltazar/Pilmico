@@ -17,6 +17,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import common.manager.Manager;
+
 public class Splash extends JFrame implements PropertyChangeListener {
 
 	// git@github.com:jdbaltazar/Pilmico.git
@@ -54,12 +56,12 @@ public class Splash extends JFrame implements PropertyChangeListener {
 			public void run() {
 				try {
 
-					 Splash frame = new Splash();
-					 frame.setVisible(true);
+					// Splash frame = new Splash();
+					// frame.setVisible(true);
 
-//					 Manager.getInstance();
-//					MainFrame mainFrame = new MainFrame();
-//					mainFrame.showFrame();
+					Manager.getInstance();
+					MainFrame mainFrame = new MainFrame();
+					mainFrame.showFrame();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -81,7 +83,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 		setVisible(true);
 
 		contentPane = new JPanel();
-//		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		// contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(null);
 
 		progressBar = new JProgressBar(0, 100);

@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public class DatabaseSettings {
 
 	private static DatabaseSettings databaseSettings = null;
-	private static String databaseSettingsFileName = "databaseSettings.xml";
+	private static String databaseSettingsFileName = "dbsettings.xml";
 	private String filePath;
 
 	private DatabaseSettings() {
