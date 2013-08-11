@@ -1051,22 +1051,21 @@ public class InventorySheetForm extends SimplePanel {
 					try {
 						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
 
-						// if (validDates.size() > 1) {
-						//
-						// // remove date of saved is
-						// int dateIndex = -1, i = 0;
-						// for (Date tempDate : validDates) {
-						// if (tempDate.equals(inventorySheet.getDate())) {
-						// dateIndex = i;
-						// }
-						// i++;
-						// }
-						// if (dateIndex != -1)
-						// validDates.remove(dateIndex);
-						//
-						// invalidateTrappedTransactions(validDates.get(0),
-						// validDates.get(validDates.size() - 1));
-						// }
+						if (validDates.size() > 1) {
+
+							// remove date of saved is
+							int dateIndex = -1, i = 0;
+							for (Date tempDate : validDates) {
+								if (tempDate.equals(inventorySheet.getDate())) {
+									dateIndex = i;
+								}
+								i++;
+							}
+							if (dateIndex != -1)
+								validDates.remove(dateIndex);
+
+							invalidateTrappedTransactions(validDates.get(0), validDates.get(validDates.size() - 1));
+						}
 
 					} catch (Exception e1) {
 						e1.printStackTrace();

@@ -242,7 +242,7 @@ public class Product {
 			}
 
 			if (quantityInKilo > 0d) {
-				desc = quantityInKilo + " kilo/s";
+				desc = desc + quantityInKilo + " kilo/s";
 			}
 
 			desc = desc + " remaining";
@@ -393,8 +393,11 @@ public class Product {
 			double rawResult = kilosQuantity / kilosPerSack;
 			// rounded two decimal result
 			double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;
-			ProductQuantity pq = new ProductQuantity(Math.floor(roundedTwodecimalResult),
-					((roundedTwodecimalResult - Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d);
+			double sacks = Math.floor(roundedTwodecimalResult);
+			// double kilos = ((roundedTwodecimalResult -
+			// Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
+			double kilos = kilosQuantity % kilosPerSack;
+			ProductQuantity pq = new ProductQuantity(sacks, kilos);
 			return pq;
 		} else {
 			throw new NegativeValueException();
@@ -406,8 +409,11 @@ public class Product {
 			double rawResult = totalQuantityInKilo / kilosPerSack;
 			// rounded two decimal result
 			double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;
-			ProductQuantity pq = new ProductQuantity(Math.floor(roundedTwodecimalResult),
-					((roundedTwodecimalResult - Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d);
+			double sacks = Math.floor(roundedTwodecimalResult);
+			// double kilos = ((roundedTwodecimalResult -
+			// Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
+			double kilos = totalQuantityInKilo % kilosPerSack;
+			ProductQuantity pq = new ProductQuantity(sacks, kilos);
 			return pq;
 		} else {
 			throw new NegativeValueException();

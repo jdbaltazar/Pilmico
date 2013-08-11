@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -40,6 +41,8 @@ import javax.swing.event.ChangeListener;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.product.Product;
+import common.entity.product.exception.NegativeValueException;
+import common.entity.product.exception.NotEnoughQuantityException;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
@@ -301,6 +304,21 @@ public class AccountReceivablesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
+					boolean valid = true;
+					for (RowPanel rp : rowPanel) {
+						Product p = rp.getSelectedProduct();
+						try {
+							if (!Product.validDecrement(p.getQuantityInSack(), p.getQuantityInKilo(), p.getKilosPerSack(), rp.getQuantityInSack(),
+									rp.getQuantityInKilo())) {
+								valid = false;
+							}
+						} catch (NegativeValueException e1) {
+							e1.printStackTrace();
+						} catch (NotEnoughQuantityException e1) {
+							e1.printStackTrace();
+						}
+					}
+					if(valid){
 					PointerInfo a = MouseInfo.getPointerInfo();
 					Point b = a.getLocation();
 
@@ -342,6 +360,15 @@ public class AccountReceivablesForm extends SimplePanel {
 					}
 				} else
 					error.setText(msg);
+					
+				}else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+							+ "\n In order to proceed: " 
+							+ "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or"
+							+ "\n (3) Invalidate a Pullout/s and/or Sales", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
+				}
 
 			}
 		});
