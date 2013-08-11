@@ -34,6 +34,9 @@ public interface SalaryReleaseManager {
 
 	public List<Date> getDatesOfPendingSalaryReleases() throws Exception;
 
+	// excludes the start and end dates
+	public List<SalaryRelease> getPendingSalaryReleasesBetween(Date startDate, Date endDate) throws Exception;
+
 	// fee
 
 	public void addFees(Fee fee) throws Exception;

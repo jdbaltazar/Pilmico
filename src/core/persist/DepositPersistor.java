@@ -18,6 +18,7 @@ import util.Utility;
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
+import common.entity.pullout.PullOut;
 import common.manager.DepositManager;
 
 public class DepositPersistor extends Persistor implements DepositManager {
@@ -256,5 +257,25 @@ public class DepositPersistor extends Persistor implements DepositManager {
 			}
 		}
 		return dates;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deposit> getPendingDepositsBetween(Date startDate, Date endDate) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Deposit.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Deposit> deposits = new ArrayList<Deposit>();
+		try {
+			Date lowerBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(startDate));
+			Date upperBound = DateTool.getDateWithoutTime(endDate);
+			deposits = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
 	}
 }

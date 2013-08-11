@@ -27,6 +27,9 @@ public interface DiscountIssueManager {
 
 	public List<DiscountIssue> getPendingDiscountIssuesOn(Date date) throws Exception;
 
+	// excludes the start and end dates
+	public List<DiscountIssue> getPendingDiscountIssuesBetween(Date startDate, Date endDate) throws Exception;
+
 	public void updateDiscountIssue(DiscountIssue discountIssue) throws Exception;
 
 	public void deleteDiscountIssue(DiscountIssue discountIssue) throws Exception;

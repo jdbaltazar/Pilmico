@@ -29,6 +29,9 @@ public interface DeliveryManager {
 
 	public List<Delivery> getPendingDeliveriesOn(Date date) throws Exception;
 
+	// excludes the start and end dates
+	public List<Delivery> getPendingDeliveriesBetween(Date startDate, Date endDate) throws Exception;
+
 	public void updateDelivery(Delivery delivery) throws Exception;
 
 	public void deleteDelivery(Delivery delivery) throws Exception;

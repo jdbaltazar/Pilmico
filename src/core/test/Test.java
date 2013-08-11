@@ -21,6 +21,8 @@ import util.DateFormatter;
 import util.Utility;
 
 import common.entity.inventorysheet.InventorySheetData;
+import common.entity.product.Product;
+import common.entity.product.ProductQuantity;
 import common.manager.Manager;
 
 import app.Credentials;
@@ -81,6 +83,12 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
+
+		// Date date = new Date();
+		//
+		// System.out.println(DateTool.getDateWithoutTime(date).toString());
+
+		ProductQuantity pq = new ProductQuantity(0, 0);
 
 		// try {
 		// DatabaseTool.backup(Credentials.getInstance().getUsername(),

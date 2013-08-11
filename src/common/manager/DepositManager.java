@@ -6,6 +6,7 @@ import java.util.List;
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
+import common.entity.pullout.PullOut;
 
 public interface DepositManager {
 
@@ -17,7 +18,7 @@ public interface DepositManager {
 
 	public List<Deposit> getAllDeposits() throws Exception;
 
-	public List<Deposit> getValidDeposits() throws Exception;
+	public List<Deposit> getValidDeposits() throws Exception; 
 
 	public List<Deposit> getInvalidDeposits() throws Exception;
 
@@ -30,6 +31,9 @@ public interface DepositManager {
 	public List<Deposit> getInvalidDepositsOn(Date date) throws Exception;
 
 	public List<Deposit> getPendingDepositsOn(Date date) throws Exception;
+
+	// excludes the start and end dates
+	public List<Deposit> getPendingDepositsBetween(Date startDate, Date endDate) throws Exception;
 
 	public void updateDeposit(Deposit deposit) throws Exception;
 
