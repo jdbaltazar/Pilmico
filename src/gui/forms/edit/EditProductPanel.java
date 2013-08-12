@@ -63,11 +63,14 @@ public class EditProductPanel extends EditFormPanel {
 
 	private BalloonTip balloonTip;
 
-	private int y1 = 50, y2 = 35, y3 = 62;
+	private int y1 = 35, y2 = 20, y3 = 62;
 
 	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
 
 	private Product product;
+	
+	private JPanel formPanel;
+	private JScrollPane scrollPane;
 
 	/*
 	 * public EditItemPanel(Item item) { super("View / Edit Stock"); this.item =
@@ -87,6 +90,12 @@ public class EditProductPanel extends EditFormPanel {
 		// TODO Auto-generated method stub
 
 		setLayout(null);
+		
+		formPanel = new JPanel();
+		formPanel.setLayout(null);
+		formPanel.setOpaque(false);
+
+		scrollPane = new JScrollPane();
 
 		error = new ErrorLabel();
 
@@ -141,7 +150,7 @@ public class EditProductPanel extends EditFormPanel {
 		edit = new SoyButton("Edit");
 		int fieldsCtr = 0, labelsCtr = 0;
 
-		for (int i = 0, x = 90, y = 0; i < num; i++, y += y3) {
+		for (int i = 0, x = 5, y = 0; i < num; i++, y += y3) {
 
 			if (i == 4) {
 				x += 230;
@@ -187,15 +196,15 @@ public class EditProductPanel extends EditFormPanel {
 
 		}
 
-		edit.setBounds(370, 350, 80, 30);
+		edit.setBounds(367, 348, 80, 30);
 
 		error.setBounds(550, 320, 230, 25);
 
 		for (int i = 0; i < fields.size(); i++)
-			add(fields.get(i));
+			formPanel.add(fields.get(i));
 
 		for (int i = 0; i < labels.size(); i++) {
-			add(labels.get(i));
+			formPanel.add(labels.get(i));
 		}
 
 		edit.addMouseListener(new MouseAdapter() {
@@ -251,11 +260,20 @@ public class EditProductPanel extends EditFormPanel {
 		add(edit);
 		add(scrollpane);
 
-		add(cbox1);
-		add(cbox2);
-		add(category);
+		formPanel.add(cbox1);
+		formPanel.add(cbox2);
+		formPanel.add(category);
 
-		add(error);
+		formPanel.add(error);
+		
+		scrollPane.setViewportView(formPanel);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+		scrollPane.setBounds(79, 10, 650, 330);
+		
+		add(scrollPane);
 	}
 
 	private void initBalloonTip() {

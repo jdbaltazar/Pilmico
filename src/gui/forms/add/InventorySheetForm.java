@@ -92,7 +92,8 @@ public class InventorySheetForm extends SimplePanel {
 	 */
 	public static int SCROLLBAR_WIDTH = 16, PRODUCT_LABEL_WIDTH = 160, SACK_LABEL_WIDTH = 70, SALES_KG_WIDTH = 90, TOTAL_INVENTORY_LABEL = 16,
 			PRODUCT_ROW_WIDTH = 1360, DATE_LABEL_WIDTH = 150, ISSUED_BY_LABEL_WIDTH = 200, GROSS_LABEL_WIDTH = 100, TRANSACTIONS_ROW_WIDTH = 450;
-	private JPanel navigationPanel;
+	
+	private JPanel navigationPanel, datePanel;
 
 	private ViewportDragScrollListener v1;
 	private JViewport view;
@@ -183,6 +184,10 @@ public class InventorySheetForm extends SimplePanel {
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
 		navigationPanel.setOpaque(false);
+		
+		datePanel = new JPanel();
+		datePanel.setLayout(null);
+		datePanel.setOpaque(false);
 
 		save = new SoyButton("Save");
 		save.setBounds(85, 45, 80, 30);
@@ -561,14 +566,16 @@ public class InventorySheetForm extends SimplePanel {
 	}
 
 	private void addComponents() {
+		
+		datePanel.setBounds(15, 40, 200, 40);
 
-		dateLabel.setBounds(startX, startY, 40, 20);
-		dateDropdown.setBounds(startX + dateLabel.getWidth(), startY, 110, 20);
+		dateLabel.setBounds(5, 5, 40, 20);
+		dateDropdown.setBounds(dateLabel.getX() + dateLabel.getWidth(), dateLabel.getY(), 110, 20);
 
-		dateStatus.setBounds(dateDropdown.getWidth() + dateDropdown.getX() + 5, startY + 2, 16, 16);
-
+		dateStatus.setBounds(dateDropdown.getWidth() + dateDropdown.getX() + 5, dateLabel.getY() + 2, 16, 16);
+		
 		sectionLabel.get(0).setText("INVENTORY");
-		sectionLabel.get(0).setBounds(startX, dateLabel.getY() + dateLabel.getHeight() + 30, 150, 20);
+		sectionLabel.get(0).setBounds(startX, startY + dateLabel.getHeight() + 30, 150, 20);
 
 		productLabel.setBounds(startX, sectionLabel.get(0).getY() + sectionLabel.get(0).getHeight() + LABEL_GAP, PRODUCT_LABEL_WIDTH, 30);
 
@@ -859,9 +866,9 @@ public class InventorySheetForm extends SimplePanel {
 		for (int i = 0, x = 0; i < 3; i++, x += summary1Label.getWidth())
 			summaryValues.get(i).setBounds(summary1Label.getX() + x, summary1Label.getY() + summary1Label.getHeight(), 176, 30);
 
-		isPanel.add(dateLabel);
-		isPanel.add(dateDropdown);
-		isPanel.add(dateStatus);
+//		isPanel.add(dateLabel);
+//		isPanel.add(dateDropdown);
+//		isPanel.add(dateStatus);
 
 		isPanel.add(productLabel);
 
@@ -1095,8 +1102,13 @@ public class InventorySheetForm extends SimplePanel {
 
 		});
 
-		navigationPanel.add(save);
+		datePanel.add(dateLabel);
+		datePanel.add(dateDropdown);
+		datePanel.add(dateStatus);
 
+		navigationPanel.add(save);
+		
+		add(datePanel);
 		add(navigationPanel);
 		add(isPane);
 

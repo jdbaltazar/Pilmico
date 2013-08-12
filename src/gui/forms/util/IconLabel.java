@@ -41,7 +41,7 @@ public class IconLabel extends JLabel{
 				false
 			);
 		
-		ToolTipUtils.balloonToToolTip(balloonTip, 10, 3000);
+		ToolTipUtils.balloonToToolTip(balloonTip, 10, 10000);
 	}
 	
 	public void setIconToolTip(ImageIcon icon, String text, boolean valid) {
