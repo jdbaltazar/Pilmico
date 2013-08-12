@@ -1064,6 +1064,7 @@ public class InventorySheetForm extends SimplePanel {
 							if (dateIndex != -1)
 								validDates.remove(dateIndex);
 
+							System.out.println("i was called!");
 							invalidateTrappedTransactions(validDates.get(0), validDates.get(validDates.size() - 1));
 						}
 
@@ -1071,19 +1072,20 @@ public class InventorySheetForm extends SimplePanel {
 						e1.printStackTrace();
 					}
 
-					// backup database
-					try {
-
-						DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
-								SecurityTool.decryptString(Credentials.getInstance().getPassword()), Credentials.getInstance().getDatabaseName(),
-								DatabaseSettings.getInstance().getFilePath(), null);
-
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					} catch (Exception e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
+					// // backup database
+					// try {
+					//
+					// DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+					// SecurityTool.decryptString(Credentials.getInstance().getPassword()),
+					// Credentials.getInstance().getDatabaseName(),
+					// DatabaseSettings.getInstance().getFilePath(), null);
+					//
+					// } catch (FileNotFoundException e1) {
+					// e1.printStackTrace();
+					// } catch (Exception e2) {
+					// // TODO Auto-generated catch block
+					// e2.printStackTrace();
+					// }
 
 					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 					new SuccessPopup("Add").setVisible(true);
@@ -1108,6 +1110,8 @@ public class InventorySheetForm extends SimplePanel {
 
 			// invalidate all sandwiched transactions
 			List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBetween(startDate, endDate);
+			System.out.println("size of pending deliveries: " + pendingDeliveries.size());
+
 			for (Delivery d : pendingDeliveries) {
 				d.setValid(false);
 				Manager.deliveryManager.updateDelivery(d);
