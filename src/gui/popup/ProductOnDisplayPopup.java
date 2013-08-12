@@ -51,7 +51,7 @@ public class ProductOnDisplayPopup extends JDialog {
 	private ImageIcon icon;
 
 	private List<Product> products;
-	
+
 	private ErrorLabel error;
 	private String msg;
 
@@ -73,7 +73,7 @@ public class ProductOnDisplayPopup extends JDialog {
 	}
 
 	private void addComponents() {
-		
+
 		error = new ErrorLabel();
 
 		icon = new ImageIcon("images/util.png");
@@ -99,29 +99,26 @@ public class ProductOnDisplayPopup extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent m) {
 
-//<<<<<<< HEAD
+				// <<<<<<< HEAD
 				if (isValidated()) {
-/*					for (RowPanel rp : rowPanel) {
-						// BETTER code here
-						Product p = rp.getOnDisplayProduct();
-						p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
-						p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo());
+					/*
+					 * for (RowPanel rp : rowPanel) { // BETTER code here Product p =
+					 * rp.getOnDisplayProduct();
+					 * p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
+					 * p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo()); try {
+					 * Manager.productManager.updateProduct(p); } catch (Exception e)
+					 * { e.printStackTrace(); } =======
+					 */
+					for (RowPanel rp : rowPanel) {
 						try {
+							Product p = rp.getOnDisplayProduct();
+							p.setQuantityOnDisplay(rp.getOnDisplayInSack(), rp.getOnDisplayInKilo());
 							Manager.productManager.updateProduct(p);
 						} catch (Exception e) {
 							e.printStackTrace();
+							// >>>>>>> refs/remotes/origin/master
 						}
-=======*/
-				for (RowPanel rp : rowPanel) {
-					try {
-						Product p = rp.getOnDisplayProduct();
-						p.setQuantityOnDisplay(rp.getOnDisplayInSack(), rp.getOnDisplayInKilo());
-						Manager.productManager.updateProduct(p);
-					} catch (Exception e) {
-						e.printStackTrace();
-//>>>>>>> refs/remotes/origin/master
 					}
-				}
 					error.setText("");
 					dispose();
 					Values.centerPanel.changeTable(Values.PRODUCTS);
@@ -164,7 +161,7 @@ public class ProductOnDisplayPopup extends JDialog {
 		// productsPane.setBorder(BorderFactory.createEmptyBorder());
 
 		productsPane.setBounds(24, PRODUCTS_PANE_Y, ROW_WIDTH - 1, 120);
-		
+
 		error.setBounds(productsPane.getX(), productsPane.getY() + productsPane.getHeight(), productsPane.getWidth(), 22);
 
 		panel.add(productsPane);
@@ -178,47 +175,44 @@ public class ProductOnDisplayPopup extends JDialog {
 		add(close);
 		add(panel);
 	}
-	
-	private boolean isValidated(){
-		
-		for(int i = 0; i < rowPanel.size(); i++){
-			
-			if(rowPanel.get(i).getOnDisplayInKilo() >  rowPanel.get(i).getOnDisplayProduct().getQuantityInKilo()){
-				
-				msg = "kg on display should not be greater than overall kg quantity in row "+(i+1);
-				
-				return false;
-			}
-			
-			if(rowPanel.get(i).getOnDisplayInSack() >  rowPanel.get(i).getOnDisplayProduct().getQuantityInSack()){
-				
-				msg = "sk on display should not be greater than overall sk quantity in row "+(i+1);
-				
+
+	private boolean isValidated() {
+
+		for (int i = 0; i < rowPanel.size(); i++) {
+
+			if (Product.totalKilos(rowPanel.get(i).getOnDisplayInSack(), rowPanel.get(i).getOnDisplayInKilo(), rowPanel.get(i).getOnDisplayProduct()
+					.getKilosPerSack()) > rowPanel.get(i).getOnDisplayProduct().getTotalQuantityInKilo()) {
+				msg = "quantity on display cannot be greater than overall quantity in row " + (i + 1);
 				return false;
 			}
 
-			
 		}
-		
+
 		return true;
 	}
 
-	public void fillTable(List<Product> products) {
+	public void fillTable() {
 
-		this.products = products;
+		try {
+			this.products = Manager.productManager.getProducts();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		rowPanel.clear();
 		onDisplayPanel.removeAll();
-		onDisplayPanel.updateUI();
-		onDisplayPanel.revalidate();
+		// onDisplayPanel.updateUI();
+		// onDisplayPanel.revalidate();
 
 		for (Product p : products) {
 			rowPanel.add(new RowPanel(p, onDisplayPanel, Tables.PRODUCTS));
 			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
 			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
-			onDisplayPanel.updateUI();
-			onDisplayPanel.revalidate();
+
 		}
+
+		onDisplayPanel.updateUI();
+		onDisplayPanel.revalidate();
 	}
 
 }

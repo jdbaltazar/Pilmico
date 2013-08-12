@@ -135,6 +135,23 @@ public class InventorySheetData {
 		this.issuedBy = issuedBy;
 	}
 
+	public InventorySheetData(Set<Delivery> deliveries, Set<PullOut> pullouts, Set<Sales> sales, Set<AccountReceivable> accountReceivables,
+			Set<DiscountIssue> discountIssues, Set<ARPayment> arPayments, Set<CAPayment> caPayments, Set<DailyExpenses> dailyExpenses,
+			Set<CashAdvance> cashAdvances, Set<SalaryRelease> salaryReleases, Set<Deposit> deposits) {
+		super();
+		this.deliveries = deliveries;
+		this.pullouts = pullouts;
+		this.sales = sales;
+		this.accountReceivables = accountReceivables;
+		this.discountIssues = discountIssues;
+		this.arPayments = arPayments;
+		this.caPayments = caPayments;
+		this.dailyExpenses = dailyExpenses;
+		this.cashAdvances = cashAdvances;
+		this.salaryReleases = salaryReleases;
+		this.deposits = deposits;
+	}
+
 	public int getId() {
 		return id;
 	}

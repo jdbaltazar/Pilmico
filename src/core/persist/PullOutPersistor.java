@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.delivery.Delivery;
 import common.entity.pullout.PullOut;
 import common.manager.PullOutManager;
 
@@ -206,6 +207,26 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 			}
 		}
 		return dates;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PullOut> getPendingPullOutsBetween(Date startDate, Date endDate) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(PullOut.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<PullOut> pullOuts = new ArrayList<PullOut>();
+		try {
+			Date lowerBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(startDate));
+			Date upperBound = DateTool.getDateWithoutTime(endDate);
+			pullOuts = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return pullOuts;
 	}
 
 }

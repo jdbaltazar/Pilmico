@@ -229,8 +229,8 @@ public class RowPanel extends JPanel {
 					Product p = (Product) productsCombo.getSelectedItem();
 					priceSack.setToolTip(priceSack, String.format("%.2f", p.getCurrentPricePerSack()) + "");
 					priceKG.setToolTip(priceKG, String.format("%.2f", p.getCurrentPricePerKilo()) + "");
-					quantitySack.setToolTipText(String.format("%.2f", p.getQuantityInSack()) + " sack/s of " + p.getName() + " remaining");
-					quantityKG.setToolTipText(String.format("%.2f", p.getQuantityInKilo()) + " kilo/s of " + p.getName() + " remaining");
+					quantitySack.setToolTipText(p.getQuantityDescription());
+					quantityKG.setToolTipText(p.getQuantityDescription());
 
 					if (Values.tableUtilPanel.getLabel().contains(Tables.SALES)) {
 						if (Values.salesForm.hasMultipleProduct())
@@ -298,12 +298,12 @@ public class RowPanel extends JPanel {
 		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplayKG.setPrecision(2);
 		onDisplayKG.setText(product.getQuantityOnDisplayInKilo() == 0 ? "0" : String.format("%.2f", product.getQuantityOnDisplayInKilo()));
-		onDisplayKG.setToolTipText(String.format("%.2f", product.getQuantityInKilo()) + " kilo/s of " + product.getName() + " remaining");
+		onDisplayKG.setToolTipText(product.getQuantityDescription());
 
 		onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplaySack.setPrecision(2);
 		onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" : String.format("%.2f", product.getQuantityOnDisplayInSack()));
-		onDisplaySack.setToolTipText(String.format("%.2f", product.getQuantityInSack()) + " sack/s of " + product.getName() + " remaining");
+		onDisplaySack.setToolTipText(product.getQuantityDescription());
 
 		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
 		onDisplaySack.setBounds(209, 5, 60, 20);
@@ -316,8 +316,7 @@ public class RowPanel extends JPanel {
 		// row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
 		// Color.LIGHT_GRAY));
 
-		if (product.getQuantityOnDisplayInKilo() == 0d
-				|| product.getQuantityOnDisplayInKilo() == 0d) {
+		if (product.getQuantityOnDisplayInKilo() == 0d || product.getQuantityOnDisplayInKilo() == 0d) {
 			row.setBackground(Color.decode("#E0EBEB"));
 		} else
 			row.setBackground(Color.decode("#BFFF80"));
@@ -541,7 +540,7 @@ public class RowPanel extends JPanel {
 	public double getOnDisplayInKilo() {
 		return Double.parseDouble(onDisplayKG.getText());
 	}
-	
+
 	public FormField getBankAccount() {
 		return bankAccount;
 	}

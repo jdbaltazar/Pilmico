@@ -33,7 +33,7 @@ public class InventorySheet implements InventorySheetManager {
 
 	public static final String OVER = "Over";
 	public static final String SHORT = "Short";
-	public static final String OVER_SHORT = "Over/Short";
+	public static final String NEITHER = "-";
 
 	// include all is related transactions here!!
 
@@ -802,7 +802,7 @@ public class InventorySheet implements InventorySheetManager {
 			if ((actualCashOnHand - actualCashCount) < 0) {
 				return OVER;
 			} else {
-				return OVER_SHORT;
+				return NEITHER;
 			}
 		}
 	}

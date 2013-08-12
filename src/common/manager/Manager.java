@@ -12,6 +12,7 @@ import util.Values;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 
+import core.database.DatabaseTool;
 import core.persist.AccountPersistor;
 import core.persist.AccountReceivablePersistor;
 import core.persist.CashAdvancePersistor;
@@ -103,6 +104,7 @@ public class Manager {
 				if (acc != null && acc.isActive()) {
 					if (acc.comparePassword(input)) {
 						loggedInAccount = acc;
+						DatabaseTool.executeUpdates();
 						return "true";
 					} else {
 						// System.out.println("Password is incorrect!");

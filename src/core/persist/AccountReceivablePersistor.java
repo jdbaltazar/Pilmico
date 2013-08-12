@@ -418,4 +418,44 @@ public class AccountReceivablePersistor extends Persistor implements AccountRece
 		return dates;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountReceivable> getPendingAccountReceivablesBetween(Date startDate, Date endDate) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(AccountReceivable.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<AccountReceivable> accountReceivables = new ArrayList<AccountReceivable>();
+		try {
+			Date lowerBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(startDate));
+			Date upperBound = DateTool.getDateWithoutTime(endDate);
+			accountReceivables = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound))
+					.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return accountReceivables;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ARPayment> getPendingARPaymentsBetween(Date startDate, Date endDate) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(ARPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<ARPayment> arPayments = new ArrayList<ARPayment>();
+		try {
+			Date lowerBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(startDate));
+			Date upperBound = DateTool.getDateWithoutTime(endDate);
+			arPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return arPayments;
+	}
+
 }

@@ -159,7 +159,7 @@ public class TableUtilPanel extends SoyPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Values.mainFrame.dimScreen(true);
-				// Values.productOnDisplayPopup.fillTable();
+				Values.productOnDisplayPopup.fillTable();
 				Values.productOnDisplayPopup.setVisible(true);
 			}
 		});

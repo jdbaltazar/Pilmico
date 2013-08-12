@@ -27,10 +27,13 @@ public interface PullOutManager {
 
 	public List<PullOut> getPendingPullOutsOn(Date date) throws Exception;
 
+	// excludes the start and end dates
+	public List<PullOut> getPendingPullOutsBetween(Date startDate, Date endDate) throws Exception;
+
 	public void updatePullOut(PullOut pullOut) throws Exception;
 
 	public void deletePullOut(PullOut pullOut) throws Exception;
 
 	public List<Date> getDatesOfPendingPullOuts() throws Exception;
-	
+
 }

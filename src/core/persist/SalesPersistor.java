@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import common.entity.pullout.PullOut;
 import common.entity.sales.Sales;
 import common.manager.SalesManager;
 
@@ -206,6 +207,26 @@ public class SalesPersistor extends Persistor implements SalesManager {
 			}
 		}
 		return dates;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Sales> getPendingSalesBetween(Date startDate, Date endDate) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Sales.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Sales> sales = new ArrayList<Sales>();
+		try {
+			Date lowerBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(startDate));
+			Date upperBound = DateTool.getDateWithoutTime(endDate);
+			sales = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return sales;
 	}
 
 }

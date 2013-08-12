@@ -35,6 +35,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import common.entity.product.Product;
+import common.entity.product.exception.NegativeValueException;
+import common.entity.product.exception.NotEnoughQuantityException;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
 import common.manager.Manager;
@@ -78,7 +80,6 @@ public class PulloutForm extends SimplePanel {
 	private SBButton fwdProduct;
 
 	public PulloutForm() {
-		// TODO Auto-generated constructor stub
 		super("Add Pullout Form");
 		init();
 		addComponents();
@@ -86,6 +87,7 @@ public class PulloutForm extends SimplePanel {
 		Values.pulloutForm = this;
 	};
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void init() {
 
 		fwdProduct = new SBButton("forward.png", "forward.png", "Add new product");
@@ -275,10 +277,17 @@ public class PulloutForm extends SimplePanel {
 
 					boolean valid = true;
 					for (RowPanel rp : rowPanel) {
-						Product product = rp.getSelectedProduct();
-						// if (!product.validQuantityResult(rp.getQuantityInSack(),
-						// rp.getQuantityInKilo()))
-						// valid = false;
+						Product p = rp.getSelectedProduct();
+						try {
+							if (!Product.validDecrement(p.getQuantityInSack(), p.getQuantityInKilo(), p.getKilosPerSack(), rp.getQuantityInSack(),
+									rp.getQuantityInKilo())) {
+								valid = false;
+							}
+						} catch (NegativeValueException e1) {
+							e1.printStackTrace();
+						} catch (NotEnoughQuantityException e1) {
+							e1.printStackTrace();
+						}
 					}
 
 					if (valid) {
@@ -321,10 +330,12 @@ public class PulloutForm extends SimplePanel {
 						error.setText(msg);
 
 				} else {
-					JOptionPane.showMessageDialog(Values.mainFrame,
-							"Adding this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
-									+ "\ninvalidate other forms (Sales or Account Receivables) or add a Delivery to increment quantity", "Not Allowed",
-							JOptionPane.WARNING_MESSAGE);
+					
+					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+							+ "\n In order to proceed: " 
+							+ "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or"
+							+ "\n (3) Invalidate a Sales and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

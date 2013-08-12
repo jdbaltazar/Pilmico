@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -43,6 +44,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import common.entity.product.Product;
+import common.entity.product.exception.NegativeValueException;
+import common.entity.product.exception.NotEnoughQuantityException;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
@@ -95,9 +98,9 @@ public class SalesForm extends SimplePanel {
 	private ErrorLabel error;
 	private String msg = "";
 	private SBButton customerFwd, productFwd;
-	
+
 	private Date issueDateContainer;
-	
+
 	private boolean issueDateChanged = false;
 
 	public SalesForm() {
@@ -204,7 +207,7 @@ public class SalesForm extends SimplePanel {
 				determineDateStatus();
 			}
 		});
-		
+
 		issueDate.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -501,54 +504,80 @@ public class SalesForm extends SimplePanel {
 
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
 
-					PointerInfo a = MouseInfo.getPointerInfo();
-					Point b = a.getLocation();
-
-					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-					uP.setVisible(true);
-
-					if (!uP.isClosed()) {
-
-						Date d = ((SpinnerDateModel) date.getModel()).getDate();
-						System.out.println("date: " + d.toString());
-						
-						if(issueDateChanged)
-							issueDateContainer = ((SpinnerDateModel) issueDate.getModel()).getDate();
-						else
-							issueDateContainer = null;
-						
-						Person p = null;
-						if (customerCombo.getSelectedItem() != null) {
-							p = (Person) customerCombo.getSelectedItem();
-						}
-						Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), issueDateContainer, receipt_no.getText(), Manager.loggedInAccount);
-
-						s.setRemarks(uP.getInput());
-
-						for (RowPanel rp : rowPanel) {
-							Product product = rp.getSelectedProduct();
-							s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
-									.getQuantityInKilo(), rp.getQuantityInSack()));
-						}
-
+					boolean valid = true;
+					for (RowPanel rp : rowPanel) {
+						Product p = rp.getSelectedProduct();
 						try {
-							Manager.salesManager.addSales(s);
-
-							for (SalesDetail sd : s.getSalesDetails()) {
-								Product pd = sd.getProduct();
-								pd.decrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
-								Manager.productManager.updateProduct(pd);
+							if (!Product.validDecrement(p.getQuantityInSack(), p.getQuantityInKilo(), p.getKilosPerSack(), rp.getQuantityInSack(),
+									rp.getQuantityInKilo())) {
+								valid = false;
 							}
-							Values.centerPanel.changeTable(Values.SALES);
-							new SuccessPopup("Add").setVisible(true);
-							clearForm();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
+						} catch (NegativeValueException e1) {
+							e1.printStackTrace();
+						} catch (NotEnoughQuantityException e1) {
 							e1.printStackTrace();
 						}
 					}
-				} else
-					error.setText(msg);
+
+					if (valid) {
+
+						PointerInfo a = MouseInfo.getPointerInfo();
+						Point b = a.getLocation();
+
+						UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+						uP.setVisible(true);
+
+						if (!uP.isClosed()) {
+
+							Date d = ((SpinnerDateModel) date.getModel()).getDate();
+							System.out.println("date: " + d.toString());
+
+							if (issueDateChanged)
+								issueDateContainer = ((SpinnerDateModel) issueDate.getModel()).getDate();
+							else
+								issueDateContainer = null;
+
+							Person p = null;
+							if (customerCombo.getSelectedItem() != null) {
+								p = (Person) customerCombo.getSelectedItem();
+							}
+							Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), issueDateContainer, receipt_no.getText(), Manager.loggedInAccount);
+
+							s.setRemarks(uP.getInput());
+
+							for (RowPanel rp : rowPanel) {
+								Product product = rp.getSelectedProduct();
+								s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
+										.getQuantityInKilo(), rp.getQuantityInSack()));
+							}
+
+							try {
+								Manager.salesManager.addSales(s);
+
+								for (SalesDetail sd : s.getSalesDetails()) {
+									Product pd = sd.getProduct();
+									pd.decrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
+									Manager.productManager.updateProduct(pd);
+								}
+								Values.centerPanel.changeTable(Values.SALES);
+								new SuccessPopup("Add").setVisible(true);
+								clearForm();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					} else
+						error.setText(msg);
+
+				} else {
+
+					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+							+ "\n In order to proceed: " 
+							+ "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or"
+							+ "\n (3) Invalidate a Pullout/s and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 

@@ -25,7 +25,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -36,7 +35,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -74,6 +72,7 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
 import core.database.DatabaseTool;
+import core.security.SecurityTool;
 
 public class InventorySheetForm extends SimplePanel {
 
@@ -143,14 +142,13 @@ public class InventorySheetForm extends SimplePanel {
 			dateSaleslabel, cashierLabel, grossSalesLabel, dateDellabel, delReceivedByLabel, grossDelLabel, dateARlabel, arIssuedByLabel, grossARLabel,
 			dateARPaymentlabel, arPaymentIssuedByLabel, grossARPaymentLabel, dateCAPaymentlabel, caPaymentIssuedByLabel, grossCAPaymentLabel,
 			datePulloutlabel, pulloutIssuedByLabel, grossPulloutLabel, dateExpenseslabel, expensesIssuedByLabel, grossExpensesLabel, dateCAlabel,
-			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateAR2label, ar2IssuedByLabel, grossAR2Label, dateSalarylabel,
-			salaryIssuedForLabel, salaryAmountLabel, dateDepositlabel, depositorLabel, depositAmountLabel;
+			CAIssuedByLabel, grossCALabel, dateDiscountlabel, discountAmountLabel, dateSalarylabel, salaryIssuedForLabel, salaryAmountLabel,
+			dateDepositlabel, depositorLabel, depositAmountLabel;
 	private SubTableHeaderLabel begInvtyLabel, onDisplayLabel, delLabel, poLabel, endInvtyLabel, offtakeLabel, priceLabel, salesLabel, salesFormLabel,
 			overallSalesLabel, arFormLabel, overallARLabel, deliveryFormLabel, overallDelLabel, arPaymentFormLabel, overallARPaymentLabel,
 			caPaymentFormLabel, overallCAPaymentLabel, pullOutFormLabel, overallPulloutLabel, expensesFormLabel, overallExpensesLabel, caFormLabel,
-			overallCALabel, discountFormLabel, overallDiscountLabel, ar2FormLabel, overallAR2Label, salaryFormLabel, overallSalaryLabel,
-			depositFormLabel, overallDepositLabel, assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label,
-			accLabel;
+			overallCALabel, discountFormLabel, overallDiscountLabel, salaryFormLabel, overallSalaryLabel, depositFormLabel, overallDepositLabel,
+			assetsLabel, liabilitiesLabel, pcohLabel, cohLabel, summary1Label, summary2Label, summary3Label, accLabel;
 
 	private List<Product> products;
 	private List<Delivery> deliveries;
@@ -168,7 +166,9 @@ public class InventorySheetForm extends SimplePanel {
 	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
 
 	private InventorySheet inventorySheet;
-	private DefaultComboBoxModel model;
+	private InventorySheet previousInventorySheet = null;
+
+	// private DefaultComboBoxModel model;
 
 	public InventorySheetForm() {
 		super("Add Inventory Sheet");
@@ -432,11 +432,11 @@ public class InventorySheetForm extends SimplePanel {
 		discountPane = new PDControlScrollPane();
 		discountPane.setViewportView(discountPanel);
 
-		ar2FormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", 2);
-		dateAR2label = new TableHeaderLabel("Date");
-		ar2IssuedByLabel = new TableHeaderLabel("Customer");
-		grossAR2Label = new TableHeaderLabel("Amount");
-		overallAR2Label = new SubTableHeaderLabel("OVERALL");
+		// ar2FormLabel = new SubTableHeaderLabel("ACCOUNT RECEIVABLES", 2);
+		// dateAR2label = new TableHeaderLabel("Date");
+		// ar2IssuedByLabel = new TableHeaderLabel("Customer");
+		// grossAR2Label = new TableHeaderLabel("Amount");
+		// overallAR2Label = new SubTableHeaderLabel("OVERALL");
 
 		ar2Panel = new JPanel();
 		ar2Panel.setOpaque(false);
@@ -1051,7 +1051,21 @@ public class InventorySheetForm extends SimplePanel {
 					try {
 						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
 
-						// insert code here to invalidate "sandwiched" transactions
+						if (validDates.size() > 1) {
+
+							// remove date of saved is
+							int dateIndex = -1, i = 0;
+							for (Date tempDate : validDates) {
+								if (tempDate.equals(inventorySheet.getDate())) {
+									dateIndex = i;
+								}
+								i++;
+							}
+							if (dateIndex != -1)
+								validDates.remove(dateIndex);
+
+							invalidateTrappedTransactions(validDates.get(0), validDates.get(validDates.size() - 1));
+						}
 
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -1060,15 +1074,15 @@ public class InventorySheetForm extends SimplePanel {
 					// backup database
 					try {
 
-						DatabaseTool.backup(Credentials.getInstance().getUsername(), Credentials.getInstance().getPassword(), Credentials.getInstance()
-								.getDatabaseName(), DatabaseSettings.getInstance().getFilePath(), null);
+						DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+								SecurityTool.decryptString(Credentials.getInstance().getPassword()), Credentials.getInstance().getDatabaseName(),
+								DatabaseSettings.getInstance().getFilePath(), null);
 
-						// DatabaseTool.getInstance().defaultBackup(Credentials.getInstance().getUsername(),
-						// Credentials.getInstance().getPassword(),
-						// Credentials.getInstance().getDatabaseName());
 					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					} catch (Exception e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
 					}
 
 					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
@@ -1078,12 +1092,89 @@ public class InventorySheetForm extends SimplePanel {
 					isPanel.scrollRectToVisible(rect);
 				}
 			}
+
 		});
 
 		navigationPanel.add(save);
 
 		add(navigationPanel);
 		add(isPane);
+
+	}
+
+	// improve this portion
+	private void invalidateTrappedTransactions(Date startDate, Date endDate) {
+		try {
+
+			// invalidate all sandwiched transactions
+			List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBetween(startDate, endDate);
+			for (Delivery d : pendingDeliveries) {
+				d.setValid(false);
+				Manager.deliveryManager.updateDelivery(d);
+			}
+
+			List<PullOut> pendingPullOuts = Manager.pullOutManager.getPendingPullOutsBetween(startDate, endDate);
+			for (PullOut po : pendingPullOuts) {
+				po.setValid(false);
+				Manager.pullOutManager.updatePullOut(po);
+			}
+
+			List<Sales> pendingSales = Manager.salesManager.getPendingSalesBetween(startDate, endDate);
+			for (Sales s : pendingSales) {
+				s.setValid(false);
+				Manager.salesManager.updateSales(s);
+			}
+
+			List<AccountReceivable> pendingAccountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesBetween(startDate, endDate);
+			for (AccountReceivable ar : pendingAccountReceivables) {
+				ar.setValid(false);
+				Manager.accountReceivableManager.updateAccountReceivable(ar);
+			}
+
+			List<ARPayment> pendingArPayments = Manager.accountReceivableManager.getPendingARPaymentsBetween(startDate, endDate);
+			for (ARPayment arp : pendingArPayments) {
+				arp.setValid(false);
+				Manager.accountReceivableManager.updateARPayment(arp);
+			}
+
+			List<CashAdvance> pendingCashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesBetween(startDate, endDate);
+			for (CashAdvance ca : pendingCashAdvances) {
+				ca.setValid(false);
+				Manager.cashAdvanceManager.updateCashAdvance(ca);
+			}
+
+			List<CAPayment> pendingCaPayments = Manager.cashAdvanceManager.getPendingCAPaymentsBetween(startDate, endDate);
+			for (CAPayment cap : pendingCaPayments) {
+				cap.setValid(false);
+				Manager.cashAdvanceManager.updateCAPayment(cap);
+			}
+
+			List<DailyExpenses> pendingDailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesBetween(startDate, endDate);
+			for (DailyExpenses de : pendingDailyExpenses) {
+				de.setValid(false);
+				Manager.dailyExpenseManager.updateDailyExpenses(de);
+			}
+
+			List<SalaryRelease> pendingSalaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesBetween(startDate, endDate);
+			for (SalaryRelease sr : pendingSalaryReleases) {
+				sr.setValid(false);
+				Manager.salaryReleaseManager.updateSalaryRelease(sr);
+			}
+
+			List<DiscountIssue> pendingDiscountIssues = Manager.discountIssueManager.getPendingDiscountIssuesBetween(startDate, endDate);
+			for (DiscountIssue di : pendingDiscountIssues) {
+				di.setValid(false);
+				Manager.discountIssueManager.updateDiscountIssue(di);
+			}
+
+			List<Deposit> pendingDeposits = Manager.depositManager.getPendingDepositsBetween(startDate, endDate);
+			for (Deposit d : pendingDeposits) {
+				d.setValid(false);
+				Manager.depositManager.updateDeposit(d);
+			}
+
+		} catch (Exception e) {
+		}
 
 	}
 
@@ -1095,37 +1186,41 @@ public class InventorySheetForm extends SimplePanel {
 		return true;
 	}
 
-	private void fillTables() {
-		// TODO Auto-generated method stub
-		// productsPanel.setPreferredSize(new Dimension(salesLabel.getX() +
-		// salesLabel.getWidth() - productLabel.getX(),
-		// productsPanel.getComponentCount() * ROW_HEIGHT));
-
-		for (int i = 0; i < 28; i++) {
-			productsInventory.add(new ISRowPanel(null, productsPanel, Values.PRODUCTS));
-			productsPanel.add(productsInventory.get(i));
-
-			productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(), productsPanel.getComponentCount() * ROW_HEIGHT));
-			productsPanel.updateUI();
-			productsPanel.revalidate();
-		}
-
-		alternateRows(productsInventory);
-
-		// System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
-
-		for (int i = 0; i < 3; i++) {
-			salesInventory.add(new ISRowPanel(null, salesPanel, Values.SALES));
-			salesPanel.add(salesInventory.get(i));
-
-			salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(), salesPanel.getComponentCount() * ROW_HEIGHT));
-			salesPanel.updateUI();
-			salesPanel.revalidate();
-		}
-
-		alternateRows(salesInventory);
-
-	}
+	// private void fillTables() {
+	// // TODO Auto-generated method stub
+	// // productsPanel.setPreferredSize(new Dimension(salesLabel.getX() +
+	// // salesLabel.getWidth() - productLabel.getX(),
+	// // productsPanel.getComponentCount() * ROW_HEIGHT));
+	//
+	// for (int i = 0; i < 28; i++) {
+	// productsInventory.add(new ISRowPanel(null, productsPanel,
+	// Values.PRODUCTS));
+	// productsPanel.add(productsInventory.get(i));
+	//
+	// productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(),
+	// productsPanel.getComponentCount() * ROW_HEIGHT));
+	// productsPanel.updateUI();
+	// productsPanel.revalidate();
+	// }
+	//
+	// alternateRows(productsInventory);
+	//
+	// //
+	// System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
+	//
+	// for (int i = 0; i < 3; i++) {
+	// salesInventory.add(new ISRowPanel(null, salesPanel, Values.SALES));
+	// salesPanel.add(salesInventory.get(i));
+	//
+	// salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(),
+	// salesPanel.getComponentCount() * ROW_HEIGHT));
+	// salesPanel.updateUI();
+	// salesPanel.revalidate();
+	// }
+	//
+	// alternateRows(salesInventory);
+	//
+	// }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void loadDatesOfPendingTransactions() throws Exception {
@@ -1143,6 +1238,7 @@ public class InventorySheetForm extends SimplePanel {
 		List<Date> depositsDates = Manager.depositManager.getDatesOfPendingDeposits();
 
 		validDates = new ArrayList<Date>();
+		dateDropdown.removeAll();
 
 		validDates = DateTool.addUniqueDatesRemoveTime(validDates, deliveriesDates);
 		validDates = DateTool.addUniqueDatesRemoveTime(validDates, pullOutsDates);
@@ -1163,7 +1259,6 @@ public class InventorySheetForm extends SimplePanel {
 			for (int i = 0; i < validDates.size(); i++) {
 				dates.add(DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(i)));
 			}
-
 			dateDropdown.setModel(new DefaultComboBoxModel(dates.toArray()));
 		}
 	}
@@ -1226,8 +1321,8 @@ public class InventorySheetForm extends SimplePanel {
 
 		inputPCOH.setVisible(isd == null);
 		if (isd != null) {
-			InventorySheet is = new InventorySheet(isd);
-			previousAcoh = is.getActualCashOnHand();
+			previousInventorySheet = new InventorySheet(isd);
+			previousAcoh = previousInventorySheet.getActualCashOnHand();
 		}
 
 		products = Manager.productManager.getProducts();

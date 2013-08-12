@@ -44,6 +44,8 @@ import javax.swing.SpinnerDateModel;
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
 import common.entity.product.Product;
+import common.entity.product.exception.NegativeValueException;
+import common.entity.product.exception.NotEnoughQuantityException;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
@@ -302,9 +304,16 @@ public class ViewDeliveryForm extends EditFormPanel {
 				boolean valid = true;
 				for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 					Product p = dd.getProduct();
-					// if (!p.validQuantityResult(dd.getQuantityInSack(),
-					// dd.getQuantityInKilo()))
-					// valid = false;
+					try {
+						if (!Product.validDecrement(p.getQuantityInSack(), p.getQuantityInKilo(), p.getKilosPerSack(), dd.getQuantityInSack(),
+								dd.getQuantityInKilo())) {
+							valid = false;
+						}
+					} catch (NegativeValueException e1) {
+						e1.printStackTrace();
+					} catch (NotEnoughQuantityException e1) {
+						e1.printStackTrace();
+					}
 				}
 
 				if (valid) {
@@ -336,10 +345,11 @@ public class ViewDeliveryForm extends EditFormPanel {
 
 				} else {
 
-					JOptionPane.showMessageDialog(Values.mainFrame,
-							"Invalidating this form will result to negative quantity for affected product/s \nUpdate the quantity of the affected products or "
-									+ "\ninvalidate other forms (Pullouts, Sales or Account Receivables) to proceed", "Not Allowed",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+							+ "\n In order to invalidate this form: " 
+							+ "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or"
+							+ "\n (3) Invalidate a Pullout/s, Sales and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

@@ -21,6 +21,8 @@ import util.DateFormatter;
 import util.Utility;
 
 import common.entity.inventorysheet.InventorySheetData;
+import common.entity.product.Product;
+import common.entity.product.ProductQuantity;
 import common.manager.Manager;
 
 import app.Credentials;
@@ -82,16 +84,34 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		double s = 12121.39999;
-		// double t = 12;
-		// double s = u / t;
+		// Date date = new Date();
+		//
+		// System.out.println(DateTool.getDateWithoutTime(date).toString());
 
-		System.out.println("numbr: " + s);
-		s = Math.round(s * 100.0) / 100.0;
-		System.out.println("2 decimal: " + s);
-		System.out.println("int: " + Math.floor(s));
-		double q = Math.round((s - Math.floor(s)) * 100.0) / 100.0d;
-		System.out.println("fraction: " + q);
+		ProductQuantity pq = new ProductQuantity(0, 0);
+
+		// try {
+		// DatabaseTool.backup(Credentials.getInstance().getUsername(),
+		// Credentials.getInstance().getPassword(), Credentials.getInstance()
+		// .getDatabaseName(), "D:/Pilmico/backup.pilmico");
+		// } catch (FileNotFoundException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+
+		// DatabaseTool.backup("root", "123456", "pilmico",
+		// "D:/Pilmico/backup.pilmico");
+
+		// double s = 12121.39999;
+		// // double t = 12;
+		// // double s = u / t;
+		//
+		// System.out.println("numbr: " + s);
+		// s = Math.round(s * 100.0) / 100.0;
+		// System.out.println("2 decimal: " + s);
+		// System.out.println("int: " + Math.floor(s));
+		// double q = Math.round((s - Math.floor(s)) * 100.0) / 100.0d;
+		// System.out.println("fraction: " + q);
 
 		// Date d = new Date();
 		//
