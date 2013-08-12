@@ -371,7 +371,7 @@ public class SalesForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 			// <<<<<<< HEAD
 			//
@@ -381,7 +381,7 @@ public class SalesForm extends SimplePanel {
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
-				error.setText("");
+				error.setToolTip("");
 			}
 			// <<<<<<< HEAD
 			//
@@ -494,7 +494,7 @@ public class SalesForm extends SimplePanel {
 		save.setBounds(275, 275, 80, 30);
 		// save.setEnabled(false);
 
-		error.setBounds(325, 297, 300, 22);
+		error.setBounds(355, 256, 255, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -519,7 +519,7 @@ public class SalesForm extends SimplePanel {
 						}
 					}
 
-					if (valid) {
+//					if (valid) {
 
 						PointerInfo a = MouseInfo.getPointerInfo();
 						Point b = a.getLocation();
@@ -567,22 +567,25 @@ public class SalesForm extends SimplePanel {
 								e1.printStackTrace();
 							}
 						}
-					} else
-						error.setText(msg);
+					
+				}
+				 else
+						error.setToolTip(msg);
 
-				} else {
+				
+				/*else {
 
 					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
 							+ "\n In order to proceed: " 
 							+ "\n (1) Update the quantity of the affected product/s; or"
 							+ "\n (2) Add a delivery for affected product/s; or"
 							+ "\n (3) Invalidate a Pullout/s and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
-				}
+				}*/
 			}
 		});
 
 		panel.add(save);
-		add(error);
+		panel.add(error);
 
 	}
 

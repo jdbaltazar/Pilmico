@@ -18,9 +18,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import common.entity.product.Category;
 import common.entity.product.Price;
@@ -48,10 +51,13 @@ public class ProductForm extends SimplePanel {
 	private JNumericField numField;
 	private ErrorLabel error;
 	private NumericTextField quantityKG;
-	private int initY = 56;
+	private int initY = 23;//56
 	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
 	private DropdownLabel dLabel;
 	private SBButton fwd;
+	
+	private JPanel panel;
+	private JScrollPane scrollPane;
 
 	private final int num = Tables.productFormLabel.length;
 
@@ -64,6 +70,13 @@ public class ProductForm extends SimplePanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
+		
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setOpaque(false);
+
+		scrollPane = new JScrollPane();
+		
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -128,7 +141,7 @@ public class ProductForm extends SimplePanel {
 			if (i < 2) {
 				fields.add(new FormField(Tables.productFormLabel[i], 100, Color.white, Color.GRAY));
 				fields.get(ctr).setBounds(x1, initY + y, 170, 25);
-				add(fields.get(ctr));
+				panel.add(fields.get(ctr));
 
 				ctr++;
 			}
@@ -137,7 +150,7 @@ public class ProductForm extends SimplePanel {
 				numfields.add(new JNumericField(Tables.productFormLabel[i]));
 				numfields.get(ctr2).setMaxLength(10);
 				numfields.get(ctr2).setBounds(x1, initY + y, 170, 25);
-				add(numfields.get(ctr2));
+				panel.add(numfields.get(ctr2));
 
 				ctr2++;
 			}
@@ -174,8 +187,8 @@ public class ProductForm extends SimplePanel {
 			}
 		}
 
-		clear.setBounds(330, 330, 80, 30);
-		save.setBounds(215, 330, 80, 30);
+		clear.setBounds(330, 300, 80, 30);
+		save.setBounds(215, 300, 80, 30);
 
 		error.setBounds(340, 300, 230, 25);
 
@@ -271,23 +284,32 @@ public class ProductForm extends SimplePanel {
 			}
 		});
 
-		add(clear);
-		add(save);
+		panel.add(clear);
+		panel.add(save);
 
-		add(error);
+		panel.add(error);
 
-		add(numField);
+		panel.add(numField);
 
 		// add(quantityKG);
 
 		// add(unit);
 		// add(condition);
-		add(fwd);
-		add(dLabel);
-		add(category);
+		panel.add(fwd);
+		panel.add(dLabel);
+		panel.add(category);
 
-		add(cbox1);
-		add(cbox2);
+		panel.add(cbox1);
+		panel.add(cbox2);
+		
+		scrollPane.setViewportView(panel);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+		scrollPane.setBounds(0, 30, 600, 380);
+		
+		add(scrollPane);
 	}
 
 	private void clearFields() {

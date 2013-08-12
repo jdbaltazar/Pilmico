@@ -76,7 +76,7 @@ public class FormDropdown extends JComboBox {
 		 * ((JTextField)
 		 * getEditor().getEditorComponent()).setBackground(Color.YELLOW);
 		 */
-		addActionListener(new ActionListener() {
+	/*	addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -86,7 +86,7 @@ public class FormDropdown extends JComboBox {
 
 				// System.out.println(selected);
 			}
-		});
+		});*/
 	}
 
 	public static class ColorArrowUI extends BasicComboBoxUI {
