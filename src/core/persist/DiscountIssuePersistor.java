@@ -221,4 +221,22 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 		return deposits;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DiscountIssue> getPendingDiscountIssuesBefore(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DiscountIssue.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DiscountIssue> deposits = new ArrayList<DiscountIssue>();
+		try {
+			deposits = criteria.add(Restrictions.lt("date", DateTool.getDateWithoutTime(date))).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return deposits;
+	}
+
 }

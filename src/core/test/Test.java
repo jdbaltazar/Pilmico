@@ -88,7 +88,10 @@ public class Test {
 		//
 		// System.out.println(DateTool.getDateWithoutTime(date).toString());
 
-		ProductQuantity pq = new ProductQuantity(0, 0);
+		// ProductQuantity pq = new ProductQuantity(0, 0);
+		Date d = new Date();
+		System.out.println(d.toString());
+		System.out.println("tom: " + DateTool.getTomorrowDate(DateTool.getDateWithoutTime(d)));
 
 		// try {
 		// DatabaseTool.backup(Credentials.getInstance().getUsername(),

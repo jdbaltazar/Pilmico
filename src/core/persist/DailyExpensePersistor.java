@@ -369,4 +369,22 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 		return dailyExpensess;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DailyExpenses> getPendingDailyExpensesBefore(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(DailyExpenses.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<DailyExpenses> dailyExpensess = new ArrayList<DailyExpenses>();
+		try {
+			dailyExpensess = criteria.add(Restrictions.lt("date", DateTool.getDateWithoutTime(date))).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return dailyExpensess;
+	}
+
 }

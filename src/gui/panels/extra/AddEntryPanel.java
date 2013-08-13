@@ -304,8 +304,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	}
 
 	public void startAnimation() {
-//		/refreshDates();
-		
+		// /refreshDates();
+
 		isRunning = true;
 		thread = new Thread(this);
 		thread.start();
@@ -437,7 +437,9 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			// Values.salesOrderForm.refreshDate();
 			try {
 				inventorySheetForm.loadDatesOfPendingTransactions();
-				if (inventorySheetForm.build()) { // default: use the earliest date
+				
+				// default: use the earliest date
+				if (inventorySheetForm.build()) {
 
 					inventorySheetForm.setVisible(true);
 
@@ -445,29 +447,9 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 					JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nPlese add at least one (1) valid transaction.",
 							"Notice", JOptionPane.INFORMATION_MESSAGE);
-					
+
 					Values.addEntryPanel.startAnimation();
-					
-					// no transaction found
-					// if (JOptionPane.showConfirmDialog(null,
-					// "No valid transaction found! Continue?", "Warning!",
-					// JOptionPane.YES_NO_OPTION,
-					// JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 
-					// JOptionPane.showMessageDialog(null,
-					// "No valid transaction found! Continue?", "Warning!",
-					// JOptionPane.OK_OPTION,
-					// JOptionPane.WARNING_MESSAGE)) ;
-					// {
-
-					// inventorySheetForm.build(new Date());
-					// inventorySheetForm.setVisible(true);
-
-					// } else {
-					//
-					// // go back
-					//
-					// }
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -512,8 +494,8 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		conditionList.setVisible(true);
 		categoryList.setVisible(true);
 	}
-	
-	private void refreshDates(){
+
+	private void refreshDates() {
 		sales.refreshDate();
 	}
 

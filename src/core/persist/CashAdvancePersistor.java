@@ -427,6 +427,24 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<CashAdvance> getPendingCashAdvancesBefore(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CashAdvance.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CashAdvance> cashAdvances = new ArrayList<CashAdvance>();
+		try {
+			cashAdvances = criteria.add(Restrictions.lt("date", DateTool.getDateWithoutTime(date))).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return cashAdvances;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<CAPayment> getPendingCAPaymentsBetween(Date startDate, Date endDate) throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(CAPayment.class);
@@ -436,6 +454,24 @@ public class CashAdvancePersistor extends Persistor implements CashAdvanceManage
 			Date lowerBound = DateTool.getTomorrowDate(DateTool.getDateWithoutTime(startDate));
 			Date upperBound = DateTool.getDateWithoutTime(endDate);
 			caPayments = criteria.add(Restrictions.ge("date", lowerBound)).add(Restrictions.lt("date", upperBound)).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return caPayments;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CAPayment> getPendingCAPaymentsBefore(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(CAPayment.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<CAPayment> caPayments = new ArrayList<CAPayment>();
+		try {
+			caPayments = criteria.add(Restrictions.lt("date", DateTool.getDateWithoutTime(date))).add(Restrictions.eq("valid", true))
 					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();

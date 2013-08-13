@@ -36,4 +36,6 @@ public interface SalesManager {
 	// excludes the start and end dates
 	public List<Sales> getPendingSalesBetween(Date startDate, Date endDate) throws Exception;
 
+	public List<Sales> getPendingSalesBefore(Date date) throws Exception;
+
 }

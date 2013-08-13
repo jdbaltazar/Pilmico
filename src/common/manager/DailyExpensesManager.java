@@ -42,6 +42,8 @@ public interface DailyExpensesManager {
 	// excludes the start and end dates
 	public List<DailyExpenses> getPendingDailyExpensesBetween(Date startDate, Date endDate) throws Exception;
 
+	public List<DailyExpenses> getPendingDailyExpensesBefore(Date date) throws Exception;
+
 	public void updateDailyExpenses(DailyExpenses dailyExpenses) throws Exception;
 
 	public void deleteDailyExpenses(DailyExpenses dailyExpenses) throws Exception;

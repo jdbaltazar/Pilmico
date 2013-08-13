@@ -43,6 +43,7 @@ import common.entity.accountreceivable.AccountReceivableDetail;
 import common.entity.product.Product;
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
@@ -316,58 +317,59 @@ public class AccountReceivablesForm extends SimplePanel {
 							e1.printStackTrace();
 						} catch (NotEnoughQuantityException e1) {
 							e1.printStackTrace();
+						} catch (ZeroKilosPerSackException e2) {
+							e2.printStackTrace();
 						}
 					}
-					if(valid){
-					PointerInfo a = MouseInfo.getPointerInfo();
-					Point b = a.getLocation();
+					if (valid) {
+						PointerInfo a = MouseInfo.getPointerInfo();
+						Point b = a.getLocation();
 
-					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-					uP.setVisible(true);
+						UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+						uP.setVisible(true);
 
-					if (!uP.isClosed()) {
+						if (!uP.isClosed()) {
 
-						Date d = ((SpinnerDateModel) date.getModel()).getDate();
-						AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
+							Date d = ((SpinnerDateModel) date.getModel()).getDate();
+							AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
 
-						// AccountReceivable ar = new AccountReceivable(d,
-						// (Person) customerCombo.getSelectedItem(),
-						// Manager.loggedInAccount);
+							// AccountReceivable ar = new AccountReceivable(d,
+							// (Person) customerCombo.getSelectedItem(),
+							// Manager.loggedInAccount);
 
-						for (RowPanel rp : rowPanel) {
-							Product p = rp.getSelectedProduct();
-							ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
-									.getQuantityInKilo(), rp.getQuantityInSack()));
-						}
-
-						ar.setRemarks(uP.getInput());
-
-						try {
-							Manager.accountReceivableManager.addAccountReceivable(ar);
-
-							for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
-								Product pd = ard.getProduct();
-								pd.decrementQuantity(ard.getQuantityInSack(), ard.getQuantityInKilo());
-								Manager.productManager.updateProduct(pd);
+							for (RowPanel rp : rowPanel) {
+								Product p = rp.getSelectedProduct();
+								ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
+										.getQuantityInKilo(), rp.getQuantityInSack()));
 							}
 
-							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
-							new SuccessPopup("Add").setVisible(true);
-							clearForm();
-						} catch (Exception e1) {
-							e1.printStackTrace();
+							ar.setRemarks(uP.getInput());
+
+							try {
+								Manager.accountReceivableManager.addAccountReceivable(ar);
+
+								for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
+									Product pd = ard.getProduct();
+									pd.decrementQuantity(ard.getQuantityInSack(), ard.getQuantityInKilo());
+									Manager.productManager.updateProduct(pd);
+								}
+
+								Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+								new SuccessPopup("Add").setVisible(true);
+								clearForm();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
 						}
-					}
-				} else
-					error.setText(msg);
-					
-				}else {
+					} else
+						error.setText(msg);
+
+				} else {
 
 					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
-							+ "\n In order to proceed: " 
-							+ "\n (1) Update the quantity of the affected product/s; or"
-							+ "\n (2) Add a delivery for affected product/s; or"
-							+ "\n (3) Invalidate a Pullout/s and/or Sales", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
+							+ "\n In order to proceed: " + "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or" + "\n (3) Invalidate a Pullout/s and/or Sales", "Not Allowed!",
+							JOptionPane.WARNING_MESSAGE);
 				}
 
 			}

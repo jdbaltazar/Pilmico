@@ -46,6 +46,7 @@ import common.entity.delivery.DeliveryDetail;
 import common.entity.product.Product;
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
 import common.entity.sales.SalesDetail;
 import common.entity.store.Store;
 import common.entity.supplier.Supplier;
@@ -313,6 +314,8 @@ public class ViewDeliveryForm extends EditFormPanel {
 						e1.printStackTrace();
 					} catch (NotEnoughQuantityException e1) {
 						e1.printStackTrace();
+					} catch (ZeroKilosPerSackException e2) {
+						e2.printStackTrace();
 					}
 				}
 
