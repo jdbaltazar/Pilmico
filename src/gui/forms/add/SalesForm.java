@@ -717,7 +717,7 @@ public class SalesForm extends SimplePanel {
 		receipt_no.setText("");
 		issuedAt.setText("");
 
-		error.setText("");
+		error.setToolTip("");
 
 		refreshCustomer(true);
 

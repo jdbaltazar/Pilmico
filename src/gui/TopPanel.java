@@ -160,9 +160,9 @@ public class TopPanel extends SoyPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 
+				balloonTip.setVisible(!balloonTip.isVisible());
 
 				if (Manager.loggedInAccount == null) {
-					balloonTip.setVisible(!balloonTip.isVisible());
 				}
 			}
 		});

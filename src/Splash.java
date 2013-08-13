@@ -1,4 +1,5 @@
 import gui.MainFrame;
+import gui.popup.DBPassword;
 
 import java.awt.Cursor;
 import java.awt.EventQueue;
@@ -62,6 +63,8 @@ public class Splash extends JFrame implements PropertyChangeListener {
 					Manager.getInstance();
 					MainFrame mainFrame = new MainFrame();
 					mainFrame.showFrame();
+					
+//					new DBPassword().setVisible(true);
 
 				} catch (Exception e) {
 					e.printStackTrace();

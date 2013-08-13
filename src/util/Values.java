@@ -134,6 +134,7 @@ public class Values {
 	public static final int INVALIDATE = 6;
 	public static final int PCOH = 7;
 	public static final int REMARKS = 8;
+	public static final int BACKUP_DIRECTORY = 9;
 
 	public static final int ADD = 0;
 	public static final int EDIT = 1;

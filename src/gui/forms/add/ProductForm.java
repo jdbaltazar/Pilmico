@@ -52,12 +52,13 @@ public class ProductForm extends SimplePanel {
 	private ErrorLabel error;
 	private NumericTextField quantityKG;
 	private int initY = 23;//56
-	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
 	private DropdownLabel dLabel;
 	private SBButton fwd;
 	
 	private JPanel panel;
 	private JScrollPane scrollPane;
+	
+	private String msg="";
 
 	private final int num = Tables.productFormLabel.length;
 
@@ -190,7 +191,7 @@ public class ProductForm extends SimplePanel {
 		clear.setBounds(330, 300, 80, 30);
 		save.setBounds(215, 300, 80, 30);
 
-		error.setBounds(340, 300, 230, 25);
+		error.setBounds(335, 270, 240, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -202,7 +203,7 @@ public class ProductForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				System.out.println("Name: " + fields.get(0).getText());
+				/*System.out.println("Name: " + fields.get(0).getText());
 				System.out.println("Desc: " + fields.get(1).getText());
 				System.out.println("kilos/sack: " + numfields.get(0).getText());
 				System.out.println("qty, sk: " + numfields.get(1).getText());
@@ -211,8 +212,10 @@ public class ProductForm extends SimplePanel {
 				System.out.println("disp, kg: " + numfields.get(4).getText());
 				System.out.println("price, sk: " + numfields.get(5).getText());
 				System.out.println("price, kg: " + numfields.get(6).getText());
-				System.out.println("alert, qty: " + numfields.get(7).getText());
+				System.out.println("alert, qty: " + numfields.get(7).getText());*/
 
+				if(isValidated() && hasValidInputs()){
+				
 				String name = fields.get(0).getText();
 				String description = fields.get(1).getText();
 				double kilosPerSack = Double.parseDouble(numfields.get(0).getText());
@@ -245,6 +248,8 @@ public class ProductForm extends SimplePanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				}else
+					error.setToolTip(msg);
 			}
 
 		});
@@ -317,17 +322,40 @@ public class ProductForm extends SimplePanel {
 			fields.get(i).setText("");
 
 		for (int i = 0; i < numfields.size(); i++)
-			fields.get(i).setText("");
+			numfields.get(i).setText("");
 
-		error.setText("");
+		error.setToolTip("");
+	}
+	
+	private boolean hasValidInputs(){
+		
+		if(Double.parseDouble(numfields.get(0).getText()) == 0d){
+
+			msg = "kilos per sack should not be 0";
+			
+			return false;
+		}
+		
+		return true;
 	}
 
 	private boolean isValidated() {
-		if (!name.equals("") && !unitSellingPrice.equals("") && !unitPurchasePrice.equals("") && !unitsOnStock.equals("")
-				&& !alertOnQuantity.equals(""))
-			return true;
-
-		return false;
+		
+		for (int i = 0; i < fields.size(); i++)
+			if(fields.get(i).getText().equals("") && i!=1){
+			
+				msg = "All fields EXCEPT for Description is required";
+				return false;
+			}
+		
+		for (int i = 0; i < numfields.size(); i++)
+			if(numfields.get(i).getText().equals("")){
+			
+				msg = "All fields EXCEPT for Description is required";
+				return false;
+			}
+		
+		return true;
 	}
 
 	private void updateCategories() {

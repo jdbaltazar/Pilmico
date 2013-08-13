@@ -121,6 +121,10 @@ public class Person {
 	}
 
 	public String getContactNo() {
+		
+		if(contactNo == null)
+			return "";
+		
 		return contactNo;
 	}
 
