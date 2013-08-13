@@ -5,10 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import util.DateFormatter;
-import util.Utility;
-
 public class DateTool {
+
+	public static final long DAY_DIFFERENCE = 86400000L;
 
 	public static Date getDateWithoutTime(Date date) {
 		Calendar cal = Calendar.getInstance();
@@ -31,6 +30,14 @@ public class DateTool {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.DATE, 1);
+		return cal.getTime();
+	}
+
+	public static Date getNoonTimeForDate(Date date) {
+		date = getDateWithoutTime(date);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.HOUR, 12);
 		return cal.getTime();
 	}
 
@@ -80,7 +87,7 @@ public class DateTool {
 			sorted.add(earliest);
 			dates.remove(dates.indexOf(earliest));
 		}
-		
+
 		return sorted;
 	}
 

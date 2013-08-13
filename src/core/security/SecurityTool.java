@@ -64,7 +64,7 @@ public class SecurityTool {
 		return cipher;
 	}
 
-	public static void encryptFile(File inputFile, File outputFile) throws Exception {
+	public static void encryptAndWriteFile(File inputFile, File outputFile) throws Exception {
 		Cipher cipher = getCipherEncrypt();
 		FileOutputStream fos = null;
 		CipherOutputStream cos = null;

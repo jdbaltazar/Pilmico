@@ -33,6 +33,10 @@ public class DatabaseSettings {
 		this.filePath = filePath;
 	}
 
+	public boolean isFilePathSet() {
+		return !filePath.equals("");
+	}
+
 	public double getDbVersion() {
 		return dbVersion;
 	}

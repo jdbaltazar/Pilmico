@@ -10,6 +10,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class AppSettings {
 
+	public static final String APP_FILE_TYPE = "pilmico";
 	private static AppSettings appSettings = null;
 	private static String appSettingsFileName = "appsettings.xml";
 	private double appVersion;

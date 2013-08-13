@@ -10,18 +10,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import app.AppSettings;
 import app.Credentials;
 import app.DatabaseSettings;
 
 import core.database.DatabaseTool;
 
+import util.DateFormatter;
 import util.SBButton;
+import util.Utility;
 import util.Values;
 
 public class DatabaseToolPanel extends JPanel {
@@ -41,7 +45,6 @@ public class DatabaseToolPanel extends JPanel {
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
 		setLayout(null);
 		setOpaque(false);
 
@@ -75,14 +78,18 @@ public class DatabaseToolPanel extends JPanel {
 
 				if (uP.isVerified() && !uP.isClosed()) {
 					JFileChooser fc = new JFileChooser();
+
 					try {
-						fc.setSelectedFile(new File(DatabaseSettings.getInstance().getFilePath()));
-					} catch (FileNotFoundException e2) {
-						e2.printStackTrace();
+						if (DatabaseSettings.getInstance().isFilePathSet())
+							fc.setCurrentDirectory(new File(DatabaseSettings.getInstance().getFilePath()));
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
 					}
+
 					fc.setDialogTitle("Backup Database");
-					fc.setSelectedFile(new File("backup.pilmico"));
-					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", "pilmico");
+					fc.setSelectedFile(new File("Pilmico Backup " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "."
+							+ AppSettings.APP_FILE_TYPE));
+					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", AppSettings.APP_FILE_TYPE);
 					fc.setFileFilter(sqlfilter);
 					fc.setAcceptAllFileFilterUsed(false);
 					int returnVal = fc.showSaveDialog(Values.mainFrame);
@@ -125,19 +132,13 @@ public class DatabaseToolPanel extends JPanel {
 
 					JFileChooser fc = new JFileChooser();
 					try {
-						fc.setSelectedFile(new File(DatabaseSettings.getInstance().getFilePath()));
-					} catch (FileNotFoundException e2) {
-						e2.printStackTrace();
+						if (DatabaseSettings.getInstance().isFilePathSet())
+							fc.setCurrentDirectory(new File(DatabaseSettings.getInstance().getFilePath()));
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
 					}
 					fc.setDialogTitle("Recover Database");
-
-					// DO NOT DELETE THESE COMMENTS
-
-					// fc.setSelectedFile(new File("backup.sql"));
-					// fc.addChoosableFileFilter(new FileNameExtensionFilter(
-					// "MySQL Files", "sql"));
-
-					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", "pilmico");
+					FileNameExtensionFilter sqlfilter = new FileNameExtensionFilter("Pilmico Files", AppSettings.APP_FILE_TYPE);
 					fc.setFileFilter(sqlfilter);
 					fc.setAcceptAllFileFilterUsed(false);
 
@@ -145,11 +146,10 @@ public class DatabaseToolPanel extends JPanel {
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						File file = fc.getSelectedFile();
-						// This is where a real application would save the file.
-
 						try {
 
-							DatabaseTool.getInstance().decryptedUpdate(uP.getUsername(), uP.getPassword(), "pilmico", file.getCanonicalPath(), uP);
+							DatabaseTool.getInstance().decryptedUpdate(uP.getUsername(), uP.getPassword(), Credentials.getInstance().getDatabaseName(),
+									file.getCanonicalPath(), uP);
 
 						} catch (SQLException e1) {
 							e1.printStackTrace();
@@ -170,19 +170,16 @@ public class DatabaseToolPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				// PointerInfo a = MouseInfo.getPointerInfo();
-				// Point b = a.getLocation();
-				//
-				// uP = new UtilityPopup(b, Values.BACKUP_DIRECTORY);
 
 				JFileChooser fc = new JFileChooser();
 				try {
-					fc.setSelectedFile(new File(DatabaseSettings.getInstance().getFilePath()));
-				} catch (FileNotFoundException e2) {
-					e2.printStackTrace();
+					if (DatabaseSettings.getInstance().isFilePathSet()) {
+						fc.setCurrentDirectory(new File(DatabaseSettings.getInstance().getFilePath()));
+					}
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
 				}
-				fc.setCurrentDirectory(new java.io.File("."));
+				// fc.setCurrentDirectory(new java.io.File("."));
 
 				fc.setDialogTitle("Set Default Backup Directory");
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -197,7 +194,7 @@ public class DatabaseToolPanel extends JPanel {
 						DatabaseSettings.getInstance().setFilePath(file.getCanonicalPath().replace('\\', '/'));
 						DatabaseSettings.getInstance().persist();
 
-						new SuccessPopup("Directory Saved").setVisible(true);
+						new SuccessPopup("Directory Update").setVisible(true);
 						Values.mainFrame.dimScreen(false);
 						Values.topPanel.closeBalloonPanel();
 
@@ -208,12 +205,6 @@ public class DatabaseToolPanel extends JPanel {
 					}
 
 				}
-				// if (!uP.isClosed()) {
-				//
-				// System.out.println("directory: " + uP.getInput());
-				// // PUT YOUR CODE HERE
-				//
-				// }
 			}
 		});
 

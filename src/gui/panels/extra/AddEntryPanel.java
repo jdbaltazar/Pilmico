@@ -18,6 +18,7 @@ import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SupplierForm;
+import gui.forms.util.DateTool;
 import gui.list.AccountTypeList;
 import gui.list.CategoryList;
 import gui.list.ConditionList;
@@ -47,8 +48,13 @@ import javax.swing.JScrollPane;
 
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.cashadvance.CashAdvance;
+import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
+import common.manager.Manager;
 
+import util.DateFormatter;
 import util.Tables;
+import util.Utility;
 import util.Values;
 import util.soy.SoyPanel;
 
@@ -435,22 +441,42 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
 			// Values.salesOrderForm.refreshDate();
+
 			try {
+
 				inventorySheetForm.loadDatesOfPendingTransactions();
-				
+
 				// default: use the earliest date
-				if (inventorySheetForm.build()) {
 
-					inventorySheetForm.setVisible(true);
+				InventorySheetData inventorySheetData = null;
+				InventorySheet previousInventorySheet = null;
 
-				} else {
-
-					JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nPlese add at least one (1) valid transaction.",
-							"Notice", JOptionPane.INFORMATION_MESSAGE);
-
-					Values.addEntryPanel.startAnimation();
-
+				inventorySheetData = Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
+				if (inventorySheetData != null) {
+					previousInventorySheet = new InventorySheet(inventorySheetData);
 				}
+
+				if (previousInventorySheet == null || !previousInventorySheet.getDate().equals(DateTool.getDateWithoutTime(new Date()))) {
+
+					if (inventorySheetForm.build(previousInventorySheet)) {
+
+						inventorySheetForm.setVisible(true);
+
+					} else {
+
+						JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nPlese add at least one (1) valid transaction.",
+								"Notice", JOptionPane.INFORMATION_MESSAGE);
+
+						Values.addEntryPanel.startAnimation();
+
+					}
+				} else {
+					JOptionPane.showMessageDialog(Values.mainFrame,
+							"An Inventory Sheet already exists for " + DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date())
+									+ "!     ", "Not Allowed", JOptionPane.WARNING_MESSAGE);
+					Values.addEntryPanel.startAnimation();
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

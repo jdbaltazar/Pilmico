@@ -8,12 +8,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -23,6 +23,8 @@ import app.AppSettings;
 import app.Credentials;
 import app.DatabaseSettings;
 
+import util.DateFormatter;
+import util.Utility;
 import util.Values;
 
 import core.persist.HibernateUtil;
@@ -32,6 +34,7 @@ public class DatabaseTool {
 
 	public static final String RESET_FILE = "data/pilmico-create.sql";
 	public static final String TEMP_FILE = "temp/temp.tmp";
+	public static final String INTERNAL_BACKUP_PATH = "backup/";
 	public static Process runtimeProcess;
 	private static UtilityPopup uP;
 	private static DatabaseTool ins;
@@ -175,8 +178,11 @@ public class DatabaseTool {
 							if (processComplete == 0) {
 								try {
 									File original = new File(TEMP_FILE);
+									File internalBackUp = new File(INTERNAL_BACKUP_PATH + "Pilmico Backup "
+											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE);
 									File backUp = new File(filePath);
-									SecurityTool.encryptFile(original, backUp);
+									SecurityTool.encryptAndWriteFile(original, internalBackUp);
+									SecurityTool.encryptAndWriteFile(original, backUp);
 									original.delete();
 
 								} catch (Exception e) {

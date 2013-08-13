@@ -21,6 +21,8 @@
  */
 package gui.graph;
 
+import gui.forms.util.DateTool;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Shape;
@@ -45,6 +47,7 @@ import de.erichseifert.gral.data.statistics.Statistics;
 import de.erichseifert.gral.graphics.DrawableContainer;
 import de.erichseifert.gral.graphics.Layout;
 import de.erichseifert.gral.graphics.TableLayout;
+import de.erichseifert.gral.plots.BarPlot;
 import de.erichseifert.gral.plots.Plot;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.areas.AreaRenderer;
@@ -83,7 +86,7 @@ public class LinePlot extends ExamplePanel {
 
 		DataTable data = new DataTable(Long.class, Double.class);
 		for (InventorySheet is : iss) {
-			data.add(is.getInventorySheetData().getDate().getTime(), is.getOverallCashAndCheckSalesAmount());
+			data.add((DateTool.getDateWithoutTime(is.getInventorySheetData().getDate()).getTime()+DateTool.DAY_DIFFERENCE/3), is.getOverallCashAndCheckSalesAmount());
 		}
 
 		// Calendar d1 = Calendar.getInstance();
@@ -147,6 +150,8 @@ public class LinePlot extends ExamplePanel {
 		plotLower.getAxis(XYPlot.AXIS_Y).setMin(0d);
 		AxisRenderer rendererY = plotLower.getAxisRenderer(XYPlot.AXIS_Y);
 
+		plotLower.setInsets(new Insets2D.Double(20.0, 80.0, 40.0, 20.0));
+
 		// rendererY.setSetting(AxisRenderer., arg1);
 		// rendererY.
 		Column col1 = data.getColumn(0);
@@ -155,6 +160,8 @@ public class LinePlot extends ExamplePanel {
 		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD);
 		AxisRenderer rendererX = plotLower.getAxisRenderer(XYPlot.AXIS_X);
 		rendererX.setSetting(AxisRenderer.TICK_LABELS_FORMAT, dateFormat);
+		rendererX.setSetting(AxisRenderer.TICKS_SPACING, DateTool.DAY_DIFFERENCE);
+		rendererX.setSetting(AxisRenderer.TICKS_MINOR, false);
 		// rendererX.setSetting(AxisRenderer.LABEL, "Date");
 
 		DrawableContainer plots = new DrawableContainer(new TableLayout(1));

@@ -89,9 +89,18 @@ public class Test {
 		// System.out.println(DateTool.getDateWithoutTime(date).toString());
 
 		// ProductQuantity pq = new ProductQuantity(0, 0);
-		Date d = new Date();
-		System.out.println(d.toString());
-		System.out.println("tom: " + DateTool.getTomorrowDate(DateTool.getDateWithoutTime(d)));
+		Date d = DateTool.getDateWithoutTime(new Date());
+
+		System.out.println(d.toString() + " : " + d.getTime());
+		Date d2 = DateTool.getTomorrowDate(d);
+		System.out.println(d2.toString() + " : " + d2.getTime());
+		Date d3 = DateTool.getTomorrowDate(d2);
+		System.out.println(d3.toString() + " : " + d3.getTime());
+
+		System.out.println("diff: " + (d2.getTime() - d.getTime()));
+		System.out.println("diff: " + (d3.getTime() - d2.getTime()));
+		// System.out.println("noon: " +
+		// DateTool.getNoonTimeForDate(DateTool.getDateWithoutTime(d)));
 
 		// try {
 		// DatabaseTool.backup(Credentials.getInstance().getUsername(),
