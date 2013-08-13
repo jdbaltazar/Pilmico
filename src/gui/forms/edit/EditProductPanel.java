@@ -4,6 +4,7 @@ import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
 import gui.forms.util.HistoryTable;
+import gui.forms.util.SimpleNumericField;
 import gui.popup.DatabaseToolPanel;
 import gui.popup.SuccessPopup;
 
@@ -35,6 +36,7 @@ import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.FormCheckbox;
+import util.JNumericField;
 import util.SBButton;
 import util.Tables;
 import util.Utility;
@@ -48,6 +50,7 @@ public class EditProductPanel extends EditFormPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<EditFormField> fields = new ArrayList<EditFormField>();
+	private ArrayList<SimpleNumericField> numfields = new ArrayList<SimpleNumericField>();
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 	private SoyButton edit;
 
@@ -72,6 +75,7 @@ public class EditProductPanel extends EditFormPanel {
 	private JPanel formPanel;
 	private JScrollPane scrollPane;
 
+	private String msg="";
 	/*
 	 * public EditItemPanel(Item item) { super("View / Edit Stock"); this.item =
 	 * item; init(); addComponents(); fillValues(); }
@@ -148,7 +152,7 @@ public class EditProductPanel extends EditFormPanel {
 	private void addComponents() {
 
 		edit = new SoyButton("Edit");
-		int fieldsCtr = 0, labelsCtr = 0;
+		int fieldsCtr = 0, numFieldsCtr = 0, labelsCtr = 0;
 
 		for (int i = 0, x = 5, y = 0; i < num; i++, y += y3) {
 
@@ -162,7 +166,7 @@ public class EditProductPanel extends EditFormPanel {
 				y = 0;
 			}
 
-			if (i != 2 && i != 10 && i != 11) {
+			if (i < 2) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Tables.productFormLabel[i]));
 
@@ -172,6 +176,17 @@ public class EditProductPanel extends EditFormPanel {
 				fieldsCtr++;
 				labelsCtr++;
 
+			}
+			
+			if (i >= 3 && i <= 9 || i == num - 1) {
+				numfields.add(new SimpleNumericField(10, " "));
+				labels.add(new FormLabel(Tables.productFormLabel[i]));
+				
+				numfields.get(numFieldsCtr).setBounds(x, y1 + y, 170, 25);
+				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+				
+				numFieldsCtr++;
+				labelsCtr++;
 			}
 
 			if (i == 2)
@@ -198,7 +213,10 @@ public class EditProductPanel extends EditFormPanel {
 
 		edit.setBounds(367, 348, 80, 30);
 
-		error.setBounds(550, 320, 230, 25);
+		error.setBounds(525, 325, 240, 22);
+		
+		for (int i = 0; i < numfields.size(); i++)
+			formPanel.add(numfields.get(i));
 
 		for (int i = 0; i < fields.size(); i++)
 			formPanel.add(fields.get(i));
@@ -210,16 +228,17 @@ public class EditProductPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated() && hasValidInputs()){
 				try {
 
 					product.setName(fields.get(0).getText());
 					product.setDescription(fields.get(1).getText());
-					product.setKilosPerSack(Double.parseDouble(fields.get(2).getText()));
-					product.setQuantity(Double.parseDouble(fields.get(3).getText()), Double.parseDouble(fields.get(4).getText()));
-					product.setQuantityOnDisplay(Double.parseDouble(fields.get(5).getText()), Double.parseDouble(fields.get(6).getText()));
+					product.setKilosPerSack(Double.parseDouble(numfields.get(0).getText()));
+					product.setQuantity(Double.parseDouble(numfields.get(1).getText()), Double.parseDouble(numfields.get(2).getText()));
+					product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
 
-					double pricePerSack = Double.parseDouble(fields.get(7).getText());
-					double pricePerKilo = Double.parseDouble(fields.get(8).getText());
+					double pricePerSack = Double.parseDouble(numfields.get(5).getText());
+					double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
 
 					// check if price is the same with old
 					if (pricePerSack != product.getCurrentPricePerSack() || pricePerKilo != product.getCurrentPricePerKilo()) {
@@ -231,13 +250,12 @@ public class EditProductPanel extends EditFormPanel {
 
 					Manager.productManager.updateProduct(product);
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Edit").setVisible(true);
-					Values.centerPanel.changeTable(Values.PRODUCTS);
+					update();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-
+				}else
+					error.setToolTip(msg);
 			}
 		});
 
@@ -264,14 +282,14 @@ public class EditProductPanel extends EditFormPanel {
 		formPanel.add(cbox2);
 		formPanel.add(category);
 
-		formPanel.add(error);
+		add(error);
 		
 		scrollPane.setViewportView(formPanel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(79, 10, 650, 330);
+		scrollPane.setBounds(80, 10, 650, 330);
 		
 		add(scrollPane);
 	}
@@ -314,16 +332,16 @@ public class EditProductPanel extends EditFormPanel {
 
 		fields.get(0).setText(product.getName());
 		fields.get(1).setText(product.getDescription());
-		fields.get(2).setText(String.format("%.2f", product.getKilosPerSack()));
-		fields.get(3).setText(String.format("%.2f", product.getQuantityInSack()));
-		fields.get(4).setText(String.format("%.2f", product.getQuantityInKilo()));
-		fields.get(5).setText(String.format("%.2f", product.getQuantityOnDisplayInSack()));
-		fields.get(6).setText(String.format("%.2f", product.getQuantityOnDisplayInKilo()));
-		fields.get(7).setText(String.format("%.2f", product.getCurrentPricePerSack()));
-		fields.get(7).setToolTipText(
+		numfields.get(0).setText(String.format("%.2f", product.getKilosPerSack()));
+		numfields.get(1).setText(String.format("%.2f", product.getQuantityInSack()));
+		numfields.get(2).setText(String.format("%.2f", product.getQuantityInKilo()));
+		numfields.get(3).setText(String.format("%.2f", product.getQuantityOnDisplayInSack()));
+		numfields.get(4).setText(String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+		numfields.get(5).setText(String.format("%.2f", product.getCurrentPricePerSack()));
+		numfields.get(5).setToolTipText(
 				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
-		fields.get(8).setText(String.format("%.2f", product.getCurrentPricePerKilo()));
-		fields.get(8).setToolTipText(
+		numfields.get(6).setText(String.format("%.2f", product.getCurrentPricePerKilo()));
+		numfields.get(6).setToolTipText(
 				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
 		// fields.get(fields.size() - 1).setText(String.format("%.2f",
 		// product.getAlertOnQuantity()));
@@ -359,15 +377,37 @@ public class EditProductPanel extends EditFormPanel {
 		Values.editPanel.startAnimation();
 		new SuccessPopup("Edit").setVisible(true);
 		Values.centerPanel.changeTable(Values.PRODUCTS);
-		Values.topPanel.refreshStockCost();
+	}
+
+	private boolean hasValidInputs(){
+		
+		if(Double.parseDouble(numfields.get(0).getText()) == 0d){
+
+			msg = "kilos per sack should not be 0";
+			
+			return false;
+		}
+		
+		return true;
 	}
 
 	private boolean isValidated() {
-		if (!name.equals("") && !unitSellingPrice.equals("") && !unitPurchasePrice.equals("") && !unitsOnStock.equals("")
-				&& !alertOnQuantity.equals(""))
-			return true;
-
-		return false;
+		
+		for (int i = 0; i < fields.size(); i++)
+			if(fields.get(i).getText().equals("") && i!=1){
+			
+				msg = "All fields EXCEPT for Description is required";
+				return false;
+			}
+		
+		for (int i = 0; i < numfields.size(); i++)
+			if(numfields.get(i).getText().equals("")){
+			
+				msg = "All fields EXCEPT for Description is required";
+				return false;
+			}
+		
+		return true;
 	}
 
 	public void closeBalloonPanel() {

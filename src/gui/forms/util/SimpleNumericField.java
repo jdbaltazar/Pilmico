@@ -2,10 +2,8 @@ package gui.forms.util;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
+import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.AttributeSet;
@@ -33,7 +31,6 @@ public class SimpleNumericField extends JTextField{
     private String allowedChars = null;
     private boolean allowNegative = false;
     private int precision = 0;
-    private String label="";
 
     protected PlainDocument numberFieldFilter;
 
@@ -51,6 +48,24 @@ public class SimpleNumericField extends JTextField{
         super.setDocument(numberFieldFilter);
         
         init();
+    }
+    
+    public SimpleNumericField(int iMaxLen, String text) {
+        setAllowNegative(false);
+        setMaxLength(iMaxLen);
+        setFormat(DECIMAL);
+
+        numberFieldFilter = new JNumberFieldFilter();
+        super.setDocument(numberFieldFilter);
+        
+        editFormInit();
+    }
+    
+    private void editFormInit(){
+    	setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#006600")));
+		
+		setFont(new Font("Arial Narrow", Font.PLAIN, 15));
+		setForeground(Color.GRAY);
     }
 
     private void init() {

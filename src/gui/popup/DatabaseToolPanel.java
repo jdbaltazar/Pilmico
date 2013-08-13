@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -30,6 +31,7 @@ public class DatabaseToolPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 3477930157370335456L;
 	private SBButton close, backup, recover;
+	private JButton backupDir;
 	private UtilityPopup uP;
 
 	public DatabaseToolPanel() {
@@ -43,12 +45,14 @@ public class DatabaseToolPanel extends JPanel {
 		setLayout(null);
 		setOpaque(false);
 
-		setPreferredSize(new Dimension(90, 30));
+		setPreferredSize(new Dimension(107, 30));
 
 		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
 		backup = new SBButton("backup.png", "backup2.png", "Backup Database");
 		recover = new SBButton("recover.png", "recover2.png", "Database Recovery");
+		backupDir = new JButton("Directory");
 
+		backupDir.setToolTipText("Set default backup directory");
 	}
 
 	private void addComponents() {
@@ -56,6 +60,7 @@ public class DatabaseToolPanel extends JPanel {
 		backup.setBounds(15, 5, 20, 20);
 		recover.setBounds(55, 5, 20, 20);
 		close.setBounds(72, 2, 16, 16);
+		backupDir.setBounds(90, 7, 16, 16);
 
 		backup.addActionListener(new ActionListener() {
 
@@ -160,9 +165,33 @@ public class DatabaseToolPanel extends JPanel {
 
 			}
 		});
+		
+		backupDir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+
+				uP = new UtilityPopup(b, Values.BACKUP_DIRECTORY);
+				uP.setVisible(true);
+				
+				if(!uP.isClosed()){
+					
+					System.out.println("directory: "+uP.getInput());
+					//PUT YOUR CODE HERE
+					
+					new SuccessPopup("Update").setVisible(true);
+					Values.mainFrame.dimScreen(false);
+					Values.topPanel.closeBalloonPanel();
+				}
+			}
+		});
 
 		add(backup);
 		add(recover);
+		add(backupDir);
 
 	}
 }

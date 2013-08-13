@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
@@ -17,6 +18,9 @@ public class ErrorLabel extends JLabel{
 	private BalloonTip balloonTip;
 	private JLabel jlabel;
 
+	RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.decode("#FFD6D6"), Color.red);
+	RoundedBalloonStyle wStyle = new RoundedBalloonStyle(5, 5, Color.decode("#FFDB99"), Color.ORANGE);
+	
 	public ErrorLabel(){
 		
 		setFont(new Font("Lucida Sans", Font.ITALIC, 11));
@@ -45,9 +49,21 @@ public class ErrorLabel extends JLabel{
 	public void setToolTip(String text) {
 		
 		jlabel.setText(text);
+
+		balloonTip.refreshLocation();
+		balloonTip.setContents(jlabel);
+		
+		setText(text);
+	}
+	
+	public void setWarningToolTip(String text) {
+		
+		jlabel.setText(text);
 		
 		balloonTip.refreshLocation();
 		balloonTip.setContents(jlabel);
+		
+		balloonTip.setStyle(wStyle);
 		
 		setText(text);
 	}

@@ -63,8 +63,8 @@ public class UtilityPopup extends JDialog {
 		
 		addWindowListener( new WindowAdapter() {
 		    public void windowOpened( WindowEvent e ){
-		    	if(username!=null)
-		    		username.requestFocus();
+		    	if(password!=null)
+		    		password.requestFocus();
 		    }
 		}); 
 	}
@@ -88,7 +88,10 @@ public class UtilityPopup extends JDialog {
 			setSize(305, HEIGHT);
 		} else if (utility == Values.DATABASE) {
 			setSize(165, 80);
-		} else {
+		}else if (utility == Values.BACKUP_DIRECTORY) {
+			setSize(305, HEIGHT);
+		}  
+		else {
 			setLocation(p.x - 300, p.y);
 			setSize(305, HEIGHT);
 		}
@@ -114,7 +117,7 @@ public class UtilityPopup extends JDialog {
 		if (utility == Values.CATEGORY) {
 			field = new FormField("Add new category", 100, Color.white, Color.gray);
 			utilityLabel.setForeground(Color.decode("#FF4500"));
-			utilityLabel.setText("*Required");
+			utilityLabel.setToolTip("*Required");
 
 			field.setBounds(5, 20, 140, 20);
 			close.setBounds(132, 2, 16, 16);
@@ -124,7 +127,7 @@ public class UtilityPopup extends JDialog {
 			numField.setMaxLength(10);
 
 			utilityLabel.setForeground(Color.decode("#FF4500"));
-			utilityLabel.setText("");
+			utilityLabel.setToolTip("");
 
 			numField.setBounds(5, 20, 200, 20);
 			close.setBounds(192, 2, 16, 16);
@@ -133,7 +136,15 @@ public class UtilityPopup extends JDialog {
 		else if (utility == Values.REMARKS) {
 			field = new FormField("Add some comments or remarks for this form", 500, Color.white, Color.gray);
 			utilityLabel.setForeground(Color.decode("#FFD119"));
-			utilityLabel.setText("*Optional");
+			utilityLabel.setWarningToolTip("*Optional");
+
+			field.setBounds(5, 20, 290, 20);
+			close.setBounds(282, 2, 16, 16);
+		}
+		
+		else if (utility == Values.BACKUP_DIRECTORY) {
+			field = new FormField("Set default directory for database backup", 500, Color.white, Color.gray);
+			utilityLabel.setForeground(Color.decode("#FF4500"));
 
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
@@ -141,12 +152,13 @@ public class UtilityPopup extends JDialog {
 
 		else if (utility == Values.DATABASE) {
 			username = new FormField("Root username", 100, Color.white, Color.gray);
+			username.setText("root");
 
 			password.setForeground(Color.white);
 			password.setText("");
 
 			utilityLabel.setForeground(Color.decode("#FF4500"));
-			utilityLabel.setText("*Required");
+			utilityLabel.setToolTip("*Required");
 			
 			progressBar = new JProgressBar();
 	        progressBar.setIndeterminate(true);
@@ -168,7 +180,7 @@ public class UtilityPopup extends JDialog {
 		else {
 			field = new FormField("Why invalidate this form?", 500, Color.white, Color.gray);
 			utilityLabel.setForeground(Color.decode("#FF4500"));
-			utilityLabel.setText("*Required");
+			utilityLabel.setToolTip("*Required");
 
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
@@ -220,6 +232,11 @@ public class UtilityPopup extends JDialog {
 						input = field.getText();
 						dispose();
 					}
+					else{
+						if(utility == Values.BACKUP_DIRECTORY)
+							utilityLabel.setToolTip("Directory empty");
+					}
+					
 				}
 			}
 		});
@@ -241,7 +258,7 @@ public class UtilityPopup extends JDialog {
 						setVisible(false);
 					}
 					else
-						utilityLabel.setText("Try again");
+						utilityLabel.setToolTip("Try again");
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
