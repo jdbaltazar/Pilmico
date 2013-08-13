@@ -24,6 +24,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -39,6 +40,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
+
+import app.AppSettings;
+import app.Credentials;
+import app.DatabaseSettings;
 
 import util.DateFormatter;
 import util.MainFormLabel;
@@ -68,6 +73,8 @@ import common.entity.pullout.PullOut;
 import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.manager.Manager;
+import core.database.DatabaseTool;
+import core.security.SecurityTool;
 
 public class InventorySheetForm extends SimplePanel {
 
@@ -1050,7 +1057,26 @@ public class InventorySheetForm extends SimplePanel {
 							invalidatePendingTransactionsBetween(startDate, endDate, "Invalidated when Inventory Sheet for "
 									+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + " was saved");
 						} else {
-							invalidatePendingTransactionsBefore(endDate, "");
+							invalidatePendingTransactionsBefore(
+									endDate,
+									"Invalidated when Inventory Sheet for "
+											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + " was saved");
+						}
+
+						// backup database
+						try {
+
+							DatabaseTool.encryptedBackup(
+									SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+									SecurityTool.decryptString(Credentials.getInstance().getPassword()),
+									Credentials.getInstance().getDatabaseName(),
+									DatabaseSettings.getInstance().getFilePath() + "/Pilmico Backup "
+											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE,
+									null);
+						} catch (FileNotFoundException e1) {
+							e1.printStackTrace();
+						} catch (Exception e2) {
+							e2.printStackTrace();
 						}
 
 						// // backup database
@@ -1302,7 +1328,7 @@ public class InventorySheetForm extends SimplePanel {
 		}
 
 		dateStatus.setVisible(false);
-		if (dateDropdown.getItemCount() > 0) {
+		if (validDates.size() > 0 && dateDropdown.getItemCount() > 0) {
 
 			if (validDates.size() > 1 && dateDropdown.getSelectedIndex() != 0) {
 				dateStatus.setWarningToolTip("Warning: PENDING transactions before "

@@ -464,7 +464,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 					} else {
 
-						JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nPlese add at least one (1) valid transaction.",
+						JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nAdd at least one (1) valid transaction.",
 								"Notice", JOptionPane.INFORMATION_MESSAGE);
 
 						Values.addEntryPanel.startAnimation();
