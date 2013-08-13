@@ -37,6 +37,7 @@ import javax.swing.event.ChangeListener;
 import common.entity.product.Product;
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
 import common.manager.Manager;
@@ -287,6 +288,8 @@ public class PulloutForm extends SimplePanel {
 							e1.printStackTrace();
 						} catch (NotEnoughQuantityException e1) {
 							e1.printStackTrace();
+						} catch (ZeroKilosPerSackException e2) {
+							e2.printStackTrace();
 						}
 					}
 
@@ -330,12 +333,11 @@ public class PulloutForm extends SimplePanel {
 						error.setText(msg);
 
 				} else {
-					
+
 					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
-							+ "\n In order to proceed: " 
-							+ "\n (1) Update the quantity of the affected product/s; or"
-							+ "\n (2) Add a delivery for affected product/s; or"
-							+ "\n (3) Invalidate a Sales and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
+							+ "\n In order to proceed: " + "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or" + "\n (3) Invalidate a Sales and/or Account Receivables", "Not Allowed!",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

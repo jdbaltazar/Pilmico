@@ -29,6 +29,8 @@ public interface PullOutManager {
 
 	// excludes the start and end dates
 	public List<PullOut> getPendingPullOutsBetween(Date startDate, Date endDate) throws Exception;
+	
+	public List<PullOut> getPendingPullOutsBefore(Date date) throws Exception;
 
 	public void updatePullOut(PullOut pullOut) throws Exception;
 

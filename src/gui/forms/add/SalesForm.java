@@ -46,6 +46,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import common.entity.product.Product;
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
 import common.entity.profile.Account;
 import common.entity.profile.Employee;
 import common.entity.profile.Person;
@@ -516,71 +517,74 @@ public class SalesForm extends SimplePanel {
 							e1.printStackTrace();
 						} catch (NotEnoughQuantityException e1) {
 							e1.printStackTrace();
+						} catch (ZeroKilosPerSackException e2) {
+							e2.printStackTrace();
 						}
 					}
 
-//					if (valid) {
+					// if (valid) {
 
-						PointerInfo a = MouseInfo.getPointerInfo();
-						Point b = a.getLocation();
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-						UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-						uP.setVisible(true);
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-						if (!uP.isClosed()) {
+					if (!uP.isClosed()) {
 
-							Date d = ((SpinnerDateModel) date.getModel()).getDate();
-							System.out.println("date: " + d.toString());
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						System.out.println("date: " + d.toString());
 
-							if (issueDateChanged)
-								issueDateContainer = ((SpinnerDateModel) issueDate.getModel()).getDate();
-							else
-								issueDateContainer = null;
+						if (issueDateChanged)
+							issueDateContainer = ((SpinnerDateModel) issueDate.getModel()).getDate();
+						else
+							issueDateContainer = null;
 
-							Person p = null;
-							if (customerCombo.getSelectedItem() != null) {
-								p = (Person) customerCombo.getSelectedItem();
-							}
-							Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), issueDateContainer, receipt_no.getText(), Manager.loggedInAccount);
-
-							s.setRemarks(uP.getInput());
-
-							for (RowPanel rp : rowPanel) {
-								Product product = rp.getSelectedProduct();
-								s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
-										.getQuantityInKilo(), rp.getQuantityInSack()));
-							}
-
-							try {
-								Manager.salesManager.addSales(s);
-
-								for (SalesDetail sd : s.getSalesDetails()) {
-									Product pd = sd.getProduct();
-									pd.decrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
-									Manager.productManager.updateProduct(pd);
-								}
-								Values.centerPanel.changeTable(Values.SALES);
-								new SuccessPopup("Add").setVisible(true);
-								clearForm();
-							} catch (Exception e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+						Person p = null;
+						if (customerCombo.getSelectedItem() != null) {
+							p = (Person) customerCombo.getSelectedItem();
 						}
-					
-				}
-				 else
-						error.setToolTip(msg);
+						Sales s = new Sales(d, p, rc_no.getText(), issuedAt.getText(), issueDateContainer, receipt_no.getText(), Manager.loggedInAccount);
 
-				
-				/*else {
+						s.setRemarks(uP.getInput());
 
-					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
-							+ "\n In order to proceed: " 
-							+ "\n (1) Update the quantity of the affected product/s; or"
-							+ "\n (2) Add a delivery for affected product/s; or"
-							+ "\n (3) Invalidate a Pullout/s and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
-				}*/
+						for (RowPanel rp : rowPanel) {
+							Product product = rp.getSelectedProduct();
+							s.addSalesDetail(new SalesDetail(s, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(), rp
+									.getQuantityInKilo(), rp.getQuantityInSack()));
+						}
+
+						try {
+							Manager.salesManager.addSales(s);
+
+							for (SalesDetail sd : s.getSalesDetails()) {
+								Product pd = sd.getProduct();
+								pd.decrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
+								Manager.productManager.updateProduct(pd);
+							}
+							Values.centerPanel.changeTable(Values.SALES);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+
+				} else
+					error.setToolTip(msg);
+
+				/*
+				 * else {
+				 * 
+				 * JOptionPane.showMessageDialog(Values.mainFrame,
+				 * "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+				 * + "\n In order to proceed: " +
+				 * "\n (1) Update the quantity of the affected product/s; or" +
+				 * "\n (2) Add a delivery for affected product/s; or" +
+				 * "\n (3) Invalidate a Pullout/s and/or Account Receivables",
+				 * "Not Allowed!", JOptionPane.WARNING_MESSAGE); }
+				 */
 			}
 		});
 

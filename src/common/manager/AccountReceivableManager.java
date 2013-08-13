@@ -32,6 +32,8 @@ public interface AccountReceivableManager {
 
 	// excludes the start and end dates
 	public List<AccountReceivable> getPendingAccountReceivablesBetween(Date startDate, Date endDate) throws Exception;
+	
+	public List<AccountReceivable> getPendingAccountReceivablesBefore(Date date) throws Exception;
 
 	public void updateAccountReceivable(AccountReceivable accountReceivable) throws Exception;
 
@@ -65,6 +67,8 @@ public interface AccountReceivableManager {
 
 	// excludes the start and end dates
 	public List<ARPayment> getPendingARPaymentsBetween(Date startDate, Date endDate) throws Exception;
+
+	public List<ARPayment> getPendingARPaymentsBefore(Date date) throws Exception;
 
 	public void updateARPayment(ARPayment arPayment) throws Exception;
 

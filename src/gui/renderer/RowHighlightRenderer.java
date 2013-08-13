@@ -6,21 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.RoundedBalloonStyle;
-import net.java.balloontip.utils.ToolTipUtils;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
 import common.entity.dailyexpenses.DailyExpenses;
-import common.entity.dailyexpenses.Expense;
 import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;

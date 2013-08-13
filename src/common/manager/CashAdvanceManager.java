@@ -25,6 +25,8 @@ public interface CashAdvanceManager {
 	// excludes the start and end dates
 	public List<CashAdvance> getPendingCashAdvancesBetween(Date startDate, Date endDate) throws Exception;
 
+	public List<CashAdvance> getPendingCashAdvancesBefore(Date date) throws Exception;
+
 	public void updateCashAdvance(CashAdvance cashAdvance) throws Exception;
 
 	public void deleteCashAdvance(CashAdvance cashAdvance) throws Exception;
@@ -55,6 +57,8 @@ public interface CashAdvanceManager {
 
 	// excludes the start and end dates
 	public List<CAPayment> getPendingCAPaymentsBetween(Date startDate, Date endDate) throws Exception;
+
+	public List<CAPayment> getPendingCAPaymentsBefore(Date date) throws Exception;
 
 	public void updateCAPayment(CAPayment caPayment) throws Exception;
 

@@ -18,7 +18,7 @@ public interface DepositManager {
 
 	public List<Deposit> getAllDeposits() throws Exception;
 
-	public List<Deposit> getValidDeposits() throws Exception; 
+	public List<Deposit> getValidDeposits() throws Exception;
 
 	public List<Deposit> getInvalidDeposits() throws Exception;
 
@@ -34,6 +34,8 @@ public interface DepositManager {
 
 	// excludes the start and end dates
 	public List<Deposit> getPendingDepositsBetween(Date startDate, Date endDate) throws Exception;
+
+	public List<Deposit> getPendingDepositsBefore(Date date) throws Exception;
 
 	public void updateDeposit(Deposit deposit) throws Exception;
 

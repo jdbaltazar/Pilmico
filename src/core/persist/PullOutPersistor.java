@@ -229,4 +229,22 @@ public class PullOutPersistor extends Persistor implements PullOutManager {
 		return pullOuts;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PullOut> getPendingPullOutsBefore(Date date) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(PullOut.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<PullOut> pullOuts = new ArrayList<PullOut>();
+		try {
+			pullOuts = criteria.add(Restrictions.lt("date", DateTool.getDateWithoutTime(date))).add(Restrictions.eq("valid", true))
+					.add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return pullOuts;
+	}
+
 }

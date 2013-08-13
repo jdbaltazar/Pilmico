@@ -35,6 +35,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -92,7 +93,7 @@ public class InventorySheetForm extends SimplePanel {
 	 */
 	public static int SCROLLBAR_WIDTH = 16, PRODUCT_LABEL_WIDTH = 160, SACK_LABEL_WIDTH = 70, SALES_KG_WIDTH = 90, TOTAL_INVENTORY_LABEL = 16,
 			PRODUCT_ROW_WIDTH = 1360, DATE_LABEL_WIDTH = 150, ISSUED_BY_LABEL_WIDTH = 200, GROSS_LABEL_WIDTH = 100, TRANSACTIONS_ROW_WIDTH = 450;
-	
+
 	private JPanel navigationPanel, datePanel;
 
 	private ViewportDragScrollListener v1;
@@ -184,7 +185,7 @@ public class InventorySheetForm extends SimplePanel {
 		navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
 		navigationPanel.setOpaque(false);
-		
+
 		datePanel = new JPanel();
 		datePanel.setLayout(null);
 		datePanel.setOpaque(false);
@@ -192,7 +193,7 @@ public class InventorySheetForm extends SimplePanel {
 		save = new SoyButton("Save");
 		save.setBounds(85, 45, 80, 30);
 
-		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), "");
+		dateStatus = new IconLabel(new ImageIcon("images/valid_date.png"), Values.VALID_DATE);
 		dateStatus.setVisible(false);
 
 		isPanel = new JPanel();
@@ -224,13 +225,17 @@ public class InventorySheetForm extends SimplePanel {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 
-				if (dateDropdown.getSelectedIndex() != 0 && dateDropdown.getItemCount() != 1) {
-					dateStatus.setVisible(true);
-					dateStatus
-							.setWarningToolTip("Selecting date that is NOT the earliest is not recommended. Pending transactions prior to this date will be INVALIDATED if saved.");
-				} else {
-					dateStatus.setVisible(false);
-				}
+				// if (validDates.size() > 1 && dateDropdown.getSelectedIndex() !=
+				// 0) {
+				// dateStatus.setVisible(true);
+				// dateStatus.setWarningToolTip("Warning: PENDING transactions before "
+				// +
+				// DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(dateDropdown.getSelectedIndex()))
+				// + " will be INVALIDATED upon saving.");
+				// } else {
+				// dateStatus.setVisible(false);
+				// }
+
 				try {
 					build();
 				} catch (Exception e) {
@@ -566,14 +571,14 @@ public class InventorySheetForm extends SimplePanel {
 	}
 
 	private void addComponents() {
-		
+
 		datePanel.setBounds(15, 40, 200, 40);
 
 		dateLabel.setBounds(5, 5, 40, 20);
 		dateDropdown.setBounds(dateLabel.getX() + dateLabel.getWidth(), dateLabel.getY(), 110, 20);
 
 		dateStatus.setBounds(dateDropdown.getWidth() + dateDropdown.getX() + 5, dateLabel.getY() + 2, 16, 16);
-		
+
 		sectionLabel.get(0).setText("INVENTORY");
 		sectionLabel.get(0).setBounds(startX, startY + dateLabel.getHeight() + 30, 150, 20);
 
@@ -866,9 +871,9 @@ public class InventorySheetForm extends SimplePanel {
 		for (int i = 0, x = 0; i < 3; i++, x += summary1Label.getWidth())
 			summaryValues.get(i).setBounds(summary1Label.getX() + x, summary1Label.getY() + summary1Label.getHeight(), 176, 30);
 
-//		isPanel.add(dateLabel);
-//		isPanel.add(dateDropdown);
-//		isPanel.add(dateStatus);
+		// isPanel.add(dateLabel);
+		// isPanel.add(dateDropdown);
+		// isPanel.add(dateStatus);
 
 		isPanel.add(productLabel);
 
@@ -1013,8 +1018,21 @@ public class InventorySheetForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				boolean dateConfirmed = true;
+				if (dateDropdown.getSelectedIndex() != 0) {
+					if (JOptionPane.showConfirmDialog(
+							Values.mainFrame,
+							"PENDING transactions before "
+									+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(dateDropdown.getSelectedIndex()))
+									+ " will be INVALIDATED. \nProceed?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+						dateConfirmed = true;
+					} else {
+						dateConfirmed = false;
+					}
+				}
 
-				if (isValidated()) {
+				if (dateConfirmed && isValidated()) {
+
 					Date d = (Date) validDates.get(dateDropdown.getSelectedIndex());
 					inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
 					inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
@@ -1056,43 +1074,38 @@ public class InventorySheetForm extends SimplePanel {
 					inventorySheet.finalize();
 
 					try {
+
+						// save is
 						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
 
-						if (validDates.size() > 1) {
+						// invalidate trapped transactions if there are any
+						Date endDate = inventorySheet.getDate();
 
-							// remove date of saved is
-							int dateIndex = -1, i = 0;
-							for (Date tempDate : validDates) {
-								if (tempDate.equals(inventorySheet.getDate())) {
-									dateIndex = i;
-								}
-								i++;
-							}
-							if (dateIndex != -1)
-								validDates.remove(dateIndex);
-
-							System.out.println("i was called!");
-							invalidateTrappedTransactions(validDates.get(0), validDates.get(validDates.size() - 1));
+						if (previousInventorySheet != null) {
+							Date startDate = previousInventorySheet.getDate();
+							invalidatePendingTransactionsBetween(startDate, endDate);
+						} else {
+							invalidatePendingTransactionsBefore(endDate);
 						}
+
+						// // backup database
+						// try {
+						//
+						// DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+						// SecurityTool.decryptString(Credentials.getInstance().getPassword()),
+						// Credentials.getInstance().getDatabaseName(),
+						// DatabaseSettings.getInstance().getFilePath(), null);
+						//
+						// } catch (FileNotFoundException e1) {
+						// e1.printStackTrace();
+						// } catch (Exception e2) {
+						// // TODO Auto-generated catch block
+						// e2.printStackTrace();
+						// }
 
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-
-					// // backup database
-					// try {
-					//
-					// DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
-					// SecurityTool.decryptString(Credentials.getInstance().getPassword()),
-					// Credentials.getInstance().getDatabaseName(),
-					// DatabaseSettings.getInstance().getFilePath(), null);
-					//
-					// } catch (FileNotFoundException e1) {
-					// e1.printStackTrace();
-					// } catch (Exception e2) {
-					// // TODO Auto-generated catch block
-					// e2.printStackTrace();
-					// }
 
 					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 					new SuccessPopup("Add").setVisible(true);
@@ -1109,87 +1122,108 @@ public class InventorySheetForm extends SimplePanel {
 		datePanel.add(dateStatus);
 
 		navigationPanel.add(save);
-		
+
 		add(datePanel);
 		add(navigationPanel);
 		add(isPane);
 
 	}
 
-	// improve this portion
-	private void invalidateTrappedTransactions(Date startDate, Date endDate) {
-		try {
+	private void invalidatePendingTransactionsBetween(Date startDate, Date endDate) throws Exception {
 
-			// invalidate all sandwiched transactions
-			List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBetween(startDate, endDate);
-			System.out.println("size of pending deliveries: " + pendingDeliveries.size());
+		// invalidate all sandwiched transactions
+		List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBetween(startDate, endDate);
+		List<PullOut> pendingPullOuts = Manager.pullOutManager.getPendingPullOutsBetween(startDate, endDate);
+		List<Sales> pendingSales = Manager.salesManager.getPendingSalesBetween(startDate, endDate);
+		List<AccountReceivable> pendingAccountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesBetween(startDate, endDate);
+		List<ARPayment> pendingArPayments = Manager.accountReceivableManager.getPendingARPaymentsBetween(startDate, endDate);
+		List<CashAdvance> pendingCashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesBetween(startDate, endDate);
+		List<CAPayment> pendingCaPayments = Manager.cashAdvanceManager.getPendingCAPaymentsBetween(startDate, endDate);
+		List<DailyExpenses> pendingDailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesBetween(startDate, endDate);
+		List<SalaryRelease> pendingSalaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesBetween(startDate, endDate);
+		List<DiscountIssue> pendingDiscountIssues = Manager.discountIssueManager.getPendingDiscountIssuesBetween(startDate, endDate);
+		List<Deposit> pendingDeposits = Manager.depositManager.getPendingDepositsBetween(startDate, endDate);
 
-			for (Delivery d : pendingDeliveries) {
-				d.setValid(false);
-				Manager.deliveryManager.updateDelivery(d);
-			}
+		invalidateTransactions(pendingDeliveries, pendingPullOuts, pendingSales, pendingAccountReceivables, pendingArPayments, pendingCashAdvances,
+				pendingCaPayments, pendingDailyExpenses, pendingSalaryReleases, pendingDiscountIssues, pendingDeposits);
 
-			List<PullOut> pendingPullOuts = Manager.pullOutManager.getPendingPullOutsBetween(startDate, endDate);
-			for (PullOut po : pendingPullOuts) {
-				po.setValid(false);
-				Manager.pullOutManager.updatePullOut(po);
-			}
+	}
 
-			List<Sales> pendingSales = Manager.salesManager.getPendingSalesBetween(startDate, endDate);
-			for (Sales s : pendingSales) {
-				s.setValid(false);
-				Manager.salesManager.updateSales(s);
-			}
+	private void invalidatePendingTransactionsBefore(Date date) throws Exception {
 
-			List<AccountReceivable> pendingAccountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesBetween(startDate, endDate);
-			for (AccountReceivable ar : pendingAccountReceivables) {
-				ar.setValid(false);
-				Manager.accountReceivableManager.updateAccountReceivable(ar);
-			}
+		// invalidate all sandwiched transactions
+		List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBefore(date);
+		List<PullOut> pendingPullOuts = Manager.pullOutManager.getPendingPullOutsBefore(date);
+		List<Sales> pendingSales = Manager.salesManager.getPendingSalesBefore(date);
+		List<AccountReceivable> pendingAccountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesBefore(date);
+		List<ARPayment> pendingArPayments = Manager.accountReceivableManager.getPendingARPaymentsBefore(date);
+		List<CashAdvance> pendingCashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesBefore(date);
+		List<CAPayment> pendingCaPayments = Manager.cashAdvanceManager.getPendingCAPaymentsBefore(date);
+		List<DailyExpenses> pendingDailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesBefore(date);
+		List<SalaryRelease> pendingSalaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesBefore(date);
+		List<DiscountIssue> pendingDiscountIssues = Manager.discountIssueManager.getPendingDiscountIssuesBefore(date);
+		List<Deposit> pendingDeposits = Manager.depositManager.getPendingDepositsBefore(date);
 
-			List<ARPayment> pendingArPayments = Manager.accountReceivableManager.getPendingARPaymentsBetween(startDate, endDate);
-			for (ARPayment arp : pendingArPayments) {
-				arp.setValid(false);
-				Manager.accountReceivableManager.updateARPayment(arp);
-			}
+		invalidateTransactions(pendingDeliveries, pendingPullOuts, pendingSales, pendingAccountReceivables, pendingArPayments, pendingCashAdvances,
+				pendingCaPayments, pendingDailyExpenses, pendingSalaryReleases, pendingDiscountIssues, pendingDeposits);
 
-			List<CashAdvance> pendingCashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesBetween(startDate, endDate);
-			for (CashAdvance ca : pendingCashAdvances) {
-				ca.setValid(false);
-				Manager.cashAdvanceManager.updateCashAdvance(ca);
-			}
+	}
 
-			List<CAPayment> pendingCaPayments = Manager.cashAdvanceManager.getPendingCAPaymentsBetween(startDate, endDate);
-			for (CAPayment cap : pendingCaPayments) {
-				cap.setValid(false);
-				Manager.cashAdvanceManager.updateCAPayment(cap);
-			}
+	private void invalidateTransactions(List<Delivery> pendingDeliveries, List<PullOut> pendingPullOuts, List<Sales> pendingSales,
+			List<AccountReceivable> pendingAccountReceivables, List<ARPayment> pendingArPayments, List<CashAdvance> pendingCashAdvances,
+			List<CAPayment> pendingCaPayments, List<DailyExpenses> pendingDailyExpenses, List<SalaryRelease> pendingSalaryReleases,
+			List<DiscountIssue> pendingDiscountIssues, List<Deposit> pendingDeposits) throws Exception {
 
-			List<DailyExpenses> pendingDailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesBetween(startDate, endDate);
-			for (DailyExpenses de : pendingDailyExpenses) {
-				de.setValid(false);
-				Manager.dailyExpenseManager.updateDailyExpenses(de);
-			}
+		for (Delivery d : pendingDeliveries) {
+			d.setValid(false);
+			Manager.deliveryManager.updateDelivery(d);
+		}
 
-			List<SalaryRelease> pendingSalaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesBetween(startDate, endDate);
-			for (SalaryRelease sr : pendingSalaryReleases) {
-				sr.setValid(false);
-				Manager.salaryReleaseManager.updateSalaryRelease(sr);
-			}
+		for (PullOut po : pendingPullOuts) {
+			po.setValid(false);
+			Manager.pullOutManager.updatePullOut(po);
+		}
 
-			List<DiscountIssue> pendingDiscountIssues = Manager.discountIssueManager.getPendingDiscountIssuesBetween(startDate, endDate);
-			for (DiscountIssue di : pendingDiscountIssues) {
-				di.setValid(false);
-				Manager.discountIssueManager.updateDiscountIssue(di);
-			}
+		for (Sales s : pendingSales) {
+			s.setValid(false);
+			Manager.salesManager.updateSales(s);
+		}
+		for (AccountReceivable ar : pendingAccountReceivables) {
+			ar.setValid(false);
+			Manager.accountReceivableManager.updateAccountReceivable(ar);
+		}
+		for (ARPayment arp : pendingArPayments) {
+			arp.setValid(false);
+			Manager.accountReceivableManager.updateARPayment(arp);
+		}
 
-			List<Deposit> pendingDeposits = Manager.depositManager.getPendingDepositsBetween(startDate, endDate);
-			for (Deposit d : pendingDeposits) {
-				d.setValid(false);
-				Manager.depositManager.updateDeposit(d);
-			}
+		for (CashAdvance ca : pendingCashAdvances) {
+			ca.setValid(false);
+			Manager.cashAdvanceManager.updateCashAdvance(ca);
+		}
 
-		} catch (Exception e) {
+		for (CAPayment cap : pendingCaPayments) {
+			cap.setValid(false);
+			Manager.cashAdvanceManager.updateCAPayment(cap);
+		}
+		for (DailyExpenses de : pendingDailyExpenses) {
+			de.setValid(false);
+			Manager.dailyExpenseManager.updateDailyExpenses(de);
+		}
+
+		for (SalaryRelease sr : pendingSalaryReleases) {
+			sr.setValid(false);
+			Manager.salaryReleaseManager.updateSalaryRelease(sr);
+		}
+
+		for (DiscountIssue di : pendingDiscountIssues) {
+			di.setValid(false);
+			Manager.discountIssueManager.updateDiscountIssue(di);
+		}
+
+		for (Deposit d : pendingDeposits) {
+			d.setValid(false);
+			Manager.depositManager.updateDeposit(d);
 		}
 
 	}
@@ -1291,16 +1325,40 @@ public class InventorySheetForm extends SimplePanel {
 			}
 		}
 
-		// <<<<<<< HEAD
-		// if (dateDropdown.getItemCount() > 0) {
-		// Date selectedDate = (Date) dateDropdown.getSelectedItem();
-		// System.out.println("selected date: " + selectedDate.toString());
-		// fillEntries(selectedDate);
-		// =======
+		dateStatus.setVisible(false);
 		if (dateDropdown.getItemCount() > 0) {
-			// String selectedDate = (String) date.getSelectedItem();
-			// System.out.println("selected date: " + selectedDate);
+
+			if (validDates.size() > 1 && dateDropdown.getSelectedIndex() != 0) {
+				dateStatus.setWarningToolTip("Warning: PENDING transactions before "
+						+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(dateDropdown.getSelectedIndex()))
+						+ " will be INVALIDATED upon saving.");
+				dateStatus.setVisible(true);
+
+			} else {
+				dateStatus.setValidToolTip(Values.VALID_DATE);
+				dateStatus.setVisible(true);
+			}
+
 			fillEntries(validDates.get(dateDropdown.getSelectedIndex()));
+
+			// List<Delivery> pendingDeliveries = new ArrayList<Delivery>();
+			//
+			// if (previousInventorySheet != null) {
+			// System.out.println("------------> in the is form");
+			//
+			// Date startDate = previousInventorySheet.getDate();
+			// Date endDate = validDates.get(dateDropdown.getSelectedIndex());
+			// System.out.println("start: " + startDate.toString());
+			// System.out.println("end: " + endDate.toString());
+			// pendingDeliveries =
+			// Manager.deliveryManager.getPendingDeliveriesBetween(startDate,
+			// endDate);
+			// } else {
+			// pendingDeliveries =
+			// Manager.deliveryManager.getPendingDeliveriesBefore(validDates.get(dateDropdown.getSelectedIndex()));
+			// }
+			// System.out.println("size of pending deliveries: " +
+			// pendingDeliveries.size());
 			return true;
 		}
 

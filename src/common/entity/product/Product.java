@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
 import common.entity.product.exception.OnDisplayQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
 
 @Entity
 public class Product {
@@ -198,8 +199,9 @@ public class Product {
 	}
 
 	public void setKilosPerSack(double kilosPerSack) throws Exception {
-		if (valid(kilosPerSack))
-			this.kilosPerSack = kilosPerSack;
+		if (kilosPerSack < 0d)
+			throw new NegativeValueException();
+		this.kilosPerSack = kilosPerSack;
 	}
 
 	public boolean isAvailable() {
@@ -252,7 +254,7 @@ public class Product {
 	}
 
 	public void setQuantity(double quantityInSack, double quantityInKilo) throws Exception {
-		if (valid(quantityInSack) && valid(quantityInKilo)) {
+		if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
 			ProductQuantity pq = simplify(quantityInSack, quantityInKilo, kilosPerSack);
 			this.quantityInSack = pq.getQuantityInSack();
 			this.quantityInKilo = pq.getQuantityInKilo();
@@ -260,7 +262,7 @@ public class Product {
 	}
 
 	public void incrementQuantity(double incrementQuantityInSack, double incrementQuantityInKilo) throws Exception {
-		if (valid(incrementQuantityInSack) && valid(incrementQuantityInKilo)) {
+		if (valid(incrementQuantityInSack, incrementQuantityInKilo, kilosPerSack)) {
 			ProductQuantity pQuantity = computeIncrementResult(quantityInSack, quantityInKilo, kilosPerSack, incrementQuantityInSack,
 					incrementQuantityInKilo);
 			this.quantityInSack = pQuantity.getQuantityInSack();
@@ -269,7 +271,7 @@ public class Product {
 	}
 
 	public void decrementQuantity(double decrementQuantityInSack, double decrementQuantityInKilo) throws Exception {
-		if (valid(decrementQuantityInSack) && valid(decrementQuantityInKilo)) {
+		if (valid(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack)) {
 			ProductQuantity pQuantity = computeDecrementResult(quantityInSack, quantityInKilo, kilosPerSack, decrementQuantityInSack,
 					decrementQuantityInKilo);
 			this.quantityInSack = pQuantity.getQuantityInSack();
@@ -294,7 +296,7 @@ public class Product {
 	}
 
 	public void setQuantityOnDisplay(double quantityOnDisplayInSack, double quantityOnDisplayInKilo) throws Exception {
-		if (valid(quantityOnDisplayInSack) && valid(quantityOnDisplayInKilo)) {
+		if (valid(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack)) {
 			double newKilosQuantity = totalKilos(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack);
 			if (newKilosQuantity <= getTotalQuantityInKilo()) {
 				ProductQuantity pQuantity = simplify(newKilosQuantity, kilosPerSack);
@@ -330,23 +332,25 @@ public class Product {
 		return name;
 	}
 
-	public static boolean valid(double amount) throws NegativeValueException {
-		if (amount < 0d)
+	public static boolean valid(double sacks, double kilos, double kilosPerSack) throws NegativeValueException, ZeroKilosPerSackException {
+		if (sacks < 0d || kilos < 0d)
 			throw new NegativeValueException();
+		if (kilosPerSack <= 0d)
+			throw new ZeroKilosPerSackException();
 		return true;
 	}
 
 	public static boolean validIncrement(double quantityInSack, double quantityInKilo, double kilosPerSack, double decrementQuantityInSack,
-			double decrementQuantityInKilo) throws NegativeValueException {
-		if (valid(decrementQuantityInSack) && valid(decrementQuantityInKilo)) {
+			double decrementQuantityInKilo) throws NegativeValueException, ZeroKilosPerSackException {
+		if (valid(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack)) {
 			return true;
 		}
 		return false;
 	}
 
 	public static boolean validDecrement(double quantityInSack, double quantityInKilo, double kilosPerSack, double decrementQuantityInSack,
-			double decrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException {
-		if (valid(decrementQuantityInSack) && valid(decrementQuantityInKilo)) {
+			double decrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException, ZeroKilosPerSackException {
+		if (valid(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack)) {
 			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
 			double decrementKilosQuantity = totalKilos(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack);
 			if (decrementKilosQuantity > kilosQuantity)
@@ -356,8 +360,9 @@ public class Product {
 	}
 
 	public static ProductQuantity computeIncrementResult(double quantityInSack, double quantityInKilo, double kilosPerSack,
-			double incrementQuantityInSack, double incrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException {
-		ProductQuantity pQuantity = new ProductQuantity(quantityInSack, quantityInKilo);
+			double incrementQuantityInSack, double incrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException,
+			ZeroKilosPerSackException {
+		ProductQuantity pQuantity = new ProductQuantity(quantityInSack, quantityInKilo, kilosPerSack);
 		if (validIncrement(quantityInSack, quantityInKilo, kilosPerSack, incrementQuantityInSack, incrementQuantityInKilo)) {
 			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
 			double incrementKilosQuantity = totalKilos(incrementQuantityInSack, incrementQuantityInKilo, kilosPerSack);
@@ -368,8 +373,9 @@ public class Product {
 	}
 
 	public static ProductQuantity computeDecrementResult(double quantityInSack, double quantityInKilo, double kilosPerSack,
-			double decrementQuantityInSack, double decrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException {
-		ProductQuantity pQuantity = new ProductQuantity(quantityInSack, quantityInKilo);
+			double decrementQuantityInSack, double decrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException,
+			ZeroKilosPerSackException {
+		ProductQuantity pQuantity = new ProductQuantity(quantityInSack, quantityInKilo, kilosPerSack);
 		if (validDecrement(quantityInSack, quantityInKilo, kilosPerSack, decrementQuantityInSack, decrementQuantityInKilo)) {
 			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
 			double decrementKilosQuantity = totalKilos(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack);
@@ -387,8 +393,9 @@ public class Product {
 		return (sacks * klsPerSk) + kilos;
 	}
 
-	public static ProductQuantity simplify(double quantityInSack, double quantityInKilo, double kilosPerSack) throws NegativeValueException {
-		if (valid(kilosPerSack) && valid(quantityInKilo) && valid(quantityInSack)) {
+	public static ProductQuantity simplify(double quantityInSack, double quantityInKilo, double kilosPerSack) throws NegativeValueException,
+			ZeroKilosPerSackException {
+		if (valid(kilosPerSack, quantityInKilo, quantityInSack)) {
 			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
 			double rawResult = kilosQuantity / kilosPerSack;
 			// rounded two decimal result
@@ -397,15 +404,15 @@ public class Product {
 			// double kilos = ((roundedTwodecimalResult -
 			// Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
 			double kilos = kilosQuantity % kilosPerSack;
-			ProductQuantity pq = new ProductQuantity(sacks, kilos);
+			ProductQuantity pq = new ProductQuantity(sacks, kilos, kilosPerSack);
 			return pq;
 		} else {
 			throw new NegativeValueException();
 		}
 	}
 
-	public static ProductQuantity simplify(double totalQuantityInKilo, double kilosPerSack) throws NegativeValueException {
-		if (valid(kilosPerSack) && valid(totalQuantityInKilo)) {
+	public static ProductQuantity simplify(double totalQuantityInKilo, double kilosPerSack) throws NegativeValueException, ZeroKilosPerSackException {
+		if (valid(kilosPerSack, totalQuantityInKilo, kilosPerSack)) {
 			double rawResult = totalQuantityInKilo / kilosPerSack;
 			// rounded two decimal result
 			double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;
@@ -413,7 +420,7 @@ public class Product {
 			// double kilos = ((roundedTwodecimalResult -
 			// Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
 			double kilos = totalQuantityInKilo % kilosPerSack;
-			ProductQuantity pq = new ProductQuantity(sacks, kilos);
+			ProductQuantity pq = new ProductQuantity(sacks, kilos, kilosPerSack);
 			return pq;
 		} else {
 			throw new NegativeValueException();
