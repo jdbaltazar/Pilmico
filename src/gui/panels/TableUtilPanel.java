@@ -139,9 +139,8 @@ public class TableUtilPanel extends SoyPanel {
 				}
 
 				if (isds.size() < 2) {
-					JOptionPane.showMessageDialog(Values.mainFrame,
-							"Insufficient data! \nAt least two (2) Inventory Sheets needed for graphing.", "Notice",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(Values.mainFrame, "Insufficient data! \nAt least two (2) Inventory Sheets needed for graphing.",
+							"Notice", JOptionPane.INFORMATION_MESSAGE);
 					// Values.centerPanel.changeTable(Values.SALES);
 				} else {
 					new LinePlot(isds);
@@ -174,9 +173,9 @@ public class TableUtilPanel extends SoyPanel {
 
 		if (label.equals(Tables.SALES))
 			searchPanel.add(graphBtn);
-		
-		if(label.equals(Tables.ACCOUNTS))
-			if(!Manager.isAuthorized())
+
+		if (label.equals(Tables.ACCOUNTS))
+			if (!Manager.isAuthorized())
 				addbtn.setVisible(false);
 
 		if (label.equals(Tables.PRODUCTS))

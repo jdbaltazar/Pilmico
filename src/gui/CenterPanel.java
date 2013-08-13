@@ -711,7 +711,7 @@ public class CenterPanel extends SoyPanel {
 			if (Values.productOnDisplayPopup == null)
 				new ProductOnDisplayPopup();
 
-			// Values.productOnDisplayPopup.fillTable(onDisplayFirst);
+			Values.productOnDisplayPopup.setProducts(onDisplayFirst);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

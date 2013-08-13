@@ -191,13 +191,11 @@ public class ProductOnDisplayPopup extends JDialog {
 		return true;
 	}
 
-	public void fillTable() {
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
 
-		try {
-			this.products = Manager.productManager.getProducts();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void fillTable() {
 
 		rowPanel.clear();
 		onDisplayPanel.removeAll();
@@ -208,7 +206,6 @@ public class ProductOnDisplayPopup extends JDialog {
 			rowPanel.add(new RowPanel(p, onDisplayPanel, Tables.PRODUCTS));
 			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
 			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
-
 		}
 
 		onDisplayPanel.updateUI();
