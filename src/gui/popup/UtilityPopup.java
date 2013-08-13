@@ -144,6 +144,7 @@ public class UtilityPopup extends JDialog {
 		
 		else if (utility == Values.BACKUP_DIRECTORY) {
 			field = new FormField("Set default directory for database backup", 500, Color.white, Color.gray);
+			field.setEditable(false);
 			utilityLabel.setForeground(Color.decode("#FF4500"));
 
 			field.setBounds(5, 20, 290, 20);

@@ -165,27 +165,55 @@ public class DatabaseToolPanel extends JPanel {
 
 			}
 		});
-		
+
 		backupDir.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
+				// PointerInfo a = MouseInfo.getPointerInfo();
+				// Point b = a.getLocation();
+				//
+				// uP = new UtilityPopup(b, Values.BACKUP_DIRECTORY);
 
-				uP = new UtilityPopup(b, Values.BACKUP_DIRECTORY);
-				uP.setVisible(true);
-				
-				if(!uP.isClosed()){
-					
-					System.out.println("directory: "+uP.getInput());
-					//PUT YOUR CODE HERE
-					
-					new SuccessPopup("Update").setVisible(true);
-					Values.mainFrame.dimScreen(false);
-					Values.topPanel.closeBalloonPanel();
+				JFileChooser fc = new JFileChooser();
+				try {
+					fc.setSelectedFile(new File(DatabaseSettings.getInstance().getFilePath()));
+				} catch (FileNotFoundException e2) {
+					e2.printStackTrace();
 				}
+				fc.setCurrentDirectory(new java.io.File("."));
+
+				fc.setDialogTitle("Set Default Backup Directory");
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				fc.setAcceptAllFileFilterUsed(false);
+
+				// uP.setVisible(true);
+				int returnVal = fc.showOpenDialog(Values.mainFrame);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					try {
+						DatabaseSettings.getInstance().setFilePath(file.getCanonicalPath().replace('\\', '/'));
+						DatabaseSettings.getInstance().persist();
+
+						new SuccessPopup("Directory Saved").setVisible(true);
+						Values.mainFrame.dimScreen(false);
+						Values.topPanel.closeBalloonPanel();
+
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+				// if (!uP.isClosed()) {
+				//
+				// System.out.println("directory: " + uP.getInput());
+				// // PUT YOUR CODE HERE
+				//
+				// }
 			}
 		});
 
