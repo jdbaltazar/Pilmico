@@ -72,7 +72,11 @@ public class UtilityPopup extends JDialog {
 	private void init() {
 		Values.mainFrame.dimScreen(true);
 
-		setLocation(p);
+		if(utility == Values.AUTO_BACKUP)
+			setLocationRelativeTo(Values.mainFrame);
+		else
+			setLocation(p);
+		
 		setLayout(new BorderLayout());
 		setUndecorated(true);
 		setResizable(false);
@@ -88,10 +92,11 @@ public class UtilityPopup extends JDialog {
 			setSize(305, HEIGHT);
 		} else if (utility == Values.DATABASE) {
 			setSize(165, 80);
-		}else if (utility == Values.BACKUP_DIRECTORY) {
+		} else if (utility == Values.BACKUP_DIRECTORY) {
 			setSize(305, HEIGHT);
-		}  
-		else {
+		} else if (utility == Values.AUTO_BACKUP) {
+			setSize(185, 45);
+		} else {
 			setLocation(p.x - 300, p.y);
 			setSize(305, HEIGHT);
 		}
@@ -150,7 +155,18 @@ public class UtilityPopup extends JDialog {
 			field.setBounds(5, 20, 290, 20);
 			close.setBounds(282, 2, 16, 16);
 		}
-
+		
+		else if(utility == Values.AUTO_BACKUP) {
+			utilityLabel.setForeground(Color.GREEN.darker().darker());
+			utilityLabel.setToolTip("Database Backup in progress. Please wait..");
+			
+			progressBar = new JProgressBar();
+	        progressBar.setIndeterminate(true);
+	        
+	        utilityLabel.setBounds(7, 3, 170, 15);
+	        progressBar.setBounds(5, 20, 170, 12);
+		}
+		
 		else if (utility == Values.DATABASE) {
 			username = new FormField("Root username", 100, Color.white, Color.gray);
 			username.setText("root");
@@ -187,7 +203,8 @@ public class UtilityPopup extends JDialog {
 			close.setBounds(282, 2, 16, 16);
 		}
 
-		utilityLabel.setBounds(7, 3, 120, 15);
+		if(utility != Values.AUTO_BACKUP)
+			utilityLabel.setBounds(7, 3, 120, 15);
 
 		if (utility == Values.PCOH)
 			panel.add(numField);
@@ -195,18 +212,6 @@ public class UtilityPopup extends JDialog {
 			panel.add(field);
 
 		panel.add(utilityLabel);
-
-		field.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent k) {
-				// TODO Auto-generated method stub
-				if (k.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					setClosed(true);
-					Values.mainFrame.dimScreen(false);
-					dispose();
-				}
-			}
-		});
 
 		numField.addActionListener(new ActionListener() {
 
@@ -249,22 +254,14 @@ public class UtilityPopup extends JDialog {
 				try {
 					if (username.getText().equals(SecurityTool.decryptString(Credentials.getInstance().getUsername()))
 							&& password.getText().equals(SecurityTool.decryptString(Credentials.getInstance().getPassword()))) {
-//							&& password.getText().equals(" ")) {
-						System.out.println("VERIFIED ROOT");
-						
-//						password.setText("");
 						verified = true;
-//						setClosed(true);
-//						Values.mainFrame.dimScreen(false);
 						setVisible(false);
 					}
 					else
 						utilityLabel.setToolTip("Try again");
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -279,6 +276,18 @@ public class UtilityPopup extends JDialog {
 				setClosed(true);
 				Values.mainFrame.dimScreen(false);
 				dispose();
+			}
+		});
+		
+		field.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent k) {
+				// TODO Auto-generated method stub
+				if (k.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					setClosed(true);
+					Values.mainFrame.dimScreen(false);
+					dispose();
+				}
 			}
 		});
 

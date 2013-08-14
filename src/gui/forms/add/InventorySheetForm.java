@@ -1049,6 +1049,11 @@ public class InventorySheetForm extends SimplePanel {
 						// save is
 						Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
 
+						Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
+						new SuccessPopup("Add").setVisible(true);
+
+						Rectangle rect = new Rectangle(0, 0, 10, 10);
+						isPanel.scrollRectToVisible(rect);
 						// invalidate trapped transactions if there are any
 						Date endDate = inventorySheet.getDate();
 
@@ -1097,12 +1102,6 @@ public class InventorySheetForm extends SimplePanel {
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-
-					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
-					new SuccessPopup("Add").setVisible(true);
-
-					Rectangle rect = new Rectangle(0, 0, 10, 10);
-					isPanel.scrollRectToVisible(rect);
 				}
 			}
 
