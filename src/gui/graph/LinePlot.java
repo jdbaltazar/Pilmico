@@ -29,15 +29,10 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
-import common.manager.Manager;
 
 import util.Values;
 
@@ -45,22 +40,18 @@ import de.erichseifert.gral.data.Column;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.data.statistics.Statistics;
 import de.erichseifert.gral.graphics.DrawableContainer;
-import de.erichseifert.gral.graphics.Layout;
 import de.erichseifert.gral.graphics.TableLayout;
-import de.erichseifert.gral.plots.BarPlot;
 import de.erichseifert.gral.plots.Plot;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.areas.AreaRenderer;
 import de.erichseifert.gral.plots.areas.DefaultAreaRenderer2D;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
-import de.erichseifert.gral.plots.legends.Legend;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import de.erichseifert.gral.plots.lines.LineRenderer;
 import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
 import de.erichseifert.gral.util.GraphicsUtils;
 import de.erichseifert.gral.util.Insets2D;
-import de.erichseifert.gral.util.Orientation;
 
 public class LinePlot extends ExamplePanel {
 	/** Version id for serialization. */
@@ -86,7 +77,8 @@ public class LinePlot extends ExamplePanel {
 
 		DataTable data = new DataTable(Long.class, Double.class);
 		for (InventorySheet is : iss) {
-			data.add((DateTool.getDateWithoutTime(is.getInventorySheetData().getDate()).getTime()+DateTool.DAY_DIFFERENCE/3), is.getOverallCashAndCheckSalesAmount());
+			data.add((DateTool.getDateWithoutTime(is.getInventorySheetData().getDate()).getTime() + DateTool.DAY_DIFFERENCE / 3),
+					is.getOverallCashAndCheckSalesAmount() + is.getOverallAccountReceivables());
 		}
 
 		// Calendar d1 = Calendar.getInstance();
@@ -140,7 +132,7 @@ public class LinePlot extends ExamplePanel {
 		plotLower.setAreaRenderer(data, areaUpper);
 		plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
 
-		plotLower.setSetting(Plot.TITLE, "Pilmico Daily Sales");
+		plotLower.setSetting(Plot.TITLE, "Daily Sales (Cash, Check & AR)");
 
 		// insert Pilmico Font here
 		// plotLower.setSetting(Plot.TITLE_FONT, n);
@@ -148,7 +140,7 @@ public class LinePlot extends ExamplePanel {
 		// plotLower.getLegend().setSetting(Legend.ORIENTATION,
 		// Orientation.HORIZONTAL);
 		plotLower.getAxis(XYPlot.AXIS_Y).setMin(0d);
-		AxisRenderer rendererY = plotLower.getAxisRenderer(XYPlot.AXIS_Y);
+		// AxisRenderer rendererY = plotLower.getAxisRenderer(XYPlot.AXIS_Y);
 
 		plotLower.setInsets(new Insets2D.Double(20.0, 80.0, 40.0, 20.0));
 
