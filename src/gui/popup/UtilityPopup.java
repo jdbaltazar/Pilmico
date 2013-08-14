@@ -36,6 +36,7 @@ import util.ErrorLabel;
 import util.JNumericField;
 import util.SBButton;
 import util.SimplePanel;
+import util.Tables;
 import util.Values;
 
 public class UtilityPopup extends JDialog {
@@ -72,23 +73,19 @@ public class UtilityPopup extends JDialog {
 	private void init() {
 		Values.mainFrame.dimScreen(true);
 
-		if(utility == Values.AUTO_BACKUP)
-			setLocationRelativeTo(Values.mainFrame);
-		else
-			setLocation(p);
 		
 		setLayout(new BorderLayout());
-		setUndecorated(true);
-		setResizable(false);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
-
+		
 		if (utility == Values.CATEGORY)
 			setSize(WIDTH, HEIGHT);
 		else if (utility == Values.PCOH) {
 			setSize(215, HEIGHT);
 		} else if (utility == Values.REMARKS) {
-			setLocation(p.x, p.y - 55);
+			if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET))
+				setLocation(p.x - 305, p.y - 55);
+			else
+				setLocation(p.x, p.y - 55);
+
 			setSize(305, HEIGHT);
 		} else if (utility == Values.DATABASE) {
 			setSize(165, 80);
@@ -101,6 +98,17 @@ public class UtilityPopup extends JDialog {
 			setSize(305, HEIGHT);
 		}
 
+		
+		if(utility == Values.AUTO_BACKUP)
+			setLocationRelativeTo(null);
+		else
+			setLocation(p);
+		
+		setUndecorated(true);
+		setResizable(false);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+		
 		setBackground(new Color(0, 0, 0, 0));
 	}
 
@@ -165,6 +173,8 @@ public class UtilityPopup extends JDialog {
 	        
 	        utilityLabel.setBounds(7, 3, 170, 15);
 	        progressBar.setBounds(5, 20, 170, 12);
+	        
+	        panel.add(progressBar);
 		}
 		
 		else if (utility == Values.DATABASE) {

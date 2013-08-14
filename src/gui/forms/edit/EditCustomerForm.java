@@ -11,8 +11,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import common.entity.profile.Person;
@@ -38,9 +41,12 @@ public class EditCustomerForm extends EditFormPanel {
 	private JComboBox employeeCombo;
 	private JTextField employeesField;
 	private DefaultComboBoxModel model;
+	
+	private JPanel panel;
+	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
+	private String msg="";
 
 	private final int num = Tables.profileFormLabel.length;
 
@@ -64,29 +70,37 @@ public class EditCustomerForm extends EditFormPanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
+		
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setOpaque(false);
+
+		scrollPane = new JScrollPane();
+		
 		edit = new SoyButton("Edit");
 
 		error = new ErrorLabel();
 
-		for (int i = 0, y = 0, x1 = 290; i < num; i++, y += 65) {
+		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 65) {//290
 
 			fields.add(new EditFormField(100));
 			labels.add(new FormLabel(Tables.profileFormLabel[i]));
 
-			fields.get(i).setBounds(x1, 40 + y, 200, 25);
-			labels.get(i).setBounds(x1, 25 + y, 200, 15);
+			fields.get(i).setBounds(x1, 30 + y, 200, 25);
+			labels.get(i).setBounds(x1, 15 + y, 200, 15);
 
-			add(fields.get(i));
-			add(labels.get(i));
+			panel.add(fields.get(i));
+			panel.add(labels.get(i));
 		}
 
 		edit.setBounds(360, 355, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(510, 335, 200, 22);
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				customer.setLastName(fields.get(0).getText());
 				customer.setFirstName(fields.get(1).getText());
 				customer.setMiddleName(fields.get(2).getText());
@@ -104,22 +118,42 @@ public class EditCustomerForm extends EditFormPanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+				}else
+					error.setToolTip(msg);
 			}
 		});
 
 		add(edit);
 
+		scrollPane.setViewportView(panel);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+		scrollPane.setBounds(272, 11, 250, 330);
+
 		add(error);
+		add(scrollPane);
 
 	}
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+		if(fields.get(0).getText().equals("")){
+			
+			msg = "Last Name is required";
+			
+			return false;
+		}
+		
+		if(fields.get(1).getText().equals("")){
+			
+			msg = "First Name is required";
+			
+			return false;
+		}
 
-		return false;
+		return true;
 	}
 
 	public void refreshDropdown() {

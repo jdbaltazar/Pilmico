@@ -72,7 +72,7 @@ public class AccountReceivablesForm extends SimplePanel {
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private JButton addRow;
-	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
+	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, kgpersack, priceKG, priceSACK, productLabel, deleteLabel;
 	private SpinnerDate date;
 	private ImageIcon icon;
 	private SoyButton save;
@@ -161,6 +161,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
+		kgpersack = new TableHeaderLabel("kg / sk");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
@@ -196,12 +197,14 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		quantitySACKlabel.setBounds(50, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(127, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(204, LABEL_Y, 85, LABEL_HEIGHT);
-		priceKG.setBounds(289, LABEL_Y, 77, LABEL_HEIGHT);
-		productLabel.setBounds(366, LABEL_Y, 207, LABEL_HEIGHT);
-		deleteLabel.setBounds(573, LABEL_Y, 42, LABEL_HEIGHT);
+		kgpersack.setBounds(204, LABEL_Y, 50, LABEL_HEIGHT);
+		priceSACK.setBounds(254, LABEL_Y, 85, LABEL_HEIGHT);
+		priceKG.setBounds(339, LABEL_Y, 77, LABEL_HEIGHT);
+		productLabel.setBounds(416, LABEL_Y, 167, LABEL_HEIGHT);
+		deleteLabel.setBounds(583, LABEL_Y, 32, LABEL_HEIGHT);
+	
 		// 136
-		fwdProduct.setBounds(502, LABEL_Y + 5, 16, 16);
+		fwdProduct.setBounds(532, LABEL_Y + 5, 16, 16);
 
 		productsPane.setBounds(51, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
@@ -240,6 +243,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		panel.add(fwdProduct);
 		panel.add(quantitySACKlabel);
 		panel.add(quantityKGLabel);
+		panel.add(kgpersack);
 		panel.add(priceKG);
 		panel.add(priceSACK);
 		panel.add(productLabel);
@@ -256,6 +260,7 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		scrollPane.setBounds(0, 5, 670, 370);
 
+		add(error);
 		add(scrollPane);
 	}
 
@@ -300,7 +305,7 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		save.setBounds(290, 300, 80, 30);
 
-		error.setBounds(325, 290, 300, 22);
+		error.setBounds(375, 290, 250, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -362,7 +367,7 @@ public class AccountReceivablesForm extends SimplePanel {
 							}
 						}
 					} else
-						error.setText(msg);
+						error.setToolTip(msg);
 
 				} else {
 
@@ -376,12 +381,10 @@ public class AccountReceivablesForm extends SimplePanel {
 		});
 
 		panel.add(save);
-		add(error);
-
 	}
 
 	public void setErrorText(String msg) {
-		error.setText(msg);
+		error.setToolTip(msg);
 	}
 
 	public boolean hasMultipleProduct() {
@@ -441,12 +444,12 @@ public class AccountReceivablesForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
-				error.setText("");
+				error.setToolTip("");
 			}
 
 		} catch (Exception e) {
@@ -516,7 +519,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		rowPanel.clear();
 		refreshDate();
 
-		error.setText("");
+		error.setToolTip("");
 
 		customerCombo.setSelectedIndex(-1);
 	}

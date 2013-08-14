@@ -151,7 +151,7 @@ public class AccountForm extends SimplePanel {
 					e1.printStackTrace();
 				}
 				}else
-					error.setText(msg);
+					error.setToolTip(msg);
 			}
 		});
 
@@ -187,7 +187,7 @@ public class AccountForm extends SimplePanel {
 		
 		employeeCombo.setSelectedIndex(0);
 
-		error.setText("");
+		error.setToolTip("");
 	}
 
 	private boolean isValidated() {

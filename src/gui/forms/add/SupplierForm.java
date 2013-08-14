@@ -151,7 +151,7 @@ public class SupplierForm extends SimplePanel {
 						e1.printStackTrace();
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 
 			}
 		});
@@ -186,7 +186,7 @@ public class SupplierForm extends SimplePanel {
 
 		refreshCustomer(true);
 
-		error.setText("");
+		error.setToolTip("");
 	}
 
 	public void refreshCustomer(boolean remove) {

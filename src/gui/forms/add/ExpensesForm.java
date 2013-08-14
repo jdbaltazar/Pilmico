@@ -267,9 +267,9 @@ public class ExpensesForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		save = new SoyButton("Save");
 
-		save.setBounds(417, LABEL_Y + 135, 80, 30);
+		save.setBounds(417, 135, 80, 30);
 
-		error.setBounds(370, 160, 220, 22);
+		error.setBounds(345, 105, 220, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -318,12 +318,12 @@ public class ExpensesForm extends SimplePanel {
 						}
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 			}
 		});
 
 		panel.add(save);
-		add(error);
+		panel.add(error);
 
 	}
 
@@ -335,12 +335,12 @@ public class ExpensesForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
-				error.setText("");
+				error.setToolTip("");
 			}
 
 		} catch (Exception e) {
@@ -408,7 +408,7 @@ public class ExpensesForm extends SimplePanel {
 		rowPanel.clear();
 		refreshDate();
 
-		error.setText("");
+		error.setToolTip("");
 
 	}
 
