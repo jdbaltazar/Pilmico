@@ -164,6 +164,7 @@ public class SalaryReleasePersistor extends Persistor implements SalaryReleaseMa
 	public double getMostRecentAmountForFee(int feeId) throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(FeeDeduction.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<FeeDeduction> fDeductions = new ArrayList<FeeDeduction>();
 		try {
 			fDeductions = criteria.add(Restrictions.eq("fee.id", feeId)).addOrder(Order.desc("id")).list();

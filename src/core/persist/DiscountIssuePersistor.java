@@ -32,6 +32,7 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 	public List<DiscountIssue> getAllDiscountIssues() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DiscountIssue.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DiscountIssue> discounts = new ArrayList<DiscountIssue>();
 		try {
 			discounts = criteria.addOrder(Order.desc("date")).list();
@@ -48,6 +49,7 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 	public List<DiscountIssue> getValidDiscountIssues() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DiscountIssue.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DiscountIssue> discounts = new ArrayList<DiscountIssue>();
 		try {
 			discounts = criteria.add(Restrictions.eq("valid", true)).addOrder(Order.desc("date")).list();
@@ -64,6 +66,7 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 	public List<DiscountIssue> getInvalidDiscountIssues() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DiscountIssue.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DiscountIssue> discounts = new ArrayList<DiscountIssue>();
 		try {
 			discounts = criteria.add(Restrictions.eq("valid", false)).addOrder(Order.desc("date")).list();
@@ -80,6 +83,7 @@ public class DiscountIssuePersistor extends Persistor implements DiscountIssueMa
 	public List<DiscountIssue> getPendingDiscountIssues() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(DiscountIssue.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<DiscountIssue> discounts = new ArrayList<DiscountIssue>();
 		try {
 			discounts = criteria.add(Restrictions.eq("valid", true)).add(Restrictions.isNull("inventorySheetData")).addOrder(Order.desc("date")).list();

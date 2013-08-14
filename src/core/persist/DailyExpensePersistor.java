@@ -23,8 +23,6 @@ public class DailyExpensePersistor extends Persistor implements DailyExpensesMan
 	@Override
 	public void addDailyExpenses(DailyExpenses expense) throws Exception {
 		add(expense);
-
-		System.out.println("de added!");
 	}
 
 	@Override
