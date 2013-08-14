@@ -254,6 +254,8 @@ public class Product {
 	}
 
 	public void setQuantity(double quantityInSack, double quantityInKilo) throws Exception {
+
+		System.out.println("sysout: " + kilosPerSack);
 		if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
 			ProductQuantity pq = simplify(quantityInSack, quantityInKilo, kilosPerSack);
 			this.quantityInSack = pq.getQuantityInSack();
@@ -395,7 +397,7 @@ public class Product {
 
 	public static ProductQuantity simplify(double quantityInSack, double quantityInKilo, double kilosPerSack) throws NegativeValueException,
 			ZeroKilosPerSackException {
-		if (valid(kilosPerSack, quantityInKilo, quantityInSack)) {
+		if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
 			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
 			double rawResult = kilosQuantity / kilosPerSack;
 			// rounded two decimal result
@@ -412,7 +414,7 @@ public class Product {
 	}
 
 	public static ProductQuantity simplify(double totalQuantityInKilo, double kilosPerSack) throws NegativeValueException, ZeroKilosPerSackException {
-		if (valid(kilosPerSack, totalQuantityInKilo, kilosPerSack)) {
+		if (valid(0d, totalQuantityInKilo, kilosPerSack)) {
 			double rawResult = totalQuantityInKilo / kilosPerSack;
 			// rounded two decimal result
 			double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;

@@ -103,7 +103,8 @@ public class DatabaseTool {
 											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE);
 									File backUp = new File(filePath);
 									SecurityTool.encryptAndWriteFile(original, internalBackUp);
-									SecurityTool.encryptAndWriteFile(original, backUp);
+									if (DatabaseSettings.getInstance().isFilePathSet())
+										SecurityTool.encryptAndWriteFile(original, backUp);
 									original.delete();
 
 								} catch (Exception e) {
@@ -130,10 +131,10 @@ public class DatabaseTool {
 			});
 
 			thread.start();
-			
+
 			if (uP != null)
 				uP.showProgressBar();
-			else{
+			else {
 				DatabaseTool.uP = new UtilityPopup(new Point(), Values.AUTO_BACKUP);
 				DatabaseTool.uP.setVisible(true);
 			}
@@ -461,10 +462,8 @@ public class DatabaseTool {
 						} else if (p.getId() == 26) {
 							p.setKilosPerSack(10);
 						}
-
 						Manager.productManager.updateProduct(p);
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
