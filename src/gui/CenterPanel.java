@@ -527,6 +527,7 @@ public class CenterPanel extends SoyPanel {
 
 			String[] headers = { "ID", "IS No", "Date", "Amount", "Issued By", "Valid?" };
 			List<DiscountIssue> dis = Manager.discountIssueManager.getAllDiscountIssues();
+			System.out.println("size of discount issues: " + dis.size());
 			String[][] entries = new String[dis.size()][headers.length];
 
 			int i = 0;
@@ -628,7 +629,7 @@ public class CenterPanel extends SoyPanel {
 
 			List<Employee> employees = Manager.isAuthorized() ? Manager.employeePersonManager.getAllEmployees() : Manager.employeePersonManager
 					.getAllEmployeesExceptManagers();
-			
+
 			String[][] entries = new String[employees.size()][headers.length];
 			// String[][] entries = { { "1", "John David Baltazar", "Janitor",
 			// "Active", "" }, { "2", "Juan dela Cruz", "Sales Clerk",
@@ -645,7 +646,7 @@ public class CenterPanel extends SoyPanel {
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, employees, Tables.EMPLOYEES), Tables.EMPLOYEES), BorderLayout.CENTER);
 
-//			System.out.println("employees again here");
+			// System.out.println("employees again here");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
