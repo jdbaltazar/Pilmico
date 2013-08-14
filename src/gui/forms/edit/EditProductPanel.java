@@ -71,11 +71,12 @@ public class EditProductPanel extends EditFormPanel {
 	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
 
 	private Product product;
-	
+
 	private JPanel formPanel;
 	private JScrollPane scrollPane;
 
-	private String msg="";
+	private String msg = "";
+
 	/*
 	 * public EditItemPanel(Item item) { super("View / Edit Stock"); this.item =
 	 * item; init(); addComponents(); fillValues(); }
@@ -94,7 +95,7 @@ public class EditProductPanel extends EditFormPanel {
 		// TODO Auto-generated method stub
 
 		setLayout(null);
-		
+
 		formPanel = new JPanel();
 		formPanel.setLayout(null);
 		formPanel.setOpaque(false);
@@ -107,7 +108,7 @@ public class EditProductPanel extends EditFormPanel {
 
 		cbox1 = new FormCheckbox("Available?*", true);
 		cbox2 = new FormCheckbox("Allow alert?*", true);
-		
+
 		cbox2.setToolTipText("show alert if out of stock?");
 
 		panel = new JPanel();
@@ -177,14 +178,14 @@ public class EditProductPanel extends EditFormPanel {
 				labelsCtr++;
 
 			}
-			
+
 			if (i >= 3 && i <= 9 || i == num - 1) {
 				numfields.add(new SimpleNumericField(10, " "));
 				labels.add(new FormLabel(Tables.productFormLabel[i]));
-				
+
 				numfields.get(numFieldsCtr).setBounds(x, y1 + y, 170, 25);
 				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
-				
+
 				numFieldsCtr++;
 				labelsCtr++;
 			}
@@ -214,7 +215,7 @@ public class EditProductPanel extends EditFormPanel {
 		edit.setBounds(367, 348, 80, 30);
 
 		error.setBounds(515, 325, 250, 22);
-		
+
 		for (int i = 0; i < numfields.size(); i++)
 			formPanel.add(numfields.get(i));
 
@@ -228,33 +229,34 @@ public class EditProductPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated() && hasValidInputs()){
-				try {
+				if (isValidated() && hasValidInputs()) {
+					try {
 
-					product.setName(fields.get(0).getText());
-					product.setDescription(fields.get(1).getText());
-					product.setKilosPerSack(Double.parseDouble(numfields.get(0).getText()));
-					product.setQuantity(Double.parseDouble(numfields.get(1).getText()), Double.parseDouble(numfields.get(2).getText()));
-					product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
+						product.setName(fields.get(0).getText());
+						product.setDescription(fields.get(1).getText());
+						product.setKilosPerSack(Double.parseDouble(numfields.get(0).getText()));
 
-					double pricePerSack = Double.parseDouble(numfields.get(5).getText());
-					double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
+						product.setQuantity(Double.parseDouble(numfields.get(1).getText()), Double.parseDouble(numfields.get(2).getText()));
+						product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
 
-					// check if price is the same with old
-					if (pricePerSack != product.getCurrentPricePerSack() || pricePerKilo != product.getCurrentPricePerKilo()) {
-						product.addPrice(new Price(product, new Date(), pricePerSack, pricePerKilo));
+						double pricePerSack = Double.parseDouble(numfields.get(5).getText());
+						double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
+
+						// check if price is the same with old
+						if (pricePerSack != product.getCurrentPricePerSack() || pricePerKilo != product.getCurrentPricePerKilo()) {
+							product.addPrice(new Price(product, new Date(), pricePerSack, pricePerKilo));
+						}
+
+						product.setAvailable(cbox1.isSelected());
+						product.setCategory((Category) category.getSelectedItem());
+
+						Manager.productManager.updateProduct(product);
+
+						update();
+					} catch (Exception e1) {
+						e1.printStackTrace();
 					}
-
-					product.setAvailable(cbox1.isSelected());
-					product.setCategory((Category) category.getSelectedItem());
-
-					Manager.productManager.updateProduct(product);
-
-					update();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				}else
+				} else
 					error.setToolTip(msg);
 			}
 		});
@@ -283,14 +285,14 @@ public class EditProductPanel extends EditFormPanel {
 		formPanel.add(category);
 
 		add(error);
-		
+
 		scrollPane.setViewportView(formPanel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane.setBounds(80, 10, 650, 330);
-		
+
 		add(scrollPane);
 	}
 
@@ -349,7 +351,7 @@ public class EditProductPanel extends EditFormPanel {
 		cbox1.setSelected(product.isAvailable());
 		// cbox2.setSelected(product.alertUsingSack());
 		numfields.get(7).setText("0.00");
-		 
+
 		int total = category.getItemCount();
 		while (total > 0) {
 			total--;
@@ -367,43 +369,42 @@ public class EditProductPanel extends EditFormPanel {
 		Values.centerPanel.changeTable(Values.PRODUCTS);
 	}
 
-	private boolean hasValidInputs(){
-		
-		if(Double.parseDouble(numfields.get(0).getText()) == 0d){
+	private boolean hasValidInputs() {
+
+		if (Double.parseDouble(numfields.get(0).getText()) == 0d) {
 
 			msg = "kilos per sack should not be 0 ";
-			
-			return false;
-		}
-		
-		//on display in kilos
-		if(product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(4).getText())){
 
-			msg = "kilos on display already exceeds the total quantity in kilos ("+product.getTotalQuantityInKilo()+") ";
-			
 			return false;
 		}
-		
-		
+
+		// on display in kilos
+		if (product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(4).getText())) {
+
+			msg = "kilos on display already exceeds the total quantity in kilos (" + product.getTotalQuantityInKilo() + ") ";
+
+			return false;
+		}
+
 		return true;
 	}
 
 	private boolean isValidated() {
-		
+
 		for (int i = 0; i < fields.size(); i++)
-			if(fields.get(i).getText().equals("") && i!=1){
-			
+			if (fields.get(i).getText().equals("") && i != 1) {
+
 				msg = "All fields EXCEPT for Description is required ";
 				return false;
 			}
-		
+
 		for (int i = 0; i < numfields.size(); i++)
-			if(numfields.get(i).getText().equals("")){
-			
+			if (numfields.get(i).getText().equals("")) {
+
 				msg = "All fields EXCEPT for Description is required ";
 				return false;
 			}
-		
+
 		return true;
 	}
 
