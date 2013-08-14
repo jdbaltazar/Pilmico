@@ -13,11 +13,16 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.hibernate.HibernateException;
+
+import common.entity.product.Product;
+import common.manager.Manager;
 
 import app.AppSettings;
 import app.Credentials;
@@ -426,10 +431,37 @@ public class DatabaseTool {
 					e.printStackTrace();
 				}
 
-				// increment the kilos per quantity
-				
-				
-				
+				// update the kilos per sack
+				List<Product> products = new ArrayList<Product>();
+
+				try {
+					products = Manager.productManager.getProducts();
+
+					for (Product p : products) {
+
+						if (p.getId() == 1) {
+							p.setKilosPerSack(1);
+						} else if (p.getId() == 2) {
+							p.setKilosPerSack(24);
+							// update name from sprinter pouch ---> sprinter pack
+							p.setName("SPRINTER PACK");
+						} else if (p.getId() == 3 || p.getId() == 4 || p.getId() == 16 || p.getId() == 17 || p.getId() == 18 || p.getId() == 19
+								|| p.getId() == 20 || p.getId() == 21 || p.getId() == 22 || p.getId() == 27) {
+							p.setKilosPerSack(25);
+						} else if (p.getId() == 5 || p.getId() == 6 || p.getId() == 7 || p.getId() == 8 || p.getId() == 9 || p.getId() == 10
+								|| p.getId() == 11 || p.getId() == 12 || p.getId() == 13 || p.getId() == 14 || p.getId() == 15 || p.getId() == 23
+								|| p.getId() == 24 || p.getId() == 25 || p.getId() == 28) {
+							p.setKilosPerSack(50);
+						} else if (p.getId() == 26) {
+							p.setKilosPerSack(10);
+						}
+
+						Manager.productManager.updateProduct(p);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
 				HibernateUtil.startSession();
 			}
