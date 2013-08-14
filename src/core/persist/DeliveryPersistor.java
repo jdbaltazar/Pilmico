@@ -13,7 +13,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import common.entity.delivery.Delivery;
-import common.entity.delivery.Delivery;
 import common.manager.DeliveryManager;
 
 public class DeliveryPersistor extends Persistor implements DeliveryManager {

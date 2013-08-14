@@ -6,7 +6,6 @@ import java.util.List;
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
-import common.entity.pullout.PullOut;
 
 public interface DepositManager {
 

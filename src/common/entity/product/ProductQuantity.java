@@ -1,7 +1,6 @@
 package common.entity.product;
 
 import common.entity.product.exception.NegativeValueException;
-import common.entity.product.exception.NotEnoughQuantityException;
 
 public class ProductQuantity {
 

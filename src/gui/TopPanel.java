@@ -2,56 +2,38 @@ package gui;
 
 import gui.forms.util.FormField;
 import gui.forms.util.ViewFormLabel;
-import gui.panels.TablePanel;
 import gui.popup.DatabaseToolPanel;
-import gui.popup.EditStoreInfoPopup;
-import gui.popup.UtilityPopup;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
 import java.awt.RenderingHints;
-import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
-import net.java.balloontip.styles.TexturedBalloonStyle;
-import net.java.balloontip.utils.TimingUtils;
-import net.java.balloontip.utils.ToolTipUtils;
 
-import common.entity.product.Category;
 import common.manager.Manager;
 
 import util.SBButton;
-import util.SimpleTipPositioner;
 import util.Values;
 import util.soy.SoyPanel;
 
 public class TopPanel extends SoyPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7533379617683653266L;
 	private BufferedImage image, image1;
 	private ImageIcon icon;
 	private JButton close, minimize, close2;
@@ -83,7 +65,7 @@ public class TopPanel extends SoyPanel {
 		setLayout(null);
 
 		icon = new ImageIcon("images/search.png");
-		
+
 		trialLabel = new ViewFormLabel("Trial period lasts until 19 Aug 2013 only.");
 		trialLabel.setForeground(Color.decode("#E62E00"));
 
@@ -202,7 +184,7 @@ public class TopPanel extends SoyPanel {
 
 		cashOUTLabel.setBounds(540, 80, 90, 15);// 72
 		cashOUT.setBounds(635, 79, 160, 16);
-		
+
 		trialLabel.setBounds(490, 82, 300, 15);
 
 	}
@@ -247,13 +229,13 @@ public class TopPanel extends SoyPanel {
 		add(close);
 		add(minimize);
 
-//		add(cashINLabel);
-//		add(cashIN);
-		
+		// add(cashINLabel);
+		// add(cashIN);
+
 		add(trialLabel);
 
-//		add(cashOUTLabel);
-//		add(cashOUT);
+		// add(cashOUTLabel);
+		// add(cashOUT);
 
 	}
 
@@ -290,8 +272,8 @@ public class TopPanel extends SoyPanel {
 		return balloonTip;
 	}
 
-	public void closeBalloonPanel(){
-		if(balloonTip!=null)
+	public void closeBalloonPanel() {
+		if (balloonTip != null)
 			balloonTip.setVisible(false);
 	}
 }

@@ -552,7 +552,6 @@ public class InventorySheetForm extends SimplePanel {
 
 		sectionLabel.get(0).setText("INVENTORY");
 		sectionLabel.get(0).setBounds(startX, startY + dateLabel.getHeight() + 30, 150, 20);
-		
 
 		productLabel.setBounds(startX, sectionLabel.get(0).getY() + sectionLabel.get(0).getHeight() + LABEL_GAP, PRODUCT_LABEL_WIDTH, 30);
 
@@ -843,9 +842,9 @@ public class InventorySheetForm extends SimplePanel {
 		for (int i = 0, x = 0; i < 3; i++, x += summary1Label.getWidth())
 			summaryValues.get(i).setBounds(summary1Label.getX() + x, summary1Label.getY() + summary1Label.getHeight(), 176, 30);
 
-//		 isPanel.add(dateLabel);
-//		 isPanel.add(dateDropdown);
-//		 isPanel.add(dateStatus);
+		// isPanel.add(dateLabel);
+		// isPanel.add(dateDropdown);
+		// isPanel.add(dateStatus);
 
 		isPanel.add(productLabel);
 
@@ -995,14 +994,8 @@ public class InventorySheetForm extends SimplePanel {
 					if (JOptionPane.showConfirmDialog(
 							Values.mainFrame,
 							"PENDING transactions before "
-									+ DateFormatter
-											.getInstance()
-											.getFormat(Utility.DMYFormat)
-											.format(validDates.get(dateDropdown
-													.getSelectedIndex()))
-									+ " will be INVALIDATED. \nProceed?",
-							"Warning", JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+									+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(validDates.get(dateDropdown.getSelectedIndex()))
+									+ " will be INVALIDATED. \nProceed?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 						dateConfirmed = true;
 					} else {
 						dateConfirmed = false;
@@ -1019,86 +1012,54 @@ public class InventorySheetForm extends SimplePanel {
 
 					if (!uP.isClosed()) {
 
-						Date d = (Date) validDates.get(dateDropdown
-								.getSelectedIndex());
-						inventorySheet.getInventorySheetData().setDate(
-								DateTool.getDateWithoutTime(d));
-						inventorySheet.getInventorySheetData().setPreviousAcoh(
-								Double.parseDouble(computationLabel.get(0)
-										.getText()));
-						inventorySheet.getInventorySheetData()
-								.setOverAmount(0d);
-						inventorySheet.getInventorySheetData().setShortAmount(
-								0d);
+						Date d = (Date) validDates.get(dateDropdown.getSelectedIndex());
+						inventorySheet.getInventorySheetData().setDate(DateTool.getDateWithoutTime(d));
+						inventorySheet.getInventorySheetData().setPreviousAcoh(Double.parseDouble(computationLabel.get(0).getText()));
+						inventorySheet.getInventorySheetData().setOverAmount(0d);
+						inventorySheet.getInventorySheetData().setShortAmount(0d);
 
-						double coh = Double.parseDouble(summaryValues.get(0)
-								.getText());
-						double acc = Double.parseDouble(summaryValues.get(1)
-								.getText());
+						double coh = Double.parseDouble(summaryValues.get(0).getText());
+						double acc = Double.parseDouble(summaryValues.get(1).getText());
 						if (coh > acc) {
-							inventorySheet.getInventorySheetData()
-									.setShortAmount(coh - acc);
+							inventorySheet.getInventorySheetData().setShortAmount(coh - acc);
 						} else if (coh < acc) {
-							inventorySheet.getInventorySheetData()
-									.setOverAmount(acc - coh);
+							inventorySheet.getInventorySheetData().setOverAmount(acc - coh);
 						}
 
-						inventorySheet.getInventorySheetData().setIssuedBy(
-								Manager.loggedInAccount);
+						inventorySheet.getInventorySheetData().setIssuedBy(Manager.loggedInAccount);
 						inventorySheet.getInventorySheetData().setRemarks("");
 
 						// breakdown
-						Breakdown breakdown = new Breakdown(cashBreakdown
-								.get(6).getCashBreakdownRowQuantity(),
-								cashBreakdown.get(7)
-										.getCashBreakdownRowQuantity(),
-								inventorySheet.getInventorySheetData());
+						Breakdown breakdown = new Breakdown(cashBreakdown.get(6).getCashBreakdownRowQuantity(), cashBreakdown.get(7)
+								.getCashBreakdownRowQuantity(), inventorySheet.getInventorySheetData());
 
 						for (int i = 0; i < 6; i++) {
 
 							try {
 
-								if (cashBreakdown.get(i)
-										.getCashBreakdownRowQuantity() != 0) {
-									Denomination den = Manager.inventorySheetDataManager
-											.searchDenomination(cashBreakdown
-													.get(i)
-													.getCashBreakdownRowDenomination(
-															i));
+								if (cashBreakdown.get(i).getCashBreakdownRowQuantity() != 0) {
+									Denomination den = Manager.inventorySheetDataManager.searchDenomination(cashBreakdown.get(i)
+											.getCashBreakdownRowDenomination(i));
 									if (den == null)
-										den = new Denomination(
-												cashBreakdown
-														.get(i)
-														.getCashBreakdownRowDenomination(
-																i));
-									breakdown
-											.addBreakdownLine(new BreakdownLine(
-													breakdown,
-													den,
-													cashBreakdown
-															.get(i)
-															.getCashBreakdownRowQuantity()));
+										den = new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
+									breakdown.addBreakdownLine(new BreakdownLine(breakdown, den, cashBreakdown.get(i).getCashBreakdownRowQuantity()));
 								}
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
 						}
 
-						inventorySheet.getInventorySheetData().setBreakdown(
-								breakdown);
+						inventorySheet.getInventorySheetData().setBreakdown(breakdown);
 						inventorySheet.getInventorySheetData().setRemarks(uP.getInput());
-						
+
 						inventorySheet.finalize();
 
 						try {
 
 							// save is
-							Manager.inventorySheetDataManager
-									.addInventorySheetData(inventorySheet
-											.getInventorySheetData());
+							Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
 
-							Values.centerPanel
-									.changeTable(Values.INVENTORY_SHEET);
+							Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 							new SuccessPopup("Add").setVisible(true);
 
 							Rectangle rect = new Rectangle(0, 0, 10, 10);
@@ -1107,52 +1068,28 @@ public class InventorySheetForm extends SimplePanel {
 							Date endDate = inventorySheet.getDate();
 
 							if (previousInventorySheet != null) {
-								Date startDate = previousInventorySheet
-										.getDate();
-								invalidatePendingTransactionsBetween(
-										startDate,
-										endDate,
-										"Invalidated when Inventory Sheet for "
-												+ DateFormatter
-														.getInstance()
-														.getFormat(
-																Utility.DMYFormat)
-														.format(inventorySheet
-																.getDate())
-												+ " was saved");
+								Date startDate = previousInventorySheet.getDate();
+								invalidatePendingTransactionsBetween(startDate, endDate, "Invalidated when Inventory Sheet for "
+										+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + " was saved");
 							} else {
 								invalidatePendingTransactionsBefore(
 										endDate,
 										"Invalidated when Inventory Sheet for "
-												+ DateFormatter
-														.getInstance()
-														.getFormat(
-																Utility.DMYFormat)
-														.format(inventorySheet
-																.getDate())
-												+ " was saved");
+												+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + " was saved");
 							}
 
 							// backup database
+							// find a way to disable saving the backup in default
+							// directory but allow internal backup if not filepath is
+							// not set
 							try {
 
 								DatabaseTool.encryptedBackup(
-										SecurityTool.decryptString(Credentials
-												.getInstance().getUsername()),
-										SecurityTool.decryptString(Credentials
-												.getInstance().getPassword()),
-										Credentials.getInstance()
-												.getDatabaseName(),
-										DatabaseSettings.getInstance()
-												.getFilePath()
-												+ "/Pilmico Backup "
-												+ DateFormatter
-														.getInstance()
-														.getFormat(
-																Utility.DMYFormat)
-														.format(new Date())
-												+ "."
-												+ AppSettings.APP_FILE_TYPE,
+										SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+										SecurityTool.decryptString(Credentials.getInstance().getPassword()),
+										Credentials.getInstance().getDatabaseName(),
+										DatabaseSettings.getInstance().getFilePath() + "/Pilmico Backup "
+												+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE,
 										null);
 							} catch (FileNotFoundException e1) {
 								e1.printStackTrace();

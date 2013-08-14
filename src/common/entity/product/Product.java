@@ -253,6 +253,35 @@ public class Product {
 		return desc;
 	}
 
+	public String getSimplifiedQuantity() {
+
+		String desc = "";
+		if (getTotalQuantityInKilo() == 0d) {
+			desc = "0";
+		} else {
+			String s1 = "0";
+			String s2 = "0";
+
+			// check if has no decimal portions
+			if ((quantityInSack * 100) % 100 != 0) {
+				s1 = String.format("%.2f", quantityInSack);
+			} else {
+				s1 = (int) quantityInSack + "";
+			}
+
+			if ((quantityInKilo * 100) % 100 != 0) {
+				s2 = String.format("%.2f", quantityInKilo);
+			} else {
+				s2 = (int) quantityInKilo + "";
+			}
+
+			desc = s1 + ", " + s2;
+
+		}
+
+		return desc;
+	}
+
 	public void setQuantity(double quantityInSack, double quantityInKilo) throws Exception {
 
 		System.out.println("sysout: " + kilosPerSack);
