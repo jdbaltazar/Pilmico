@@ -213,7 +213,7 @@ public class EditProductPanel extends EditFormPanel {
 
 		edit.setBounds(367, 348, 80, 30);
 
-		error.setBounds(525, 325, 240, 22);
+		error.setBounds(515, 325, 250, 22);
 		
 		for (int i = 0; i < numfields.size(); i++)
 			formPanel.add(numfields.get(i));
@@ -348,7 +348,8 @@ public class EditProductPanel extends EditFormPanel {
 
 		cbox1.setSelected(product.isAvailable());
 		// cbox2.setSelected(product.alertUsingSack());
-
+		numfields.get(7).setText("0.00");
+		 
 		int total = category.getItemCount();
 		while (total > 0) {
 			total--;
@@ -358,19 +359,6 @@ public class EditProductPanel extends EditFormPanel {
 				break;
 			}
 		}
-		// fields.get(1).setText(item.getDescription());
-		// fields.get(2).setText(item.getBarCode());
-		// fields.get(3).setText(String.format("%.2f",
-		// item.getUnitSellingPrice()));
-		// fields.get(4).setText(String.format("%.2f",
-		// item.getUnitPurchasePrice()));
-		// fields.get(5).setText(item.getUnitsOnStock() + "");
-		// fields.get(6).setText(item.getLocation());
-		// fields.get(7).setText(item.getAlertOnQuantity() + "");
-		//
-		// cbox1.setSelected(item.isForSale());
-		// cbox2.setSelected(item.isAllowAllert());
-
 	}
 
 	private void update() {
@@ -383,10 +371,19 @@ public class EditProductPanel extends EditFormPanel {
 		
 		if(Double.parseDouble(numfields.get(0).getText()) == 0d){
 
-			msg = "kilos per sack should not be 0";
+			msg = "kilos per sack should not be 0 ";
 			
 			return false;
 		}
+		
+		//on display in kilos
+		if(product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(4).getText())){
+
+			msg = "kilos on display already exceeds the total quantity in kilos ("+product.getTotalQuantityInKilo()+") ";
+			
+			return false;
+		}
+		
 		
 		return true;
 	}
@@ -396,14 +393,14 @@ public class EditProductPanel extends EditFormPanel {
 		for (int i = 0; i < fields.size(); i++)
 			if(fields.get(i).getText().equals("") && i!=1){
 			
-				msg = "All fields EXCEPT for Description is required";
+				msg = "All fields EXCEPT for Description is required ";
 				return false;
 			}
 		
 		for (int i = 0; i < numfields.size(); i++)
 			if(numfields.get(i).getText().equals("")){
 			
-				msg = "All fields EXCEPT for Description is required";
+				msg = "All fields EXCEPT for Description is required ";
 				return false;
 			}
 		

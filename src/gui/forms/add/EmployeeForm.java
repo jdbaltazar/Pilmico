@@ -203,7 +203,7 @@ public class EmployeeForm extends SimplePanel {
 						e1.printStackTrace();
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 
 			}
 		});
@@ -231,8 +231,8 @@ public class EmployeeForm extends SimplePanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		add(scrollPane);
 		add(error);
+		add(scrollPane);
 
 	}
 
@@ -262,7 +262,7 @@ public class EmployeeForm extends SimplePanel {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
 
-		error.setText("");
+		error.setToolTip("");
 	}
 
 	private boolean isValidated() {

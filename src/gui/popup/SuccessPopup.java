@@ -13,7 +13,7 @@ import util.Values;
 public class SuccessPopup extends JDialog implements Runnable{
 	
 	private String action;
-	private int WIDTH = 278, HEIGHT = 100;
+	private int WIDTH = 290, HEIGHT = 100;//278w
 	private JPanel panel;
 	private JLabel label;
 	private Thread thread;

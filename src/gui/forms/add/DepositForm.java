@@ -258,7 +258,7 @@ public class DepositForm extends SimplePanel {
 						}
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 			}
 		});
 
@@ -301,7 +301,7 @@ public class DepositForm extends SimplePanel {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
 
-		error.setText("");
+		error.setToolTip("");
 
 		refreshDropdowns(true);
 	}
@@ -314,12 +314,12 @@ public class DepositForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
-				error.setText("");
+				error.setToolTip("");
 			}
 
 		} catch (Exception e) {

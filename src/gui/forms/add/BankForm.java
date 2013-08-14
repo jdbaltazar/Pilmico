@@ -208,7 +208,7 @@ public class BankForm extends SimplePanel {
 						e1.printStackTrace();
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 
 			}
 		});
@@ -253,7 +253,7 @@ public class BankForm extends SimplePanel {
 		bankAccountPanel.removeAll();
 		accountRowPanel.clear();
 
-		error.setText("");
+		error.setToolTip("");
 	}
 
 }

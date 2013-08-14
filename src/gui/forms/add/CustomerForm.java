@@ -10,9 +10,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import common.entity.profile.Person;
@@ -25,7 +28,7 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
-public class ProfileForm extends SimplePanel {
+public class CustomerForm extends SimplePanel {
 	/**
 	 * 
 	 */
@@ -39,10 +42,13 @@ public class ProfileForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg;
+	
+	private JPanel panel;
+	private JScrollPane scrollPane;
 
 	private final int num = Tables.profileFormLabel.length;
 
-	public ProfileForm() {
+	public CustomerForm() {
 		super("Add Customer");
 		addComponents();
 
@@ -53,19 +59,25 @@ public class ProfileForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
+		
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setOpaque(false);
+
+		scrollPane = new JScrollPane();
 
 		error = new ErrorLabel();
 
 		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 43; i < num; i++, y += 54) {
+		for (int i = 0, y = 0, x1 = 32; i < num; i++, y += 54) {
 
 				fields.add(new FormField(Tables.profileFormLabel[i], 100, Color.white, Color.gray));
-				fields.get(i).setBounds(x1, 55 + y, 200, 25);
-				add(fields.get(i));
+				fields.get(i).setBounds(x1, 12 + y, 200, 25);
+				panel.add(fields.get(i));
 		}
 
-		clear.setBounds(167, 330, 80, 30);
-		save.setBounds(58, 330, 80, 30);
+		clear.setBounds(149, 287, 80, 30);
+		save.setBounds(39, 287, 80, 30);
 
 		error.setBounds(68, 300, 170, 22);
 
@@ -99,14 +111,23 @@ public class ProfileForm extends SimplePanel {
 					e1.printStackTrace();
 				}
 				}else
-					error.setText(msg);
+					error.setToolTip(msg);
 			}
 		});
 
-		add(clear);
-		add(save);
+		panel.add(clear);
+		panel.add(save);
+
+		
+		scrollPane.setViewportView(panel);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+		scrollPane.setBounds(10, 42, 270, 340);
 
 		add(error);
+		add(scrollPane);
 
 	}
 
@@ -114,7 +135,7 @@ public class ProfileForm extends SimplePanel {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
 
-		error.setText("");
+		error.setToolTip("");
 	}
 
 	private boolean isValidated() {

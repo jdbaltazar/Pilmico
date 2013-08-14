@@ -13,7 +13,7 @@ import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.InventorySheetForm;
 import gui.forms.add.ProductForm;
-import gui.forms.add.ProfileForm;
+import gui.forms.add.CustomerForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
@@ -81,7 +81,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private CategoryList categoryList;
 	private SalesForm sales;
 	private CashAdvanceForm cashAdvanceForm;
-	private ProfileForm profileForm;
+	private CustomerForm profileForm;
 	private EmployeeForm employeeForm;
 	private ExpensesForm expensesForm;
 	private SalaryReleaseForm salary;
@@ -137,7 +137,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		delivery = new DeliveryForm();
 		supplierForm = new SupplierForm();
 
-		profileForm = new ProfileForm();
+		profileForm = new CustomerForm();
 		employeeForm = new EmployeeForm();
 
 		accountTypeList = new AccountTypeList();

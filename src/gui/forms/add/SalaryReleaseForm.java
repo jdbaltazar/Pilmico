@@ -250,6 +250,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 		scrollPane.setBounds(0, 0, 708, 360);
 
+		add(error);
 		add(scrollPane);
 	}
 
@@ -344,14 +345,12 @@ public class SalaryReleaseForm extends SimplePanel {
 						}
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 
 			}
 		});
 
 		panel.add(save);
-		add(error);
-
 	}
 
 	private void fillEntries() {
@@ -386,12 +385,12 @@ public class SalaryReleaseForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
-				error.setText("");
+				error.setToolTip("");
 			}
 
 		} catch (Exception e) {
@@ -444,7 +443,7 @@ public class SalaryReleaseForm extends SimplePanel {
 		feesRowPanel.clear();
 		refreshDate();
 
-		error.setText("");
+		error.setToolTip("");
 
 		refreshEmployee();
 	}

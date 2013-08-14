@@ -100,7 +100,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		login.addMouseListener(this);
 		login.setBounds(680, 280, 70, 30);
 
-		error.setBounds(660, 420, 200, 25);
+		error.setBounds(585, 420, 200, 22);
 
 		add(usernameLabel);
 		add(passwordLabel);
@@ -174,11 +174,11 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 			if (!errorComment.equals("true")) {
 				if (errorComment.equals("accNF")) {
-					error.setText("Account Not Found");
+					error.setToolTip("Account Not Found ");
 				} else if (errorComment.equals("passInc")) {
-					error.setText("Password Incorrect");
+					error.setToolTip("Password Incorrect ");
 				} else {
-					error.setText("You are not authorized!");
+					error.setToolTip("You are not authorized! ");
 				}
 
 			} else {

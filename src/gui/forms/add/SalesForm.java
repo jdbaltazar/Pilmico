@@ -83,7 +83,7 @@ public class SalesForm extends SimplePanel {
 	private JTextField quantity;
 	private JButton deleteRow, addRow;
 	private JLabel issuedByLabel;
-	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
+	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, kgpersack, priceKG, priceSACK, productLabel, deleteLabel;
 	private SpinnerDate date, issueDate;
 	private ImageIcon icon;
 	private SoyButton save;
@@ -162,6 +162,7 @@ public class SalesForm extends SimplePanel {
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
+		kgpersack = new TableHeaderLabel("kg / sk");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
@@ -317,6 +318,7 @@ public class SalesForm extends SimplePanel {
 		panel.add(productFwd);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
+		panel.add(kgpersack);
 		panel.add(priceKG);
 		panel.add(priceSACK);
 		panel.add(productLabel);
@@ -415,14 +417,24 @@ public class SalesForm extends SimplePanel {
 
 		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
 
+//		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
+//		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
+//		kgpersack.setBounds(184, LABEL_Y, 60, LABEL_HEIGHT);
+//		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
+//		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
+//		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
+//		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
+		
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
-		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
-		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
-		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
+		kgpersack.setBounds(184, LABEL_Y, 50, LABEL_HEIGHT);
+		priceSACK.setBounds(234, LABEL_Y, 85, LABEL_HEIGHT);
+		priceKG.setBounds(319, LABEL_Y, 77, LABEL_HEIGHT);
+		productLabel.setBounds(396, LABEL_Y, 167, LABEL_HEIGHT);
+		deleteLabel.setBounds(563, LABEL_Y, 32, LABEL_HEIGHT);
 
-		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
+
+		productFwd.setBounds(510, LABEL_Y + 5, 16, 16);
 		productFwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -760,6 +772,8 @@ public class SalesForm extends SimplePanel {
 		customerCombo.setSelectedIndex(-1);
 
 		customerCombo.setBounds(85, 58, 220, 20);
+		
+		customerCombo.setVisible(customerLabel.isVisible());
 
 		panel.add(customerCombo);
 

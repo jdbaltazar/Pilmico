@@ -65,7 +65,7 @@ public class PulloutForm extends SimplePanel {
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private JButton addRow;
-	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
+	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, kgpersack, priceKG, priceSACK, productLabel, deleteLabel;
 	private SpinnerDate date;
 	private ImageIcon icon;
 	private SoyButton save;
@@ -145,6 +145,7 @@ public class PulloutForm extends SimplePanel {
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
+		kgpersack = new TableHeaderLabel("kg / sk");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
@@ -173,12 +174,14 @@ public class PulloutForm extends SimplePanel {
 
 		quantitySACKlabel.setBounds(50, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(127, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(204, LABEL_Y, 85, LABEL_HEIGHT);
-		priceKG.setBounds(289, LABEL_Y, 77, LABEL_HEIGHT);
-		productLabel.setBounds(366, LABEL_Y, 207, LABEL_HEIGHT);
-		deleteLabel.setBounds(573, LABEL_Y, 42, LABEL_HEIGHT);
+		kgpersack.setBounds(204, LABEL_Y, 50, LABEL_HEIGHT);
+		priceSACK.setBounds(254, LABEL_Y, 85, LABEL_HEIGHT);
+		priceKG.setBounds(339, LABEL_Y, 77, LABEL_HEIGHT);
+		productLabel.setBounds(416, LABEL_Y, 167, LABEL_HEIGHT);
+		deleteLabel.setBounds(583, LABEL_Y, 32, LABEL_HEIGHT);
+	
 		// 136
-		fwdProduct.setBounds(502, LABEL_Y + 5, 16, 16);
+		fwdProduct.setBounds(532, LABEL_Y + 5, 16, 16);
 
 		productsPane.setBounds(51, ITEMS_PANE_Y, ROW_WIDTH, 140);
 
@@ -211,6 +214,7 @@ public class PulloutForm extends SimplePanel {
 		panel.add(fwdProduct);
 		panel.add(quantitySACKlabel);
 		panel.add(quantityKGLabel);
+		panel.add(kgpersack);
 		panel.add(priceKG);
 		panel.add(priceSACK);
 		panel.add(productLabel);
@@ -225,6 +229,7 @@ public class PulloutForm extends SimplePanel {
 
 		scrollPane.setBounds(0, 5, 670, 330);
 
+		add(error);
 		add(scrollPane);
 	}
 
@@ -269,7 +274,7 @@ public class PulloutForm extends SimplePanel {
 
 		save.setBounds(290, 270, 80, 30);
 
-		error.setBounds(325, 297, 300, 22);
+		error.setBounds(375, 256, 250, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -330,7 +335,7 @@ public class PulloutForm extends SimplePanel {
 							}
 						}
 					} else
-						error.setText(msg);
+						error.setToolTip(msg);
 
 				} else {
 
@@ -343,12 +348,10 @@ public class PulloutForm extends SimplePanel {
 		});
 
 		panel.add(save);
-		add(error);
-
 	}
 
 	public void setErrorText(String msg) {
-		error.setText(msg);
+		error.setToolTip(msg);
 	}
 
 	public boolean hasMultipleProduct() {
@@ -409,12 +412,12 @@ public class PulloutForm extends SimplePanel {
 
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), "Valid date", true);
-				error.setText("");
+				error.setToolTip("");
 			}
 
 		} catch (Exception e) {
@@ -457,12 +460,13 @@ public class PulloutForm extends SimplePanel {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			if (productsPanel.getComponentCount() == 0) {
-				msg = "Put at least one product ";
-				return false;
-			}
 		}
+		
+		if (productsPanel.getComponentCount() == 0) {
+			msg = "Put at least one product ";
+			return false;
+		}
+		
 		return true;
 
 	}
@@ -472,7 +476,7 @@ public class PulloutForm extends SimplePanel {
 		rowPanel.clear();
 		refreshDate();
 
-		error.setText("");
+		error.setToolTip("");
 
 	}
 

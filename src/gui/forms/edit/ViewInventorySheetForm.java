@@ -2,6 +2,7 @@ package gui.forms.edit;
 
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.PDControlScrollPane;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
@@ -154,6 +155,8 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		navigationPanel.setOpaque(false);
 
 		// navigationPanel.setBackground(Color.red);
+		
+		remarks = new RemarksLabel("");
 
 		isEditPanel = new JPanel();
 		isEditPanel.setLayout(null);
@@ -934,6 +937,9 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		isPane.getViewport().setOpaque(false);
 		// isPane.setBorder(BorderFactory.createEmptyBorder());
 		isPane.setBorder(new ViewFormBorder(Values.ACCOUNTED_COLOR));
+		
+		remarks.setBounds(isPane.getWidth() / 2, isPane.getY() + isPane.getHeight() + 2, isPane.getWidth() / 2, 20);
+		remarks.setForeground(Color.GREEN.darker());
 
 		/*
 		 * save.addMouseListener(new MouseAdapter() { public void
@@ -978,6 +984,7 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 		add(navigationPanel);
 		add(isPane);
+		add(remarks);
 
 	}
 
@@ -1080,6 +1087,9 @@ public class ViewInventorySheetForm extends EditFormPanel {
 		summaryValues.get(1).setText(String.format("%.2f", acc));
 		summaryValues.get(2).setText(String.format("%.2f", InventorySheet.overOrShortAmount(acoh, acc)));
 		summary3Label.setText(InventorySheet.overOrShortCaps(acoh, acc));
+		
+		if (inventorySheet.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + inventorySheet.getRemarks());
 
 	}
 

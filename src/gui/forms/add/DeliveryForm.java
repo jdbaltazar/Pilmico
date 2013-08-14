@@ -71,7 +71,7 @@ public class DeliveryForm extends SimplePanel {
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private JButton addRow;
-	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
+	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, kgpersack, priceKG, priceSACK, productLabel, deleteLabel;
 	private SpinnerDate date;
 	private ImageIcon icon;
 	private SoyButton save;
@@ -181,6 +181,7 @@ public class DeliveryForm extends SimplePanel {
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
+		kgpersack = new TableHeaderLabel("kg / sk");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
 		deleteLabel = new TableHeaderLabel(icon);
@@ -294,6 +295,7 @@ public class DeliveryForm extends SimplePanel {
 		panel.add(productFwd);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
+		panel.add(kgpersack);
 		panel.add(priceKG);
 		panel.add(priceSACK);
 		panel.add(productLabel);
@@ -310,6 +312,7 @@ public class DeliveryForm extends SimplePanel {
 
 		scrollPane.setBounds(20, 42, 630, 310);
 
+		add(error);
 		add(scrollPane);
 	}
 
@@ -329,12 +332,13 @@ public class DeliveryForm extends SimplePanel {
 
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
-		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
-		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
-		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
-		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
-
-		productFwd.setBounds(482, LABEL_Y + 5, 16, 16);
+		kgpersack.setBounds(184, LABEL_Y, 50, LABEL_HEIGHT);
+		priceSACK.setBounds(234, LABEL_Y, 85, LABEL_HEIGHT);
+		priceKG.setBounds(319, LABEL_Y, 77, LABEL_HEIGHT);
+		productLabel.setBounds(396, LABEL_Y, 167, LABEL_HEIGHT);
+		deleteLabel.setBounds(563, LABEL_Y, 32, LABEL_HEIGHT);
+		
+		productFwd.setBounds(512, LABEL_Y + 5, 16, 16);
 
 		if (shownFields) {
 			productsPane.setBounds(31, ITEMS_PANE_Y, ROW_WIDTH, 140);
@@ -391,7 +395,7 @@ public class DeliveryForm extends SimplePanel {
 
 		save.setBounds(275, 275, 80, 30);
 
-		error.setBounds(365, 300, 260, 22);
+		error.setBounds(375, 300, 250, 22);
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -437,18 +441,16 @@ public class DeliveryForm extends SimplePanel {
 						}
 					}
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 
 			}
 		});
 
 		panel.add(save);
-		add(error);
-
 	}
 
 	public void setErrorText(String msg) {
-		error.setText(msg);
+		error.setToolTip(msg);
 	}
 
 	public boolean hasMultipleProduct() {
@@ -508,12 +510,12 @@ public class DeliveryForm extends SimplePanel {
 			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
 				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
-				error.setText(str);
+				error.setToolTip(str);
 			}
 
 			else {
 				dateStatus.setIconToolTip(new ImageIcon("images/valid_date.png"), Values.VALID_DATE, true);
-				error.setText("");
+				error.setToolTip("");
 			}
 
 		} catch (Exception e) {
@@ -558,7 +560,7 @@ public class DeliveryForm extends SimplePanel {
 		delivery_no.setText("");
 		terms.setText("");
 
-		error.setText("");
+		error.setToolTip("");
 
 		supplierCombo.setSelectedIndex(-1);
 	}
@@ -593,6 +595,8 @@ public class DeliveryForm extends SimplePanel {
 		supplierCombo.setOpaque(false);
 
 		supplierCombo.setSelectedIndex(-1);
+		
+		supplierCombo.setVisible(supplierLabel.isVisible());
 
 		supplierCombo.setBounds(85, 56, 220, 20);
 

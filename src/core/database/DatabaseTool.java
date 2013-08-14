@@ -3,6 +3,7 @@ package core.database;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 
 import java.io.File;
@@ -111,7 +112,7 @@ public class DatabaseTool {
 
 								if (DatabaseTool.uP != null)
 									DatabaseTool.uP.dispose();
-								new SuccessPopup("DB Backup").setVisible(true);
+								new SuccessPopup("Database Backup").setVisible(true);
 								Values.topPanel.closeBalloonPanel();
 								isRunning = false;
 
@@ -129,8 +130,13 @@ public class DatabaseTool {
 			});
 
 			thread.start();
+			
 			if (uP != null)
 				uP.showProgressBar();
+			else{
+				DatabaseTool.uP = new UtilityPopup(new Point(), Values.AUTO_BACKUP);
+				DatabaseTool.uP.setVisible(true);
+			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

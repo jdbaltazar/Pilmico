@@ -4,6 +4,7 @@ import gui.forms.util.EditFormField;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
 import gui.forms.util.HistoryTable;
+import gui.forms.util.SimpleNumericField;
 import gui.popup.SuccessPopup;
 
 import java.awt.Color;
@@ -53,11 +54,13 @@ public class EditEmployeeForm extends EditFormPanel {
 	private FormDropdown employmentStatus, designation;
 	private DefaultComboBoxModel model;
 	private JSpinner startDate, endDate;
+	
+	private SimpleNumericField salary;
 
 	private int initY = 35, y2 = 20;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
+	private String msg="";
 
 	private final int num = Tables.employeeFormLabel.length;
 	private JPanel panel;
@@ -114,18 +117,20 @@ public class EditEmployeeForm extends EditFormPanel {
 			}
 
 			startDate.setValue(employee.getStartingDate() != null ? employee.getStartingDate() : new Date());
-			fields.get(5).setText(String.format("%.2f", employee.getSalary()));
-			fields.get(6).setText(employee.getRemarks());
+			salary.setText(String.format("%.2f", employee.getSalary()));
+			fields.get(5).setText(employee.getRemarks());
 
 			if (Manager.loggedInAccount.getEmployee() != null && employee.getId() == Manager.loggedInAccount.getEmployee().getId()) {
 				fields.get(0).setEditable(Manager.isAuthorized());
 				fields.get(1).setEditable(Manager.isAuthorized());
-				fields.get(5).setEditable(Manager.isAuthorized());
+				salary.setEditable(Manager.isAuthorized());
 				designation.setEnabled(Manager.isAuthorized());
 				employmentStatus.setEnabled(Manager.isAuthorized());
 				labels.get(9).setVisible(Manager.isAuthorized());
-				fields.get(6).setVisible(Manager.isAuthorized());
+				fields.get(5).setVisible(Manager.isAuthorized());
 			}
+			
+			salary.setForeground(Color.GRAY);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -139,6 +144,8 @@ public class EditEmployeeForm extends EditFormPanel {
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
+		
+		salary = new SimpleNumericField(10, " ");
 
 		employmentHistory = new SBButton("employmenthistory.png", "employmenthistory2.png", "Employment History");
 
@@ -193,7 +200,7 @@ public class EditEmployeeForm extends EditFormPanel {
 				y = 0;
 			}
 
-			if (i != 5 && i != 6 && i != 7 && i != 10) {
+			if (i != 5 && i != 6 && i != 7 && i != 8 && i != 10) {
 				fields.add(new EditFormField(100));
 				labels.add(new FormLabel(Tables.employeeFormLabel[i]));
 
@@ -229,6 +236,14 @@ public class EditEmployeeForm extends EditFormPanel {
 
 				labelsCtr++;
 			}
+			
+			if (i == 8) {
+				salary.setBounds(x1, initY + y, 170, 25);
+				labels.add(new FormLabel(Tables.employeeFormLabel[i]));
+				labels.get(labelsCtr).setBounds(x1, y2 + y, 170, 15);
+
+				labelsCtr++;
+			}
 
 			if (i == 10) {
 				endDate.setBounds(x1, initY + y, 170, 25);
@@ -251,32 +266,38 @@ public class EditEmployeeForm extends EditFormPanel {
 
 		edit.setBounds(370, 347, 80, 30);
 
-		error.setBounds(160, 290, 230, 25);
+		error.setBounds(560, 320, 190, 22);
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				employee.setLastName(fields.get(0).getText());
-				employee.setFirstName(fields.get(1).getText());
-				employee.setMiddleName(fields.get(2).getText());
-				employee.setAddress(fields.get(3).getText());
-				employee.setContactNo(fields.get(4).getText());
-				employee.setDesignation((Designation) designation.getSelectedItem());
-				employee.setStatus((EmploymentStatus) employmentStatus.getSelectedItem());
-				employee.setStartingDate(((SpinnerDateModel) startDate.getModel()).getDate());
-				employee.setSalary(Double.parseDouble(fields.get(5).getText()));
-				employee.setRemarks(fields.get(6).getText());
+				if (isValidated()) {
+					employee.setLastName(fields.get(0).getText());
+					employee.setFirstName(fields.get(1).getText());
+					employee.setMiddleName(fields.get(2).getText());
+					employee.setAddress(fields.get(3).getText());
+					employee.setContactNo(fields.get(4).getText());
+					employee.setDesignation((Designation) designation
+							.getSelectedItem());
+					employee.setStatus((EmploymentStatus) employmentStatus
+							.getSelectedItem());
+					employee.setStartingDate(((SpinnerDateModel) startDate
+							.getModel()).getDate());
+					employee.setSalary(Double.parseDouble(salary.getText()));
+					employee.setRemarks(fields.get(5).getText());
 
-				try {
-					Manager.employeePersonManager.updateEmployee(employee);
+					try {
+						Manager.employeePersonManager.updateEmployee(employee);
 
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Edit").setVisible(true);
-					Values.centerPanel.changeTable(Values.EMPLOYEES);
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Edit").setVisible(true);
+						Values.centerPanel.changeTable(Values.EMPLOYEES);
 
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
+					error.setToolTip(msg);
 			}
 		});
 
@@ -286,6 +307,7 @@ public class EditEmployeeForm extends EditFormPanel {
 		panel.add(employmentStatus);
 		panel.add(endDate);
 		panel.add(startDate);
+		panel.add(salary);
 
 		panel.add(employmentHistory);
 
@@ -294,9 +316,9 @@ public class EditEmployeeForm extends EditFormPanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
+		add(error);
 		add(scrollPane);
 		add(edit);
-		add(error);
 
 	}
 
@@ -331,10 +353,27 @@ public class EditEmployeeForm extends EditFormPanel {
 
 	private boolean isValidated() {
 
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
+		if (fields.get(0).getText().equals("")) {
 
-		return false;
+			msg = "Last Name is required";
+
+			return false;
+		}
+
+		if (fields.get(1).getText().equals("")) {
+
+			msg = "First Name is required";
+
+			return false;
+		}
+
+		if (salary.getText().equals("")) {
+			msg = "Salary is required";
+
+			return false;
+		}
+
+		return true;
 	}
 
 	public void refreshDropdown() {

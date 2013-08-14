@@ -42,7 +42,7 @@ public class RowPanel extends JPanel {
 	private JTextField productsComboField, expensesComboField, feesComboField;
 	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount, onDisplaySack, onDisplayKG;
 
-	private ViewFormField priceSack, priceKG, productOnDisplay;
+	private ViewFormField kgpersack, priceSack, priceKG, productOnDisplay;
 	private JButton deleteRow, addRow;
 	private JPanel row;
 	private FormField bankAccount;
@@ -204,8 +204,10 @@ public class RowPanel extends JPanel {
 		quantitySack = new JNumericField(10, JNumericField.DECIMAL, true);
 		quantityKG = new JNumericField(10, JNumericField.DECIMAL, true);
 
+		kgpersack = new ViewFormField("");
 		priceKG = new ViewFormField("");
 		priceSack = new ViewFormField("");
+		
 
 		feeAmount = new JNumericField(10, JNumericField.DECIMAL, true);
 		feeAmount.setText("0");
@@ -227,8 +229,11 @@ public class RowPanel extends JPanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
+					
+					kgpersack.setToolTip(kgpersack, p.getKilosPerSack() + "");
 					priceSack.setToolTip(priceSack, String.format("%.2f", p.getCurrentPricePerSack()) + "");
 					priceKG.setToolTip(priceKG, String.format("%.2f", p.getCurrentPricePerKilo()) + "");
+					
 					quantitySack.setToolTipText(p.getQuantityDescription());
 					quantityKG.setToolTipText(p.getQuantityDescription());
 
@@ -438,19 +443,27 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setBounds(10, 7, 52, 20);
 		quantityKG.setBounds(87, 7, 52, 20);
+		
+//		kgpersack.setBounds(167, 7, 57, 20);
+//
+//		priceSack.setBounds(167, 7, 57, 20);
+//		priceKG.setBounds(249, 7, 57, 20);
+		
+		kgpersack.setBounds(152, 7, 50, 20);
 
-		priceSack.setBounds(167, 7, 57, 20);
-		priceKG.setBounds(249, 7, 57, 20);
+		priceSack.setBounds(202, 7, 85, 20);
+		priceKG.setBounds(287, 7, 77, 20);
 
 		if (mode == Values.ADD)
-			productsCombo.setBounds(323, 7, 190, 20);
+			productsCombo.setBounds(373, 7, 150, 20);
 		else
 			productsCombo.setBounds(87, 7, 235, 20);
 
-		deleteRow.setBounds(533, 9, 16, 16);
+		deleteRow.setBounds(537, 9, 16, 16);
 
 		row.add(quantitySack);
 		row.add(quantityKG);
+		row.add(kgpersack);
 		row.add(priceSack);
 		row.add(priceKG);
 		row.add(productsCombo);
