@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import common.entity.accountreceivable.AccountReceivable;
 import common.entity.product.Price;
 
 @Entity
@@ -44,6 +45,9 @@ public class Person {
 
 	@OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Employee> employments = new HashSet<Employee>();
+
+	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<AccountReceivable> accountReceivables = new HashSet<AccountReceivable>();
 
 	public Person() {
 		super();
@@ -121,10 +125,10 @@ public class Person {
 	}
 
 	public String getContactNo() {
-		
-		if(contactNo == null)
+
+		if (contactNo == null)
 			return "";
-		
+
 		return contactNo;
 	}
 
@@ -187,6 +191,22 @@ public class Person {
 			}
 		}
 		return mostRecent;
+	}
+
+	public Set<AccountReceivable> getAccountReceivables() {
+		return accountReceivables;
+	}
+
+	public void setAccountReceivables(Set<AccountReceivable> accountReceivables) {
+		this.accountReceivables = accountReceivables;
+	}
+
+	public double getTotalAccountReceivables() {
+		double total = 0d;
+		for (AccountReceivable ar : accountReceivables) {
+			total += ar.getAccountReceivablesAmount();
+		}
+		return total;
 	}
 
 	public String toString() {

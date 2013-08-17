@@ -483,15 +483,7 @@ public class DatabaseTool {
 
 		try {
 
-			// (1) Add kilos per sack column to the ff tables:
-			// - deliveries
-			// - pullouts
-			// - sales
-			// - ar
-			// - inventory sheet
-			// (2) Set kilos per sack of all details to the current kilos per sack
-			// of products
-
+			// drop the display columns in product
 			if (DatabaseSettings.getInstance().getDbVersion() == 1.1f) {
 
 				HibernateUtil.endSession();
@@ -534,6 +526,16 @@ public class DatabaseTool {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
+
+		// For the final version!
+		// (1) Add kilos per sack column to the ff tables:
+		// - deliveries
+		// - pullouts
+		// - sales
+		// - ar
+		// - inventory sheet
+		// (2) Set kilos per sack of all details to the current kilos per sack
+		// of products
 
 	}
 
