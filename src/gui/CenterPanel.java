@@ -689,12 +689,12 @@ public class CenterPanel extends SoyPanel {
 				entries[i][0] = p.getId() + "";
 				entries[i][1] = p.getName();
 				entries[i][2] = p.getKilosPerSackDescription();
-				entries[i][3] = p.getKilosPerSackDescription();
-				entries[i][3] = p.getSimplifiedQuantity();
-				entries[i][4] = String.format("%.2f", p.getCurrentPricePerSack());
-				entries[i][5] = String.format("%.2f", p.getCurrentPricePerKilo());
-				entries[i][6] = p.getCategory().getName();
-				entries[i][7] = p.isAvailable() ? "Yes" : "No";
+				entries[i][3] = String.format("%.2f", p.getSacks());
+				entries[i][4] = String.format("%.2f", p.getKilosOnDisplay());
+				entries[i][5] = String.format("%.2f", p.getCurrentPricePerSack());
+				entries[i][6] = String.format("%.2f", p.getCurrentPricePerKilo());
+				entries[i][7] = p.getCategory().getName();
+				entries[i][8] = p.isAvailable() ? "Yes" : "No";
 				i++;
 
 				if (p.isOnDisplay()) {

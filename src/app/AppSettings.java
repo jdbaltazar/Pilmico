@@ -13,22 +13,22 @@ public class AppSettings {
 	public static final String APP_FILE_TYPE = "pilmico";
 	private static AppSettings appSettings = null;
 	private static String appSettingsFileName = "appsettings.xml";
-	private double appVersion;
+	private float appVersion;
 
 	private AppSettings() {
 		super();
 	}
 
-	public AppSettings(double appVersion) {
+	public AppSettings(float appVersion) {
 		super();
 		this.appVersion = appVersion;
 	}
 
-	public double getAppVersion() {
+	public float getAppVersion() {
 		return appVersion;
 	}
 
-	public void setAppVersion(double appVersion) {
+	public void setAppVersion(float appVersion) {
 		this.appVersion = appVersion;
 	}
 

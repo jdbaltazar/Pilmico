@@ -404,7 +404,7 @@ public class DatabaseTool {
 	public static void executeUpdates() {
 
 		try {
-			if (DatabaseSettings.getInstance().getDbVersion() == 1.0d) {
+			if (DatabaseSettings.getInstance().getDbVersion() == 1.0f) {
 				HibernateUtil.endSession();
 				Connection con = null;
 
@@ -429,10 +429,10 @@ public class DatabaseTool {
 						System.out.println("Column alert_using_kilo is deleted successfully!");
 
 						// increment db version of database
-						double current = DatabaseSettings.getInstance().getDbVersion();
-						DatabaseSettings.getInstance().setDbVersion(current + 0.1d);
+						float current = DatabaseSettings.getInstance().getDbVersion();
+						DatabaseSettings.getInstance().setDbVersion(current + 0.1f);
 						DatabaseSettings.getInstance().persist();
-						AppSettings.getInstance().setAppVersion(current + 0.1d);
+						AppSettings.getInstance().setAppVersion(current + 0.1f);
 						AppSettings.getInstance().persist();
 
 					} catch (SQLException s) {
@@ -492,8 +492,8 @@ public class DatabaseTool {
 			// (2) Set kilos per sack of all details to the current kilos per sack
 			// of products
 
-			if (DatabaseSettings.getInstance().getDbVersion() == 1.1d) {
-				
+			if (DatabaseSettings.getInstance().getDbVersion() == 1.1f) {
+
 				HibernateUtil.endSession();
 				Connection con = null;
 
@@ -508,20 +508,16 @@ public class DatabaseTool {
 
 						// insert more code here
 
-						st.executeUpdate("alter table product drop sold_today_in_sack");
-						System.out.println("Column sold_today_in_sack is deleted successfully!");
-						st.executeUpdate("alter table product drop sold_today_in_kilo");
-						System.out.println("Column sold_today_in_kilo is deleted successfully!");
-						st.executeUpdate("alter table product drop alert_using_sack");
-						System.out.println("Column alert_using_sack is deleted successfully!");
-						st.executeUpdate("alter table product drop alert_using_kilo");
-						System.out.println("Column alert_using_kilo is deleted successfully!");
+						st.executeUpdate("alter table product drop display_in_sack");
+						System.out.println("Column display_in_sack is deleted successfully!");
+						st.executeUpdate("alter table product drop display_in_kilo");
+						System.out.println("Column display_in_kilo is deleted successfully!");
 
 						// increment db version of database
-						double current = DatabaseSettings.getInstance().getDbVersion();
-						DatabaseSettings.getInstance().setDbVersion(current + 0.1d);
+						float current = DatabaseSettings.getInstance().getDbVersion();
+						DatabaseSettings.getInstance().setDbVersion(current + 0.1f);
 						DatabaseSettings.getInstance().persist();
-						AppSettings.getInstance().setAppVersion(current + 0.1d);
+						AppSettings.getInstance().setAppVersion(current + 0.1f);
 						AppSettings.getInstance().persist();
 
 					} catch (SQLException s) {
