@@ -109,21 +109,22 @@ public class ProductOnDisplayPopup extends JDialog {
 					 * Manager.productManager.updateProduct(p); } catch (Exception e)
 					 * { e.printStackTrace(); } =======
 					 */
-					for (RowPanel rp : rowPanel) {
-						try {
-							Product p = rp.getOnDisplayProduct();
-							p.setQuantityOnDisplay(rp.getOnDisplayInSack(), rp.getOnDisplayInKilo());
-							Manager.productManager.updateProduct(p);
-						} catch (Exception e) {
-							e.printStackTrace();
-							// >>>>>>> refs/remotes/origin/master
-						}
-					}
-					error.setText("");
-					dispose();
-					Values.centerPanel.changeTable(Values.PRODUCTS);
-					new SuccessPopup("Update").setVisible(true);
-					Values.mainFrame.dimScreen(false);
+					// for (RowPanel rp : rowPanel) {
+					// try {
+					// Product p = rp.getOnDisplayProduct();
+					// p.setQuantityOnDisplay(rp.getOnDisplayInSack(),
+					// rp.getOnDisplayInKilo());
+					// Manager.productManager.updateProduct(p);
+					// } catch (Exception e) {
+					// e.printStackTrace();
+					// // >>>>>>> refs/remotes/origin/master
+					// }
+					// }
+					// error.setText("");
+					// dispose();
+					// Values.centerPanel.changeTable(Values.PRODUCTS);
+					// new SuccessPopup("Update").setVisible(true);
+					// Values.mainFrame.dimScreen(false);
 				} else
 					error.setText(msg);
 			}

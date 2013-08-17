@@ -678,7 +678,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillProducts() {
 
 		try {
-			String[] headers = { "ID", "Name", "Qty(Sks, Kls)","Kls/SK", "Price/SK", "Price/Kilo", "Category", "Available?" };
+			String[] headers = { "ID", "Name", "Kls/SK", "SK", "Kg", "Price/SK", "Price/Kg", "Category", "Available?" };
 			List<Product> products = Manager.productManager.getProducts();
 			List<Product> onDisplayFirst = new ArrayList<Product>();
 			List<Product> notOnDisplay = new ArrayList<Product>();
@@ -688,8 +688,9 @@ public class CenterPanel extends SoyPanel {
 			for (Product p : products) {
 				entries[i][0] = p.getId() + "";
 				entries[i][1] = p.getName();
-				entries[i][2] = p.getSimplifiedQuantity();
-				entries[i][3] = String.format("%.2f", p.getKilosPerSack());
+				entries[i][2] = p.getKilosPerSackDescription();
+				entries[i][3] = p.getKilosPerSackDescription();
+				entries[i][3] = p.getSimplifiedQuantity();
 				entries[i][4] = String.format("%.2f", p.getCurrentPricePerSack());
 				entries[i][5] = String.format("%.2f", p.getCurrentPricePerKilo());
 				entries[i][6] = p.getCategory().getName();

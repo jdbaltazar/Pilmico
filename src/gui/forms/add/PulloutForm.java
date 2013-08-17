@@ -285,7 +285,7 @@ public class PulloutForm extends SimplePanel {
 					for (RowPanel rp : rowPanel) {
 						Product p = rp.getSelectedProduct();
 						try {
-							if (!Product.validDecrement(p.getQuantityInSack(), p.getQuantityInKilo(), p.getKilosPerSack(), rp.getQuantityInSack(),
+							if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), rp.getQuantityInSack(),
 									rp.getQuantityInKilo())) {
 								valid = false;
 							}

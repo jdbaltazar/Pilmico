@@ -51,14 +51,14 @@ public class ProductForm extends SimplePanel {
 	private JNumericField numField;
 	private ErrorLabel error;
 	private NumericTextField quantityKG;
-	private int initY = 23;//56
+	private int initY = 23;// 56
 	private DropdownLabel dLabel;
 	private SBButton fwd;
-	
+
 	private JPanel panel;
 	private JScrollPane scrollPane;
-	
-	private String msg="";
+
+	private String msg = "";
 
 	private final int num = Tables.productFormLabel.length;
 
@@ -71,13 +71,13 @@ public class ProductForm extends SimplePanel {
 
 	private void addComponents() {
 		// TODO Auto-generated method stub
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
 
@@ -203,52 +203,56 @@ public class ProductForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				/*System.out.println("Name: " + fields.get(0).getText());
-				System.out.println("Desc: " + fields.get(1).getText());
-				System.out.println("kilos/sack: " + numfields.get(0).getText());
-				System.out.println("qty, sk: " + numfields.get(1).getText());
-				System.out.println("qty, kg: " + numfields.get(2).getText());
-				System.out.println("disp, sk: " + numfields.get(3).getText());
-				System.out.println("disp, kg: " + numfields.get(4).getText());
-				System.out.println("price, sk: " + numfields.get(5).getText());
-				System.out.println("price, kg: " + numfields.get(6).getText());
-				System.out.println("alert, qty: " + numfields.get(7).getText());*/
+				/*
+				 * System.out.println("Name: " + fields.get(0).getText());
+				 * System.out.println("Desc: " + fields.get(1).getText());
+				 * System.out.println("kilos/sack: " + numfields.get(0).getText());
+				 * System.out.println("qty, sk: " + numfields.get(1).getText());
+				 * System.out.println("qty, kg: " + numfields.get(2).getText());
+				 * System.out.println("disp, sk: " + numfields.get(3).getText());
+				 * System.out.println("disp, kg: " + numfields.get(4).getText());
+				 * System.out.println("price, sk: " + numfields.get(5).getText());
+				 * System.out.println("price, kg: " + numfields.get(6).getText());
+				 * System.out.println("alert, qty: " + numfields.get(7).getText());
+				 */
 
-				if(isValidated() && hasValidInputs()){
-				
-				String name = fields.get(0).getText();
-				String description = fields.get(1).getText();
-				double kilosPerSack = Double.parseDouble(numfields.get(0).getText());
-				double quantityInSack = Double.parseDouble(numfields.get(1).getText());
-				double quantityInKilo = Double.parseDouble(numfields.get(2).getText());
-				double displayInSack = Double.parseDouble(numfields.get(3).getText());
-				double displayInKilo = Double.parseDouble(numfields.get(4).getText());
-				double pricePerSack = Double.parseDouble(numfields.get(5).getText());
-				double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
-				double alertOnQuantity = Double.parseDouble(numfields.get(7).getText());
+				if (isValidated() && hasValidInputs()) {
 
-				// Product p = new Product(name, description, new Date(),
-				// pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(),
-				// quantityInSack,
-				// quantityInKilo, displayInSack, displayInKilo, 0d, 0d, (Category)
-				// category.getSelectedItem(), true, cbox2.isSelected(),
-				// alertOnQuantity);
+					String name = fields.get(0).getText();
+					String description = fields.get(1).getText();
+					double kilosPerSack = Double.parseDouble(numfields.get(0).getText());
+					double quantityInSack = Double.parseDouble(numfields.get(1).getText());
+					double quantityInKilo = Double.parseDouble(numfields.get(2).getText());
+					// double displayInSack =
+					// Double.parseDouble(numfields.get(3).getText());
+					// double displayInKilo = Double.parseDouble(numfields.get(4).getText());
+					double pricePerSack = Double.parseDouble(numfields.get(5).getText());
+					double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
+//					double alertOnQuantity = Double.parseDouble(numfields.get(7).getText());
 
-				Product p = new Product(name, description, new Date(), pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(), quantityInSack,
-						quantityInKilo, displayInSack, displayInKilo, (Category) category.getSelectedItem(), cbox2.isSelected());
+					// Product p = new Product(name, description, new Date(),
+					// pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(),
+					// quantityInSack,
+					// quantityInKilo, displayInSack, displayInKilo, 0d, 0d,
+					// (Category)
+					// category.getSelectedItem(), true, cbox2.isSelected(),
+					// alertOnQuantity);
 
-				try {
-					Manager.productManager.addProduct(p);
-					Values.centerPanel.changeTable(Values.PRODUCTS);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
+					Product p = new Product(name, description, new Date(), pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(), quantityInSack,
+							quantityInKilo, (Category) category.getSelectedItem(), cbox2.isSelected());
 
-					Values.discountForm.refreshDropdown(true);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+					try {
+						Manager.productManager.addProduct(p);
+						Values.centerPanel.changeTable(Values.PRODUCTS);
+						new SuccessPopup("Add").setVisible(true);
+						clearFields();
+
+						Values.discountForm.refreshDropdown(true);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
 					error.setToolTip(msg);
 			}
 
@@ -306,14 +310,14 @@ public class ProductForm extends SimplePanel {
 
 		panel.add(cbox1);
 		panel.add(cbox2);
-		
+
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane.setBounds(0, 30, 600, 380);
-		
+
 		add(scrollPane);
 	}
 
@@ -326,35 +330,35 @@ public class ProductForm extends SimplePanel {
 
 		error.setToolTip("");
 	}
-	
-	private boolean hasValidInputs(){
-		
-		if(Double.parseDouble(numfields.get(0).getText()) == 0d){
+
+	private boolean hasValidInputs() {
+
+		if (Double.parseDouble(numfields.get(0).getText()) == 0d) {
 
 			msg = "kilos per sack should not be 0";
-			
+
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	private boolean isValidated() {
-		
+
 		for (int i = 0; i < fields.size(); i++)
-			if(fields.get(i).getText().equals("") && i!=1){
-			
+			if (fields.get(i).getText().equals("") && i != 1) {
+
 				msg = "All fields EXCEPT for Description is required";
 				return false;
 			}
-		
+
 		for (int i = 0; i < numfields.size(); i++)
-			if(numfields.get(i).getText().equals("")){
-			
+			if (numfields.get(i).getText().equals("")) {
+
 				msg = "All fields EXCEPT for Description is required";
 				return false;
 			}
-		
+
 		return true;
 	}
 
