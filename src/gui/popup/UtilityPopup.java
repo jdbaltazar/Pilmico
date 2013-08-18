@@ -76,6 +76,11 @@ public class UtilityPopup extends JDialog {
 		
 		setLayout(new BorderLayout());
 		
+		if(utility == Values.AUTO_BACKUP)
+			setLocationRelativeTo(null);
+		else
+			setLocation(p);
+		
 		if (utility == Values.CATEGORY)
 			setSize(WIDTH, HEIGHT);
 		else if (utility == Values.PCOH) {
@@ -97,12 +102,6 @@ public class UtilityPopup extends JDialog {
 			setLocation(p.x - 300, p.y);
 			setSize(305, HEIGHT);
 		}
-
-		
-		if(utility == Values.AUTO_BACKUP)
-			setLocationRelativeTo(null);
-		else
-			setLocation(p);
 		
 		setUndecorated(true);
 		setResizable(false);

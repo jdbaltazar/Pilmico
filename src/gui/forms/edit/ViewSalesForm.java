@@ -356,7 +356,6 @@ public class ViewSalesForm extends EditFormPanel {
 		});
 
 		add(voidBtn);
-		add(error);
 
 	}
 

@@ -33,7 +33,7 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 	Set<Integer> highlightedRows = new HashSet<Integer>();
 	Color selectedColor = new Color(0, 255, 255), backgroundColor1 = new Color(245, 245, 220), backgroundColor2 = new Color(220, 220, 220),
-			invalidColor = Color.decode("#F9CCCC");//= new Color(255, 140, 140);
+			invalidColor = Color.decode("#BC8F8F");//= new Color(255, 140, 140);
 
 	private boolean valid = true;
 //	private int alertOnQuantity, quantity, itemId;

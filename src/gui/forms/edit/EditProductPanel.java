@@ -377,6 +377,13 @@ public class EditProductPanel extends EditFormPanel {
 
 			return false;
 		}
+		
+		if (product.getQuantityInSack() < Double.parseDouble(numfields.get(3).getText())) {
+
+			msg = "sack on display already exceeds the total quantity in sack ("+product.getQuantityInSack()+") ";
+
+			return false;
+		}
 
 		// on display in kilos
 		if (product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(4).getText())) {

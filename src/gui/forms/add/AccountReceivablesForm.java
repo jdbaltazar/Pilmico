@@ -326,7 +326,6 @@ public class AccountReceivablesForm extends SimplePanel {
 							e2.printStackTrace();
 						}
 					}
-					if (valid) {
 						PointerInfo a = MouseInfo.getPointerInfo();
 						Point b = a.getLocation();
 
@@ -366,16 +365,17 @@ public class AccountReceivablesForm extends SimplePanel {
 								e1.printStackTrace();
 							}
 						}
-					} else
-						error.setToolTip(msg);
 
-				} else {
+				} 
+				else
+					error.setToolTip(msg);
+				/*else {
 
 					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
 							+ "\n In order to proceed: " + "\n (1) Update the quantity of the affected product/s; or"
 							+ "\n (2) Add a delivery for affected product/s; or" + "\n (3) Invalidate a Pullout/s and/or Sales", "Not Allowed!",
 							JOptionPane.WARNING_MESSAGE);
-				}
+				}*/
 
 			}
 		});
@@ -462,15 +462,21 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		for (int i = 0; i < rowPanel.size(); i++) {
 
-			if (rowPanel.get(i).getQuantityInSack() > qtySack) {
+			if (rowPanel.get(i).getQuantityInSack() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack()) {
 
-				msg = "Invalid sack qty. Only " + qtySack + " left for product in row " + (i + 1) + " ";
+				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1) + ". ";
 
 				return true;
 			}
 
-			if (rowPanel.get(i).getQuantityInKilo() > qtyKG) {
-				msg = "Invalid sack kg. Only " + qtyKG + " left for product in row " + (i + 1) + " ";
+			if (rowPanel.get(i).getQuantityInKilo() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1) + ". ";
+
+				return true;
+			}
+			
+			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid qty inputs in row " + (i + 1)+". Total qty would exceed the total qty in kilos ("+rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()+") of the product. ";
 
 				return true;
 			}

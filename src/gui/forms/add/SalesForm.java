@@ -606,7 +606,7 @@ public class SalesForm extends SimplePanel {
 	}
 
 	public void setErrorText(String msg) {
-		error.setText(msg);
+		error.setToolTip(msg);
 	}
 
 	public boolean hasMultipleProduct() {
@@ -644,25 +644,34 @@ public class SalesForm extends SimplePanel {
 		return false;
 	}
 
-	// <<<<<<< HEAD
-	//
-	// private boolean hasZeroQuantity() {
-	//
-	// =======
-
 	private boolean hasInvalidQuantity() {
 
 		for (int i = 0; i < rowPanel.size(); i++) {
 
-			if (rowPanel.get(i).getQuantityInSack() > qtySack) {
+			/*System.out
+					.println("i: "
+							+ i
+							+ " rowPanel.get(i).getQuantityInSack(): "
+							+ rowPanel.get(i).getQuantityInSack()
+							+ " rowPanel.get(i).getSelectedProduct().getQuantityInSack(): "
+							+ rowPanel.get(i).getSelectedProduct()
+									.getQuantityInSack());*/
+			
+			if (rowPanel.get(i).getQuantityInSack() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack()) {
 
-				msg = "Invalid sack qty. Only " + qtySack + " left for product in row " + (i + 1) + " ";
+				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1) + ". ";
 
 				return true;
 			}
 
-			if (rowPanel.get(i).getQuantityInKilo() > qtyKG) {
-				msg = "Invalid sack kg. Only " + qtyKG + " left for product in row " + (i + 1) + " ";
+			if (rowPanel.get(i).getQuantityInKilo() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1) + ". ";
+
+				return true;
+			}
+			
+			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid qty inputs in row " + (i + 1)+". Total qty would exceed the total qty in kilos ("+rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()+") of the product. ";
 
 				return true;
 			}
@@ -686,12 +695,6 @@ public class SalesForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		// <<<<<<< HEAD
-		//
-		// if (((SpinnerDateModel) date.getModel()).getDate().after(new Date()) ||
-		// ((SpinnerDateModel) issueDate.getModel()).getDate().after(new Date()))
-		// {
-		// =======
 
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 

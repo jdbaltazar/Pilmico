@@ -371,7 +371,7 @@ public class DatabaseTool {
 						recovery.delete();
 
 						DatabaseTool.uP.dispose();
-						new SuccessPopup("DB Recovery").setVisible(true);
+						new SuccessPopup("Database Recovery").setVisible(true);
 						Values.topPanel.closeBalloonPanel();
 
 						isRunning = false;

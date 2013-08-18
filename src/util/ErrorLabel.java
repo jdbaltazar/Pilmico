@@ -25,7 +25,7 @@ public class ErrorLabel extends JLabel{
 		
 		setFont(new Font("Lucida Sans", Font.ITALIC, 11));
 		setHorizontalAlignment(JLabel.RIGHT);
-		setBorder(BorderFactory.createEtchedBorder());
+//		setBorder(BorderFactory.createEtchedBorder());
 		setForeground(Color.red);
 		setOpaque(false);
 		RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.decode("#FFD6D6"), Color.red);
@@ -48,7 +48,7 @@ public class ErrorLabel extends JLabel{
 
 	public void setToolTip(String text) {
 		
-		jlabel.setText(text);
+		jlabel.setText(text.trim());
 
 		balloonTip.refreshLocation();
 		balloonTip.setContents(jlabel);
@@ -58,7 +58,7 @@ public class ErrorLabel extends JLabel{
 	
 	public void setWarningToolTip(String text) {
 		
-		jlabel.setText(text);
+		jlabel.setText(text.trim());
 		
 		balloonTip.refreshLocation();
 		balloonTip.setContents(jlabel);
