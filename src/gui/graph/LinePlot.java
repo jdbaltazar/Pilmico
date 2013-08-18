@@ -121,6 +121,9 @@ public class LinePlot extends ExamplePanel {
 		PointRenderer pointsLower = plotLower.getPointRenderer(data);
 		pointsLower.setSetting(PointRenderer.COLOR, colorLower);
 		pointsLower.setSetting(PointRenderer.SHAPE, new Ellipse2D.Double(-3, -3, 6, 6));
+		pointsLower.setSetting(PointRenderer.VALUE_ALIGNMENT_Y, 1.2);
+		pointsLower.setSetting(PointRenderer.VALUE_FONT, new Font("Arial", Font.PLAIN, 10));
+		pointsLower.setSetting(PointRenderer.VALUE_DISPLAYED, true);
 		LineRenderer lineLower = new DefaultLineRenderer2D();
 		lineLower.setSetting(LineRenderer.STROKE, new BasicStroke(2f));
 		lineLower.setSetting(LineRenderer.GAP, 1.0);
@@ -148,8 +151,9 @@ public class LinePlot extends ExamplePanel {
 
 		Column col1 = data.getColumn(0);
 		Column col2 = data.getColumn(1);
-		plotLower.getAxis(XYPlot.AXIS_Y).setRange(col2.getStatistics(Statistics.MIN), col2.getStatistics(Statistics.MAX));
-		plotLower.getAxis(XYPlot.AXIS_X).setRange(col1.getStatistics(Statistics.MIN), col1.getStatistics(Statistics.MAX));
+		plotLower.getAxis(XYPlot.AXIS_Y).setRange(col2.getStatistics(Statistics.MIN) - 200, col2.getStatistics(Statistics.MAX) + 200);
+		plotLower.getAxis(XYPlot.AXIS_X).setRange(col1.getStatistics(Statistics.MIN) - DateTool.DAY_DIFFERENCE,
+				col1.getStatistics(Statistics.MAX) + DateTool.DAY_DIFFERENCE);
 
 		Date lowerBound = DateTool.getDateWithoutTime(iss.get(iss.size() - 1).getDate());
 		Date upperBound = DateTool.getDateWithoutTime(iss.get(0).getDate());
@@ -165,7 +169,7 @@ public class LinePlot extends ExamplePanel {
 				InventorySheet is = iss.get(endIndex);
 				if (is.getDate().after(twentyDaysBefore) || is.getDate().equals(twentyDaysBefore)) {
 					// plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
-					plotLower.getAxis(XYPlot.AXIS_X).setMin(is.getDate().getTime());
+					plotLower.getAxis(XYPlot.AXIS_X).setMin(is.getDate().getTime() - DateTool.DAY_DIFFERENCE);
 					break;
 				}
 			}
@@ -177,7 +181,8 @@ public class LinePlot extends ExamplePanel {
 		AxisRenderer rendererX = plotLower.getAxisRenderer(XYPlot.AXIS_X);
 		rendererX.setSetting(AxisRenderer.TICK_LABELS_FORMAT, dateFormat);
 		rendererX.setSetting(AxisRenderer.TICKS_SPACING, DateTool.DAY_DIFFERENCE * 2);
-		rendererX.setSetting(AxisRenderer.TICKS_MINOR, false);
+		rendererX.setSetting(AxisRenderer.TICKS_MINOR_COUNT, 1);
+		rendererX.setSetting(AxisRenderer.TICKS_MINOR, true);
 		rendererX.setSetting(AxisRenderer.TICKS_FONT, new Font("Arial", Font.PLAIN, 10));
 		rendererX.setSetting(AxisRenderer.LABEL, "Date");
 
