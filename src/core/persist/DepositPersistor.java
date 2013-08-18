@@ -12,13 +12,10 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import util.DateFormatter;
-import util.Utility;
 
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
-import common.entity.pullout.PullOut;
 import common.manager.DepositManager;
 
 public class DepositPersistor extends Persistor implements DepositManager {

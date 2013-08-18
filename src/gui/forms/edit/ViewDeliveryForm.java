@@ -306,7 +306,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 				for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 					Product p = dd.getProduct();
 					try {
-						if (!Product.validDecrement(p.getQuantityInSack(), p.getQuantityInKilo(), p.getKilosPerSack(), dd.getQuantityInSack(),
+						if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), dd.getQuantityInSack(),
 								dd.getQuantityInKilo())) {
 							valid = false;
 						}
@@ -349,10 +349,9 @@ public class ViewDeliveryForm extends EditFormPanel {
 				} else {
 
 					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
-							+ "\n In order to invalidate this form: " 
-							+ "\n (1) Update the quantity of the affected product/s; or"
-							+ "\n (2) Add a delivery for affected product/s; or"
-							+ "\n (3) Invalidate a Pullout/s, Sales and/or Account Receivables", "Not Allowed!", JOptionPane.WARNING_MESSAGE);
+							+ "\n In order to invalidate this form: " + "\n (1) Update the quantity of the affected product/s; or"
+							+ "\n (2) Add a delivery for affected product/s; or" + "\n (3) Invalidate a Pullout/s, Sales and/or Account Receivables",
+							"Not Allowed!", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

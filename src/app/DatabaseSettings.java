@@ -13,13 +13,13 @@ public class DatabaseSettings {
 	private static DatabaseSettings databaseSettings = null;
 	private static String databaseSettingsFileName = "dbsettings.xml";
 	private String filePath;
-	private double dbVersion;
+	private float dbVersion;
 
 	private DatabaseSettings() {
 		super();
 	}
 
-	public DatabaseSettings(String filePath, double dbVersion) {
+	public DatabaseSettings(String filePath, float dbVersion) {
 		super();
 		this.filePath = filePath;
 		this.dbVersion = dbVersion;
@@ -37,11 +37,11 @@ public class DatabaseSettings {
 		return !filePath.equals("");
 	}
 
-	public double getDbVersion() {
+	public float getDbVersion() {
 		return dbVersion;
 	}
 
-	public void setDbVersion(double dbVersion) {
+	public void setDbVersion(float dbVersion) {
 		this.dbVersion = dbVersion;
 	}
 

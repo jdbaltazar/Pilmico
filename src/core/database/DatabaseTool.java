@@ -404,9 +404,13 @@ public class DatabaseTool {
 	public static void executeUpdates() {
 
 		try {
-			if (DatabaseSettings.getInstance().getDbVersion() == 1.0d) {
+			if (DatabaseSettings.getInstance().getDbVersion() == 1.0f) {
 				HibernateUtil.endSession();
 				Connection con = null;
+
+				// (1) Remove unnecessary columns in product table
+				// (2) Add default kilos per sack values for all products
+				// (3) Update the name of 'sprinter' to 'sprinter pack'
 
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
@@ -425,15 +429,16 @@ public class DatabaseTool {
 						System.out.println("Column alert_using_kilo is deleted successfully!");
 
 						// increment db version of database
-						double current = DatabaseSettings.getInstance().getDbVersion();
-						DatabaseSettings.getInstance().setDbVersion(current + 0.1d);
+						float current = DatabaseSettings.getInstance().getDbVersion();
+						DatabaseSettings.getInstance().setDbVersion(current + 0.1f);
 						DatabaseSettings.getInstance().persist();
-						AppSettings.getInstance().setAppVersion(current + 0.1d);
+						AppSettings.getInstance().setAppVersion(current + 0.1f);
 						AppSettings.getInstance().persist();
 
 					} catch (SQLException s) {
 						System.out.println("Table or column is not found!");
 					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -450,7 +455,7 @@ public class DatabaseTool {
 							p.setKilosPerSack(1);
 						} else if (p.getId() == 2) {
 							p.setKilosPerSack(24);
-							// update name from sprinter pouch ---> sprinter pack
+							// update name from sprinter ---> sprinter pack
 							p.setName("SPRINTER PACK");
 						} else if (p.getId() == 3 || p.getId() == 4 || p.getId() == 16 || p.getId() == 17 || p.getId() == 18 || p.getId() == 19
 								|| p.getId() == 20 || p.getId() == 21 || p.getId() == 22 || p.getId() == 27) {
@@ -475,6 +480,63 @@ public class DatabaseTool {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
+
+		try {
+
+			// drop the display columns in product
+			if (DatabaseSettings.getInstance().getDbVersion() == 1.1f) {
+
+				HibernateUtil.endSession();
+				Connection con = null;
+
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					con = DriverManager.getConnection(HibernateUtil.URL + Credentials.getInstance().getDatabaseName(),
+							SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+							SecurityTool.decryptString(Credentials.getInstance().getPassword()));
+					try {
+
+						Statement st = con.createStatement();
+
+						// insert more code here
+
+						st.executeUpdate("alter table product drop display_in_sack");
+						System.out.println("Column display_in_sack is deleted successfully!");
+						st.executeUpdate("alter table product drop display_in_kilo");
+						System.out.println("Column display_in_kilo is deleted successfully!");
+
+						// increment db version of database
+						float current = DatabaseSettings.getInstance().getDbVersion();
+						DatabaseSettings.getInstance().setDbVersion(current + 0.1f);
+						DatabaseSettings.getInstance().persist();
+						AppSettings.getInstance().setAppVersion(current + 0.1f);
+						AppSettings.getInstance().persist();
+
+					} catch (SQLException s) {
+						System.out.println("Table or column is not found!");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				HibernateUtil.startSession();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+
+		// For the final version!
+		// (1) Add kilos per sack column to the ff tables:
+		// - deliveries
+		// - pullouts
+		// - sales
+		// - ar
+		// - inventory sheet
+		// (2) Set kilos per sack of all details to the current kilos per sack
+		// of products
+
 	}
 
 }

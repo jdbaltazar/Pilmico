@@ -102,7 +102,6 @@ public class TableUtilPanel extends SoyPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});

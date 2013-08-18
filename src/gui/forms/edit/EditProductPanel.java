@@ -237,7 +237,7 @@ public class EditProductPanel extends EditFormPanel {
 						product.setKilosPerSack(Double.parseDouble(numfields.get(0).getText()));
 
 						product.setQuantity(Double.parseDouble(numfields.get(1).getText()), Double.parseDouble(numfields.get(2).getText()));
-						product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
+//						product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
 
 						double pricePerSack = Double.parseDouble(numfields.get(5).getText());
 						double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
@@ -335,10 +335,12 @@ public class EditProductPanel extends EditFormPanel {
 		fields.get(0).setText(product.getName());
 		fields.get(1).setText(product.getDescription());
 		numfields.get(0).setText(String.format("%.2f", product.getKilosPerSack()));
-		numfields.get(1).setText(String.format("%.2f", product.getQuantityInSack()));
-		numfields.get(2).setText(String.format("%.2f", product.getQuantityInKilo()));
-		numfields.get(3).setText(String.format("%.2f", product.getQuantityOnDisplayInSack()));
-		numfields.get(4).setText(String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+		numfields.get(1).setText(String.format("%.2f", product.getSacks()));
+		numfields.get(2).setText(String.format("%.2f", product.getKilosOnDisplay()));
+		// numfields.get(3).setText(String.format("%.2f",
+		// product.getQuantityOnDisplayInSack()));
+		// numfields.get(4).setText(String.format("%.2f",
+		// product.getQuantityOnDisplayInKilo()));
 		numfields.get(5).setText(String.format("%.2f", product.getCurrentPricePerSack()));
 		numfields.get(5).setToolTipText(
 				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
@@ -378,12 +380,12 @@ public class EditProductPanel extends EditFormPanel {
 			return false;
 		}
 		
-		if (product.getQuantityInSack() < Double.parseDouble(numfields.get(3).getText())) {
+		/*if (product.getQuantityInSack() < Double.parseDouble(numfields.get(3).getText())) {
 
 			msg = "sack on display already exceeds the total quantity in sack ("+product.getQuantityInSack()+") ";
 
 			return false;
-		}
+		}*/
 
 		// on display in kilos
 		if (product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(4).getText())) {

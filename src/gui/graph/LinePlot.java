@@ -25,15 +25,20 @@ import gui.forms.util.DateTool;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
 
+import util.DateFormatter;
+import util.Utility;
 import util.Values;
 
 import de.erichseifert.gral.data.Column;
@@ -133,28 +138,55 @@ public class LinePlot extends ExamplePanel {
 		plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
 
 		plotLower.setSetting(Plot.TITLE, "Daily Sales (Cash, Check & AR)");
+		plotLower.setSetting(Plot.TITLE_FONT, new Font("Forte", Font.PLAIN, 18));
 
-		// insert Pilmico Font here
-		// plotLower.setSetting(Plot.TITLE_FONT, n);
 		// plotLower.setSetting(Plot.LEGEND, true);
 		// plotLower.getLegend().setSetting(Legend.ORIENTATION,
 		// Orientation.HORIZONTAL);
-		plotLower.getAxis(XYPlot.AXIS_Y).setMin(0d);
-		// AxisRenderer rendererY = plotLower.getAxisRenderer(XYPlot.AXIS_Y);
 
-		plotLower.setInsets(new Insets2D.Double(20.0, 80.0, 40.0, 20.0));
+		plotLower.setInsets(new Insets2D.Double(15.0, 65.0, 50.0, 20.0));
 
-		// rendererY.setSetting(AxisRenderer., arg1);
-		// rendererY.
 		Column col1 = data.getColumn(0);
+		Column col2 = data.getColumn(1);
+		plotLower.getAxis(XYPlot.AXIS_Y).setRange(col2.getStatistics(Statistics.MIN), col2.getStatistics(Statistics.MAX));
 		plotLower.getAxis(XYPlot.AXIS_X).setRange(col1.getStatistics(Statistics.MIN), col1.getStatistics(Statistics.MAX));
 
-		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD);
+		Date lowerBound = DateTool.getDateWithoutTime(iss.get(iss.size() - 1).getDate());
+		Date upperBound = DateTool.getDateWithoutTime(iss.get(0).getDate());
+
+		// plotLower.getAxis(XYPlot.AXIS_Y).setMin(0d);
+
+		long diff = upperBound.getTime() - lowerBound.getTime();
+
+		// check if is interval is >= 20 days
+		if (diff >= DateTool.DAY_DIFFERENCE * 20) {
+			Date twentyDaysBefore = DateTool.getDaysBeforeDate(upperBound, 20);
+			for (int endIndex = iss.size() - 2; endIndex >= 0; endIndex--) {
+				InventorySheet is = iss.get(endIndex);
+				if (is.getDate().after(twentyDaysBefore) || is.getDate().equals(twentyDaysBefore)) {
+					// plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
+					plotLower.getAxis(XYPlot.AXIS_X).setMin(is.getDate().getTime());
+					break;
+				}
+			}
+		}
+
+		plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
+
+		DateFormat dateFormat = DateFormatter.getInstance().getFormat(Utility.DMYFormat);
 		AxisRenderer rendererX = plotLower.getAxisRenderer(XYPlot.AXIS_X);
 		rendererX.setSetting(AxisRenderer.TICK_LABELS_FORMAT, dateFormat);
-		rendererX.setSetting(AxisRenderer.TICKS_SPACING, DateTool.DAY_DIFFERENCE);
+		rendererX.setSetting(AxisRenderer.TICKS_SPACING, DateTool.DAY_DIFFERENCE * 2);
 		rendererX.setSetting(AxisRenderer.TICKS_MINOR, false);
-		// rendererX.setSetting(AxisRenderer.LABEL, "Date");
+		rendererX.setSetting(AxisRenderer.TICKS_FONT, new Font("Arial", Font.PLAIN, 10));
+		rendererX.setSetting(AxisRenderer.LABEL, "Date");
+
+		AxisRenderer rendererY = plotLower.getAxisRenderer(XYPlot.AXIS_Y);
+		rendererY.setSetting(AxisRenderer.TICKS_FONT, new Font("Arial", Font.PLAIN, 10));
+		// rendererY.setSetting(AxisRenderer.TICKS_SPACING, 2000d);
+		// rendererY.setSetting(AxisRenderer.TICKS_MINOR, true);
+		rendererY.setSetting(AxisRenderer.LABEL, "Amount (PhP)");
+		rendererY.setSetting(AxisRenderer.LABEL_DISTANCE, 2.0);
 
 		DrawableContainer plots = new DrawableContainer(new TableLayout(1));
 		plots.add(plotLower);

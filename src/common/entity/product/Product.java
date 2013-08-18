@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
-import common.entity.product.exception.OnDisplayQuantityException;
 import common.entity.product.exception.ZeroKilosPerSackException;
 
 @Entity
@@ -46,16 +45,16 @@ public class Product {
 	private boolean available;
 
 	@Column(name = "quantity_in_sack")
-	private double quantityInSack;
+	private double sacks;
 
 	@Column(name = "quantity_in_kilo")
-	private double quantityInKilo;
+	private double kilosOnDisplay;
 
-	@Column(name = "display_in_sack")
-	private double quantityOnDisplayInSack;
-
-	@Column(name = "display_in_kilo")
-	private double quantityOnDisplayInKilo;
+	// @Column(name = "display_in_sack")
+	// private double quantityOnDisplayInSack;
+	//
+	// @Column(name = "display_in_kilo")
+	// private double quantityOnDisplayInKilo;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category")
@@ -68,35 +67,29 @@ public class Product {
 		super();
 	}
 
-	public Product(String name, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available,
-			double quantityInSack, double quantityInKilo, double quantityOnDisplayInSack, double quantityOnDisplayInKilo, Category category,
-			boolean allowAllert) {
+	public Product(String name, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack, boolean available, double sacks,
+			double kilosOnDisplay, Category category, boolean allowAllert) {
 		super();
 		this.name = name;
 		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
 		this.kilosPerSack = kilosPerSack;
 		this.available = available;
-		this.quantityInSack = quantityInSack;
-		this.quantityInKilo = quantityInKilo;
-		this.quantityOnDisplayInSack = quantityOnDisplayInSack;
-		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
+		this.sacks = sacks;
+		this.kilosOnDisplay = kilosOnDisplay;
 		this.category = category;
 		this.allowAllert = allowAllert;
 	}
 
 	public Product(String name, String description, Date dateUpdated, double pricePerSack, double pricePerKilo, double kilosPerSack,
-			boolean available, double quantityInSack, double quantityInKilo, double quantityOnDisplayInSack, double quantityOnDisplayInKilo,
-			Category category, boolean allowAllert) {
+			boolean available, double sacks, double kilosOnDisplay, Category category, boolean allowAllert) {
 		super();
 		this.name = name;
 		this.description = description;
 		prices.add(new Price(this, dateUpdated, pricePerSack, pricePerKilo));
 		this.kilosPerSack = kilosPerSack;
 		this.available = available;
-		this.quantityInSack = quantityInSack;
-		this.quantityInKilo = quantityInKilo;
-		this.quantityOnDisplayInSack = quantityOnDisplayInSack;
-		this.quantityOnDisplayInKilo = quantityOnDisplayInKilo;
+		this.sacks = sacks;
+		this.kilosOnDisplay = kilosOnDisplay;
 		this.category = category;
 		this.allowAllert = allowAllert;
 	}
@@ -198,6 +191,22 @@ public class Product {
 		return kilosPerSack;
 	}
 
+	public String getKilosPerSackDescription() {
+		String s = "";
+		if (kilosPerSack == 0d) {
+			s = "0";
+		} else {
+
+			// check if has no decimal portions
+			if ((kilosPerSack * 100) % 100 != 0) {
+				s = String.format("%.2f", kilosPerSack);
+			} else {
+				s = (int) kilosPerSack + "";
+			}
+		}
+		return s;
+	}
+
 	public void setKilosPerSack(double kilosPerSack) throws Exception {
 		if (kilosPerSack < 0d)
 			throw new NegativeValueException();
@@ -212,20 +221,52 @@ public class Product {
 		this.available = available;
 	}
 
-	public double getQuantityInSack() {
-		return quantityInSack;
+	public double getSacks() {
+		return sacks;
 	}
 
-	public double getQuantityInKilo() {
-		return quantityInKilo;
+	public String getSacksDescription() {
+		String s = "";
+		if (sacks == 0d) {
+			s = "0";
+		} else {
+
+			// check if has no decimal portions
+			if ((sacks * 100) % 100 != 0) {
+				s = String.format("%.2f", sacks);
+			} else {
+				s = (int) sacks + "";
+			}
+		}
+		return s;
+	}
+
+	public String getKilosDescription() {
+		String s = "";
+		if (kilosOnDisplay == 0d) {
+			s = "0";
+		} else {
+
+			// check if has no decimal portions
+			if ((kilosOnDisplay * 100) % 100 != 0) {
+				s = String.format("%.2f", kilosOnDisplay);
+			} else {
+				s = (int) kilosOnDisplay + "";
+			}
+		}
+		return s;
+	}
+
+	public double getKilosOnDisplay() {
+		return kilosOnDisplay;
 	}
 
 	public double getTotalQuantityInSack() {
-		return totalSacks(quantityInSack, quantityInKilo, kilosPerSack);
+		return totalSacks(sacks, kilosOnDisplay, kilosPerSack);
 	}
 
 	public double getTotalQuantityInKilo() {
-		return totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
+		return totalKilos(sacks, kilosOnDisplay, kilosPerSack);
 	}
 
 	public String getQuantityDescription() {
@@ -237,14 +278,14 @@ public class Product {
 
 		} else {
 
-			if (quantityInSack > 0d) {
-				desc = quantityInSack + " sack/s";
-				if (quantityInKilo > 0d)
+			if (sacks > 0d) {
+				desc = sacks + " sack/s";
+				if (kilosOnDisplay > 0d)
 					desc = desc + " and ";
 			}
 
-			if (quantityInKilo > 0d) {
-				desc = desc + quantityInKilo + " kilo/s";
+			if (kilosOnDisplay > 0d) {
+				desc = desc + kilosOnDisplay + " kilo/s";
 			}
 
 			desc = desc + " remaining";
@@ -253,65 +294,94 @@ public class Product {
 		return desc;
 	}
 
-	public void setQuantity(double quantityInSack, double quantityInKilo) throws Exception {
+	public String getSimplifiedQuantity() {
 
-		System.out.println("sysout: " + kilosPerSack);
-		if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
-			ProductQuantity pq = simplify(quantityInSack, quantityInKilo, kilosPerSack);
-			this.quantityInSack = pq.getQuantityInSack();
-			this.quantityInKilo = pq.getQuantityInKilo();
+		String desc = "";
+		if (getTotalQuantityInKilo() == 0d) {
+			desc = "0";
+		} else {
+			String s1 = "0";
+			String s2 = "0";
+
+			// check if has no decimal portions
+			if ((sacks * 100) % 100 != 0) {
+				s1 = String.format("%.2f", sacks);
+			} else {
+				s1 = (int) sacks + "";
+			}
+
+			if ((kilosOnDisplay * 100) % 100 != 0) {
+				s2 = String.format("%.2f", kilosOnDisplay);
+			} else {
+				s2 = (int) kilosOnDisplay + "";
+			}
+
+			desc = s1 + ", " + s2;
+
+		}
+
+		return desc;
+	}
+
+	public void setQuantity(double sacks, double kilosOnDisplay) throws Exception {
+		if (valid(sacks, kilosOnDisplay, kilosPerSack)) {
+			this.sacks = sacks;
+			this.kilosOnDisplay = kilosOnDisplay;
 		}
 	}
 
-	public void incrementQuantity(double incrementQuantityInSack, double incrementQuantityInKilo) throws Exception {
-		if (valid(incrementQuantityInSack, incrementQuantityInKilo, kilosPerSack)) {
-			ProductQuantity pQuantity = computeIncrementResult(quantityInSack, quantityInKilo, kilosPerSack, incrementQuantityInSack,
-					incrementQuantityInKilo);
-			this.quantityInSack = pQuantity.getQuantityInSack();
-			this.quantityInKilo = pQuantity.getQuantityInKilo();
+	public void incrementQuantity(double sacksIncrement, double kilosOnDisplayIncrement) throws Exception {
+		if (valid(sacksIncrement, kilosOnDisplayIncrement, kilosPerSack)) {
+			ProductQuantity pQuantity = computeIncrementResult(sacks, kilosOnDisplay, kilosPerSack, sacksIncrement, kilosOnDisplayIncrement);
+			this.sacks = pQuantity.getQuantityInSack();
+			this.kilosOnDisplay = pQuantity.getQuantityInKilo();
 		}
 	}
 
 	public void decrementQuantity(double decrementQuantityInSack, double decrementQuantityInKilo) throws Exception {
 		if (valid(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack)) {
-			ProductQuantity pQuantity = computeDecrementResult(quantityInSack, quantityInKilo, kilosPerSack, decrementQuantityInSack,
-					decrementQuantityInKilo);
-			this.quantityInSack = pQuantity.getQuantityInSack();
-			this.quantityInKilo = pQuantity.getQuantityInKilo();
+			ProductQuantity pQuantity = computeDecrementResult(sacks, kilosOnDisplay, kilosPerSack, decrementQuantityInSack, decrementQuantityInKilo);
+			this.sacks = pQuantity.getQuantityInSack();
+			this.kilosOnDisplay = pQuantity.getQuantityInKilo();
 		}
 	}
 
-	public double getQuantityOnDisplayInSack() {
-		return quantityOnDisplayInSack;
-	}
+	// public double getQuantityOnDisplayInSack() {
+	// return quantityOnDisplayInSack;
+	// }
+	//
+	// public double getQuantityOnDisplayInKilo() {
+	// return quantityOnDisplayInKilo;
+	// }
+	//
+	// public double getTotalQuantityOnDisplayInSack() {
+	// return totalSacks(quantityOnDisplayInSack, quantityOnDisplayInKilo,
+	// kilosPerSack);
+	// }
+	//
+	// public double getTotalQuantityOnDisplayInKilo() {
+	// return totalKilos(quantityOnDisplayInSack, quantityOnDisplayInKilo,
+	// kilosPerSack);
+	// }
 
-	public double getQuantityOnDisplayInKilo() {
-		return quantityOnDisplayInKilo;
-	}
-
-	public double getTotalQuantityOnDisplayInSack() {
-		return totalSacks(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack);
-	}
-
-	public double getTotalQuantityOnDisplayInKilo() {
-		return totalKilos(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack);
-	}
-
-	public void setQuantityOnDisplay(double quantityOnDisplayInSack, double quantityOnDisplayInKilo) throws Exception {
-		if (valid(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack)) {
-			double newKilosQuantity = totalKilos(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack);
-			if (newKilosQuantity <= getTotalQuantityInKilo()) {
-				ProductQuantity pQuantity = simplify(newKilosQuantity, kilosPerSack);
-				this.quantityOnDisplayInSack = pQuantity.getQuantityInSack();
-				this.quantityOnDisplayInKilo = pQuantity.getQuantityInKilo();
-			} else {
-				throw new OnDisplayQuantityException();
-			}
-		}
-	}
-
+	// public void setQuantityOnDisplay(double quantityOnDisplayInSack, double
+	// quantityOnDisplayInKilo) throws Exception {
+	// if (valid(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack))
+	// {
+	// double newKilosQuantity = totalKilos(quantityOnDisplayInSack,
+	// quantityOnDisplayInKilo, kilosPerSack);
+	// if (newKilosQuantity <= getTotalQuantityInKilo()) {
+	// ProductQuantity pQuantity = simplify(newKilosQuantity, kilosPerSack);
+	// this.quantityOnDisplayInSack = pQuantity.getQuantityInSack();
+	// this.quantityOnDisplayInKilo = pQuantity.getQuantityInKilo();
+	// } else {
+	// throw new OnDisplayQuantityException();
+	// }
+	// }
+	// }
+	//
 	public boolean isOnDisplay() {
-		return (quantityOnDisplayInSack != 0d || quantityOnDisplayInKilo != 0d);
+		return (kilosOnDisplay != 0d);
 	}
 
 	public Category getCategory() {
@@ -342,47 +412,46 @@ public class Product {
 		return true;
 	}
 
-	public static boolean validIncrement(double quantityInSack, double quantityInKilo, double kilosPerSack, double decrementQuantityInSack,
-			double decrementQuantityInKilo) throws NegativeValueException, ZeroKilosPerSackException {
-		if (valid(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack)) {
+	public static boolean validIncrement(double sacks, double kilosOnDisplay, double kilosPerSack, double sacksIncrement,
+			double kilosOnDisplayIncrement) throws NegativeValueException, ZeroKilosPerSackException {
+		if (valid(sacksIncrement, kilosOnDisplayIncrement, kilosPerSack)) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean validDecrement(double quantityInSack, double quantityInKilo, double kilosPerSack, double decrementQuantityInSack,
-			double decrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException, ZeroKilosPerSackException {
-		if (valid(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack)) {
-			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
-			double decrementKilosQuantity = totalKilos(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack);
+	public static boolean validDecrement(double sacks, double kilosOnDisplay, double kilosPerSack, double sacksDecrement,
+			double kilosOnDisplayDecrement) throws NegativeValueException, NotEnoughQuantityException, ZeroKilosPerSackException {
+		if (valid(sacksDecrement, kilosOnDisplayDecrement, kilosPerSack)) {
+			double kilosQuantity = totalKilos(sacks, kilosOnDisplay, kilosPerSack);
+			double decrementKilosQuantity = totalKilos(sacksDecrement, kilosOnDisplayDecrement, kilosPerSack);
 			if (decrementKilosQuantity > kilosQuantity)
 				throw new NotEnoughQuantityException();
 		}
 		return true;
 	}
 
-	public static ProductQuantity computeIncrementResult(double quantityInSack, double quantityInKilo, double kilosPerSack,
-			double incrementQuantityInSack, double incrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException,
-			ZeroKilosPerSackException {
-		ProductQuantity pQuantity = new ProductQuantity(quantityInSack, quantityInKilo, kilosPerSack);
-		if (validIncrement(quantityInSack, quantityInKilo, kilosPerSack, incrementQuantityInSack, incrementQuantityInKilo)) {
-			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
-			double incrementKilosQuantity = totalKilos(incrementQuantityInSack, incrementQuantityInKilo, kilosPerSack);
-			kilosQuantity += incrementKilosQuantity;
-			pQuantity = simplify(kilosQuantity, kilosPerSack);
+	public static ProductQuantity computeIncrementResult(double sacks, double kilosOnDisplay, double kilosPerSack, double sacksIncrement,
+			double kilosOnDisplayIncrement) throws NegativeValueException, NotEnoughQuantityException, ZeroKilosPerSackException {
+		ProductQuantity pQuantity = new ProductQuantity(sacks, kilosOnDisplay, kilosPerSack);
+		if (validIncrement(sacks, kilosOnDisplay, kilosPerSack, sacksIncrement, kilosOnDisplayIncrement)) {
+			pQuantity = new ProductQuantity(sacks + sacksIncrement, kilosOnDisplay + kilosOnDisplayIncrement, kilosPerSack);
 		}
 		return pQuantity;
 	}
 
-	public static ProductQuantity computeDecrementResult(double quantityInSack, double quantityInKilo, double kilosPerSack,
-			double decrementQuantityInSack, double decrementQuantityInKilo) throws NegativeValueException, NotEnoughQuantityException,
-			ZeroKilosPerSackException {
-		ProductQuantity pQuantity = new ProductQuantity(quantityInSack, quantityInKilo, kilosPerSack);
-		if (validDecrement(quantityInSack, quantityInKilo, kilosPerSack, decrementQuantityInSack, decrementQuantityInKilo)) {
-			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
-			double decrementKilosQuantity = totalKilos(decrementQuantityInSack, decrementQuantityInKilo, kilosPerSack);
-			kilosQuantity -= decrementKilosQuantity;
-			pQuantity = simplify(kilosQuantity, kilosPerSack);
+	public static ProductQuantity computeDecrementResult(double sacks, double kilosOnDisplay, double kilosPerSack, double sacksDecrement,
+			double kilosOnDisplayDecrement) throws NegativeValueException, NotEnoughQuantityException, ZeroKilosPerSackException {
+		ProductQuantity pQuantity = new ProductQuantity(sacks, kilosOnDisplay, kilosPerSack);
+		if (validDecrement(sacks, kilosOnDisplay, kilosPerSack, sacksDecrement, kilosOnDisplayDecrement)) {
+			if (kilosOnDisplayDecrement <= kilosOnDisplay) {
+				pQuantity = new ProductQuantity(sacks - sacksDecrement, kilosOnDisplay - kilosOnDisplayDecrement, kilosPerSack);
+			} else {
+				double kilosQuantity = totalKilos(sacks, kilosOnDisplay, kilosPerSack);
+				double decrementKilosQuantity = totalKilos(sacksDecrement, kilosOnDisplayDecrement, kilosPerSack);
+				kilosQuantity -= decrementKilosQuantity;
+				pQuantity = simplify(kilosQuantity, kilosPerSack);
+			}
 		}
 		return pQuantity;
 	}
@@ -395,24 +464,26 @@ public class Product {
 		return (sacks * klsPerSk) + kilos;
 	}
 
-	public static ProductQuantity simplify(double quantityInSack, double quantityInKilo, double kilosPerSack) throws NegativeValueException,
-			ZeroKilosPerSackException {
-		if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
-			double kilosQuantity = totalKilos(quantityInSack, quantityInKilo, kilosPerSack);
-			double rawResult = kilosQuantity / kilosPerSack;
-			// rounded two decimal result
-			double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;
-			double sacks = Math.floor(roundedTwodecimalResult);
-			// double kilos = ((roundedTwodecimalResult -
-			// Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
-			double kilos = kilosQuantity % kilosPerSack;
-			ProductQuantity pq = new ProductQuantity(sacks, kilos, kilosPerSack);
-			return pq;
-		} else {
-			throw new NegativeValueException();
-		}
-	}
-
+	// public static ProductQuantity simplify(double quantityInSack, double
+	// quantityInKilo, double kilosPerSack) throws NegativeValueException,
+	// ZeroKilosPerSackException {
+	// if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
+	// double kilosQuantity = totalKilos(quantityInSack, quantityInKilo,
+	// kilosPerSack);
+	// double rawResult = kilosQuantity / kilosPerSack;
+	// // rounded two decimal result
+	// double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;
+	// double sacks = Math.floor(roundedTwodecimalResult);
+	// // double kilos = ((roundedTwodecimalResult -
+	// // Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
+	// double kilos = kilosQuantity % kilosPerSack;
+	// ProductQuantity pq = new ProductQuantity(sacks, kilos, kilosPerSack);
+	// return pq;
+	// } else {
+	// throw new NegativeValueException();
+	// }
+	// }
+	//
 	public static ProductQuantity simplify(double totalQuantityInKilo, double kilosPerSack) throws NegativeValueException, ZeroKilosPerSackException {
 		if (valid(0d, totalQuantityInKilo, kilosPerSack)) {
 			double rawResult = totalQuantityInKilo / kilosPerSack;
@@ -428,4 +499,5 @@ public class Product {
 			throw new NegativeValueException();
 		}
 	}
+
 }

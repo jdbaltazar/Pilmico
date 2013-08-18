@@ -65,25 +65,26 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-		add(new LoginPanel());
+//		add(new LoginPanel());
 
 		// jd -> pyAmxijgjj7EEhIrn+JgRQ==
 		// mine -> K7H4xFqWVe0bKXypGARJvQ==
 
-//		 try {
-//		 Manager.getInstance().login("manager", "pilmico".toCharArray());
-//		 } catch (Exception e) { // TODO Auto-generated catch block
-//		 e.printStackTrace();
-//		 }
-//		 changeTable(Values.HOME);
+		try {
+			Manager.getInstance().login("manager", "pilmico".toCharArray());
+		} catch (Exception e) { // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-//		 if (val != Values.HOME)
+		 if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
-		// remove(getComponent(0));
+
+		 // remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
 
@@ -678,7 +679,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillProducts() {
 
 		try {
-			String[] headers = { "ID", "Name", "SK", "Kilo", "Price/SK", "Price/Kilo", "Category", "Available?" };
+			String[] headers = { "ID", "Name", "Kls/SK", "SK", "Kg", "Price/SK", "Price/Kg", "Category", "Available?" };
 			List<Product> products = Manager.productManager.getProducts();
 			List<Product> onDisplayFirst = new ArrayList<Product>();
 			List<Product> notOnDisplay = new ArrayList<Product>();
@@ -688,12 +689,13 @@ public class CenterPanel extends SoyPanel {
 			for (Product p : products) {
 				entries[i][0] = p.getId() + "";
 				entries[i][1] = p.getName();
-				entries[i][2] = String.format("%.2f", p.getQuantityInSack());
-				entries[i][3] = String.format("%.2f", p.getQuantityInKilo());
-				entries[i][4] = String.format("%.2f", p.getCurrentPricePerSack());
-				entries[i][5] = String.format("%.2f", p.getCurrentPricePerKilo());
-				entries[i][6] = p.getCategory().getName();
-				entries[i][7] = p.isAvailable() ? "Yes" : "No";
+				entries[i][2] = p.getKilosPerSackDescription();
+				entries[i][3] = String.format("%.2f", p.getSacks());
+				entries[i][4] = String.format("%.2f", p.getKilosOnDisplay());
+				entries[i][5] = String.format("%.2f", p.getCurrentPricePerSack());
+				entries[i][6] = String.format("%.2f", p.getCurrentPricePerKilo());
+				entries[i][7] = p.getCategory().getName();
+				entries[i][8] = p.isAvailable() ? "Yes" : "No";
 				i++;
 
 				if (p.isOnDisplay()) {

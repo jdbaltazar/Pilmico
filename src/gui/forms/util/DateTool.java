@@ -33,6 +33,13 @@ public class DateTool {
 		return cal.getTime();
 	}
 
+	public static Date getDaysBeforeDate(Date date, int days) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, 0 - days);
+		return cal.getTime();
+	}
+
 	public static Date getNoonTimeForDate(Date date) {
 		date = getDateWithoutTime(date);
 		Calendar cal = Calendar.getInstance();
