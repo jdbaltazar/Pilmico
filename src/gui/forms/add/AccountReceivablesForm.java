@@ -3,6 +3,7 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
+import gui.forms.util.SimpleNumericField;
 import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.ViewFormField;
 import gui.popup.SuccessPopup;
@@ -78,7 +79,7 @@ public class AccountReceivablesForm extends SimplePanel {
 	private SoyButton save;
 	private JLabel issuedBy;
 	private MainFormLabel issuedByLabel, amountLabel, dateLabel, customerLabel;
-	private ViewFormField amount;
+	private SimpleNumericField amount;
 
 	private DefaultComboBoxModel model;
 	private JPanel panel;
@@ -148,7 +149,12 @@ public class AccountReceivablesForm extends SimplePanel {
 		amountLabel = new MainFormLabel("Amount:");
 		dateLabel = new MainFormLabel("Date:");
 
-		amount = new ViewFormField("");
+		amount = new SimpleNumericField(10, "");
+		amount.setOpaque(false);
+		amount.setForeground(Color.black);
+		amount.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+		amount.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		amount.setHorizontalAlignment(JLabel.CENTER);
 
 		customerLabel = new MainFormLabel("Customer:");
 
@@ -212,6 +218,9 @@ public class AccountReceivablesForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
+				enableAmountField(false);
+				
 				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
 				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 				alternateRows();
@@ -297,6 +306,9 @@ public class AccountReceivablesForm extends SimplePanel {
 		}
 
 		rowPanel.remove(removedRow);
+		
+		if(rowPanel.size() == 0)
+			enableAmountField(true);
 	}
 
 	private void addComponents() {
@@ -509,9 +521,9 @@ public class AccountReceivablesForm extends SimplePanel {
 
 		}
 
-		if (productsPanel.getComponentCount() == 0) {
+		if (amount.getText().equals("") && productsPanel.getComponentCount() == 0) {
 
-			msg = "Put at least one product ";
+			msg = "Either input an amount OR put at least one product ";
 
 			return false;
 		}
@@ -570,6 +582,11 @@ public class AccountReceivablesForm extends SimplePanel {
 	public void setProductQuantities(double qtySack, double qtyKG) {
 		this.qtySack = qtySack;
 		this.qtyKG = qtyKG;
+	}
+	
+	private void enableAmountField(boolean val){
+		amount.setEnabled(val);
+		amount.setText("");
 	}
 
 }

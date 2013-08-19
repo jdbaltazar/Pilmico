@@ -577,12 +577,12 @@ public class RowPanel extends JPanel {
 		return (Product) object;
 	}
 
-	public double getOnDisplayInSack() {
-		return Double.parseDouble(onDisplaySack.getText());
+	public String getOnDisplayInSack() {
+		return onDisplaySack.getText();
 	}
 
-	public double getOnDisplayInKilo() {
-		return Double.parseDouble(onDisplayKG.getText());
+	public String getOnDisplayInKilo() {
+		return onDisplayKG.getText();
 	}
 
 	public FormField getBankAccount() {

@@ -104,17 +104,17 @@ public class ProductOnDisplayPopup extends JDialog {
 					for (RowPanel rp : rowPanel) {
 						try {
 							Product p = rp.getOnDisplayProduct();
-							p.setQuantity(rp.getOnDisplayInSack(), rp.getOnDisplayInKilo());
+							p.setQuantity(Double.parseDouble(rp.getOnDisplayInSack()), Double.parseDouble(rp.getOnDisplayInKilo()));
 							Manager.productManager.updateProduct(p);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
-					error.setText("");
+
 					dispose();
-					Values.centerPanel.changeTable(Values.PRODUCTS);
 					new SuccessPopup("Update").setVisible(true);
 					Values.mainFrame.dimScreen(false);
+					Values.centerPanel.changeTable(Values.PRODUCTS);
 				} else
 					error.setToolTip(msg);
 			}
@@ -171,9 +171,15 @@ public class ProductOnDisplayPopup extends JDialog {
 
 		for (int i = 0; i < rowPanel.size(); i++) {
 
-			if (Product.totalKilos(rowPanel.get(i).getOnDisplayInSack(), rowPanel.get(i).getOnDisplayInKilo(), rowPanel.get(i).getOnDisplayProduct()
+			/*if (Product.totalKilos(rowPanel.get(i).getOnDisplayInSack(), rowPanel.get(i).getOnDisplayInKilo(), rowPanel.get(i).getOnDisplayProduct()
 					.getKilosPerSack()) > rowPanel.get(i).getOnDisplayProduct().getTotalQuantityInKilo()) {
 				msg = "quantity on display cannot be greater than total quantity kilos in row " + (i + 1);
+				return false;
+			}*/
+			
+			if(rowPanel.get(i).getOnDisplayInSack().equals("") || rowPanel.get(i).getOnDisplayInKilo().equals("")){
+				msg = "Blank field/s found in row " + (i + 1);
+				
 				return false;
 			}
 

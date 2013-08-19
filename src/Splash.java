@@ -57,12 +57,12 @@ public class Splash extends JFrame implements PropertyChangeListener {
 			public void run() {
 				try {
 
-//					 Splash frame = new Splash();
-//					 frame.setVisible(true);
+					 Splash frame = new Splash();
+					 frame.setVisible(true);
 
-					Manager.getInstance();
-					MainFrame mainFrame = new MainFrame();
-					mainFrame.showFrame();
+//					Manager.getInstance();
+//					MainFrame mainFrame = new MainFrame();
+//					mainFrame.showFrame();
 					
 //					new DBPassword().setVisible(true);
 
@@ -134,7 +134,10 @@ public class Splash extends JFrame implements PropertyChangeListener {
 				}
 				// Make random progress.
 				progress += random.nextInt(10);
+				
+				
 				setProgress(Math.min(progress, 100));
+//				System.out.println("progress: "+progress+ " getProgress: "+getProgress());
 			}
 			return null;
 		}

@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -19,13 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import common.entity.accountreceivable.AccountReceivable;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.FormCheckbox;
-import util.JNumericField;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
@@ -45,9 +42,7 @@ public class CustomerForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg;
-
-	private JNumericField ar_balance;
-
+	
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
@@ -64,7 +59,7 @@ public class CustomerForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
-
+		
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
@@ -73,25 +68,18 @@ public class CustomerForm extends SimplePanel {
 
 		error = new ErrorLabel();
 
-		for (int i = 0, y = 0, x1 = 32; i < num; i++, y += 48) {// y+=54
+		int ctr = 0;
+		for (int i = 0, y = 0, x1 = 32; i < num; i++, y += 54) {
 
-			if (i == num - 1) {
-				ar_balance = new JNumericField(Tables.customerFormLabel[i]);
-				ar_balance.setMaxLength(10);
-				ar_balance.setPrecision(2);
-
-				ar_balance.setBounds(x1, 7 + y, 200, 25);
-			} else {
 				fields.add(new FormField(Tables.customerFormLabel[i], 100, Color.white, Color.gray));
-				fields.get(i).setBounds(x1, 7 + y, 200, 25);// 12
+				fields.get(i).setBounds(x1, 12 + y, 200, 25);
 				panel.add(fields.get(i));
-			}
 		}
 
-		clear.setBounds(149, 300, 80, 30);
-		save.setBounds(39, 300, 80, 30);
+		clear.setBounds(149, 287, 80, 30);
+		save.setBounds(39, 287, 80, 30);
 
-		error.setBounds(68, 310, 170, 20);
+		error.setBounds(68, 300, 170, 22);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -103,41 +91,40 @@ public class CustomerForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if (isValidated()) {
-					Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields
-							.get(4).getText(), true);
-					try {
-						Manager.employeePersonManager.addPerson(p);
-						Values.centerPanel.changeTable(Values.CUSTOMERS);
-						new SuccessPopup("Add").setVisible(true);
-						clearFields();
-
-						Values.salesForm.refreshCustomer(true);
-						// Values.supplierForm.refreshCustomer(true);
-						Values.accountReceivablesForm.refreshCustomer(true);
-						Values.discountForm.refreshDropdown(true);
-						Values.arPaymentForm.refreshDropdown(true);
-						Values.caPaymentForm.refreshDropdown(true);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else
+				if(isValidated()){
+				Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields.get(4)
+						.getText(), true);
+				try {
+					Manager.employeePersonManager.addPerson(p);
+					Values.centerPanel.changeTable(Values.CUSTOMERS);
+					new SuccessPopup("Add").setVisible(true);
+					clearFields();
+					
+					Values.salesForm.refreshCustomer(true);
+//					Values.supplierForm.refreshCustomer(true);
+					Values.accountReceivablesForm.refreshCustomer(true);
+					Values.discountForm.refreshDropdown(true);
+					Values.arPaymentForm.refreshDropdown(true);
+					Values.caPaymentForm.refreshDropdown(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				}else
 					error.setToolTip(msg);
 			}
 		});
 
-		panel.add(ar_balance);
-
 		panel.add(clear);
 		panel.add(save);
 
+		
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(10, 35, 270, 340);
+		scrollPane.setBounds(10, 42, 270, 340);
 
 		add(error);
 		add(scrollPane);
@@ -153,24 +140,17 @@ public class CustomerForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if (fields.get(0).getText().equals("")) {
-
+		if(fields.get(0).getText().equals("")){
+			
 			msg = "Last Name is required";
-
+			
 			return false;
 		}
-
-		if (fields.get(1).getText().equals("")) {
-
+		
+		if(fields.get(1).getText().equals("")){
+			
 			msg = "First Name is required";
-
-			return false;
-		}
-
-		if (ar_balance.getText().equals("")) {
-
-			msg = "Initial A_R Balance is required";
-
+			
 			return false;
 		}
 
