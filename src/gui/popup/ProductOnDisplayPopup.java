@@ -54,15 +54,12 @@ public class ProductOnDisplayPopup extends JDialog {
 
 	private ErrorLabel error;
 	private String msg;
-	
+
 	private boolean done = false;
 
 	public ProductOnDisplayPopup() {
 		init();
 		addComponents();
-		
-//		fillTable();
-//		Values.productOnDisplayPopup = this;
 	}
 
 	private void init() {
@@ -202,7 +199,6 @@ public class ProductOnDisplayPopup extends JDialog {
 
 	public void fillTable() {
 
-		
 		rowPanel.clear();
 		onDisplayPanel.removeAll();
 
@@ -211,20 +207,22 @@ public class ProductOnDisplayPopup extends JDialog {
 			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
 			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
 		}
-		
-		/*for (int i = 0; i < 28; i ++) {
-			rowPanel.add(new RowPanel(null, onDisplayPanel, Tables.PRODUCTS));
-			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
-			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
-		}*/
+
+		/*
+		 * for (int i = 0; i < 28; i ++) { rowPanel.add(new RowPanel(null,
+		 * onDisplayPanel, Tables.PRODUCTS));
+		 * onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
+		 * onDisplayPanel.setPreferredSize(new Dimension(330,
+		 * onDisplayPanel.getComponentCount() * ROW_HEIGHT)); }
+		 */
 
 		done = true;
-		
+
 		onDisplayPanel.updateUI();
 		onDisplayPanel.revalidate();
 	}
-	
-	public boolean isDone(){
+
+	public boolean isDone() {
 		return done;
 	}
 

@@ -53,20 +53,20 @@ public class EditCustomerForm extends EditFormPanel {
 	private JComboBox employeeCombo;
 	private JTextField employeesField;
 	private DefaultComboBoxModel model;
-	
+
 	private DefaultEntryLabel ar_balance;
 	private TableHeaderLabel dateLabel, amountLabel;
-	
+
 	private ArrayList<ISRowPanel> rows = new ArrayList<ISRowPanel>();
 	private JScrollPane ar_list_pane;
 	private JPanel ar_panel;
 	private SubTableHeaderLabel ar;
-	
+
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String msg="";
+	private String msg = "";
 
 	private final int num = Tables.customerFormLabel.length;
 
@@ -86,37 +86,38 @@ public class EditCustomerForm extends EditFormPanel {
 		fields.get(2).setText(customer.getMiddleName());
 		fields.get(3).setText(customer.getAddress());
 		fields.get(4).setText(customer.getContactNo());
-		
-//		customer.getAccountReceivables().get
-		/*int i = 0;
-		for (DiscountIssue disc : discount) {
-			rows.add(new ISRowPanel(disc, ar_panel, Values.DISCOUNTS));
+		ar_balance.setText(String.format("%.2f", customer.getTotalAccountReceivables()));
+		ar_balance.setToolTip(String.format("%.2f", customer.getTotalAccountReceivables()));
+
+		int i = 0;
+		for (AccountReceivable ar : customer.getAccountReceivables()) {
+			rows.add(new ISRowPanel(ar, ar_panel, Values.ACCOUNT_RECEIVABLES));
 			ar_panel.add(rows.get(i));
 			ar_panel.setPreferredSize(new Dimension(250, ar_panel.getComponentCount() * ROW_HEIGHT));
 			ar_panel.updateUI();
 			ar_panel.revalidate();
 			i++;
-		}*/
+		}
+
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		edit = new SoyButton("Edit");
-		
+
 		ar = new SubTableHeaderLabel("Account Receivables", 2);
-		
-		ar_balance = new DefaultEntryLabel("24650", true);
-		
+
+		ar_balance = new DefaultEntryLabel("", true);
+
 		dateLabel = new TableHeaderLabel("Date");
 		amountLabel = new TableHeaderLabel("Amount");
-		
+
 		ar_panel = new JPanel();
 		ar_panel.setLayout(null);
 		ar_panel.setOpaque(false);
@@ -130,8 +131,8 @@ public class EditCustomerForm extends EditFormPanel {
 
 		error = new ErrorLabel();
 
-		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 65) {//290
-			
+		for (int i = 0, y = 0, x1 = 20; i < num; i++, y += 65) {// 290
+
 			if (i == num - 1) {
 				y = 0;
 				x1 = 265;
@@ -155,14 +156,16 @@ public class EditCustomerForm extends EditFormPanel {
 				panel.add(labels.get(i));
 			}
 		}
-		
+
 		ar.setBounds(265, 65, 250, 17);
 		dateLabel.setBounds(ar.getX() - 1, ar.getY() + ar.getHeight(), 150, 20);
-		amountLabel.setBounds(ar.getX() + dateLabel.getWidth() - 2,
-				dateLabel.getY(), ar.getWidth() - dateLabel.getWidth() + 3, 20);
-		ar_list_pane.setBounds(dateLabel.getX() + 1, dateLabel.getY() + dateLabel.getHeight() - 1,  dateLabel.getWidth()+ amountLabel.getWidth()
-				+ 14 /*SCROLLBAR WIDTH = 16 */, 210);
-		
+		amountLabel.setBounds(ar.getX() + dateLabel.getWidth() - 2, dateLabel.getY(), ar.getWidth() - dateLabel.getWidth() + 3, 20);
+		ar_list_pane.setBounds(dateLabel.getX() + 1, dateLabel.getY() + dateLabel.getHeight() - 1,
+				dateLabel.getWidth() + amountLabel.getWidth() + 14 /*
+																					 * SCROLLBAR
+																					 * WIDTH = 16
+																					 */, 210);
+
 		edit.setBounds(360, 355, 80, 30);
 
 		error.setBounds(510, 335, 200, 22);
@@ -194,12 +197,12 @@ public class EditCustomerForm extends EditFormPanel {
 		});
 
 		panel.add(ar_balance);
-		
+
 		panel.add(ar);
 		panel.add(dateLabel);
 		panel.add(amountLabel);
 		panel.add(ar_list_pane);
-		
+
 		add(edit);
 
 		scrollPane.setViewportView(panel);
@@ -207,7 +210,7 @@ public class EditCustomerForm extends EditFormPanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(130, 11, 550, 330);//w250,x272
+		scrollPane.setBounds(130, 11, 550, 330);// w250,x272
 
 		add(error);
 		add(scrollPane);
@@ -216,17 +219,17 @@ public class EditCustomerForm extends EditFormPanel {
 
 	private boolean isValidated() {
 
-		if(fields.get(0).getText().equals("")){
-			
+		if (fields.get(0).getText().equals("")) {
+
 			msg = "Last Name is required";
-			
+
 			return false;
 		}
-		
-		if(fields.get(1).getText().equals("")){
-			
+
+		if (fields.get(1).getText().equals("")) {
+
 			msg = "First Name is required";
-			
+
 			return false;
 		}
 

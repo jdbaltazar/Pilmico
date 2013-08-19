@@ -320,9 +320,9 @@ public class EditProductPanel extends EditFormPanel {
 
 		fields.get(0).setText(product.getName());
 		fields.get(1).setText(product.getDescription());
-		numfields.get(0).setText(String.format("%.2f", product.getKilosPerSack()));
-		numfields.get(1).setText(String.format("%.2f", product.getSacks()));
-		numfields.get(2).setText(String.format("%.2f", product.getKilosOnDisplay()));
+		numfields.get(0).setText(product.getKilosPerSackDescription());
+		numfields.get(1).setText(product.getSacksDescription());
+		numfields.get(2).setText(product.getKilosOnDisplayDescription());
 		// numfields.get(3).setText(String.format("%.2f",
 		// product.getQuantityOnDisplayInSack()));
 		// numfields.get(4).setText(String.format("%.2f",

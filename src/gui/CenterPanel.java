@@ -65,26 +65,26 @@ public class CenterPanel extends SoyPanel {
 
 	private void addComponents() {
 
-//		add(new LoginPanel());
+		add(new LoginPanel());
 
 		// jd -> pyAmxijgjj7EEhIrn+JgRQ==
 		// mine -> K7H4xFqWVe0bKXypGARJvQ==
 
-		try {
-			Manager.getInstance().login("manager", "pilmico".toCharArray());
-		} catch (Exception e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		changeTable(Values.HOME);
+		// try {
+		// Manager.getInstance().login("manager", "pilmico".toCharArray());
+		// } catch (Exception e) { // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		 if (val != Values.HOME)
+		// if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
 
-		 // remove(getComponent(0));
+		// remove(getComponent(0));
 
 		// System.out.println("component count: "+getComponentCount());
 
@@ -139,7 +139,7 @@ public class CenterPanel extends SoyPanel {
 			break;
 
 		case Values.CUSTOMERS:
-			fillProfiles();
+			fillCustomers();
 			break;
 
 		case Values.EMPLOYEES:
@@ -600,9 +600,9 @@ public class CenterPanel extends SoyPanel {
 
 	}
 
-	private void fillProfiles() {
+	private void fillCustomers() {
 		try {
-			String[] headers = { "ID", "Name", "Address", "Contact No." };
+			String[] headers = { "ID", "Name", "Address", "Contact No.", "Balance" };
 
 			List<Person> customers = Manager.employeePersonManager.getCustomersOnly();
 
@@ -615,6 +615,7 @@ public class CenterPanel extends SoyPanel {
 				entries[i][1] = p.getFirstPlusLastName();
 				entries[i][2] = p.getAddress();
 				entries[i][3] = p.getContactNo();
+				entries[i][4] = String.format("%.2f", p.getTotalAccountReceivables());
 				i++;
 			}
 			add(new TableUtilPanel(new TablePanel(entries, headers, customers, Tables.CUSTOMERS), Tables.CUSTOMERS), BorderLayout.CENTER);
@@ -712,10 +713,10 @@ public class CenterPanel extends SoyPanel {
 			}
 
 			// on displayPopup
-//			if (Values.productOnDisplayPopup == null)
-//				new ProductOnDisplayPopup();
-//
-//			Values.productOnDisplayPopup.setProducts(onDisplayFirst);
+			// if (Values.productOnDisplayPopup == null)
+			// new ProductOnDisplayPopup();
+			//
+			// Values.productOnDisplayPopup.setProducts(onDisplayFirst);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

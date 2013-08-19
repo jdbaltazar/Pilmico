@@ -241,7 +241,7 @@ public class Product {
 		return s;
 	}
 
-	public String getKilosDescription() {
+	public String getKilosOnDisplayDescription() {
 		String s = "";
 		if (kilosOnDisplay == 0d) {
 			s = "0";
