@@ -23,6 +23,7 @@ import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.FormCheckbox;
+import util.JNumericField;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
@@ -43,10 +44,12 @@ public class CustomerForm extends SimplePanel {
 	private ErrorLabel error;
 	private String msg;
 	
+	private JNumericField ar_balance;
+	
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
-	private final int num = Tables.profileFormLabel.length;
+	private final int num = Tables.customerFormLabel.length;
 
 	public CustomerForm() {
 		super("Add Customer");
@@ -67,19 +70,27 @@ public class CustomerForm extends SimplePanel {
 		scrollPane = new JScrollPane();
 
 		error = new ErrorLabel();
-
-		int ctr = 0;
-		for (int i = 0, y = 0, x1 = 32; i < num; i++, y += 54) {
-
-				fields.add(new FormField(Tables.profileFormLabel[i], 100, Color.white, Color.gray));
-				fields.get(i).setBounds(x1, 12 + y, 200, 25);
+		
+		for (int i = 0, y = 0, x1 = 32; i < num; i++, y += 48) {//y+=54
+			
+			if (i == num - 1) {
+				ar_balance = new JNumericField(Tables.customerFormLabel[i]);
+				ar_balance.setMaxLength(10);
+				ar_balance.setPrecision(2);
+				
+				ar_balance.setBounds(x1, 7 + y, 200, 25);
+			} else {
+				fields.add(new FormField(Tables.customerFormLabel[i], 100,
+						Color.white, Color.gray));
+				fields.get(i).setBounds(x1, 7 + y, 200, 25);// 12
 				panel.add(fields.get(i));
+			}
 		}
 
-		clear.setBounds(149, 287, 80, 30);
-		save.setBounds(39, 287, 80, 30);
+		clear.setBounds(149, 300, 80, 30);
+		save.setBounds(39, 300, 80, 30);
 
-		error.setBounds(68, 300, 170, 22);
+		error.setBounds(68, 310, 170, 20);
 
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -114,6 +125,8 @@ public class CustomerForm extends SimplePanel {
 					error.setToolTip(msg);
 			}
 		});
+		
+		panel.add(ar_balance);
 
 		panel.add(clear);
 		panel.add(save);
@@ -124,7 +137,7 @@ public class CustomerForm extends SimplePanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(10, 42, 270, 340);
+		scrollPane.setBounds(10, 35, 270, 340);
 
 		add(error);
 		add(scrollPane);
@@ -154,6 +167,13 @@ public class CustomerForm extends SimplePanel {
 			return false;
 		}
 
+		if(ar_balance.getText().equals("")){
+			
+			msg = "Initial A_R Balance is required";
+			
+			return false;
+		}
+		
 		return true;
 	}
 

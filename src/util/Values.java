@@ -88,7 +88,7 @@ public class Values {
 
 	public static LinePlot linePlot;
 
-	public static ProductOnDisplayPopup productOnDisplayPopup;
+	//public static ProductOnDisplayPopup productOnDisplayPopup;
 
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;

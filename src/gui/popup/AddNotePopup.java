@@ -115,7 +115,7 @@ public class AddNotePopup extends JDialog {
 		 * (Exception e1) { e1.printStackTrace(); }
 		 */
 
-		close = new SBButton("close.png", "close.png", "Close");
+		close = new SBButton("close.png", "close.png", "Close", true);
 		close.setBounds(245, 10, 24, 24);
 		close.addActionListener(new ActionListener() {
 

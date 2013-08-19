@@ -66,14 +66,14 @@ public class TopPanel extends SoyPanel {
 
 		icon = new ImageIcon("images/search.png");
 
-		trialLabel = new ViewFormLabel("Trial period lasts until 19 Aug 2013 only.");
+		trialLabel = new ViewFormLabel("Trial period lasts until 31 Aug 2013 only.");
 		trialLabel.setForeground(Color.decode("#E62E00"));
 
-		close2 = new SBButton("dialog_close.png", "dialog_close.png", "Close");
-		close = new SBButton("exit.png", "exit2.png", "Close");
-		minimize = new SBButton("min.png", "min2.png", "Minimize");
-		store_info = new SBButton("header_2.png", "header_2.png", "");
-		tools = new SBButton("tools_3.png", "tools_3.png", "Backup / Recover");
+		close2 = new SBButton("dialog_close.png", "dialog_close.png", "Close", true);
+		close = new SBButton("exit.png", "exit2.png", "Close", true);
+		minimize = new SBButton("min.png", "min2.png", "Minimize", true);
+		store_info = new SBButton("header_2.png", "header_2.png", "", true);
+		tools = new SBButton("tools_3.png", "tools_3.png", "Backup / Recover", true);
 
 		cashINLabel = new JLabel("Cash IN:");
 		cashINLabel.setHorizontalAlignment(SwingConstants.RIGHT);

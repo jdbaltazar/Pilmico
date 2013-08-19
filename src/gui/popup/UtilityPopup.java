@@ -117,7 +117,7 @@ public class UtilityPopup extends JDialog {
 
 		panel.setOpaque(false);
 
-		close = new SBButton("dialog_close.png", "dialog_close.png", "Close");
+		close = new SBButton("dialog_close.png", "dialog_close.png", "Close", true);
 
 		field = new FormField("", 10);
 		numField = new JNumericField("Input previous cash on hand");
