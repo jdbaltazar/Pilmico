@@ -40,12 +40,13 @@ public class RowPanel extends JPanel {
 	private JComboBox productsCombo, feesCombo, expensesCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
 	private JTextField productsComboField, expensesComboField, feesComboField;
-	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount, onDisplaySack, onDisplayKG;
+	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount, onDisplayKG;
 
-	private ViewFormField kgpersack, priceSack, priceKG, productOnDisplay;
+	private ViewFormField kgpersack, priceSack, priceKG, productOnDisplay, onDisplaySack;
 	private JButton deleteRow, addRow;
 	private JPanel row;
 	private FormField bankAccount;
+	private SBButton sackConvert;
 
 	private RowJLabel date, amount;
 
@@ -54,6 +55,7 @@ public class RowPanel extends JPanel {
 	private int mode;
 	private String label = "";
 	private JPanel srcPanel = new JPanel();
+	private Product product;
 
 	public RowPanel(JPanel srcPanel, String label) {
 		this.srcPanel = srcPanel;
@@ -289,37 +291,65 @@ public class RowPanel extends JPanel {
 
 	private void addOnDisplayRow() {
 
-		Product product = (Product) object;
+		 product = (Product) object;
+		
+		 sackConvert = new SBButton("convert.png", "convert.png", "Display one (1) sack");
+		 
+		 productOnDisplay = new ViewFormField(product.getName());
+		
+		 onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
+		 onDisplayKG.setPrecision(2);
+		 onDisplayKG.setText(product.getKilosOnDisplay()+""); 
+//				 == 0 ? "0" :
+//		 String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+//		 onDisplayKG.setToolTipText(product.getQuantityDescription());
+		
+		 onDisplaySack = new ViewFormField(product.getSacks()+"");
+//		 onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" :
+//		 String.format("%.2f", product.getQuantityOnDisplayInSack()));
+//		 onDisplaySack.setToolTipText(product.getQuantityDescription());
+		 
+		 
+		 productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
+		 onDisplaySack.setBounds(209, 5, 60, 20);
+		 sackConvert.setBounds(280, 7, 16, 16);
+		 onDisplayKG.setBounds(301, 5, 60, 20); // +33//298
+//		 sackConvert.setBounds(360, 7, 16, 16);
+		
+		 row.add(productOnDisplay);
+		 row.add(onDisplaySack);
+		 row.add(sackConvert);
+		 row.add(onDisplayKG);
+		 
+		 if(product.getSacks() < 1d)
+			 sackConvert.setEnabled(false);
+		 
+		 sackConvert.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				double val = Double.parseDouble(onDisplaySack.getText()) - 1;
+				onDisplaySack.setToolTip(onDisplaySack, val + "");
+				
+				double val2 = Double.parseDouble(onDisplayKG.getText()) + product.getKilosPerSack();
+				onDisplayKG.setText(val2+"");
+				
+				if(Double.parseDouble(onDisplaySack.getText()) == 0d)
+					 sackConvert.setEnabled(false);
+				
+			}
+		});
+		
+		 // row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+		 // Color.LIGHT_GRAY));
+		
+		if (product.getKilosOnDisplay() == 0d) {
+			row.setBackground(Color.decode("#E0EBEB"));
+		} else
+			row.setBackground(Color.decode("#BFFF80"));
 
-		productOnDisplay = new ViewFormField(product.getName());
-
-		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		onDisplayKG.setPrecision(2);
-		onDisplayKG.setText(product.getKilosOnDisplayDescription());
-		onDisplayKG.setToolTipText(product.getQuantityDescription());
-
-		onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
-		onDisplaySack.setPrecision(2);
-		onDisplaySack.setText(product.getSacksDescription());
-		onDisplaySack.setToolTipText(product.getQuantityDescription());
-
-		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
-		onDisplaySack.setBounds(209, 5, 60, 20);
-		onDisplayKG.setBounds(298, 5, 60, 20); // +33
-
-		row.add(productOnDisplay);
-		row.add(onDisplaySack);
-		row.add(onDisplayKG);
-
-		// row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-		// Color.LIGHT_GRAY));
-
-		// if (product.getQuantityOnDisplayInKilo() == 0d
-		// || product.getQuantityOnDisplayInKilo() == 0d) {
-		// row.setBackground(Color.decode("#E0EBEB"));
-		// } else
-		row.setBackground(Color.decode("#BFFF80"));
-		//
 		add(row);
 	}
 

@@ -127,7 +127,7 @@ public class ProductOnDisplayPopup extends JDialog {
 					// new SuccessPopup("Update").setVisible(true);
 					// Values.mainFrame.dimScreen(false);
 				} else
-					error.setText(msg);
+					error.setToolTip(msg);
 			}
 		});
 		update.setBounds(185, 212, 80, 30);
@@ -184,7 +184,7 @@ public class ProductOnDisplayPopup extends JDialog {
 
 			if (Product.totalKilos(rowPanel.get(i).getOnDisplayInSack(), rowPanel.get(i).getOnDisplayInKilo(), rowPanel.get(i).getOnDisplayProduct()
 					.getKilosPerSack()) > rowPanel.get(i).getOnDisplayProduct().getTotalQuantityInKilo()) {
-				msg = "quantity on display cannot be greater than overall quantity in row " + (i + 1);
+				msg = "quantity on display cannot be greater than total quantity kilos in row " + (i + 1);
 				return false;
 			}
 

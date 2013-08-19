@@ -65,11 +65,13 @@ public class EditProductPanel extends EditFormPanel {
 	private ErrorLabel error;
 
 	private BalloonTip balloonTip;
+	
+	private SBButton sackConvert;
 
 	private int y1 = 35, y2 = 20, y3 = 76;//62
 
 	private Product product;
-
+	
 	private JPanel formPanel;
 	private JScrollPane scrollPane;
 
@@ -138,6 +140,9 @@ public class EditProductPanel extends EditFormPanel {
 
 	private void addComponents() {
 
+//		sackConvert = new SBButton("transfer.png", "transfer.png", "Display one (1) sack");
+		sackConvert = new SBButton("convert.png", "convert.png", "Display one (1) sack");
+		
 		edit = new SoyButton("Edit");
 		int fieldsCtr = 0, numFieldsCtr = 0, labelsCtr = 0;
 
@@ -174,6 +179,11 @@ public class EditProductPanel extends EditFormPanel {
 
 				numFieldsCtr++;
 				labelsCtr++;
+				
+				
+				if(i == 5){
+					sackConvert.setBounds(x + 130, y2 + y - 3, 16, 16);
+				}
 			}
 
 			if (i == 2)
@@ -197,6 +207,7 @@ public class EditProductPanel extends EditFormPanel {
 			// 3,4,8,9,11
 
 		}
+		
 
 		edit.setBounds(367, 348, 80, 30);
 
@@ -266,6 +277,7 @@ public class EditProductPanel extends EditFormPanel {
 		add(edit);
 		add(scrollpane);
 
+//		formPanel.add(sackConvert);
 		formPanel.add(cbox1);
 		formPanel.add(cbox2);
 		formPanel.add(category);
