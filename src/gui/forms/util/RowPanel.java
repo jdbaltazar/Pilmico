@@ -209,7 +209,6 @@ public class RowPanel extends JPanel {
 		kgpersack = new ViewFormField("");
 		priceKG = new ViewFormField("");
 		priceSack = new ViewFormField("");
-		
 
 		feeAmount = new JNumericField(10, JNumericField.DECIMAL, true);
 		feeAmount.setText("0");
@@ -231,11 +230,11 @@ public class RowPanel extends JPanel {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (productsCombo.getSelectedItem() != null) {
 					Product p = (Product) productsCombo.getSelectedItem();
-					
+
 					kgpersack.setToolTip(kgpersack, p.getKilosPerSack() + "");
 					priceSack.setToolTip(priceSack, String.format("%.2f", p.getCurrentPricePerSack()) + "");
 					priceKG.setToolTip(priceKG, String.format("%.2f", p.getCurrentPricePerKilo()) + "");
-					
+
 					quantitySack.setToolTipText(p.getQuantityDescription());
 					quantityKG.setToolTipText(p.getQuantityDescription());
 
@@ -468,12 +467,12 @@ public class RowPanel extends JPanel {
 
 		quantitySack.setBounds(10, 7, 52, 20);
 		quantityKG.setBounds(87, 7, 52, 20);
-		
-//		kgpersack.setBounds(167, 7, 57, 20);
-//
-//		priceSack.setBounds(167, 7, 57, 20);
-//		priceKG.setBounds(249, 7, 57, 20);
-		
+
+		// kgpersack.setBounds(167, 7, 57, 20);
+		//
+		// priceSack.setBounds(167, 7, 57, 20);
+		// priceKG.setBounds(249, 7, 57, 20);
+
 		kgpersack.setBounds(152, 7, 50, 20);
 
 		priceSack.setBounds(202, 7, 85, 20);
@@ -547,18 +546,18 @@ public class RowPanel extends JPanel {
 	}
 
 	public double getQuantityInSack() {
-		
-		if(quantitySack.getText().equals(""))
+
+		if (quantitySack.getText().equals(""))
 			return 0d;
-			
+
 		return Double.parseDouble(quantitySack.getText());
 	}
 
 	public double getQuantityInKilo() {
-		
-		if(quantityKG.getText().equals(""))
+
+		if (quantityKG.getText().equals(""))
 			return 0d;
-		
+
 		return Double.parseDouble(quantityKG.getText());
 	}
 
