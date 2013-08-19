@@ -108,13 +108,6 @@ public class CustomerForm extends SimplePanel {
 							.get(4).getText(), true);
 					try {
 						Manager.employeePersonManager.addPerson(p);
-						double balance = Double.parseDouble(fields.get(5).getText());
-						if (balance != 0d) {
-							AccountReceivable ar = new AccountReceivable(new Date(), p, Manager.loggedInAccount);
-							ar.setBalance(balance);
-							Manager.accountReceivableManager.addAccountReceivable(ar);
-						}
-
 						Values.centerPanel.changeTable(Values.CUSTOMERS);
 						new SuccessPopup("Add").setVisible(true);
 						clearFields();
