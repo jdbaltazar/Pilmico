@@ -97,7 +97,7 @@ public class RowPanel extends JPanel {
 		row.setLayout(null);
 		row.setBackground(Color.decode("#FFFFE6"));
 
-		deleteRow = new SBButton("cancel.png", "cancel.png", "Remove");
+		deleteRow = new SBButton("cancel.png", "cancel.png", "Remove", true);
 
 		try {
 			List<Product> products = new ArrayList<Product>();

@@ -86,18 +86,20 @@ public class EditCustomerForm extends EditFormPanel {
 		fields.get(2).setText(customer.getMiddleName());
 		fields.get(3).setText(customer.getAddress());
 		fields.get(4).setText(customer.getContactNo());
-		ar_balance.setText(String.format("%.2f", customer.getTotalAccountReceivables()));
+
 		ar_balance.setToolTip(String.format("%.2f", customer.getTotalAccountReceivables()));
 
 		int i = 0;
 		for (AccountReceivable ar : customer.getAccountReceivables()) {
-			rows.add(new ISRowPanel(ar, ar_panel, Values.ACCOUNT_RECEIVABLES));
+			rows.add(new ISRowPanel(ar, ar_panel, Values.CUSTOMERS));
 			ar_panel.add(rows.get(i));
 			ar_panel.setPreferredSize(new Dimension(250, ar_panel.getComponentCount() * ROW_HEIGHT));
 			ar_panel.updateUI();
 			ar_panel.revalidate();
 			i++;
 		}
+		
+		alternateRows(rows);
 
 	}
 
@@ -125,6 +127,7 @@ public class EditCustomerForm extends EditFormPanel {
 		ar_list_pane = new JScrollPane(ar_panel);
 
 		ar_list_pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		ar_list_pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		ar_list_pane.setOpaque(false);
 		ar_list_pane.getViewport().setOpaque(false);

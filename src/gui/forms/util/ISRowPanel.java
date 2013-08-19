@@ -49,7 +49,7 @@ public class ISRowPanel extends JPanel {
 	private Object object, object2;
 	private Color rowBkgrndColor;
 	private DiscountIssue discount;
-	private Person person;
+	private AccountReceivable accountReceivable;
 //	private JXLabel jxlabel;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
@@ -363,11 +363,11 @@ public class ISRowPanel extends JPanel {
 	
 	private void drawCustomerA_RRow() {
 
-		person = (Person) object;
-		formField.add(new ViewFormField(""));
+		accountReceivable = (AccountReceivable) object;
+		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate())));
 		formField.get(formField.size() - 1).setBounds(0, 0,150, ROW_HEIGHT);
 
-		formField.add(new ViewFormField(""));
+		formField.add(new ViewFormField(accountReceivable.getAccountReceivablesAmount()+""));
 		formField.get(formField.size() - 1).setBounds(150, 0, 102, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
