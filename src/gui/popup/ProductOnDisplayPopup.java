@@ -100,32 +100,21 @@ public class ProductOnDisplayPopup extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent m) {
 
-				// <<<<<<< HEAD
 				if (isValidated()) {
-					/*
-					 * for (RowPanel rp : rowPanel) { // BETTER code here Product p =
-					 * rp.getOnDisplayProduct();
-					 * p.setQuantityOnDisplayInSack(rp.getOnDisplayInSack());
-					 * p.setQuantityOnDisplayInKilo(rp.getOnDisplayInKilo()); try {
-					 * Manager.productManager.updateProduct(p); } catch (Exception e)
-					 * { e.printStackTrace(); } =======
-					 */
-					// for (RowPanel rp : rowPanel) {
-					// try {
-					// Product p = rp.getOnDisplayProduct();
-					// p.setQuantityOnDisplay(rp.getOnDisplayInSack(),
-					// rp.getOnDisplayInKilo());
-					// Manager.productManager.updateProduct(p);
-					// } catch (Exception e) {
-					// e.printStackTrace();
-					// // >>>>>>> refs/remotes/origin/master
-					// }
-					// }
-					// error.setText("");
-					// dispose();
-					// Values.centerPanel.changeTable(Values.PRODUCTS);
-					// new SuccessPopup("Update").setVisible(true);
-					// Values.mainFrame.dimScreen(false);
+					for (RowPanel rp : rowPanel) {
+						try {
+							Product p = rp.getOnDisplayProduct();
+							p.setQuantity(rp.getOnDisplayInSack(), rp.getOnDisplayInKilo());
+							Manager.productManager.updateProduct(p);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					error.setText("");
+					dispose();
+					Values.centerPanel.changeTable(Values.PRODUCTS);
+					new SuccessPopup("Update").setVisible(true);
+					Values.mainFrame.dimScreen(false);
 				} else
 					error.setToolTip(msg);
 			}
