@@ -66,9 +66,7 @@ public class EditProductPanel extends EditFormPanel {
 
 	private BalloonTip balloonTip;
 
-	private int y1 = 35, y2 = 20, y3 = 62;
-
-	private String name, unitSellingPrice, unitPurchasePrice, unitsOnStock, alertOnQuantity;
+	private int y1 = 35, y2 = 20, y3 = 76;//62
 
 	private Product product;
 
@@ -136,18 +134,6 @@ public class EditProductPanel extends EditFormPanel {
 			}
 
 		});
-		/*
-		 * try { List<Unit> units = Manager.itemManager.getUnits(); List<Category>
-		 * categories = Manager.itemManager.getCategories(); List<ItemCondition>
-		 * conditions = Manager.itemManager .getConditions();
-		 * 
-		 * unit = new FormDropdown(units.toArray()); category = new
-		 * FormDropdown(categories.toArray()); condition = new
-		 * FormDropdown(conditions.toArray());
-		 * 
-		 * } catch (Exception e) { e.printStackTrace(); }
-		 */
-
 	}
 
 	private void addComponents() {
@@ -157,12 +143,12 @@ public class EditProductPanel extends EditFormPanel {
 
 		for (int i = 0, x = 5, y = 0; i < num; i++, y += y3) {
 
-			if (i == 4) {
+			if (i == 3) {//4
 				x += 230;
 				y = 0;
 			}
 
-			if (i == 9) {
+			if (i == 7) {
 				x += 230;
 				y = 0;
 			}
@@ -172,19 +158,19 @@ public class EditProductPanel extends EditFormPanel {
 				labels.add(new FormLabel(Tables.productFormLabel[i]));
 
 				fields.get(fieldsCtr).setBounds(x, y1 + y, 170, 25);
-				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+				labels.get(labelsCtr).setBounds(x, y2 + y, 170, 15);
 
 				fieldsCtr++;
 				labelsCtr++;
 
 			}
 
-			if (i >= 3 && i <= 9 || i == num - 1) {
+			if (i >= 3 && i <= 7) {
 				numfields.add(new SimpleNumericField(10, " "));
 				labels.add(new FormLabel(Tables.productFormLabel[i]));
 
 				numfields.get(numFieldsCtr).setBounds(x, y1 + y, 170, 25);
-				labels.get(labelsCtr).setBounds(x, y2 + y, 120, 15);
+				labels.get(labelsCtr).setBounds(x, y2 + y, 170, 15);
 
 				numFieldsCtr++;
 				labelsCtr++;
@@ -192,10 +178,10 @@ public class EditProductPanel extends EditFormPanel {
 
 			if (i == 2)
 				cbox1.setBounds(x, y1 + y, 170, 25);
-			if (i == 11)
+			if (i == 9)
 				cbox2.setBounds(x, y1 + y, 170, 25);
 
-			if (i == 10) {
+			if (i == 8) {
 
 				category.setBounds(x, y1 + y, 170, 25);
 
@@ -239,8 +225,8 @@ public class EditProductPanel extends EditFormPanel {
 						product.setQuantity(Double.parseDouble(numfields.get(1).getText()), Double.parseDouble(numfields.get(2).getText()));
 //						product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
 
-						double pricePerSack = Double.parseDouble(numfields.get(5).getText());
-						double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
+						double pricePerSack = Double.parseDouble(numfields.get(3).getText());
+						double pricePerKilo = Double.parseDouble(numfields.get(4).getText());
 
 						// check if price is the same with old
 						if (pricePerSack != product.getCurrentPricePerSack() || pricePerKilo != product.getCurrentPricePerKilo()) {
@@ -291,7 +277,7 @@ public class EditProductPanel extends EditFormPanel {
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		scrollPane.setBounds(80, 10, 650, 330);
+		scrollPane.setBounds(80, 20, 650, 310);
 
 		add(scrollPane);
 	}
@@ -341,18 +327,18 @@ public class EditProductPanel extends EditFormPanel {
 		// product.getQuantityOnDisplayInSack()));
 		// numfields.get(4).setText(String.format("%.2f",
 		// product.getQuantityOnDisplayInKilo()));
-		numfields.get(5).setText(String.format("%.2f", product.getCurrentPricePerSack()));
-		numfields.get(5).setToolTipText(
+		numfields.get(3).setText(String.format("%.2f", product.getCurrentPricePerSack()));
+		numfields.get(3).setToolTipText(
 				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
-		numfields.get(6).setText(String.format("%.2f", product.getCurrentPricePerKilo()));
-		numfields.get(6).setToolTipText(
+		numfields.get(4).setText(String.format("%.2f", product.getCurrentPricePerKilo()));
+		numfields.get(4).setToolTipText(
 				"Updated on " + DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(product.getCurrentPrice().getDateUpdated()));
 		// fields.get(fields.size() - 1).setText(String.format("%.2f",
 		// product.getAlertOnQuantity()));
 
 		cbox1.setSelected(product.isAvailable());
 		// cbox2.setSelected(product.alertUsingSack());
-		numfields.get(7).setText("0.00");
+//		numfields.get(7).setText("0.00");
 
 		int total = category.getItemCount();
 		while (total > 0) {
@@ -388,7 +374,7 @@ public class EditProductPanel extends EditFormPanel {
 		}*/
 
 		// on display in kilos
-		if (product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(4).getText())) {
+		if (product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(2).getText())) {
 
 			msg = "kilos on display already exceeds the total quantity in kilos (" + product.getTotalQuantityInKilo() + ") ";
 

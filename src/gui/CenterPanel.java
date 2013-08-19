@@ -712,10 +712,10 @@ public class CenterPanel extends SoyPanel {
 			}
 
 			// on displayPopup
-			if (Values.productOnDisplayPopup == null)
-				new ProductOnDisplayPopup();
-
-			Values.productOnDisplayPopup.setProducts(onDisplayFirst);
+//			if (Values.productOnDisplayPopup == null)
+//				new ProductOnDisplayPopup();
+//
+//			Values.productOnDisplayPopup.setProducts(onDisplayFirst);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

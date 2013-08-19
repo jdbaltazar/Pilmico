@@ -2,6 +2,7 @@ package util;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -12,6 +13,11 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
+import net.java.balloontip.utils.ToolTipUtils;
 
 public class SBButton extends JButton implements MouseListener {
 
@@ -19,6 +25,10 @@ public class SBButton extends JButton implements MouseListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+//	private RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.decode("#CCE8E8"), Color.decode("#008B8B"));
+	private RoundedBalloonStyle style = new RoundedBalloonStyle(5, 5, Color.decode("#D2E9FF"), Color.decode("#1E90FF"));
+	private BalloonTip balloonTip;
+	private JLabel jlabel;
 	
 	public SBButton(String icon, String icon2, String hover) {
 		this.icon = icon;
@@ -27,6 +37,23 @@ public class SBButton extends JButton implements MouseListener {
 		init();
 		addMouseListener(this);
 		setContentAreaFilled(false);
+		
+		jlabel = new JLabel(hover);
+		jlabel.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
+
+		balloonTip = new BalloonTip(this, jlabel, style, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 15, 8, false);
+
+		ToolTipUtils.balloonToToolTip(balloonTip, 10, 10000);
+	}
+	
+	public SBButton(String icon, String icon2, String hover, boolean noBalloonTip) {
+		this.icon = icon;
+		this.icon2 = icon2;
+		init();
+		addMouseListener(this);
+		setContentAreaFilled(false);
+		
+		setToolTipText(hover);
 	}
 
 	private void init() {
@@ -37,7 +64,6 @@ public class SBButton extends JButton implements MouseListener {
 		setFocusable(false);
 		setBorderPainted(false);
 		setRequestFocusEnabled(false);
-		setToolTipText(hover);
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class ProductOnDisplayPopup extends JDialog {
 	private SoyButton update;
 
 	private SBButton close;
-	private final int ROW_WIDTH = 392, ROW_HEIGHT = 30, LABEL_HEIGHT = 25, LABEL_Y = 47, PRODUCTS_PANE_Y = 70;
+	private final int ROW_WIDTH = 392, ROW_HEIGHT = 30, LABEL_HEIGHT = 25, LABEL_Y = 47, PRODUCTS_PANE_Y = LABEL_Y + LABEL_HEIGHT;
 
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, productLabel, deleteLabel;
 
@@ -54,11 +54,15 @@ public class ProductOnDisplayPopup extends JDialog {
 
 	private ErrorLabel error;
 	private String msg;
+	
+	private boolean done = false;
 
 	public ProductOnDisplayPopup() {
 		init();
 		addComponents();
-		Values.productOnDisplayPopup = this;
+		
+//		fillTable();
+//		Values.productOnDisplayPopup = this;
 	}
 
 	private void init() {
@@ -77,7 +81,7 @@ public class ProductOnDisplayPopup extends JDialog {
 		error = new ErrorLabel();
 
 		icon = new ImageIcon("images/util.png");
-		close = new SBButton("close.png", "close.png", "Close");
+		close = new SBButton("close.png", "close.png", "Close", true);
 		close.setBounds(408, 10, 24, 24);
 		close.addActionListener(new ActionListener() {
 
@@ -165,11 +169,11 @@ public class ProductOnDisplayPopup extends JDialog {
 
 		error.setBounds(productsPane.getX(), productsPane.getY() + productsPane.getHeight(), productsPane.getWidth(), 22);
 
-		panel.add(productsPane);
 		panel.add(error);
 		panel.add(quantityKGLabel);
 		panel.add(quantitySACKlabel);
 		panel.add(productLabel);
+		panel.add(productsPane);
 		// panel.add(deleteLabel);
 		panel.add(update);
 
@@ -198,19 +202,30 @@ public class ProductOnDisplayPopup extends JDialog {
 
 	public void fillTable() {
 
+		
 		rowPanel.clear();
 		onDisplayPanel.removeAll();
-		// onDisplayPanel.updateUI();
-		// onDisplayPanel.revalidate();
 
 		for (Product p : products) {
 			rowPanel.add(new RowPanel(p, onDisplayPanel, Tables.PRODUCTS));
 			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
 			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
 		}
+		
+		/*for (int i = 0; i < 28; i ++) {
+			rowPanel.add(new RowPanel(null, onDisplayPanel, Tables.PRODUCTS));
+			onDisplayPanel.add(rowPanel.get(rowPanel.size() - 1));
+			onDisplayPanel.setPreferredSize(new Dimension(330, onDisplayPanel.getComponentCount() * ROW_HEIGHT));
+		}*/
 
+		done = true;
+		
 		onDisplayPanel.updateUI();
 		onDisplayPanel.revalidate();
+	}
+	
+	public boolean isDone(){
+		return done;
 	}
 
 }

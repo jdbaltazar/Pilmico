@@ -35,10 +35,10 @@ public class Tables {
 
 	public static String LOGS = "LOGS";
 
-	public static String[] productFormLabel = { "Name*", "Description", "Available?*", "kilos per sack*", "Quantity (in sack)*", "Quantity (in kg)*",
-			"Display (in sack)*", "Display (in kg)*", "Price (per sack)*", "Price (per kg)*", "Category*", "Alert using: *", "Alert on Quantity*" };
+	public static String[] productFormLabel = { "Name*", "Description", "Available?*", "kilos per sack*", "Quantity (in sack)*", "On-display qty (in kg)*",
+			"Price (per sack)*", "Price (per kg)*", "Category*", "Alert using: *"};
 
-	public static String[] profileFormLabel = { "Last Name*", "First Name*", "Middle Name", "Address", "Contact Number" };
+	public static String[] customerFormLabel = { "Last Name*", "First Name*", "Middle Name", "Address", "Contact Number", "Initial A_R Balance*" };
 
 	public static String[] accountFormLabel = { "Employee*", "Account Type*", "Username*", "Password*" };
 

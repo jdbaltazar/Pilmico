@@ -258,6 +258,12 @@ public class DiscountForm extends SimplePanel {
 
 		refreshDropdown(true);
 		error.setToolTip("");
+		
+		refreshDate();
+	}
+	
+	public void refreshDate() {
+		date.setValue(new Date());
 	}
 
 	private void determineDateStatus() {

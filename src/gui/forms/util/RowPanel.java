@@ -290,40 +290,41 @@ public class RowPanel extends JPanel {
 
 	private void addOnDisplayRow() {
 
-		// Product product = (Product) object;
-		//
-		// productOnDisplay = new ViewFormField(product.getName());
-		//
-		// onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		// onDisplayKG.setPrecision(2);
-		// onDisplayKG.setText(product.getQuantityOnDisplayInKilo() == 0 ? "0" :
-		// String.format("%.2f", product.getQuantityOnDisplayInKilo()));
-		// onDisplayKG.setToolTipText(product.getQuantityDescription());
-		//
-		// onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
-		// onDisplaySack.setPrecision(2);
-		// onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" :
-		// String.format("%.2f", product.getQuantityOnDisplayInSack()));
-		// onDisplaySack.setToolTipText(product.getQuantityDescription());
-		//
-		// productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
-		// onDisplaySack.setBounds(209, 5, 60, 20);
-		// onDisplayKG.setBounds(298, 5, 60, 20); // +33
-		//
-		// row.add(productOnDisplay);
-		// row.add(onDisplaySack);
-		// row.add(onDisplayKG);
-		//
-		// // row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-		// // Color.LIGHT_GRAY));
-		//
-		// if (product.getQuantityOnDisplayInKilo() == 0d ||
-		// product.getQuantityOnDisplayInKilo() == 0d) {
-		// row.setBackground(Color.decode("#E0EBEB"));
-		// } else
-		// row.setBackground(Color.decode("#BFFF80"));
-		//
-		// add(row);
+		 Product product = (Product) object;
+		
+		 productOnDisplay = new ViewFormField(product.getName());
+		
+		 onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
+		 onDisplayKG.setPrecision(2);
+//		 onDisplayKG.setText(product.getQuantityOnDisplayInKilo() == 0 ? "0" :
+//		 String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+		 onDisplayKG.setToolTipText(product.getQuantityDescription());
+		
+		 onDisplaySack = new JNumericField(10, JNumericField.DECIMAL, true);
+		 onDisplaySack.setPrecision(2);
+//		 onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" :
+//		 String.format("%.2f", product.getQuantityOnDisplayInSack()));
+		 onDisplaySack.setToolTipText(product.getQuantityDescription());
+		 
+		 
+		 productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
+		 onDisplaySack.setBounds(209, 5, 60, 20);
+		 onDisplayKG.setBounds(298, 5, 60, 20); // +33
+		
+		 row.add(productOnDisplay);
+		 row.add(onDisplaySack);
+		 row.add(onDisplayKG);
+		
+		 // row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+		 // Color.LIGHT_GRAY));
+		
+//		if (product.getQuantityOnDisplayInKilo() == 0d
+//				|| product.getQuantityOnDisplayInKilo() == 0d) {
+//			row.setBackground(Color.decode("#E0EBEB"));
+//		} else
+			row.setBackground(Color.decode("#BFFF80"));
+//		
+		 add(row);
 	}
 
 	private void addFeesRow() {

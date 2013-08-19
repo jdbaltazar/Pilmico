@@ -91,7 +91,7 @@ public class Manager {
 		d1.setTime(date);
 		d1.set(Calendar.YEAR, 2013);
 		d1.set(Calendar.MONTH, Calendar.AUGUST);
-		d1.set(Calendar.DATE, 19);
+		d1.set(Calendar.DATE, 31);
 		date = d1.getTime();
 		date = DateTool.getDateWithoutTime(date);
 

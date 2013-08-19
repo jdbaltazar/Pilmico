@@ -60,7 +60,7 @@ public class NotesPopup extends JDialog {
 
 	private void addComponents() {
 
-		close = new SBButton("close.png", "close.png", "Close");
+		close = new SBButton("close.png", "close.png", "Close", true);
 		close.setBounds(245, 10, 24, 24);
 		close.addActionListener(new ActionListener() {
 

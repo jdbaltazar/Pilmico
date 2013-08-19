@@ -31,6 +31,7 @@ import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.InventorySheetDetail;
+import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
@@ -48,6 +49,7 @@ public class ISRowPanel extends JPanel {
 	private Object object, object2;
 	private Color rowBkgrndColor;
 	private DiscountIssue discount;
+	private Person person;
 //	private JXLabel jxlabel;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
@@ -166,6 +168,10 @@ public class ISRowPanel extends JPanel {
 			drawCashBreakDown();
 			break;
 
+		case Values.CUSTOMERS:
+			drawCustomerA_RRow();
+			break;
+			
 		default:
 			drawViewCashBreakDown();
 			break;
@@ -309,6 +315,60 @@ public class ISRowPanel extends JPanel {
 
 		formField.add(new ViewFormField(String.format("%.2f", discount.getAmount())));
 		formField.get(formField.size() - 1).setBounds(InventorySheetForm.DATE_LABEL_WIDTH, 0, 102, ROW_HEIGHT);
+
+		for (int i = 0; i < formField.size(); i++) {
+
+			formField.get(i).setFont(new Font("Arial Narrow", Font.PLAIN, 11));
+			formField.get(i).addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					row.setBackground(rowBkgrndColor);
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					rowBkgrndColor = row.getBackground();
+					row.setBackground(Color.decode("#B2FFFF"));
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent mc) {
+					// TODO Auto-generated method stub
+//					if(mc.getClickCount() == 2){
+//						Values.addEntryPanel.startAnimation();
+//						
+//						new Timer().schedule(new TimerTask() {
+//							@Override
+//							public void run() {
+//								Values.editPanel.setISLinked(true);
+//								Values.editPanel.setHide(false);
+//								Values.editPanel.startAnimation();
+//								Values.editPanel.showLinkedComponent(discount, table);
+//							}
+//						}, 400);
+//					}
+
+				}
+			});
+			row.add(formField.get(i));
+		}
+
+		row.setOpaque(true);
+		add(row);
+
+	}
+	
+	private void drawCustomerA_RRow() {
+
+		person = (Person) object;
+		formField.add(new ViewFormField(""));
+		formField.get(formField.size() - 1).setBounds(0, 0,150, ROW_HEIGHT);
+
+		formField.add(new ViewFormField(""));
+		formField.get(formField.size() - 1).setBounds(150, 0, 102, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
 

@@ -24,6 +24,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import common.entity.inventorysheet.InventorySheetData;
+import common.entity.product.Product;
 import common.manager.Manager;
 
 import util.SBButton;
@@ -51,6 +52,7 @@ public class TableUtilPanel extends SoyPanel {
 			Tables.AR_PAYMENTS, Tables.CASH_ADVANCE, Tables.CA_PAYMENTS, Tables.DEPOSITS, Tables.BANK, Tables.CUSTOMERS, Tables.EMPLOYEES,
 			Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
+	private ProductOnDisplayPopup on_display;
 
 	public TableUtilPanel(TablePanel tablePanel, String label) {
 		this.tablePanel = tablePanel;
@@ -157,8 +159,40 @@ public class TableUtilPanel extends SoyPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Values.mainFrame.dimScreen(true);
-				Values.productOnDisplayPopup.fillTable();
-				Values.productOnDisplayPopup.setVisible(true);
+
+				on_display = new ProductOnDisplayPopup();
+				/*List<Product> onDisplayFirst = new ArrayList<Product>();
+				List<Product> notOnDisplay = new ArrayList<Product>();
+				
+				for (Product p : notOnDisplay) {
+					onDisplayFirst.add(p);
+				}*/
+				List<Product> products;
+				try {
+					products = Manager.productManager.getProducts();
+					on_display.setProducts(products);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				Thread thread = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						// TODO Auto-generated method stub
+						while(!on_display.isDone()){
+							on_display.fillTable();
+						}
+					}
+				});
+				
+				thread.start();
+				on_display.setVisible(true);
+				
+		//		Values.productOnDisplayPopup.fillTable();
+		//		Values.productOnDisplayPopup.setVisible(true);
 			}
 		});
 
