@@ -208,7 +208,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		priceKG.setBounds(339, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(416, LABEL_Y, 167, LABEL_HEIGHT);
 		deleteLabel.setBounds(583, LABEL_Y, 32, LABEL_HEIGHT);
-	
+
 		// 136
 		fwdProduct.setBounds(532, LABEL_Y + 5, 16, 16);
 
@@ -218,9 +218,9 @@ public class AccountReceivablesForm extends SimplePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				enableAmountField(false);
-				
+
 				rowPanel.add(new RowPanel(productsPanel, Values.ADD));
 				productsPanel.add(rowPanel.get(rowPanel.size() - 1));
 				alternateRows();
@@ -306,8 +306,8 @@ public class AccountReceivablesForm extends SimplePanel {
 		}
 
 		rowPanel.remove(removedRow);
-		
-		if(rowPanel.size() == 0)
+
+		if (rowPanel.size() == 0)
 			enableAmountField(true);
 	}
 
@@ -338,56 +338,64 @@ public class AccountReceivablesForm extends SimplePanel {
 							e2.printStackTrace();
 						}
 					}
-						PointerInfo a = MouseInfo.getPointerInfo();
-						Point b = a.getLocation();
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-						UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-						uP.setVisible(true);
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-						if (!uP.isClosed()) {
+					if (!uP.isClosed()) {
 
-							Date d = ((SpinnerDateModel) date.getModel()).getDate();
-							AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						AccountReceivable ar = new AccountReceivable(d, (Person) customerCombo.getSelectedItem(), Manager.loggedInAccount);
 
-							// AccountReceivable ar = new AccountReceivable(d,
-							// (Person) customerCombo.getSelectedItem(),
-							// Manager.loggedInAccount);
+						// AccountReceivable ar = new AccountReceivable(d,
+						// (Person) customerCombo.getSelectedItem(),
+						// Manager.loggedInAccount);
+
+						if (rowPanel.size() > 0) {
 
 							for (RowPanel rp : rowPanel) {
 								Product p = rp.getSelectedProduct();
 								ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
 										.getQuantityInKilo(), rp.getQuantityInSack()));
 							}
-
-							ar.setRemarks(uP.getInput());
-
-							try {
-								Manager.accountReceivableManager.addAccountReceivable(ar);
-
-								for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
-									Product pd = ard.getProduct();
-									pd.decrementQuantity(ard.getQuantityInSack(), ard.getQuantityInKilo());
-									Manager.productManager.updateProduct(pd);
-								}
-
-								Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
-								new SuccessPopup("Add").setVisible(true);
-								clearForm();
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
+						} else {
+							ar.setBalance(Double.parseDouble(amount.getText()));
 						}
 
-				} 
-				else
-					error.setToolTip(msg);
-				/*else {
+						ar.setRemarks(uP.getInput());
 
-					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
-							+ "\n In order to proceed: " + "\n (1) Update the quantity of the affected product/s; or"
-							+ "\n (2) Add a delivery for affected product/s; or" + "\n (3) Invalidate a Pullout/s and/or Sales", "Not Allowed!",
-							JOptionPane.WARNING_MESSAGE);
-				}*/
+						try {
+							Manager.accountReceivableManager.addAccountReceivable(ar);
+
+							for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
+								Product pd = ard.getProduct();
+								pd.decrementQuantity(ard.getQuantityInSack(), ard.getQuantityInKilo());
+								Manager.productManager.updateProduct(pd);
+							}
+
+							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+
+				} else
+					error.setToolTip(msg);
+				/*
+				 * else {
+				 * 
+				 * JOptionPane.showMessageDialog(Values.mainFrame,
+				 * "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+				 * + "\n In order to proceed: " +
+				 * "\n (1) Update the quantity of the affected product/s; or" +
+				 * "\n (2) Add a delivery for affected product/s; or" +
+				 * "\n (3) Invalidate a Pullout/s and/or Sales", "Not Allowed!",
+				 * JOptionPane.WARNING_MESSAGE); }
+				 */
 
 			}
 		});
@@ -476,19 +484,23 @@ public class AccountReceivablesForm extends SimplePanel {
 
 			if (rowPanel.get(i).getQuantityInSack() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack()) {
 
-				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1) + ". ";
+				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1)
+						+ ". ";
 
 				return true;
 			}
 
 			if (rowPanel.get(i).getQuantityInKilo() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
-				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1) + ". ";
+				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1)
+						+ ". ";
 
 				return true;
 			}
-			
-			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
-				msg = "Invalid qty inputs in row " + (i + 1)+". Total qty would exceed the total qty in kilos ("+rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()+") of the product. ";
+
+			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel
+					.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid qty inputs in row " + (i + 1) + ". Total qty would exceed the total qty in kilos ("
+						+ rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + ") of the product. ";
 
 				return true;
 			}
@@ -571,9 +583,7 @@ public class AccountReceivablesForm extends SimplePanel {
 		customerCombo.setFont(new Font("Arial Narrow", Font.PLAIN, 14));
 		customerCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		customerCombo.setOpaque(false);
-
 		customerCombo.setSelectedIndex(-1);
-
 		customerCombo.setBounds(115, 78, 180, 20);
 
 		panel.add(customerCombo);
@@ -583,8 +593,8 @@ public class AccountReceivablesForm extends SimplePanel {
 		this.qtySack = qtySack;
 		this.qtyKG = qtyKG;
 	}
-	
-	private void enableAmountField(boolean val){
+
+	private void enableAmountField(boolean val) {
 		amount.setEnabled(val);
 		amount.setText("");
 	}
