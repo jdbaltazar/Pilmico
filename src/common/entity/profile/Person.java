@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import common.entity.accountreceivable.AccountReceivable;
-import common.entity.product.Price;
 
 @Entity
 public class Person {
@@ -204,7 +203,7 @@ public class Person {
 	public double getTotalAccountReceivables() {
 		double total = 0d;
 		for (AccountReceivable ar : accountReceivables) {
-			total += ar.getAccountReceivablesAmount();
+			total += ar.getBalance();
 		}
 		return total;
 	}

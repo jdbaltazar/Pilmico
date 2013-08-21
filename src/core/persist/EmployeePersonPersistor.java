@@ -32,6 +32,7 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	public List<Employee> getAllEmployees() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Employee.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			employees = criteria.list();
@@ -48,6 +49,7 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	public List<Employee> getAllEmployeesExceptManagers() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Employee.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			employees = criteria.add(Restrictions.ne("designation.id", new Integer(1))).createAlias("person", "p").addOrder(Order.desc("p.firstName"))
@@ -65,6 +67,7 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	public List<Employee> getEmployedEmployees() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Employee.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			employees = criteria.add(Restrictions.eq("status.id", new Integer("1"))).createAlias("person", "p").addOrder(Order.desc("p.firstName"))
@@ -83,6 +86,7 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	public List<Employee> getTerminatedEmployees() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Employee.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			employees = criteria.add(Restrictions.ne("status.id", new Integer("2"))).createAlias("person", "p").addOrder(Order.desc("p.firstName"))
@@ -241,6 +245,7 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	public List<Person> getCustomersOnly() throws Exception {
 		Session session = HibernateUtil.startSession();
 		Criteria criteria = session.createCriteria(Person.class);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Person> customers = new ArrayList<Person>();
 		try {
 			customers = criteria.add(Restrictions.eq("customer", Boolean.TRUE)).addOrder(Order.asc("firstName")).list();
