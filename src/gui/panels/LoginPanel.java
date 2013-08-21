@@ -52,6 +52,8 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		init();
 		addComponents();
 		thread.start();
+		
+		Values.loginPanel = this;
 	}
 
 	private void init() {

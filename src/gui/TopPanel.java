@@ -13,11 +13,14 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import app.DatabaseSettings;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
@@ -204,6 +207,16 @@ public class TopPanel extends SoyPanel {
 
 		// g2.setColor(new Color(50, 50, 50));
 		g2.fillRect(0, getHeight() - 1, getWidth(), 1);
+		
+		g2.setColor(Color.GRAY);
+		g2.setFont(new Font("Lucida Sans", Font.ITALIC, 10));
+		
+		try {
+			g2.drawString(""+DatabaseSettings.getInstance().getDbVersion(), 240, 55);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// drawLogo(g2);
 

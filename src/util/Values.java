@@ -33,6 +33,7 @@ import gui.list.ConditionList;
 import gui.list.NoteTypeList;
 import gui.list.UnitList;
 import gui.panels.LeftPanel;
+import gui.panels.LoginPanel;
 import gui.panels.MenuPanel;
 import gui.panels.TablePanel;
 import gui.panels.TableUtilPanel;
@@ -46,6 +47,7 @@ import java.awt.Toolkit;
 
 public class Values {
 
+	public static LoginPanel loginPanel;
 	public static CenterPanel centerPanel;
 	public static TablePanel tablePanel;
 	public static TopPanel topPanel;

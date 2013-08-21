@@ -1,4 +1,5 @@
 import gui.MainFrame;
+import gui.panels.LoginPanel;
 import gui.popup.DBPassword;
 
 import java.awt.Cursor;
@@ -10,15 +11,18 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
+
+import app.Credentials;
 
 import common.manager.Manager;
+import core.persist.HibernateUtil;
 
 public class Splash extends JFrame implements PropertyChangeListener {
 
@@ -33,7 +37,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 	private JProgressBar progressBar;
 	private MainFrame mainFrame;
 	private Task task;
-
+	public static Splash frame;
 	/**
 	 * Launch the application.
 	 */
@@ -54,21 +58,35 @@ public class Splash extends JFrame implements PropertyChangeListener {
 		}
 
 		EventQueue.invokeLater(new Runnable() {
+
 			public void run() {
 				try {
 
-					 Splash frame = new Splash();
-					 frame.setVisible(true);
+					if (Credentials.getInstance().getPassword().equals(""))
+						new DBPassword().setVisible(true);
+					
+					HibernateUtil.init();
+					
+					while(!HibernateUtil.isConnected()){
+						JOptionPane
+								.showMessageDialog(
+										null,
+										"Cannot connect to database. Please input your MySQL Password again.",
+										"System Message", JOptionPane.ERROR_MESSAGE);
+						new DBPassword().setVisible(true);
+						HibernateUtil.init();
+					}
 
+					frame = new Splash();
+					 
 //					Manager.getInstance();
-//					MainFrame mainFrame = new MainFrame();
 //					mainFrame.showFrame();
 					
-//					new DBPassword().setVisible(true);
 
 				} catch (Exception e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
+				
 			}
 		});
 	}
@@ -117,6 +135,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 				@Override
 				public void run() {
 					Manager.getInstance();
+					new LoginPanel();
 					mainFrame = new MainFrame();
 				}
 			});

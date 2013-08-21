@@ -44,6 +44,7 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
+import core.persist.HibernateUtil;
 
 public class CenterPanel extends SoyPanel {
 
@@ -61,25 +62,28 @@ public class CenterPanel extends SoyPanel {
 
 	private void init() {
 		setLayout(new BorderLayout());
+		
+		new EditPanel();
+		new MenuPanel();
 	}
 
 	private void addComponents() {
 
-		add(new LoginPanel());
+		add(Values.loginPanel);
 
 		// jd -> pyAmxijgjj7EEhIrn+JgRQ==
 		// mine -> K7H4xFqWVe0bKXypGARJvQ==
 
-		/*
-		 * try { Manager.getInstance().login("manager", "pilmico".toCharArray());
-		 * } catch (Exception e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } changeTable(Values.HOME);
-		 */
+		
+//		  try { Manager.getInstance().login("manager", "pilmico".toCharArray());
+//		  } catch (Exception e) { // TODO Auto-generated catch block
+//		  e.printStackTrace(); } changeTable(Values.HOME);
+		 
 	}
 
 	public void changeTable(int val) {
 
-		// if (val != Values.HOME)
+//		 if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
 
 		// remove(getComponent(0));
@@ -92,8 +96,8 @@ public class CenterPanel extends SoyPanel {
 			// add(tableUtilPanel, BorderLayout.PAGE_END);
 
 			add(new AddEntryPanel(), BorderLayout.PAGE_START);
-			add(new EditPanel(), BorderLayout.LINE_START);
-			add(new MenuPanel(), BorderLayout.PAGE_END);
+			add(Values.editPanel, BorderLayout.LINE_START);
+			add(Values.menuPanel, BorderLayout.PAGE_END);
 			fillProducts();
 
 			ColumnSizer.resizeColumns(Values.tablePanel.getSoyTable(), Values.PRODUCTS);

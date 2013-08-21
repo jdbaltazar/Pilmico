@@ -13,9 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 
 import javax.swing.JDialog;
 import javax.swing.JPasswordField;
+
+import core.security.SecurityTool;
+
+import app.Credentials;
 
 import util.soy.SoyButton;
 import util.soy.SoyPanel;
@@ -95,13 +100,29 @@ public class DBPassword  extends JDialog{
 		dbPassword = new JPasswordField();
 		dbPassword.setBounds(20, 50, 200, 25);
 		
+		dbPassword.setText("");
+		
 		dbPassword.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 			
 				//PUT YOUR CODE HERE
+				try {
+					
+					String pw = new String(dbPassword.getPassword());
+					
+					Credentials.getInstance().setPassword(SecurityTool.encryptString(pw));
+					Credentials.getInstance().persist();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
+				dispose();
 			}
 		});
 		
