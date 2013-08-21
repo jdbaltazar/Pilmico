@@ -38,7 +38,7 @@ public class Tables {
 	public static String[] productFormLabel = { "Name*", "Description", "Available?*", "kilos per sack*", "Quantity (in sack)*", "On-display qty (in kg)*",
 			"Price (per sack)*", "Price (per kg)*", "Category*", "Alert using: *"};
 
-	public static String[] customerFormLabel = { "Last Name*", "First Name*", "Middle Name", "Address", "Contact Number", "Total A_R Balance" };
+	public static String[] customerFormLabel = { "Last Name*", "First Name*", "Middle Name", "Address", "Contact Number", "Total AR Balance" };
 
 	public static String[] accountFormLabel = { "Employee*", "Account Type*", "Username*", "Password*" };
 

@@ -172,8 +172,12 @@ public class AccountReceivable {
 
 	public double getAccountReceivablesAmount() {
 		double total = 0;
-		for (AccountReceivableDetail ard : accountReceivableDetails) {
-			total += ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
+		if (accountReceivableDetails.size() > 0) {
+			for (AccountReceivableDetail ard : accountReceivableDetails) {
+				total += ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
+			}
+		} else {
+			total += balance;
 		}
 		return total;
 	}
