@@ -55,7 +55,7 @@ public class EditCustomerForm extends EditFormPanel {
 	private DefaultComboBoxModel model;
 
 	private DefaultEntryLabel ar_balance;
-	private TableHeaderLabel dateLabel, amountLabel;
+	private TableHeaderLabel dateLabel, balanceLabel;
 
 	private ArrayList<ISRowPanel> rows = new ArrayList<ISRowPanel>();
 	private JScrollPane ar_list_pane;
@@ -118,7 +118,7 @@ public class EditCustomerForm extends EditFormPanel {
 		ar_balance = new DefaultEntryLabel("", true);
 
 		dateLabel = new TableHeaderLabel("Date");
-		amountLabel = new TableHeaderLabel("Amount");
+		balanceLabel = new TableHeaderLabel("Balance");
 
 		ar_panel = new JPanel();
 		ar_panel.setLayout(null);
@@ -162,9 +162,9 @@ public class EditCustomerForm extends EditFormPanel {
 
 		ar.setBounds(265, 65, 250, 17);
 		dateLabel.setBounds(ar.getX() - 1, ar.getY() + ar.getHeight(), 150, 20);
-		amountLabel.setBounds(ar.getX() + dateLabel.getWidth() - 2, dateLabel.getY(), ar.getWidth() - dateLabel.getWidth() + 3, 20);
+		balanceLabel.setBounds(ar.getX() + dateLabel.getWidth() - 2, dateLabel.getY(), ar.getWidth() - dateLabel.getWidth() + 3, 20);
 		ar_list_pane.setBounds(dateLabel.getX() + 1, dateLabel.getY() + dateLabel.getHeight() - 1,
-				dateLabel.getWidth() + amountLabel.getWidth() + 14 /*
+				dateLabel.getWidth() + balanceLabel.getWidth() + 14 /*
 																					 * SCROLLBAR
 																					 * WIDTH = 16
 																					 */, 210);
@@ -203,7 +203,7 @@ public class EditCustomerForm extends EditFormPanel {
 
 		panel.add(ar);
 		panel.add(dateLabel);
-		panel.add(amountLabel);
+		panel.add(balanceLabel);
 		panel.add(ar_list_pane);
 
 		add(edit);
