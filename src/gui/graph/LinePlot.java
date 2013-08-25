@@ -151,7 +151,7 @@ public class LinePlot extends ExamplePanel {
 
 		Column col1 = data.getColumn(0);
 		Column col2 = data.getColumn(1);
-		plotLower.getAxis(XYPlot.AXIS_Y).setRange(col2.getStatistics(Statistics.MIN) - 200, col2.getStatistics(Statistics.MAX) + 200);
+		plotLower.getAxis(XYPlot.AXIS_Y).setRange(col2.getStatistics(Statistics.MIN), col2.getStatistics(Statistics.MAX) + 200);
 		plotLower.getAxis(XYPlot.AXIS_X).setRange(col1.getStatistics(Statistics.MIN) - DateTool.DAY_DIFFERENCE,
 				col1.getStatistics(Statistics.MAX) + DateTool.DAY_DIFFERENCE);
 
@@ -165,17 +165,23 @@ public class LinePlot extends ExamplePanel {
 		// check if is interval is >= 20 days
 		if (diff >= DateTool.DAY_DIFFERENCE * 20) {
 			Date twentyDaysBefore = DateTool.getDaysBeforeDate(upperBound, 20);
-			for (int endIndex = iss.size() - 2; endIndex >= 0; endIndex--) {
-				InventorySheet is = iss.get(endIndex);
-				if (is.getDate().after(twentyDaysBefore) || is.getDate().equals(twentyDaysBefore)) {
-					// plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
-					plotLower.getAxis(XYPlot.AXIS_X).setMin(is.getDate().getTime() - DateTool.DAY_DIFFERENCE);
-					break;
-				}
-			}
+			plotLower.getAxis(XYPlot.AXIS_X).setMin(twentyDaysBefore.getTime() - DateTool.DAY_DIFFERENCE);
+			// plotLower.getAxis(XYPlot.AXIS_X).setMin(twentyDaysBefore.getTime() -
+			// DateTool.DAY_DIFFERENCE);
+			// for (int endIndex = iss.size() - 2; endIndex >= 0; endIndex--) {
+			// InventorySheet is = iss.get(endIndex);
+			// if (is.getDate().after(twentyDaysBefore) ||
+			// is.getDate().equals(twentyDaysBefore)) {
+			// //
+			// plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
+			// plotLower.getAxis(XYPlot.AXIS_X).setMin(is.getDate().getTime() -
+			// DateTool.DAY_DIFFERENCE);
+			// break;
+			// }
+			// }
 		}
 
-		plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
+		// plotLower.getAxis(XYPlot.AXIS_X).setMin(iss.get(1).getDate().getTime());
 
 		DateFormat dateFormat = DateFormatter.getInstance().getFormat(Utility.DMYFormat);
 		AxisRenderer rendererX = plotLower.getAxisRenderer(XYPlot.AXIS_X);

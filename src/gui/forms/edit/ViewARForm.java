@@ -399,8 +399,8 @@ public class ViewARForm extends EditFormPanel {
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate()));
 		issuedBy.setToolTip(issuedBy, accountReceivable.getIssuedBy().getFirstPlusLastName());
 		customer.setToolTip(customer, accountReceivable.getCustomer().getFirstPlusLastName());
-		amount.setToolTip(amount, accountReceivable.getAccountReceivablesAmount() + "");
-		balance.setToolTip(balance, accountReceivable.getBalance() + "");
+		amount.setToolTip(amount, String.format("%.2f", accountReceivable.getAccountReceivablesAmount()));
+		balance.setToolTip(balance, String.format("%.2f", accountReceivable.getBalance()));
 
 		if (accountReceivable.getRemarks() != null)
 			remarks.setToolTip(remarks, "-" + accountReceivable.getRemarks());

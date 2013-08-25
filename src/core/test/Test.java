@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -84,21 +86,58 @@ public class Test {
 
 	public static void main(String[] args) {
 
+		ResultSet resultSet;
+		try {
+			resultSet = DatabaseTool.getConnection("root", "123456", "pilmico").getMetaData().getCatalogs();
+			while (resultSet.next()) {
+				String databaseName = resultSet.getString(1);
+				if (databaseName.equals("pilmico")) {
+					System.out.println("found!!!");
+				}
+			}
+			resultSet.close();
+
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		// try {
+		// DatabaseMetaData md = DatabaseTool.getConnection("root", "123456",
+		// "pilmico").getMetaData();
+		// ResultSet rs;
+		// rs = md.getTables(null, null, "", null);
+		// if (rs.next()) {
+		// // Table Exist
+		// }
+		// } catch (SQLException e1) {
+		// e1.printStackTrace();
+		// }
+
+		//
+		//
+		// DatabaseMetaData md = connection.getMetaData();
+		// ResultSet rs = md.getColumns(null, null, "table_name", "column_name");
+		// if (rs.next()) {
+		// //Column in table exist
+		// }
+		// }
+
 		// Date date = new Date();
 		//
 		// System.out.println(DateTool.getDateWithoutTime(date).toString());
 
 		// ProductQuantity pq = new ProductQuantity(0, 0);
-		Date d = DateTool.getDateWithoutTime(new Date());
-
-		System.out.println(d.toString() + " : " + d.getTime());
-		Date d2 = DateTool.getTomorrowDate(d);
-		System.out.println(d2.toString() + " : " + d2.getTime());
-		Date d3 = DateTool.getTomorrowDate(d2);
-		System.out.println(d3.toString() + " : " + d3.getTime());
-
-		System.out.println("diff: " + (d2.getTime() - d.getTime()));
-		System.out.println("diff: " + (d3.getTime() - d2.getTime()));
+		// Date d = DateTool.getDateWithoutTime(new Date());
+		//
+		// System.out.println(d.toString() + " : " + d.getTime());
+		// Date d2 = DateTool.getTomorrowDate(d);
+		// System.out.println(d2.toString() + " : " + d2.getTime());
+		// Date d3 = DateTool.getTomorrowDate(d2);
+		// System.out.println(d3.toString() + " : " + d3.getTime());
+		//
+		// System.out.println("diff: " + (d2.getTime() - d.getTime()));
+		// System.out.println("diff: " + (d3.getTime() - d2.getTime()));
 		// System.out.println("noon: " +
 		// DateTool.getNoonTimeForDate(DateTool.getDateWithoutTime(d)));
 
