@@ -3,13 +3,10 @@ package gui.forms.add;
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.FormDropdown;
-import gui.forms.util.FormField;
 import gui.forms.util.IconLabel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
@@ -24,14 +21,11 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -48,11 +42,10 @@ import util.soy.SoyButton;
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
 import common.entity.deposit.Deposit;
-import common.entity.profile.Designation;
-import common.entity.profile.Account;
 import common.entity.profile.Employee;
 import common.manager.Manager;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class DepositForm extends SimplePanel {
 
 	/**
@@ -60,7 +53,6 @@ public class DepositForm extends SimplePanel {
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
 	private ArrayList<JNumericField> fields = new ArrayList<JNumericField>();
-	private FormField remarks;
 	private SoyButton clear, save;
 	private DefaultComboBoxModel model;
 	private JSpinner date;
@@ -302,8 +294,13 @@ public class DepositForm extends SimplePanel {
 			fields.get(i).setText("");
 
 		error.setToolTip("");
-
+		refreshDate();
+		
 		refreshDropdowns(true);
+	}
+	
+	public void refreshDate() {
+		date.setValue(new Date());
 	}
 
 	private void determineDateStatus() {

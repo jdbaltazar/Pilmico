@@ -29,17 +29,16 @@ import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import common.entity.inventorysheet.InventorySheet;
-import common.entity.inventorysheet.InventorySheetData;
-
 import util.DateFormatter;
 import util.Utility;
 import util.Values;
+
+import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
 
 import de.erichseifert.gral.data.Column;
 import de.erichseifert.gral.data.DataTable;

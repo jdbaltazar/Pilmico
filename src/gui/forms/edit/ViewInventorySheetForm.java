@@ -988,37 +988,6 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 	}
 
-	private void fillTables() {
-		// productsPanel.setPreferredSize(new Dimension(salesLabel.getX() +
-		// salesLabel.getWidth() - productLabel.getX(),
-		// productsPanel.getComponentCount() * ROW_HEIGHT));
-
-		for (int i = 0; i < 28; i++) {
-			productsInventory.add(new ISRowPanel(null, productsPanel, Values.PRODUCTS));
-			productsPanel.add(productsInventory.get(i));
-
-			productsPanel.setPreferredSize(new Dimension(productsPanel.getWidth(), productsPanel.getComponentCount() * ROW_HEIGHT));
-			productsPanel.updateUI();
-			productsPanel.revalidate();
-		}
-
-		alternateRows(productsInventory);
-
-		// System.out.println("productsPanel.getComponentCount(): "+productsPanel.getComponentCount());
-
-		for (int i = 0; i < 3; i++) {
-			salesInventory.add(new ISRowPanel(null, salesPanel, Values.SALES));
-			salesPanel.add(salesInventory.get(i));
-
-			salesPanel.setPreferredSize(new Dimension(salesPanel.getWidth(), salesPanel.getComponentCount() * ROW_HEIGHT));
-			salesPanel.updateUI();
-			salesPanel.revalidate();
-		}
-
-		alternateRows(salesInventory);
-
-	}
-
 	public void build() throws Exception {
 
 		Component[] components = isEditPanel.getComponents();

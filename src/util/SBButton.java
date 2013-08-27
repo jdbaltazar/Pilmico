@@ -5,10 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -33,7 +31,7 @@ public class SBButton extends JButton implements MouseListener {
 	public SBButton(String icon, String icon2, String hover) {
 		this.icon = icon;
 		this.icon2 = icon2;
-		this.hover = hover;
+
 		init();
 		addMouseListener(this);
 		setContentAreaFilled(false);
@@ -121,8 +119,6 @@ public class SBButton extends JButton implements MouseListener {
 	}
 
 	boolean mouseIn = false;
-	private boolean mouseClicked = false;
 	private String icon, icon2;
 	private Icon image, image2;
-	private String hover="";
 }

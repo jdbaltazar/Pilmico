@@ -15,7 +15,6 @@ import java.awt.PointerInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,7 +39,6 @@ public class ViewARPaymentForm extends EditFormPanel {
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
 	private SoyButton clear, save;
-	private DefaultComboBoxModel model;
 	private int initY = 32;
 	private ViewFormLabel dateLabel, issuedByLabel, arIDLabel, custRepLabel, amountLabel;
 	private ViewFormField arID, custRep, issuedBy, date, amount;
@@ -196,7 +194,6 @@ public class ViewARPaymentForm extends EditFormPanel {
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
 
 		add(voidBtn);
-		add(error);
 
 		add(scrollPane);
 		add(status);

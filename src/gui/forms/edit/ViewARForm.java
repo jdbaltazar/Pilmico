@@ -1,8 +1,8 @@
 package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
-import gui.forms.util.RemarksLabel;
 import gui.forms.util.HistoryTable;
+import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
@@ -22,24 +22,15 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Set;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
-
-import common.entity.accountreceivable.ARPayment;
-import common.entity.accountreceivable.AccountReceivable;
-import common.entity.accountreceivable.AccountReceivableDetail;
-import common.entity.product.Product;
-import common.manager.Manager;
-
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
@@ -49,6 +40,12 @@ import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.accountreceivable.AccountReceivableDetail;
+import common.entity.product.Product;
+import common.manager.Manager;
+
 public class ViewARForm extends EditFormPanel {
 
 	/**
@@ -57,9 +54,7 @@ public class ViewARForm extends EditFormPanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel productsPanel;
 	private JScrollPane productsPane;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y; // 125
-	private Object[] array = {};
-	private JTextField customerComboField;
+	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y; // 125
 
 	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel;
@@ -68,12 +63,10 @@ public class ViewARForm extends EditFormPanel {
 	private ViewFormField balance, issuedBy, date, customer, amount;
 	private ViewFormLabel issuedByLabel, balanceLabel, dateLabel, customerLabel, amountLabel;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String msg = "";
 
 	private SBButton voidBtn, payBtn, paymentHistory;
 
@@ -255,12 +248,12 @@ public class ViewARForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 
 				boolean valid = true;
-				for (AccountReceivableDetail dd : accountReceivable.getAccountReceivableDetails()) {
-					Product p = dd.getProduct();
-					// if (!p.validQuantityResult(dd.getQuantityInSack(),
-					// dd.getQuantityInKilo()))
-					// valid = false;
-				}
+//				for (AccountReceivableDetail dd : accountReceivable.getAccountReceivableDetails()) {
+//					Product p = dd.getProduct();
+//					// if (!p.validQuantityResult(dd.getQuantityInSack(),
+//					// dd.getQuantityInKilo()))
+//					// valid = false;
+//				}
 
 				if (valid) {
 
@@ -323,12 +316,7 @@ public class ViewARForm extends EditFormPanel {
 			}
 		});
 
-		// panel.add(save);
 		add(voidBtn);
-
-		// panel.add(save);
-		add(error);
-
 	}
 
 	private void initBalloonTip() {

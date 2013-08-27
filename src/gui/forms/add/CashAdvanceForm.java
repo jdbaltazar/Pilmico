@@ -1,8 +1,6 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
-import gui.forms.util.FormField;
 import gui.forms.util.IconLabel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
@@ -18,26 +16,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import common.entity.cashadvance.CashAdvance;
-import common.entity.profile.Employee;
-import common.manager.Manager;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
@@ -49,6 +36,11 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.cashadvance.CashAdvance;
+import common.entity.profile.Employee;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CashAdvanceForm extends SimplePanel {
 
 	/**
@@ -239,6 +231,11 @@ public class CashAdvanceForm extends SimplePanel {
 			fields.get(i).setText("");
 
 		error.setToolTip("");
+		refreshDate();
+	}
+	
+	public void refreshDate() {
+		date.setValue(new Date());
 	}
 
 	private void determineDateStatus() {

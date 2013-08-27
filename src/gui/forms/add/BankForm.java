@@ -14,11 +14,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -42,9 +40,7 @@ public class BankForm extends SimplePanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel bankAccountPanel;
 	private JScrollPane bankAccountPane;
-	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
-	private Object[] array = {};
-	private JScrollBar sb;
+	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_Y = 0;
 
 	private ArrayList<RowPanel> accountRowPanel = new ArrayList<RowPanel>();
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
@@ -53,7 +49,6 @@ public class BankForm extends SimplePanel {
 	private ImageIcon icon;
 	private SoyButton save;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
@@ -81,8 +76,6 @@ public class BankForm extends SimplePanel {
 
 		bankAccountLabel = new TableHeaderLabel("Bank Accounts");
 		deleteLabel = new TableHeaderLabel(icon);
-
-		model = new DefaultComboBoxModel(array);
 
 		bankAccountPanel = new JPanel();
 		bankAccountPanel.setLayout(null);

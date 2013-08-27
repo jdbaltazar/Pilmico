@@ -22,24 +22,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import common.entity.dailyexpenses.DailyExpenses;
-import common.entity.dailyexpenses.DailyExpensesDetail;
-import common.entity.dailyexpenses.DailyExpensesType;
-import common.entity.dailyexpenses.Expense;
-import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.MainFormLabel;
@@ -51,22 +43,25 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.DailyExpensesDetail;
+import common.entity.dailyexpenses.DailyExpensesType;
+import common.entity.dailyexpenses.Expense;
+import common.manager.Manager;
+
+@SuppressWarnings({"unchecked" })
 public class ExpensesForm extends SimplePanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel expensesPanel, row, p;
+	private JPanel expensesPanel;
 	private JScrollPane expensesPane;
-	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
-	private Object[] array = {};
-	private JTextField itemComboField, customerComboField;
-	private JScrollBar sb;
+	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 0, ITEMS_PANE_Y = 25;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
-	private JTextField quantity;
-	private JButton deleteRow, addRow;
+	private JButton addRow;
 	private TableHeaderLabel amountLabel, expenseLabel, deleteLabel;
 	private SpinnerDate date, issueDate;
 	private ImageIcon icon;
@@ -75,13 +70,12 @@ public class ExpensesForm extends SimplePanel {
 	private FormDropdown type;
 	private MainFormLabel issuedByLabel, typeLabel, dateLabel;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
 	private String msg = "";
-	private SBButton fwd, fwd2;
+	private SBButton fwd;
 
 	public ExpensesForm() {
 		// TODO Auto-generated constructor stub
@@ -94,7 +88,6 @@ public class ExpensesForm extends SimplePanel {
 	private void init() {
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new customer");
-		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
 
 		panel = new JPanel();
@@ -135,8 +128,6 @@ public class ExpensesForm extends SimplePanel {
 		amountLabel = new TableHeaderLabel("Amount");
 		expenseLabel = new TableHeaderLabel("Expenses");
 		deleteLabel = new TableHeaderLabel(icon);
-
-		model = new DefaultComboBoxModel(array);
 
 		expensesPanel = new JPanel();
 		expensesPanel.setLayout(null);

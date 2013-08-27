@@ -2,17 +2,18 @@ package gui.forms.util;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
 public class EditFormField extends JTextField{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int limit = 0;
 	private String label = "";
-	private Color c = null, c2 = null;
 
 	public EditFormField(int limit) {
 		this.limit = limit;

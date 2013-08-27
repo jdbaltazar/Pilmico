@@ -6,6 +6,10 @@ import javax.swing.JRadioButton;
 
 public class SoyRadioButton extends JRadioButton{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7764635946611429017L;
 	private String name;
 
 	public SoyRadioButton(String name) {

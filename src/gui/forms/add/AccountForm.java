@@ -1,6 +1,5 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.popup.SuccessPopup;
@@ -14,13 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-
-import common.entity.profile.Account;
-import common.entity.profile.AccountType;
-import common.entity.profile.Employee;
-import common.manager.Manager;
 
 import util.DropdownLabel;
 import util.ErrorLabel;
@@ -30,6 +22,12 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.profile.Account;
+import common.entity.profile.AccountType;
+import common.entity.profile.Employee;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class AccountForm extends SimplePanel {
 
 	/**
@@ -58,6 +56,7 @@ public class AccountForm extends SimplePanel {
 		Values.accountForm = this;
 	}
 
+	
 	public void fillEntries() {
 		try {
 			List<AccountType> accountTypes = Manager.accountManager.getAccountTypes();
@@ -212,10 +211,6 @@ public class AccountForm extends SimplePanel {
 
 	public void refreshEmployee() {
 		try {
-
-			List<Employee> employees = Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts();
-
-//			System.out.println("emps: " + employees.size());
 			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts().toArray());
 			employeeCombo.setModel(model);
 		} catch (Exception e2) {

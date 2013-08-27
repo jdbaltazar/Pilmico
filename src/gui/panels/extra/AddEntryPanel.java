@@ -6,6 +6,7 @@ import gui.forms.add.AccountReceivablesForm;
 import gui.forms.add.BankForm;
 import gui.forms.add.CAPaymentForm;
 import gui.forms.add.CashAdvanceForm;
+import gui.forms.add.CustomerForm;
 import gui.forms.add.DeliveryForm;
 import gui.forms.add.DepositForm;
 import gui.forms.add.DiscountForm;
@@ -13,18 +14,11 @@ import gui.forms.add.EmployeeForm;
 import gui.forms.add.ExpensesForm;
 import gui.forms.add.InventorySheetForm;
 import gui.forms.add.ProductForm;
-import gui.forms.add.CustomerForm;
 import gui.forms.add.PulloutForm;
 import gui.forms.add.SalaryReleaseForm;
 import gui.forms.add.SalesForm;
 import gui.forms.add.SupplierForm;
 import gui.forms.util.DateTool;
-import gui.list.AccountTypeList;
-import gui.list.CategoryList;
-import gui.list.ConditionList;
-import gui.list.NoteTypeList;
-import gui.list.UnitList;
-import gui.popup.SuccessPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -46,17 +40,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import common.entity.accountreceivable.AccountReceivable;
-import common.entity.cashadvance.CashAdvance;
-import common.entity.inventorysheet.InventorySheet;
-import common.entity.inventorysheet.InventorySheetData;
-import common.manager.Manager;
-
 import util.DateFormatter;
 import util.Tables;
 import util.Utility;
 import util.Values;
 import util.soy.SoyPanel;
+
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.cashadvance.CashAdvance;
+import common.entity.inventorysheet.InventorySheet;
+import common.entity.inventorysheet.InventorySheetData;
+import common.manager.Manager;
 
 public class AddEntryPanel extends SoyPanel implements Runnable {
 
@@ -69,16 +63,10 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private int maxHeight = 475;
 	private int minHeight = 0;
 	private int currHeight = minHeight;
-	private boolean isRunning;
+	private boolean isRunning = false;
 	private AccountForm accountForm;
 	private ProductForm productForm;
 	private SupplierForm supplierForm;
-	private AccountTypeList accountTypeList;
-	// private LogTypeList logTypeList;
-	private NoteTypeList noteTypeList;
-	private UnitList unitList;
-	private ConditionList conditionList;
-	private CategoryList categoryList;
 	private SalesForm sales;
 	private CashAdvanceForm cashAdvanceForm;
 	private CustomerForm profileForm;
@@ -98,7 +86,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 	private JPanel dummy;
 	private JScrollPane dummyPane;
 
-	private JPanel motherPanel, motherPanel2;
+	private JPanel motherPanel;
 
 	private ArrayList<JPanel> formPanels = new ArrayList<JPanel>();
 	private JLabel backToPrevious;
@@ -139,14 +127,6 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 		profileForm = new CustomerForm();
 		employeeForm = new EmployeeForm();
-
-		accountTypeList = new AccountTypeList();
-		// logTypeList = new LogTypeList();
-		noteTypeList = new NoteTypeList();
-
-		unitList = new UnitList();
-		conditionList = new ConditionList();
-		categoryList = new CategoryList();
 
 		expensesForm = new ExpensesForm();
 		sales = new SalesForm();
@@ -308,13 +288,13 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			}
 		});
 	}
-
-	public void startAnimation() {
-		// /refreshDates();
-
+	
+	public void startAnimation(){
 		isRunning = true;
+		
 		thread = new Thread(this);
 		thread.start();
+		
 	}
 
 	@Override
@@ -323,6 +303,9 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			showPanel();
 		else
 			hidePanel();
+		
+		
+		thread.interrupt();
 	}
 
 	private void hidePanel() {
@@ -513,17 +496,9 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		}
 	}
 
-	public void showUtilityPanels() {
-		accountTypeList.setVisible(true);
-		noteTypeList.setVisible(true);
-		unitList.setVisible(true);
-		conditionList.setVisible(true);
-		categoryList.setVisible(true);
-	}
-
-	private void refreshDates() {
-		sales.refreshDate();
-	}
+//	private void refreshDates() {
+//		sales.refreshDate();
+//	}
 
 	private void showAllComponents(boolean truth) {
 		for (int i = 0; i < getComponentCount(); i++)

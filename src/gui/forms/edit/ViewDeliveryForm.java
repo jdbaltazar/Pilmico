@@ -1,8 +1,5 @@
 package gui.forms.edit;
 
-import gui.forms.util.ComboKeyHandler;
-import gui.forms.util.RowPanel;
-import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
@@ -17,29 +14,26 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
+
+import util.DateFormatter;
+import util.EditFormPanel;
+import util.ErrorLabel;
+import util.SBButton;
+import util.TableHeaderLabel;
+import util.Utility;
+import util.Values;
+import util.soy.SoyButton;
 
 import common.entity.delivery.Delivery;
 import common.entity.delivery.DeliveryDetail;
@@ -47,23 +41,7 @@ import common.entity.product.Product;
 import common.entity.product.exception.NegativeValueException;
 import common.entity.product.exception.NotEnoughQuantityException;
 import common.entity.product.exception.ZeroKilosPerSackException;
-import common.entity.sales.SalesDetail;
-import common.entity.store.Store;
-import common.entity.supplier.Supplier;
 import common.manager.Manager;
-
-import util.DateFormatter;
-import util.EditFormPanel;
-import util.ErrorLabel;
-import util.FormCheckbox;
-import util.MainFormField;
-import util.MainFormLabel;
-import util.SBButton;
-import util.SpinnerDate;
-import util.TableHeaderLabel;
-import util.Utility;
-import util.Values;
-import util.soy.SoyButton;
 
 public class ViewDeliveryForm extends EditFormPanel {
 
@@ -71,10 +49,9 @@ public class ViewDeliveryForm extends EditFormPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel productsPanel, row, p;
+	private JPanel productsPanel;
 	private JScrollPane productsPane;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
-	private Object[] array = {};
 
 	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel;
@@ -83,12 +60,10 @@ public class ViewDeliveryForm extends EditFormPanel {
 	private ViewFormField terms, po_no, delivery_no, date, receivedBy, supplier;
 	private ViewFormLabel termsLabel, ponumLabel, deliveryNumLabel, dateLabel, receivedByLabel, supplierLabel;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String msg = "";
 
 	private SBButton voidBtn;
 
@@ -143,8 +118,6 @@ public class ViewDeliveryForm extends EditFormPanel {
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
-
-		model = new DefaultComboBoxModel(array);
 
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
@@ -356,9 +329,7 @@ public class ViewDeliveryForm extends EditFormPanel {
 			}
 		});
 
-		// panel.add(save);
 		add(voidBtn);
-		add(error);
 
 	}
 

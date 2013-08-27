@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.util.Date;
 
 import javax.swing.JLabel;
@@ -14,7 +13,6 @@ public class TimeLabel extends JLabel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -7214097620635206322L;
-	private static TimeLabel ins;
 	private javax.swing.Timer timer;
 	public static TimeLabel timeLabel = null;
 	private Date now;

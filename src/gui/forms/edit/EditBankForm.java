@@ -1,12 +1,10 @@
 package gui.forms.edit;
 
 import gui.forms.util.EditFormField;
-import gui.forms.util.FormField;
 import gui.forms.util.FormLabel;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -17,17 +15,11 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-
-import common.entity.deposit.Bank;
-import common.entity.deposit.BankAccount;
-import common.manager.Manager;
 
 import util.EditFormPanel;
 import util.ErrorLabel;
@@ -37,6 +29,10 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.deposit.Bank;
+import common.entity.deposit.BankAccount;
+import common.manager.Manager;
+
 public class EditBankForm extends EditFormPanel {
 
 	/**
@@ -45,9 +41,7 @@ public class EditBankForm extends EditFormPanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel bankAccountPanel;
 	private JScrollPane bankAccountPane;
-	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
-	private Object[] array = {};
-	private JScrollBar sb;
+	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35;
 
 	private ArrayList<RowPanel> accountRowPanel = new ArrayList<RowPanel>();
 	private ArrayList<EditFormField> fields = new ArrayList<EditFormField>();
@@ -57,7 +51,6 @@ public class EditBankForm extends EditFormPanel {
 	private ImageIcon icon;
 	private SoyButton edit;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
@@ -111,8 +104,6 @@ public class EditBankForm extends EditFormPanel {
 
 		bankAccountLabel = new TableHeaderLabel("Bank Accounts");
 		deleteLabel = new TableHeaderLabel(icon);
-
-		model = new DefaultComboBoxModel(array);
 
 		bankAccountPanel = new JPanel();
 		bankAccountPanel.setLayout(null);
@@ -220,6 +211,8 @@ public class EditBankForm extends EditFormPanel {
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				
+				if(isValidated()){
 				bank.setName(fields.get(0).getText());
 				bank.setAddress(fields.get(1).getText());
 				bank.setContactNo(fields.get(2).getText());
@@ -233,6 +226,8 @@ public class EditBankForm extends EditFormPanel {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
+				}else
+					error.setToolTip(msg);
 
 			}
 		});
@@ -244,10 +239,10 @@ public class EditBankForm extends EditFormPanel {
 
 	private boolean isValidated() {
 
-		if (bankAccountPanel.getComponentCount() == 0) {
-
-			msg = "Put at least one item";
-
+		if(fields.get(0).getText().equals("")){
+			
+			msg = "Name is required ";
+			
 			return false;
 		}
 
@@ -255,15 +250,4 @@ public class EditBankForm extends EditFormPanel {
 
 	}
 
-	private void clearForm() {
-		bankAccountPanel.removeAll();
-		accountRowPanel.clear();
-
-		error.setText("");
-
-	}
-
-	public void refreshAccount() {
-
-	}
 }

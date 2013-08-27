@@ -11,7 +11,11 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 
 public class InfoBalloon extends JPanel {
-   private static final int PREF_WIDTH = 400;
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private static final int PREF_WIDTH = 400;
    private static final int PREF_HEIGHT = 300;
    private static final String REGEX_TEST = "\\d*";
    private static final String ERROR_TEXT = "Please only add numbers to the text field";

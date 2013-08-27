@@ -2,17 +2,15 @@ package util.soy;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
-import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
 public class SoyField extends JTextField{
 
-	private GradientPaint gradient;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1249170403454618624L;
 	//private Color backgroundColor1 = new Color(245,245,220),	backgroundColor2 = new Color(220,220,220);
 	private Color backgroundColor1 = new Color(245,245,220),	backgroundColor2 = new Color(255,250,250);
 	

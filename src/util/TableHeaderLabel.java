@@ -9,6 +9,11 @@ import javax.swing.JLabel;
 
 public class TableHeaderLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7056378821121644704L;
+
 	public TableHeaderLabel(String label){
 		super(label);
 

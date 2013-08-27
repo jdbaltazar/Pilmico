@@ -41,6 +41,7 @@ import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class EditEmployeeForm extends EditFormPanel {
 
 	/**
@@ -293,6 +294,15 @@ public class EditEmployeeForm extends EditFormPanel {
 						new SuccessPopup("Edit").setVisible(true);
 						Values.centerPanel.changeTable(Values.EMPLOYEES);
 
+						Values.salaryReleaseForm.refreshEmployee();
+						Values.cashAdvanceForm.refreshEmployee();
+						Values.accountForm.refreshEmployee();
+						Values.depositForm.refreshDropdowns(true);
+
+						if (Values.caPaymentForm != null)
+							Values.caPaymentForm.refreshDropdown(true);
+						if (Values.arPaymentForm != null)
+							Values.arPaymentForm.refreshDropdown(true);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}

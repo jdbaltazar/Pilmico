@@ -12,24 +12,21 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-
-import app.DatabaseSettings;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
-
-import common.manager.Manager;
-
 import util.SBButton;
 import util.Values;
 import util.soy.SoyPanel;
+import app.DatabaseSettings;
+
+import common.manager.Manager;
 
 public class TopPanel extends SoyPanel {
 
@@ -37,8 +34,6 @@ public class TopPanel extends SoyPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -7533379617683653266L;
-	private BufferedImage image, image1;
-	private ImageIcon icon;
 	private JButton close, minimize, close2;
 	private JLabel cashIN, cashINLabel, cashOUT, cashOUTLabel, trialLabel;
 	public static FormField searchField;
@@ -66,8 +61,6 @@ public class TopPanel extends SoyPanel {
 	private void init() {
 		setPrefSize(Values.WIDTH, Values.HEIGHT / 6);
 		setLayout(null);
-
-		icon = new ImageIcon("images/search.png");
 
 		trialLabel = new ViewFormLabel("Trial period lasts until 31 Aug 2013 only.");
 		trialLabel.setForeground(Color.decode("#E62E00"));
@@ -158,15 +151,15 @@ public class TopPanel extends SoyPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 
-				/*
-				 * int option = JOptionPane.showConfirmDialog( null,
-				 * "Are you sure you want to exit?", "Confirm",
-				 * JOptionPane.YES_NO_OPTION);
-				 * 
-				 * if(option == JOptionPane.YES_OPTION){
-				 */
-				Values.mainFrame.closeFrame();
-				// }
+				
+				int option = JOptionPane.showConfirmDialog(null,
+						"Are you sure you want to exit?", "Confirm",
+						JOptionPane.YES_NO_OPTION);
+
+				if (option == JOptionPane.YES_OPTION) {
+
+					Values.mainFrame.closeFrame();
+				}
 			}
 		});
 
@@ -225,13 +218,6 @@ public class TopPanel extends SoyPanel {
 		g2.dispose();
 		g.dispose();
 
-	}
-
-	private void drawLogo(Graphics2D g2) {
-		g2.drawImage(image, 30, logoY, 220, 55, null);
-		// g2.drawImage(image1, 495, 5, null);
-		g2.setColor(Color.YELLOW.brighter());
-		// 91,-3
 	}
 
 	public void addMenuButtons() {

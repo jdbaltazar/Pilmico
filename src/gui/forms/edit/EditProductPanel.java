@@ -5,7 +5,6 @@ import gui.forms.util.FormDropdown;
 import gui.forms.util.FormLabel;
 import gui.forms.util.HistoryTable;
 import gui.forms.util.SimpleNumericField;
-import gui.popup.DatabaseToolPanel;
 import gui.popup.SuccessPopup;
 
 import java.awt.Color;
@@ -16,33 +15,30 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
-
-import common.entity.product.Category;
-import common.entity.product.Price;
-import common.entity.product.Product;
-import common.manager.Manager;
-
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.FormCheckbox;
-import util.JNumericField;
 import util.SBButton;
 import util.Tables;
 import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.product.Category;
+import common.entity.product.Price;
+import common.entity.product.Product;
+import common.manager.Manager;
+
+@SuppressWarnings({ "unchecked" })
 public class EditProductPanel extends EditFormPanel {
 
 	/**

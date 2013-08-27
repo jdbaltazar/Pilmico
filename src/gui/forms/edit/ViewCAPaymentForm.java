@@ -4,25 +4,16 @@ import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
-import gui.popup.SuccessPopup;
-import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import common.entity.cashadvance.CAPayment;
-import common.manager.Manager;
 
 import util.DateFormatter;
 import util.EditFormPanel;
@@ -33,6 +24,8 @@ import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.cashadvance.CAPayment;
+
 public class ViewCAPaymentForm extends EditFormPanel {
 
 	/**
@@ -40,7 +33,6 @@ public class ViewCAPaymentForm extends EditFormPanel {
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
 	private SoyButton clear, save;
-	private DefaultComboBoxModel model;
 	private int initY = 32;
 	private ViewFormLabel dateLabel, issuedByLabel, caIDLabel, empRepLabel, amountLabel;
 	private ViewFormField caID, empRep, issuedBy, date, amount;

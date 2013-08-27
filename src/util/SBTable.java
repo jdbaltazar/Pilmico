@@ -1,49 +1,24 @@
 package util;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
-
-import gui.popup.NotesPopup;
 import gui.renderer.MyCellRenderer;
 import gui.renderer.MyTableModel;
 import gui.renderer.RowHighlightRenderer;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JCheckBox;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
+
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "rawtypes", "serial" })
 public class SBTable extends JTable implements MouseListener {
 
 	final RowHighlightRenderer renderer = new RowHighlightRenderer();
 	GradientTableHeader gradientTableHeader = new GradientTableHeader();
-	private TableCellListener tcl;
 	private TableRowSorter<MyTableModel> sorter;
 	private MyTableModel model;
 	private List objects;
@@ -137,7 +112,6 @@ public class SBTable extends JTable implements MouseListener {
 		if (arg0.getClickCount() == 1 && (Values.tableUtilPanel.getLabel().equals(Tables.LOGS))) {
 			JTable target = (JTable) arg0.getSource();
 			int row = target.getSelectedRow();
-			int column = target.getSelectedColumn();
 
 			// setToolTipText(getValueAt(convertRowIndexToModel(row),
 			// column).toString());

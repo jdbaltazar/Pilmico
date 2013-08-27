@@ -45,6 +45,7 @@ import common.entity.product.Product;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class DiscountForm extends SimplePanel {
 
 	/**

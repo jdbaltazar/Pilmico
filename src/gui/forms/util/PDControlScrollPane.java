@@ -9,6 +9,11 @@ import javax.swing.JScrollPane;
 
 public class PDControlScrollPane extends JScrollPane {
 
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4142442762893164328L;
+
 public PDControlScrollPane() {
     super();
 

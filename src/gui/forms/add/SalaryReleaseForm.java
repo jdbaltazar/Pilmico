@@ -26,19 +26,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import common.entity.profile.Employee;
-import common.entity.salary.Fee;
-import common.entity.salary.FeeDeduction;
-import common.entity.salary.SalaryRelease;
-import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.MainFormLabel;
@@ -50,6 +43,13 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.profile.Employee;
+import common.entity.salary.Fee;
+import common.entity.salary.FeeDeduction;
+import common.entity.salary.SalaryRelease;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class SalaryReleaseForm extends SimplePanel {
 
 	/**
@@ -58,13 +58,11 @@ public class SalaryReleaseForm extends SimplePanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel feesPanel;
 	private JScrollPane feesPane;
-	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
+	private final int ROW_WIDTH = 305, ROW_HEIGHT = 35, LABEL_Y = 0;
 	private Object[] array = {};
-	private JScrollBar sb;
 
 	private ArrayList<RowPanel> feesRowPanel = new ArrayList<RowPanel>();
-	private JTextField quantity;
-	private JButton deleteRow, addRow;
+	private JButton addRow;
 	private TableHeaderLabel deleteLabel, feesLabel, amountLabel;
 	private SpinnerDate date;
 	private ImageIcon icon;
@@ -79,7 +77,7 @@ public class SalaryReleaseForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg = "";
-	private SBButton fwd, fwd2;
+	private SBButton fwd;
 
 	public SalaryReleaseForm() {
 		super("Add Salary Release Form");
@@ -92,7 +90,6 @@ public class SalaryReleaseForm extends SimplePanel {
 	private void init() {
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new employee");
-		fwd2 = new SBButton("forward.png", "forward.png", "Add new product");
 		addRow = new SBButton("add_row.png", "add_row.png", "Add Row");
 
 		panel = new JPanel();

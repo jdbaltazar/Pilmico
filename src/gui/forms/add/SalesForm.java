@@ -2,9 +2,6 @@ package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown.ColorArrowUI;
-import gui.forms.util.DateTool;
-import gui.forms.util.FormField;
-import gui.forms.util.ISRowPanel;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.popup.SuccessPopup;
@@ -23,7 +20,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -31,28 +27,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-
-import common.entity.product.Product;
-import common.entity.product.exception.NegativeValueException;
-import common.entity.product.exception.NotEnoughQuantityException;
-import common.entity.product.exception.ZeroKilosPerSackException;
-import common.entity.profile.Account;
-import common.entity.profile.Employee;
-import common.entity.profile.Person;
-import common.entity.sales.Sales;
-import common.entity.sales.SalesDetail;
-import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -65,30 +46,36 @@ import util.TableHeaderLabel;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.product.Product;
+import common.entity.product.exception.NegativeValueException;
+import common.entity.product.exception.NotEnoughQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
+import common.entity.profile.Person;
+import common.entity.sales.Sales;
+import common.entity.sales.SalesDetail;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class SalesForm extends SimplePanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel productsPanel, row, p;
+	private JPanel productsPanel;
 	private JScrollPane productsPane;
 	private JComboBox customerCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
-	private Object[] array = {};
 	private JTextField customerComboField;
-	private JScrollBar sb;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
-	private JTextField quantity;
-	private JButton deleteRow, addRow;
-	private JLabel issuedByLabel;
+	private JButton addRow;
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, kgpersack, priceKG, priceSACK, productLabel, deleteLabel;
 	private SpinnerDate date, issueDate;
 	private ImageIcon icon;
 	private SoyButton save;
 	private JLabel cashier;
-	private MainFormField issuedAt, rc_no, receipt_no, remarks;
+	private MainFormField issuedAt, rc_no, receipt_no;
 	private MainFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
 
 	private DefaultComboBoxModel model;
@@ -157,7 +144,6 @@ public class SalesForm extends SimplePanel {
 		issuedAt = new MainFormField(200);
 		rc_no = new MainFormField(20);
 		receipt_no = new MainFormField(30);
-		remarks = new MainFormField(200);
 
 		quantityKGLabel = new TableHeaderLabel("Qtty (kg)");
 		productLabel = new TableHeaderLabel("Products");
@@ -517,13 +503,13 @@ public class SalesForm extends SimplePanel {
 
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
 
-					boolean valid = true;
+//					boolean valid = true;
 					for (RowPanel rp : rowPanel) {
 						Product p = rp.getSelectedProduct();
 						try {
 							if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), rp.getQuantityInSack(),
 									rp.getQuantityInKilo())) {
-								valid = false;
+//								valid = false;
 							}
 						} catch (NegativeValueException e1) {
 							e1.printStackTrace();

@@ -8,6 +8,10 @@ import javax.swing.JLabel;
 
 public class SubTableHeaderLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6615727603258691031L;
 	private Color color = new Color(119,136,153); 
 	
 	public SubTableHeaderLabel(String label){

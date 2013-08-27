@@ -2,7 +2,6 @@ package gui.forms.add;
 
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
-import gui.forms.util.NumericTextField;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
@@ -25,11 +24,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import common.entity.product.Category;
-import common.entity.product.Price;
-import common.entity.product.Product;
-import common.manager.Manager;
-
 import util.DropdownLabel;
 import util.ErrorLabel;
 import util.FormCheckbox;
@@ -40,17 +34,25 @@ import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.product.Category;
+import common.entity.product.Product;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ProductForm extends SimplePanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private ArrayList<JNumericField> numfields = new ArrayList<JNumericField>();
 	private SoyButton clear, save;
-	private FormDropdown unit, category, condition;
+	private FormDropdown unit, category;
 	private JCheckBox cbox1, cbox2;
 	private DefaultComboBoxModel model;
 	private JNumericField numField;
 	private ErrorLabel error;
-	private NumericTextField quantityKG;
 	private int initY = 25;// 56
 	private DropdownLabel dLabel;
 	private SBButton fwd;
@@ -114,8 +116,6 @@ public class ProductForm extends SimplePanel {
 			e2.printStackTrace();
 		}
 
-		quantityKG = new NumericTextField("Quantity*", 12, Color.white, Color.GRAY);
-
 		cbox1 = new FormCheckbox("Available?*");
 		cbox2 = new FormCheckbox("Allow alert?*");
 
@@ -126,7 +126,7 @@ public class ProductForm extends SimplePanel {
 
 		int ctr = 0, ctr2 = 0;
 
-		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 70) {//y+=54
+		for (int i = 0, y = 0, x1 = 15; i < num; i++, y += 70) {//y+=54
 
 			if (i == 3) {
 				x1 = 215;

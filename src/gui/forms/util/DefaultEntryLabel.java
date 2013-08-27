@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.java.balloontip.BalloonTip;
@@ -13,6 +12,10 @@ import net.java.balloontip.utils.ToolTipUtils;
 
 public class DefaultEntryLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String label;
 	private BalloonTip balloonTip;
 	

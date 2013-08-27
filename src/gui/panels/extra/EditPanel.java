@@ -30,9 +30,9 @@ import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import util.Tables;
+import util.Values;
+import util.soy.SoyPanel;
 
 import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
@@ -53,22 +53,19 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 
-import util.Tables;
-import util.Values;
-import util.soy.SoyPanel;
-
 public class EditPanel extends SoyPanel implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2486932009550201039L;
 	public static FormField searchField;
-	private JLabel search;
-	private JComboBox searchOption;
 
 	private Thread thread;
 	private int maxWidth = Values.WIDTH - 2;
 	private int minWidth = 0;
 	private int currWidth = minWidth;
 	private boolean isRunning;
-	private ImageIcon icon;
 
 	private boolean hide = false, ISLinked = false;
 
@@ -144,6 +141,8 @@ public class EditPanel extends SoyPanel implements Runnable {
 		} else {
 			hidePanel();
 		}
+		
+		thread.interrupt();
 	}
 
 	private void hidePanel() {

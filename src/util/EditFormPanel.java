@@ -1,7 +1,6 @@
 package util;
 
 import gui.forms.util.RemarksLabel;
-import gui.forms.util.ViewFormLabel;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -6,23 +6,21 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 import gui.forms.util.FieldLimit;
 
 public class FormTextArea extends JTextArea {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1725291372602876413L;
 	private int limit = 0;
 	private String label = "";
-	private Color c = null, c2 = null;
 	
 	public FormTextArea(String label, int limit, Color c, Color c2) {
 		this.label = label;
 		this.limit = limit;
-		this.c = c;
-		this.c2 = c2;
 		init();
 	}
 

@@ -2,7 +2,6 @@ package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.RemarksLabel;
-import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
@@ -15,41 +14,30 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
+
+import util.DateFormatter;
+import util.EditFormPanel;
+import util.ErrorLabel;
+import util.SBButton;
+import util.TableHeaderLabel;
+import util.Utility;
+import util.Values;
+import util.soy.SoyButton;
 
 import common.entity.product.Product;
 import common.entity.pullout.PullOut;
 import common.entity.pullout.PullOutDetail;
 import common.manager.Manager;
-
-import util.DateFormatter;
-import util.EditFormPanel;
-import util.ErrorLabel;
-import util.MainFormLabel;
-import util.SBButton;
-import util.SpinnerDate;
-import util.TableHeaderLabel;
-import util.Utility;
-import util.Values;
-import util.soy.SoyButton;
 
 public class ViewPulloutForm extends EditFormPanel {
 
@@ -59,8 +47,7 @@ public class ViewPulloutForm extends EditFormPanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel productsPanel;
 	private JScrollPane productsPane;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 45, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
-	private Object[] array = {};
+	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 45, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
 
 	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel;
@@ -70,12 +57,10 @@ public class ViewPulloutForm extends EditFormPanel {
 	private ViewFormField issuedBy, date;
 	private ViewFormLabel issuedByLabel, dateLabel;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String msg = "";
 
 	private SBButton voidBtn;
 	private JLabel status;
@@ -120,8 +105,6 @@ public class ViewPulloutForm extends EditFormPanel {
 		quantitySACKlabel = new TableHeaderLabel("Qtty (sack)");
 		priceKG = new TableHeaderLabel("Price (kg)");
 		priceSACK = new TableHeaderLabel("Price (sack)");
-
-		model = new DefaultComboBoxModel(array);
 
 		productsPanel = new JPanel();
 		productsPanel.setLayout(null);
@@ -253,9 +236,7 @@ public class ViewPulloutForm extends EditFormPanel {
 			}
 		});
 
-		// panel.add(save);
 		add(voidBtn);
-		add(error);
 
 	}
 

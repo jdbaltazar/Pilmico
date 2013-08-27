@@ -2,23 +2,22 @@ package gui.forms.util;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class FormDropdown extends JComboBox {
 
-	private Object[] entries;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public FormDropdown() {
 
@@ -40,7 +39,6 @@ public class FormDropdown extends JComboBox {
 	public FormDropdown(Object[] entries) {
 
 		// setFont(new Font("Tahoma", Font.BOLD, 22));
-		this.entries = entries;
 		for (int i = 0; i < entries.length; i++)
 			addItem(entries[i]);
 		init();

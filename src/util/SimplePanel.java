@@ -12,8 +12,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Date;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")

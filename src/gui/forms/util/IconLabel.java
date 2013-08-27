@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.MinimalBalloonStyle;
-import net.java.balloontip.styles.RoundedBalloonStyle;
 import net.java.balloontip.utils.ToolTipUtils;
 
 public class IconLabel extends JLabel {

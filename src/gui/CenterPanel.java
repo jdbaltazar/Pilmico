@@ -6,7 +6,6 @@ import gui.panels.TablePanel;
 import gui.panels.TableUtilPanel;
 import gui.panels.extra.AddEntryPanel;
 import gui.panels.extra.EditPanel;
-import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -44,7 +43,6 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
-import core.persist.HibernateUtil;
 
 public class CenterPanel extends SoyPanel {
 

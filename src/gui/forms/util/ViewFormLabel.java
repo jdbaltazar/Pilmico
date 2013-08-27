@@ -2,18 +2,17 @@ package gui.forms.util;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public class ViewFormLabel extends JLabel{
 	
-	private Font original;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6498600351131412302L;
 	private String label;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ViewFormLabel(String label){
 //		super("<HTML><U>"+label+"<U><HTML>");
 		super(label);

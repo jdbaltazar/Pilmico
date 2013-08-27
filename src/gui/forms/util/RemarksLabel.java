@@ -12,6 +12,11 @@ import net.java.balloontip.utils.ToolTipUtils;
 
 public class RemarksLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public RemarksLabel(String label){
 		super(label);
 		

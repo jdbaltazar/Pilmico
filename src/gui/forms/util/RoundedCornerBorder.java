@@ -10,14 +10,14 @@ import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.border.AbstractBorder;
 
 public class RoundedCornerBorder extends AbstractBorder {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1062733596231395386L;
 	private Color bkcolor = null, bkcolor2 = Color.GRAY;
 	
 	public RoundedCornerBorder(Color bkcolor, Color bkcolor2){

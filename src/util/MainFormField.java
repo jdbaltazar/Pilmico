@@ -10,6 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class MainFormField extends JTextField{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4826690333127439348L;
 	private int limit;
 	
 	public MainFormField(int limit){

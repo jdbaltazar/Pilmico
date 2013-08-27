@@ -1,11 +1,6 @@
 package util;
 
-import gui.renderer.MyTableModel;
-
-import java.util.List;
-
 import javax.swing.JTable;
-import javax.swing.table.TableRowSorter;
 
 public class ColumnSizer {
 	

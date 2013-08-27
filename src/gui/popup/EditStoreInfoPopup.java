@@ -219,11 +219,4 @@ public class EditStoreInfoPopup extends JDialog {
 		add(panel);
 	}
 
-	private boolean isValidated() {
-
-		if (!fields.get(0).getText().equals("") && !fields.get(2).getText().equals(""))
-			return true;
-
-		return false;
-	}
 }
