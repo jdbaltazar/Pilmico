@@ -566,10 +566,11 @@ public class DatabaseTool {
 						}
 
 						// increment db version of database
-						float current = DatabaseSettings.getInstance().getDbVersion();
-						DatabaseSettings.getInstance().setDbVersion(current + 0.05f);
+						// float current =
+						// DatabaseSettings.getInstance().getDbVersion();
+						DatabaseSettings.getInstance().setDbVersion(1.5f);
 						DatabaseSettings.getInstance().persist();
-						AppSettings.getInstance().setAppVersion(current + 0.05f);
+						AppSettings.getInstance().setAppVersion(1.5f);
 						AppSettings.getInstance().persist();
 
 					} catch (SQLException s) {
