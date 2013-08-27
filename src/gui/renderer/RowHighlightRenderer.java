@@ -57,10 +57,11 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 			setBackground(backgroundColor1);
 		else
 			setBackground(backgroundColor2);
+		
+		setForeground(Color.BLACK);
 
 		if (isSelected) {
 			setBackground(selectedColor);
-			setForeground(Color.BLACK);
 		}
 
 		if (table.getName().equals(Tables.SALES)) {
