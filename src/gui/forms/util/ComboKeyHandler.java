@@ -3,7 +3,6 @@ package gui.forms.util;
 import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Collections;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -12,7 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ComboKeyHandler extends KeyAdapter {
 	private final JComboBox comboBox;
 	private final Vector<Object> list = new Vector<Object>();

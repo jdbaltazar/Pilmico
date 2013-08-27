@@ -7,7 +7,6 @@ import gui.forms.util.FormLabel;
 import gui.forms.util.IconLabel;
 import gui.popup.SuccessPopup;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,13 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
-import common.entity.profile.Account;
-import common.entity.profile.AccountType;
-import common.manager.Manager;
 
 import util.EditFormPanel;
 import util.ErrorLabel;
@@ -29,6 +22,11 @@ import util.SBButton;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.profile.Account;
+import common.entity.profile.AccountType;
+import common.manager.Manager;
+
+@SuppressWarnings({ "unchecked" })
 public class EditAccountPanel extends EditFormPanel {
 
 	/**
@@ -47,6 +45,7 @@ public class EditAccountPanel extends EditFormPanel {
 	private SBButton deactivate, activate;
 	private ErrorLabel error;
 	private Account account;
+	private String msg="";
 
 	public EditAccountPanel(Account account) {
 		super("View / Edit Account");
@@ -56,7 +55,6 @@ public class EditAccountPanel extends EditFormPanel {
 		fillEntries();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void fillEntries() {
 
 		try {
@@ -189,6 +187,7 @@ public class EditAccountPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				account.setAccountType((AccountType) acctType.getSelectedItem());
 				account.setUsername(fields.get(0).getText());
 				account.setPassword(fields.get(1).getText());
@@ -200,6 +199,8 @@ public class EditAccountPanel extends EditFormPanel {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
+				}else
+					error.setToolTip(msg);
 			}
 		});
 
@@ -237,11 +238,14 @@ public class EditAccountPanel extends EditFormPanel {
 
 	private boolean isValidated() {
 
-		// if (!username.equals("") && !password.equals("") &&
-		// !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-		// return true;
-
-		return false;
+		for (int i = 0; i < fields.size(); i++)
+			
+			if(fields.get(i).getText().equals("")){
+				msg = "All fields are required ";
+				return false;
+			}
+		
+		return true;
 	}
 
 }

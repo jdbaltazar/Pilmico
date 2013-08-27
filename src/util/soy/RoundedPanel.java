@@ -32,7 +32,11 @@ import javax.swing.JPanel;
  */
 public class RoundedPanel extends JPanel {
 
-    /** Stroke size. it is recommended to set it to 1 for better view */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1545932909959268283L;
+	/** Stroke size. it is recommended to set it to 1 for better view */
     protected int strokeSize = 1;
     /** Color of shadow */
     protected Color shadowColor = Color.black;

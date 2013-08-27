@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
@@ -14,6 +12,10 @@ import gui.forms.util.FieldLimit;
 
 public class FormField extends JTextField {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7336515739966668727L;
 	private int limit = 0;
 	private String label = "";
 	private Color c = null, c2 = null;

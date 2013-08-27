@@ -26,18 +26,15 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 
-import common.entity.log.Log;
-import common.entity.log.LogType;
-import common.entity.note.Note;
-import common.entity.note.NoteType;
-import common.entity.profile.Account;
-import common.manager.Manager;
-
 import util.ErrorLabel;
 import util.SBButton;
 import util.SimplePanel;
 import util.Values;
 import util.soy.SoyButton;
+
+import common.entity.note.Note;
+import common.entity.note.NoteType;
+import common.manager.Manager;
 
 public class AddNotePopup extends JDialog {
 
@@ -139,7 +136,7 @@ public class AddNotePopup extends JDialog {
 
 		save.setBounds(105, 342, 80, 30);
 
-		error.setBounds(120, 310, 150, 25);
+		error.setBounds(108, 315, 150, 25);
 
 		List<NoteType> nTypes = new ArrayList<NoteType>();
 		try {
@@ -175,7 +172,7 @@ public class AddNotePopup extends JDialog {
 						e1.printStackTrace();
 					}
 				} else
-					error.setText("All fields are required");
+					error.setToolTip("All fields are required ");
 
 			}
 		});

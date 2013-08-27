@@ -10,24 +10,23 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import common.entity.dailyexpenses.DailyExpensesType;
-import common.entity.dailyexpenses.Expense;
-import common.entity.deposit.BankAccount;
-import common.entity.product.Product;
-import common.entity.salary.Fee;
-import common.manager.Manager;
 
 import util.JNumericField;
 import util.SBButton;
 import util.Tables;
 import util.Values;
 
+import common.entity.dailyexpenses.Expense;
+import common.entity.deposit.BankAccount;
+import common.entity.product.Product;
+import common.entity.salary.Fee;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class RowPanel extends JPanel {
 
 	/**
@@ -38,20 +37,17 @@ public class RowPanel extends JPanel {
 	private String command = "none";
 
 	private JComboBox productsCombo, feesCombo, expensesCombo;
-	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 85, UPPER_Y = 55;
+	private int ROW_WIDTH = 580, ROW_HEIGHT = 35;
 	private JTextField productsComboField, expensesComboField, feesComboField;
 	private JNumericField quantitySack, quantityKG, amountOfExpense, feeAmount, onDisplayKG;
 
 	private ViewFormField kgpersack, priceSack, priceKG, productOnDisplay, onDisplaySack;
-	private JButton deleteRow, addRow;
+	private JButton deleteRow;
 	private JPanel row;
 	private FormField bankAccount;
 	private SBButton sackConvert;
 
-	private RowJLabel date, amount;
-
 	private Object object;
-	private String[] stocks;
 	private int mode;
 	private String label = "";
 	private JPanel srcPanel = new JPanel();
@@ -401,9 +397,9 @@ public class RowPanel extends JPanel {
 		deleteRow.setBounds(214, 9, 16, 16);
 
 		row.add(bankAccount);
-		// if (!label.equals(Tables.BANK_EDIT)) {
-		// row.add(deleteRow);
-		// }
+		if (!label.equals(Tables.BANK_EDIT)) {
+			row.add(deleteRow);
+		}
 
 		add(row);
 	}
@@ -497,7 +493,6 @@ public class RowPanel extends JPanel {
 
 		productsCombo.setSelectedIndex(-1);
 
-		boolean found = false;
 		add(row);
 	}
 

@@ -1,11 +1,14 @@
 package util;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class DarkBackground extends JPanel {
-   private JComponent glassPane;
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private JComponent glassPane;
 
    public DarkBackground() {
       setPreferredSize(new Dimension(0, 0));

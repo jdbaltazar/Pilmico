@@ -1,14 +1,10 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.popup.SuccessPopup;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,15 +13,19 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
+
+import util.DropdownLabel;
+import util.ErrorLabel;
+import util.JNumericField;
+import util.SimplePanel;
+import util.SpinnerDate;
+import util.Tables;
+import util.Values;
+import util.soy.SoyButton;
 
 import common.entity.profile.Designation;
 import common.entity.profile.Employee;
@@ -33,16 +33,7 @@ import common.entity.profile.EmploymentStatus;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
-import util.DropdownLabel;
-import util.ErrorLabel;
-import util.JNumericField;
-import util.SBButton;
-import util.SimplePanel;
-import util.SpinnerDate;
-import util.Tables;
-import util.Values;
-import util.soy.SoyButton;
-
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class EmployeeForm extends SimplePanel {
 
 	/**
@@ -192,6 +183,7 @@ public class EmployeeForm extends SimplePanel {
 						Values.salaryReleaseForm.refreshEmployee();
 						Values.cashAdvanceForm.refreshEmployee();
 						Values.accountForm.refreshEmployee();
+						Values.depositForm.refreshDropdowns(true);
 
 						if (Values.caPaymentForm != null)
 							Values.caPaymentForm.refreshDropdown(true);

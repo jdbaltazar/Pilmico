@@ -1,6 +1,5 @@
 package gui.forms.edit;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
@@ -13,40 +12,25 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
-
-import common.entity.discountissue.DiscountIssue;
-import common.manager.Manager;
 
 import util.DateFormatter;
-import util.DropdownLabel;
 import util.EditFormPanel;
 import util.ErrorLabel;
-import util.JNumericField;
 import util.SBButton;
 import util.Tables;
 import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
+
+import common.entity.discountissue.DiscountIssue;
+import common.manager.Manager;
 
 public class ViewDiscountForm extends EditFormPanel {
 
@@ -54,15 +38,12 @@ public class ViewDiscountForm extends EditFormPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
-	private ArrayList<JNumericField> fields = new ArrayList<JNumericField>();
 	private SoyButton clear, save;
-	private DefaultComboBoxModel model;
 	private int initY = 32;
 	private ViewFormLabel dateLabel, issuedByLabel, productLabel, customerLabel, amountLabel;
 	private ViewFormField product, customer, issuedBy, date, amount;
 
 	private ErrorLabel error;
-	private String username, password, firstName, lastName, address;
 
 	private final int num = Tables.discountFormLabel.length;
 	private JPanel panel;
@@ -173,13 +154,6 @@ public class ViewDiscountForm extends EditFormPanel {
 
 		error.setBounds(160, 290, 230, 25);
 
-		clear.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-
-				clearFields();
-			}
-		});
-
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -261,29 +235,6 @@ public class ViewDiscountForm extends EditFormPanel {
 		
 		if(discountIssue.getRemarks() != null)
 			remarks.setToolTip(remarks, "-"+discountIssue.getRemarks());
-	}
-
-	private void clearFields() {
-		for (int i = 0; i < fields.size(); i++)
-			fields.get(i).setText("");
-
-		error.setText("");
-	}
-
-	private boolean isValidated() {
-		if (!username.equals("") && !password.equals("") && !firstName.equals("") && !lastName.equals("") && !address.equals(""))
-			return true;
-		return false;
-	}
-
-	public void refreshDropdown() {
-		try {
-			model = new DefaultComboBoxModel();
-			// issuedBy = new FormDropdown();
-			// issuedBy.setModel(model);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
 	}
 
 }

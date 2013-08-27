@@ -1,7 +1,5 @@
 package util;
 
-import gui.popup.NotesPopup;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
@@ -9,11 +7,14 @@ import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public class TableLink extends JLabel implements MouseListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7952099881436864663L;
 	Font original;
 	String label;
 	int index;

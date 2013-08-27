@@ -1,23 +1,15 @@
 package util;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
 
 public class MenuButton extends JButton implements MouseListener{
 
@@ -29,7 +21,6 @@ public class MenuButton extends JButton implements MouseListener{
 	public MenuButton(String icon, String icon2, String icon3, String hover) {
 		this.icon = icon;
 		this.icon2 = icon2;
-		this.icon3 = icon3;
 		this.hover = hover;
 		init();
 		addMouseListener(this);
@@ -41,7 +32,6 @@ public class MenuButton extends JButton implements MouseListener{
 		// TODO Auto-generated method stub
 		image = new ImageIcon("images/"+icon);
 		image2 = new ImageIcon("images/" + icon2);
-		image3 = new ImageIcon("images/" + icon3);
 		
 		//setFocusable(false);
 		setBorderPainted(false);
@@ -135,8 +125,8 @@ public class MenuButton extends JButton implements MouseListener{
 
 	boolean mouseIn = false;
 	private boolean mouseClicked = false;
-	private String icon, icon2, icon3;
-	private Icon image, image2, image3;
+	private String icon, icon2;
+	private Icon image, image2;
 	private String hover="";
 }
 

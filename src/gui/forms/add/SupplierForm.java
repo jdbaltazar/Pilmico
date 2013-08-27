@@ -1,6 +1,5 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormField;
 import gui.popup.SuccessPopup;
 
@@ -11,21 +10,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-
-import common.entity.profile.Person;
-import common.entity.supplier.Supplier;
-import common.manager.Manager;
-
-import util.DropdownLabel;
 import util.ErrorLabel;
 import util.SBButton;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
+
+import common.entity.profile.Person;
+import common.entity.supplier.Supplier;
+import common.manager.Manager;
 
 public class SupplierForm extends SimplePanel {
 
@@ -35,11 +29,6 @@ public class SupplierForm extends SimplePanel {
 	private static final long serialVersionUID = -4844447081011422390L;
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
-	// private JComboBox personCombo;
-	private JTextField personField;
-
-	// private DropdownLabel contactPerson;
-	private DefaultComboBoxModel model;
 
 	private SBButton fwd;
 
@@ -47,7 +36,7 @@ public class SupplierForm extends SimplePanel {
 
 	private ErrorLabel error;
 
-	private String name, address, msg;
+	private String name, msg;
 
 	public SupplierForm() {
 		super("Add Supplier");
@@ -88,13 +77,12 @@ public class SupplierForm extends SimplePanel {
 
 		// refreshCustomer(false);
 
-		for (int i = 0, y = 0, x1 = 15, x2 = -10; i < num; i++, y += 70) {
+		for (int i = 0, y = 0, x1 = 15; i < num; i++, y += 70) {
 
 			fields.add(new FormField(Tables.supplierFormLabel[i], 100, Color.white, Color.gray));
 
 			if (i == 3) {
 				x1 = 215;
-				x2 = 295;
 				y = 0;
 			}
 

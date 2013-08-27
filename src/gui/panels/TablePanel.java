@@ -15,8 +15,13 @@ import javax.swing.RowFilter;
 import util.SBTable;
 import util.Values;
 import util.soy.SoyPanel;
-
+@SuppressWarnings({ "rawtypes" })
 public class TablePanel extends SoyPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7327481044640345361L;
 
 	public TablePanel(Object[][] data, String[] header, List objects, String tableName) {
 		this.data = data;

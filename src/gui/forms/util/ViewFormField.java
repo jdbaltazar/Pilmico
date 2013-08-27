@@ -3,21 +3,19 @@ package gui.forms.util;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.accessibility.AccessibleContext;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 
 import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.EdgedBalloonStyle;
-import net.java.balloontip.styles.MinimalBalloonStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
-import net.java.balloontip.styles.TexturedBalloonStyle;
 import net.java.balloontip.utils.ToolTipUtils;
 
 public class ViewFormField extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7837796758229246868L;
 	private String label;
 	private BalloonTip balloonTip;
 	

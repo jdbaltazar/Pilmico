@@ -1,6 +1,5 @@
 package gui.forms.add;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.FormDropdown;
 import gui.forms.util.FormField;
 import gui.popup.SuccessPopup;
@@ -12,22 +11,19 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
-import common.entity.profile.Person;
-import common.manager.Manager;
 
 import util.ErrorLabel;
-import util.FormCheckbox;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.profile.Person;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CustomerForm extends SimplePanel {
 	/**
 	 * 
@@ -36,8 +32,6 @@ public class CustomerForm extends SimplePanel {
 	private ArrayList<FormField> fields = new ArrayList<FormField>();
 	private SoyButton clear, save;
 	private FormDropdown acctType;
-	private JComboBox employeeCombo;
-	private JTextField employeesField;
 	private DefaultComboBoxModel model;
 
 	private ErrorLabel error;
@@ -68,7 +62,6 @@ public class CustomerForm extends SimplePanel {
 
 		error = new ErrorLabel();
 
-		int ctr = 0;
 		for (int i = 0, y = 0, x1 = 32; i < num - 1; i++, y += 54) {
 
 				fields.add(new FormField(Tables.customerFormLabel[i], 100, Color.white, Color.gray));

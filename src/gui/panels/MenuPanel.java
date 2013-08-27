@@ -18,6 +18,10 @@ import util.soy.SoyPanel;
 
 public class MenuPanel extends JPanel implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -204359564069449850L;
 	private JPanel menu;
 	private ArrayList<MenuButton> options;
 	private String[] btn = { "product.png", "sales.png", "expenses.png", "delivery.png",

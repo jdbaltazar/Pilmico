@@ -11,28 +11,28 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
-import common.entity.note.Note;
-import common.manager.Manager;
 
 import util.SBButton;
 import util.SimplePanel;
 import util.Values;
 
+import common.entity.note.Note;
+import common.manager.Manager;
+
 public class NotesPopup extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 587496953968649547L;
 	private int WIDTH = 280, HEIGHT = 400;
 	private JPanel panel;
-	private JPanel note, rowPanel, notesPanel;
-	private JScrollPane notesPane, descPane;
+	private JPanel notesPanel;
+	private JScrollPane notesPane;
 
-	private JLabel date, tag, description;
-	private JButton remove, close;
-	private JTextArea desc;
+	private JButton close;
 
 	private ArrayList<Notes> notes = new ArrayList<Notes>();
 

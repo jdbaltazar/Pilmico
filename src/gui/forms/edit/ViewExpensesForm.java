@@ -1,9 +1,7 @@
 package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
-import gui.forms.util.FormDropdown;
 import gui.forms.util.RemarksLabel;
-import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
@@ -16,45 +14,28 @@ import java.awt.Font;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
-
-import common.entity.dailyexpenses.DailyExpenses;
-import common.entity.dailyexpenses.DailyExpensesDetail;
-import common.entity.dailyexpenses.DailyExpensesType;
-import common.entity.dailyexpenses.Expense;
-import common.manager.Manager;
 
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
-import util.MainFormLabel;
 import util.SBButton;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
-import util.Tables;
 import util.Utility;
 import util.Values;
-import util.soy.SoyButton;
+
+import common.entity.dailyexpenses.DailyExpenses;
+import common.entity.dailyexpenses.DailyExpensesDetail;
+import common.manager.Manager;
 
 public class ViewExpensesForm extends EditFormPanel {
 
@@ -62,10 +43,9 @@ public class ViewExpensesForm extends EditFormPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel expensesPanel, row, p;
+	private JPanel expensesPanel;
 	private JScrollPane expensesPane;
-	private final int ROW_WIDTH = 280, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 25, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
-	private Object[] array = {};
+	private final int ROW_WIDTH = 280, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 25, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y;
 
 	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel amountLabel, expenseLabel;
@@ -234,8 +214,6 @@ public class ViewExpensesForm extends EditFormPanel {
 		error.setBounds(305, 340, 200, 30);
 
 		add(voidBtn);
-		add(error);
-
 	}
 	
 	private void colorTable(){

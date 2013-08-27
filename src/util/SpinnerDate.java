@@ -14,6 +14,11 @@ import javax.swing.text.DefaultFormatter;
 
 public class SpinnerDate extends JSpinner{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6609701838063203072L;
+
 	public SpinnerDate(String format){
 		//super(new SpinnerDateModel());
 		

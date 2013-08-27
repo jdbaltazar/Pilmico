@@ -10,8 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -31,22 +29,25 @@ import common.entity.delivery.Delivery;
 import common.entity.deposit.Deposit;
 import common.entity.discountissue.DiscountIssue;
 import common.entity.inventorysheet.InventorySheetDetail;
-import common.entity.profile.Person;
 import common.entity.pullout.PullOut;
 import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 
 public class ISRowPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4621968548499607046L;
 	private String[] moneyString = { "1000", "500", "200", "100", "50", "20", "coins", "check/s" };
 	private SimpleNumericField field;
 	private ViewFormField viewField;
 	private JPanel row;
 	private JPanel panel = new JPanel();
 	private ArrayList<ViewFormField> formField = new ArrayList<ViewFormField>();
-	private JLabel label, totalLabel;
-	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, y, table = 0, componentCount;
-	private Object object, object2;
+	private JLabel totalLabel;
+	private int ROW_HEIGHT = 35, y, table = 0, componentCount;
+	private Object object;
 	private Color rowBkgrndColor;
 	private DiscountIssue discount;
 	private AccountReceivable accountReceivable;
@@ -181,9 +182,13 @@ public class ISRowPanel extends JPanel {
 	}
 
 	private void fillRow(Object object, String column1, String column2, String column3) {
+		// <<<<<<< HEAD
+		//
+		// object2 = object;
+		//
+		// =======
 
-		object2 = object;
-
+		// >>>>>>> refs/remotes/remote/master
 		formField.add(new ViewFormField(column1));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
 		formField.add(new ViewFormField(column2));

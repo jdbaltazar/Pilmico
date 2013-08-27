@@ -2,34 +2,20 @@ package gui.forms.edit;
 
 import gui.forms.util.DefaultEntryLabel;
 import gui.forms.util.EditFormField;
-import gui.forms.util.FormDropdown;
-import gui.forms.util.FormField;
 import gui.forms.util.FormLabel;
 import gui.forms.util.ISRowPanel;
 import gui.forms.util.SubTableHeaderLabel;
 import gui.popup.SuccessPopup;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-
-import common.entity.accountreceivable.AccountReceivable;
-import common.entity.discountissue.DiscountIssue;
-import common.entity.inventorysheet.InventorySheet;
-import common.entity.profile.Person;
-import common.manager.Manager;
 
 import util.EditFormPanel;
 import util.ErrorLabel;
@@ -37,6 +23,10 @@ import util.TableHeaderLabel;
 import util.Tables;
 import util.Values;
 import util.soy.SoyButton;
+
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.profile.Person;
+import common.manager.Manager;
 
 public class EditCustomerForm extends EditFormPanel {
 
@@ -49,10 +39,6 @@ public class EditCustomerForm extends EditFormPanel {
 	private ArrayList<FormLabel> labels = new ArrayList<FormLabel>();
 
 	private SoyButton edit;
-	private FormDropdown acctType;
-	private JComboBox employeeCombo;
-	private JTextField employeesField;
-	private DefaultComboBoxModel model;
 
 	private DefaultEntryLabel ar_balance;
 	private TableHeaderLabel dateLabel, balanceLabel;

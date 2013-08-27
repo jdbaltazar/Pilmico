@@ -1,36 +1,22 @@
 package gui.popup;	
 
+import gui.forms.util.FormField;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 
-import gui.forms.util.FormField;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-
-import app.Credentials;
-
-import common.entity.product.Category;
-import common.entity.sales.Sales;
-import common.manager.Manager;
-import core.security.SecurityTool;
 
 import util.ErrorLabel;
 import util.JNumericField;
@@ -38,9 +24,15 @@ import util.SBButton;
 import util.SimplePanel;
 import util.Tables;
 import util.Values;
+import app.Credentials;
+import core.security.SecurityTool;
 
 public class UtilityPopup extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7679536523898885718L;
 	private final int WIDTH = 155, HEIGHT = 55;
 	private FormField field, username, password;
 

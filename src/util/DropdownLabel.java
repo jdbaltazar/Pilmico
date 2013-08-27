@@ -7,6 +7,11 @@ import javax.swing.JLabel;
 
 public class DropdownLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DropdownLabel(String label){
 		super(label);
 		

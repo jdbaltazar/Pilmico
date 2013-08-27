@@ -1,70 +1,43 @@
 package gui.forms.edit;
 
-import gui.forms.util.ComboKeyHandler;
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.RemarksLabel;
-import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
-import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.ViewFormLabel;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
-import javax.swing.border.AbstractBorder;
-
-import common.entity.delivery.DeliveryDetail;
-import common.entity.product.Product;
-import common.entity.profile.Person;
-import common.entity.sales.Sales;
-import common.entity.sales.SalesDetail;
-import common.manager.Manager;
 
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
-import util.FormCheckbox;
-import util.MainFormField;
-import util.MainFormLabel;
 import util.SBButton;
-import util.SpinnerDate;
 import util.TableHeaderLabel;
 import util.Utility;
 import util.Values;
-import util.soy.SoyButton;
+
+import common.entity.product.Product;
+import common.entity.sales.Sales;
+import common.entity.sales.SalesDetail;
+import common.manager.Manager;
 
 public class ViewSalesForm extends EditFormPanel {
 
@@ -72,25 +45,20 @@ public class ViewSalesForm extends EditFormPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel productsPanel, row, p;
+	private JPanel productsPanel;
 	private JScrollPane productsPane;
 	private ViewFormField customerCombo, date, issueDate, cashier, issuedAt, rc_no, receipt_no;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 86, ITEMS_PANE_Y = LABEL_Y + LABEL_HEIGHT; // 125
-	private Object[] array = {};
-	private JScrollBar sb;
 
 	private ArrayList<EditRowPanel> rowPanel = new ArrayList<EditRowPanel>();
-	private JTextField quantity;
 	private TableHeaderLabel quantityKGLabel, quantitySACKlabel, priceKG, priceSACK, productLabel, deleteLabel;
 	private ImageIcon icon;
 	private ViewFormLabel issuedaTLabel, rcnumLabel, receiptLabel, dateLabel, cashierLabel, customerLabel, issuedOnLabel;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String msg = "";
 	private SBButton voidBtn;
 
 	private Sales sales;
@@ -308,12 +276,12 @@ public class ViewSalesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 
 				boolean valid = true;
-				for (SalesDetail dd : sales.getSalesDetails()) {
-					Product p = dd.getProduct();
-					// if (!p.validQuantityResult(dd.getQuantityInSack(),
-					// dd.getQuantityInKilo()))
-					//		valid = false;
-				}
+//				for (SalesDetail dd : sales.getSalesDetails()) {
+//					Product p = dd.getProduct();
+//					// if (!p.validQuantityResult(dd.getQuantityInSack(),
+//					// dd.getQuantityInKilo()))
+//					//		valid = false;
+//				}
 
 				if (valid) {
 

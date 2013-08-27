@@ -32,12 +32,9 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 	 */
 	private static final long serialVersionUID = 1L;
 	Set<Integer> highlightedRows = new HashSet<Integer>();
-	Color selectedColor = new Color(0, 255, 255), backgroundColor1 = new Color(245, 245, 220), backgroundColor2 = new Color(220, 220, 220),
-//<<<<<<< HEAD
-			invalidColor = Color.decode("#BC8F8F");//= new Color(255, 140, 140);
-//=======
+	Color selectedColor = new Color(0, 255, 255), backgroundColor1 = new Color(245, 245, 220), backgroundColor2 = new Color(220, 220, 220),invalidColor = Color.decode("#FFEFED");
+			//invalidColor = Color.decode("#BC8F8F");//= new Color(255, 140, 140);
 //			invalidColor = Color.decode("#F9CCCC");// = new Color(255, 140, 140);
-//>>>>>>> refs/remotes/origin/master
 
 	private boolean valid = true;
 
@@ -131,7 +128,6 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 		else if (table.getName().equals(Tables.DISCOUNTS)) {
 			List<DiscountIssue> di = (List<DiscountIssue>) Values.tablePanel.getSoyTable().getObjects();
 			DiscountIssue object = di.get(table.convertRowIndexToModel(row));
-
 			valid = object.isValid();
 		}
 
@@ -143,7 +139,8 @@ public class RowHighlightRenderer extends DefaultTableCellRenderer {
 		}
 
 		if (!valid) {
-			setBackground(invalidColor);
+//			setBackground(invalidColor);
+			setForeground(Color.LIGHT_GRAY);
 		}
 
 		return this;

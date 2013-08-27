@@ -17,7 +17,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
 
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
@@ -27,6 +26,7 @@ import util.ErrorLabel;
 import util.Values;
 import util.soy.SoyButton;
 
+@SuppressWarnings({ "rawtypes"})
 public class EditSupplierPanel extends EditFormPanel {
 
 	/**
@@ -43,7 +43,7 @@ public class EditSupplierPanel extends EditFormPanel {
 
 	private ErrorLabel error;
 
-	private String name, address;
+	private String name, msg;
 
 	private int y1 = 30, y2 = 15, y3 = 85;
 
@@ -142,6 +142,7 @@ public class EditSupplierPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
+				if(isValidated()){
 				supplier.setName(fields.get(0).getText());
 				supplier.setAddress(fields.get(1).getText());
 				supplier.setTin(fields.get(2).getText());
@@ -150,14 +151,14 @@ public class EditSupplierPanel extends EditFormPanel {
 
 				try {
 					Manager.supplierManager.updateSupplier(supplier);
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Edit").setVisible(true);
-					Values.centerPanel.changeTable(Values.SUPPLIERS);
+
+					update();
 
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-
+				}else
+					error.setToolTip(msg);
 			}
 		});
 
@@ -184,15 +185,20 @@ public class EditSupplierPanel extends EditFormPanel {
 	}
 
 	private void update() {
+		Values.deliveryForm.refreshSupplier(true);
 		Values.editPanel.startAnimation();
-		// Values.stockPurchasePanel.refreshSupplier();
 		new SuccessPopup("Edit").setVisible(true);
 		Values.centerPanel.changeTable(Values.SUPPLIERS);
 	}
 
 	private boolean isValidated() {
-		if (!name.equals("") && !address.equals(""))
+		name = fields.get(0).getText();
+
+		if (!name.equals("")) {
 			return true;
+		}
+
+		msg = "Name is required ";
 
 		return false;
 	}

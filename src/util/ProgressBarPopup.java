@@ -10,7 +10,11 @@ public class ProgressBarPopup extends JPanel
                              implements ActionListener, 
                                         PropertyChangeListener {
 
-    private JProgressBar progressBar;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4521476507501605061L;
+	private JProgressBar progressBar;
     private JButton startButton;
     private JTextArea taskOutput;
     private Task task;

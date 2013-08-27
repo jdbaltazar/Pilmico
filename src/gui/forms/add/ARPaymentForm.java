@@ -45,6 +45,7 @@ import common.entity.accountreceivable.AccountReceivable;
 import common.entity.profile.Person;
 import common.manager.Manager;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ARPaymentForm extends SimplePanel {
 
 	/**
@@ -265,6 +266,11 @@ public class ARPaymentForm extends SimplePanel {
 			fields.get(i).setText("");
 
 		error.setToolTip("");
+		refreshDate();
+	}
+	
+	public void refreshDate() {
+		date.setValue(new Date());
 	}
 
 	private void determineDateStatus() {

@@ -1,7 +1,6 @@
 package gui.panels;
 
 import gui.forms.util.FormLabel;
-import gui.popup.ProductOnDisplayPopup;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -18,19 +16,18 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
-
-import common.entity.log.Log;
-import common.entity.log.LogType;
-import common.entity.profile.Account;
-import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.Values;
 import util.soy.SoyButton;
 import util.soy.SoyField;
 import util.soy.SoyPanel;
+
+import common.entity.log.Log;
+import common.entity.log.LogType;
+import common.entity.profile.Account;
+import common.manager.Manager;
 
 public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
@@ -77,7 +74,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 		userName = new SoyField(1);
 		userName.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		userName.requestFocus();
+		userName.requestFocusInWindow();
 		userName.setBounds(605, 140, 150, 25);
 
 		passwordLabel = new FormLabel("Password");
@@ -146,26 +143,36 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 	@Override
 	public void run() {
 		int i = 1;
+		
+		try {
+		      while(!Thread.currentThread().isInterrupted()) {
+		         // ...
+		    	  try {
+						image = (BufferedImage) ImageIO.read(new File("slideshow/" + i + ".jpg"));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 
-		while (true) {
+					repaint();
+					try {
+						Thread.sleep(1500);
+					} catch (InterruptedException ex) {
+					}
 
-			try {
-				image = (BufferedImage) ImageIO.read(new File("slideshow/" + i + ".jpg"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+					if (i == 6)
+						i = 1;
+					else
+						i++;
+		      }
+		   } catch (Exception consumed){
+			   
+		      /* Allow thread to exit */
+		   }
 
-			repaint();
-			try {
-				Thread.sleep(1500);
-			} catch (InterruptedException ex) {
-			}
-
-			if (i == 6)
-				i = 1;
-			else
-				i++;
-		}
+//		while (true) {
+//
+//			
+//		}
 	}
 
 	private void validateAccount() {
@@ -195,6 +202,8 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 				Values.topPanel.getTools().setVisible(false);
 				Values.topPanel.showMenuButtons(true);
 				Values.footerPanel.showMenuButtons(true);
+				
+				thread.interrupt();
 				Values.centerPanel.changeTable(Values.HOME);
 
 				// Manager.logManager.addLog(new

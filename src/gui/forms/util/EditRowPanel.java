@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import common.entity.accountreceivable.AccountReceivableDetail;
@@ -19,11 +18,14 @@ import util.Values;
 
 public class EditRowPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel row;
 	private JPanel panel = new JPanel();
 	private ArrayList<ViewFormField> formField = new ArrayList<ViewFormField>();
-	private JLabel label, totalLabel;
-	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, y, table = 0, componentCount;
+	private int ROW_HEIGHT = 35, y, table = 0;
 	private Object object;
 
 	public EditRowPanel(Object object, JPanel panel, int table) {
@@ -161,14 +163,6 @@ public class EditRowPanel extends JPanel {
 
 		add(row);
 
-	}
-
-	private JLabel getALabel(String str) {
-		JLabel label = new JLabel(str);
-		label.setHorizontalAlignment(JLabel.CENTER);
-		label.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-
-		return label;
 	}
 
 	public JPanel getRow() {

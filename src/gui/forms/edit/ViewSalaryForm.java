@@ -2,7 +2,6 @@ package gui.forms.edit;
 
 import gui.forms.util.EditRowPanel;
 import gui.forms.util.RemarksLabel;
-import gui.forms.util.RowPanel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
@@ -20,17 +19,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Set;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-
-import common.entity.salary.FeeDeduction;
-import common.entity.salary.SalaryRelease;
-import common.entity.sales.SalesDetail;
-import common.manager.Manager;
 
 import util.DateFormatter;
 import util.EditFormPanel;
@@ -41,6 +34,10 @@ import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.salary.FeeDeduction;
+import common.entity.salary.SalaryRelease;
+import common.manager.Manager;
+
 public class ViewSalaryForm extends EditFormPanel {
 	/**
 	 * 
@@ -48,8 +45,7 @@ public class ViewSalaryForm extends EditFormPanel {
 	private static final long serialVersionUID = 657028396500673907L;
 	private JPanel feesPanel;
 	private JScrollPane feesPane;
-	private final int ROW_WIDTH = 270, ROW_HEIGHT = 35, LABEL_HEIGHT = 20, LABEL_Y = 0, UPPER_Y = 63, ITEMS_PANE_Y = 25;
-	private Object[] array = {};
+	private final int ROW_WIDTH = 270, ROW_HEIGHT = 35, LABEL_Y = 0;
 
 	private ArrayList<EditRowPanel> feesRowPanel = new ArrayList<EditRowPanel>();
 	private TableHeaderLabel feesLabel, amountLabel;
@@ -58,12 +54,10 @@ public class ViewSalaryForm extends EditFormPanel {
 	private ViewFormField issuedBy, grossPay, netPay, date, issuedFor;
 	private ViewFormLabel issuedByLabel, issuedForLabel, dateLabel, salaryLabel, payLabel;
 
-	private DefaultComboBoxModel model;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
 	private ErrorLabel error;
-	private String msg = "";
 
 	private SalaryRelease salaryRelease;
 
@@ -111,8 +105,6 @@ public class ViewSalaryForm extends EditFormPanel {
 
 		feesLabel = new TableHeaderLabel("Fees");
 		amountLabel = new TableHeaderLabel("Amount");
-
-		model = new DefaultComboBoxModel(array);
 
 		feesPanel = new JPanel();
 		feesPanel.setLayout(null);
@@ -310,34 +302,7 @@ public class ViewSalaryForm extends EditFormPanel {
 		});
 
 		add(voidBtn);
-
 		// panel.add(save);
-		add(error);
-
-	}
-
-	private boolean isValidated() {
-
-		if (feesPanel.getComponentCount() == 0) {
-
-			msg = "Put at least one item";
-
-			return false;
-		}
-
-		return true;
-
-	}
-
-	private void clearForm() {
-		feesPanel.removeAll();
-		feesRowPanel.clear();
-
-		error.setText("");
-
-	}
-
-	public void refreshAccount() {
 
 	}
 

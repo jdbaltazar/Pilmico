@@ -19,7 +19,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,20 +27,17 @@ import javax.swing.JScrollPane;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.RoundedBalloonStyle;
-
-import common.entity.accountreceivable.ARPayment;
-import common.entity.cashadvance.CAPayment;
-import common.entity.cashadvance.CashAdvance;
-import common.manager.Manager;
-
 import util.DateFormatter;
 import util.EditFormPanel;
 import util.ErrorLabel;
 import util.SBButton;
-import util.Tables;
 import util.Utility;
 import util.Values;
 import util.soy.SoyButton;
+
+import common.entity.cashadvance.CAPayment;
+import common.entity.cashadvance.CashAdvance;
+import common.manager.Manager;
 
 public class ViewCAForm extends EditFormPanel {
 
@@ -50,7 +46,6 @@ public class ViewCAForm extends EditFormPanel {
 	 */
 	private static final long serialVersionUID = -1337878469442864579L;
 	private SoyButton clear, save;
-	private DefaultComboBoxModel model;
 	private int initY = 32;
 	private ViewFormLabel dateLabel, issuedByLabel, issuedForLabel, balanceLabel, amountLabel;
 	private ViewFormField issuedFor, balance, issuedBy, date, amount;

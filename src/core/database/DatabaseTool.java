@@ -119,15 +119,19 @@ public class DatabaseTool {
 								new SuccessPopup("Database Backup").setVisible(true);
 								Values.topPanel.closeBalloonPanel();
 								isRunning = false;
-
+								
 							} else {
 								if (DatabaseTool.uP != null)
 									DatabaseTool.uP.dispose();
 								JOptionPane.showMessageDialog(Values.mainFrame, "Could not create the backup", "Error", JOptionPane.ERROR_MESSAGE);
 								isRunning = false;
 							}
+							
+							Thread.currentThread().interrupt();
+							
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							//e.printStackTrace();
+							System.out.println("Backup thread interrupted");
 						}
 					}
 				}
@@ -376,9 +380,15 @@ public class DatabaseTool {
 
 						isRunning = false;
 
+						Thread.currentThread().interrupt();
+						
 						HibernateUtil.startSession();
 
-					} catch (Exception e) {
+					}catch (InterruptedException e) {
+						//e.printStackTrace();
+						System.out.println("Recover thread interrupted");
+					} 
+					catch (Exception e) {
 						System.out.println("*** Error : " + e.toString());
 						System.out.println("*** ");
 						System.out.println("*** Error : ");

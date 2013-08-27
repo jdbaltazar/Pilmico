@@ -7,6 +7,11 @@ import javax.swing.JCheckBox;
 
 public class FormCheckbox extends JCheckBox{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3140556931910172826L;
+
 	public FormCheckbox(String label){
 		
 		super(label);

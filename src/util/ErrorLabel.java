@@ -3,18 +3,18 @@ package util;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.MinimalBalloonStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 import net.java.balloontip.utils.ToolTipUtils;
 
 public class ErrorLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1314169433239737612L;
 	private BalloonTip balloonTip;
 	private JLabel jlabel;
 

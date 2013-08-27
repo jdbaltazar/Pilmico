@@ -1,11 +1,10 @@
 package gui.forms.add;
 
 import gui.forms.util.ComboKeyHandler;
+import gui.forms.util.FormDropdown.ColorArrowUI;
 import gui.forms.util.IconLabel;
 import gui.forms.util.RowPanel;
 import gui.forms.util.SimpleNumericField;
-import gui.forms.util.FormDropdown.ColorArrowUI;
-import gui.forms.util.ViewFormField;
 import gui.popup.SuccessPopup;
 import gui.popup.UtilityPopup;
 
@@ -29,24 +28,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import common.entity.accountreceivable.AccountReceivable;
-import common.entity.accountreceivable.AccountReceivableDetail;
-import common.entity.product.Product;
-import common.entity.product.exception.NegativeValueException;
-import common.entity.product.exception.NotEnoughQuantityException;
-import common.entity.product.exception.ZeroKilosPerSackException;
-import common.entity.profile.Person;
-import common.manager.Manager;
 
 import util.ErrorLabel;
 import util.MainFormLabel;
@@ -57,6 +45,16 @@ import util.TableHeaderLabel;
 import util.Values;
 import util.soy.SoyButton;
 
+import common.entity.accountreceivable.AccountReceivable;
+import common.entity.accountreceivable.AccountReceivableDetail;
+import common.entity.product.Product;
+import common.entity.product.exception.NegativeValueException;
+import common.entity.product.exception.NotEnoughQuantityException;
+import common.entity.product.exception.ZeroKilosPerSackException;
+import common.entity.profile.Person;
+import common.manager.Manager;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class AccountReceivablesForm extends SimplePanel {
 
 	/**
@@ -66,10 +64,8 @@ public class AccountReceivablesForm extends SimplePanel {
 	private JPanel productsPanel;
 	private JScrollPane productsPane;
 	private JComboBox customerCombo;
-	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 115, UPPER_Y = 63, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y; // 125
-	private Object[] array = {};
+	private final int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y = 115, ITEMS_PANE_Y = LABEL_HEIGHT + LABEL_Y; // 125
 	private JTextField customerComboField;
-	private JScrollBar sb;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private JButton addRow;
@@ -322,13 +318,13 @@ public class AccountReceivablesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
-					boolean valid = true;
+//					boolean valid = true;
 					for (RowPanel rp : rowPanel) {
 						Product p = rp.getSelectedProduct();
 						try {
 							if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), rp.getQuantityInSack(),
 									rp.getQuantityInKilo())) {
-								valid = false;
+//								valid = false;
 							}
 						} catch (NegativeValueException e1) {
 							e1.printStackTrace();

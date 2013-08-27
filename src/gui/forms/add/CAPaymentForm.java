@@ -44,6 +44,7 @@ import common.entity.cashadvance.CAPayment;
 import common.entity.cashadvance.CashAdvance;
 import common.manager.Manager;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CAPaymentForm extends SimplePanel {
 
 	/**
@@ -255,6 +256,11 @@ public class CAPaymentForm extends SimplePanel {
 			fields.get(i).setText("");
 
 		error.setToolTip("");
+		refreshDate();
+	}
+	
+	public void refreshDate() {
+		date.setValue(new Date());
 	}
 
 	private void determineDateStatus() {

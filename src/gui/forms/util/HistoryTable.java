@@ -4,7 +4,6 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import util.SBTable;
 import util.Tables;
@@ -12,6 +11,10 @@ import util.Values;
 
 public class HistoryTable extends JScrollPane {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5617877649308036565L;
 	private SBTable sbTable;
 	private String[] header;
 	private Object[][] entries;

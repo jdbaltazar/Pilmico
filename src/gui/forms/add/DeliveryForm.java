@@ -29,7 +29,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -55,19 +54,18 @@ import common.entity.store.Store;
 import common.entity.supplier.Supplier;
 import common.manager.Manager;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class DeliveryForm extends SimplePanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 657028396500673907L;
-	private JPanel productsPanel, row, p;
+	private JPanel productsPanel;
 	private JScrollPane productsPane;
-	private JComboBox itemCombo, supplierCombo;
+	private JComboBox supplierCombo;
 	private int ROW_WIDTH = 580, ROW_HEIGHT = 35, LABEL_HEIGHT = 25, LABEL_Y, ITEMS_PANE_Y = 116; // 125
-	private Object[] array = {};
-	private JTextField itemComboField, supplierComboField;
-	private JScrollBar sb;
+	private JTextField supplierComboField;
 
 	private ArrayList<RowPanel> rowPanel = new ArrayList<RowPanel>();
 	private JButton addRow;

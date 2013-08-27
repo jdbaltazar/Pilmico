@@ -1,7 +1,5 @@
 package gui.popup;
 
-import gui.forms.util.FormField;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -11,19 +9,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 
 import javax.swing.JDialog;
 import javax.swing.JPasswordField;
 
-import core.security.SecurityTool;
-
-import app.Credentials;
-
-import util.soy.SoyButton;
 import util.soy.SoyPanel;
+import app.Credentials;
+import core.security.SecurityTool;
 
 public class DBPassword  extends JDialog{
 

@@ -6,15 +6,17 @@ import java.awt.Font;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import util.Values;
 
 public class SuccessPopup extends JDialog implements Runnable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6656332447663650240L;
 	private String action;
 	private int WIDTH = 290, HEIGHT = 100;//278w
-	private JPanel panel;
 	private JLabel label;
 	private Thread thread;
 	private int mode = 0;
@@ -86,8 +88,11 @@ public class SuccessPopup extends JDialog implements Runnable{
 					Values.addEntryPanel.startAnimation();
 			}
 			
+			thread.interrupt();
+			
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("success popup thread interrupted");
 		}
 	}
 

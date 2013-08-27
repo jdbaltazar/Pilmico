@@ -7,6 +7,11 @@ import javax.swing.JLabel;
 
 public class FormLabel extends JLabel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5892854636340614671L;
+
 	public FormLabel(String name){
 		
 		super(name);
