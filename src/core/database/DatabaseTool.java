@@ -17,11 +17,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
 import org.hibernate.HibernateException;
 
+import common.entity.accountreceivable.ARPayment;
+import common.entity.accountreceivable.AccountReceivable;
 import common.entity.product.Product;
 import common.manager.Manager;
 
@@ -95,20 +98,20 @@ public class DatabaseTool {
 					while (isRunning) {
 						try {
 							int processComplete = runtimeProcess.waitFor();
-
 							if (processComplete == 0) {
+								File original = new File(BACKUP_TEMP_FILE);
 								try {
-									File original = new File(BACKUP_TEMP_FILE);
 									File internalBackUp = new File(INTERNAL_BACKUP_PATH + "Pilmico Backup "
 											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE);
 									File backUp = new File(filePath);
 									SecurityTool.encryptAndWriteFile(original, internalBackUp);
 									if (DatabaseSettings.getInstance().isFilePathSet())
 										SecurityTool.encryptAndWriteFile(original, backUp);
-									original.delete();
 
 								} catch (Exception e) {
 									e.printStackTrace();
+								} finally {
+									original.delete();
 								}
 
 								if (DatabaseTool.uP != null)
@@ -323,7 +326,6 @@ public class DatabaseTool {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 
 				boolean isRunning = true;
 
@@ -334,10 +336,10 @@ public class DatabaseTool {
 					String s = new String();
 					StringBuffer sb = new StringBuffer();
 
+					File recovery = new File(RECOVERY_TEMP_FILE);
 					try {
 
 						File original = new File(filePath);
-						File recovery = new File(RECOVERY_TEMP_FILE);
 						SecurityTool.decryptFile(original, recovery);
 
 						FileReader fr = new FileReader(recovery);
@@ -368,8 +370,6 @@ public class DatabaseTool {
 
 						}
 
-						recovery.delete();
-
 						DatabaseTool.uP.dispose();
 						new SuccessPopup("Database Recovery").setVisible(true);
 						Values.topPanel.closeBalloonPanel();
@@ -385,6 +385,8 @@ public class DatabaseTool {
 						e.printStackTrace();
 						System.out.println("################################################");
 						System.out.println(sb.toString());
+					} finally {
+						recovery.delete();
 					}
 
 				}
@@ -515,6 +517,65 @@ public class DatabaseTool {
 					} catch (SQLException s) {
 						System.out.println("Table or column is not found!");
 					}
+
+					/*
+					 * 
+					 * alter table accountreceivable add amount decimal(10,2) default
+					 * 0;
+					 * 
+					 * *
+					 */
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				HibernateUtil.startSession();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+
+		try {
+
+			// drop the display columns in product
+			if (DatabaseSettings.getInstance().getDbVersion() == 1.15f) {
+
+				HibernateUtil.endSession();
+				Connection con = null;
+
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					con = DriverManager.getConnection(HibernateUtil.URL + Credentials.getInstance().getDatabaseName(),
+							SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+							SecurityTool.decryptString(Credentials.getInstance().getPassword()));
+					try {
+
+						Statement st = con.createStatement();
+
+						st.executeUpdate("alter table accountreceivable add amount decimal(10, 2) default 0.00");
+						System.out.println("Column amount in account receivalbe added successfully!");
+
+						List<AccountReceivable> ars = Manager.accountReceivableManager.getValidAccountReceivables();
+						for (AccountReceivable ar : ars) {
+							double balance = ar.getBalance();
+							double totalPayments = ar.getARPaymentsAmount();
+							ar.setAmount(balance + totalPayments);
+							Manager.accountReceivableManager.updateAccountReceivable(ar);
+						}
+
+						// increment db version of database
+						float current = DatabaseSettings.getInstance().getDbVersion();
+						DatabaseSettings.getInstance().setDbVersion(current + 0.05f);
+						DatabaseSettings.getInstance().persist();
+						AppSettings.getInstance().setAppVersion(current + 0.05f);
+						AppSettings.getInstance().persist();
+
+					} catch (SQLException s) {
+						System.out.println("Table or column is not found!");
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

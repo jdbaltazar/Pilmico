@@ -50,7 +50,8 @@ public class ISRowPanel extends JPanel {
 	private Color rowBkgrndColor;
 	private DiscountIssue discount;
 	private AccountReceivable accountReceivable;
-//	private JXLabel jxlabel;
+
+	// private JXLabel jxlabel;
 
 	public ISRowPanel(Object object, JPanel panel, int table) {
 
@@ -113,7 +114,7 @@ public class ISRowPanel extends JPanel {
 
 			AccountReceivable ar = (AccountReceivable) object;
 			fillRow(ar, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ar.getDate()), ar.getCustomer().getFirstPlusLastName(),
-					String.format("%.2f", ar.getAccountReceivablesAmount()));
+					String.format("%.2f", ar.getAmount()));
 			break;
 
 		case Values.AR_PAYMENTS:
@@ -171,7 +172,7 @@ public class ISRowPanel extends JPanel {
 		case Values.CUSTOMERS:
 			drawCustomerA_RRow();
 			break;
-			
+
 		default:
 			drawViewCashBreakDown();
 			break;
@@ -180,7 +181,7 @@ public class ISRowPanel extends JPanel {
 	}
 
 	private void fillRow(Object object, String column1, String column2, String column3) {
-		
+
 		object2 = object;
 
 		formField.add(new ViewFormField(column1));
@@ -212,19 +213,19 @@ public class ISRowPanel extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
-//					if(mc.getClickCount() == 2){
-//						Values.addEntryPanel.startAnimation();
-//						
-//						new Timer().schedule(new TimerTask() {
-//							@Override
-//							public void run() {
-//								Values.editPanel.setISLinked(true);
-//								Values.editPanel.setHide(false);
-//								Values.editPanel.startAnimation();
-//								Values.editPanel.showLinkedComponent(object2, table);
-//							}
-//						}, 400);
-//					}
+					// if(mc.getClickCount() == 2){
+					// Values.addEntryPanel.startAnimation();
+					//
+					// new Timer().schedule(new TimerTask() {
+					// @Override
+					// public void run() {
+					// Values.editPanel.setISLinked(true);
+					// Values.editPanel.setHide(false);
+					// Values.editPanel.startAnimation();
+					// Values.editPanel.showLinkedComponent(object2, table);
+					// }
+					// }, 400);
+					// }
 				}
 			});
 			row.add(formField.get(i));
@@ -337,19 +338,19 @@ public class ISRowPanel extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
-//					if(mc.getClickCount() == 2){
-//						Values.addEntryPanel.startAnimation();
-//						
-//						new Timer().schedule(new TimerTask() {
-//							@Override
-//							public void run() {
-//								Values.editPanel.setISLinked(true);
-//								Values.editPanel.setHide(false);
-//								Values.editPanel.startAnimation();
-//								Values.editPanel.showLinkedComponent(discount, table);
-//							}
-//						}, 400);
-//					}
+					// if(mc.getClickCount() == 2){
+					// Values.addEntryPanel.startAnimation();
+					//
+					// new Timer().schedule(new TimerTask() {
+					// @Override
+					// public void run() {
+					// Values.editPanel.setISLinked(true);
+					// Values.editPanel.setHide(false);
+					// Values.editPanel.startAnimation();
+					// Values.editPanel.showLinkedComponent(discount, table);
+					// }
+					// }, 400);
+					// }
 
 				}
 			});
@@ -360,14 +361,14 @@ public class ISRowPanel extends JPanel {
 		add(row);
 
 	}
-	
+
 	private void drawCustomerA_RRow() {
 
 		accountReceivable = (AccountReceivable) object;
 		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate())));
-		formField.get(formField.size() - 1).setBounds(0, 0,150, ROW_HEIGHT);
+		formField.get(formField.size() - 1).setBounds(0, 0, 150, ROW_HEIGHT);
 
-		formField.add(new ViewFormField(accountReceivable.getAccountReceivablesAmount()+""));
+		formField.add(new ViewFormField(String.format("%.2f", accountReceivable.getAmount())));
 		formField.get(formField.size() - 1).setBounds(150, 0, 102, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
@@ -391,19 +392,19 @@ public class ISRowPanel extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent mc) {
 					// TODO Auto-generated method stub
-//					if(mc.getClickCount() == 2){
-//						Values.addEntryPanel.startAnimation();
-//						
-//						new Timer().schedule(new TimerTask() {
-//							@Override
-//							public void run() {
-//								Values.editPanel.setISLinked(true);
-//								Values.editPanel.setHide(false);
-//								Values.editPanel.startAnimation();
-//								Values.editPanel.showLinkedComponent(discount, table);
-//							}
-//						}, 400);
-//					}
+					// if(mc.getClickCount() == 2){
+					// Values.addEntryPanel.startAnimation();
+					//
+					// new Timer().schedule(new TimerTask() {
+					// @Override
+					// public void run() {
+					// Values.editPanel.setISLinked(true);
+					// Values.editPanel.setHide(false);
+					// Values.editPanel.startAnimation();
+					// Values.editPanel.showLinkedComponent(discount, table);
+					// }
+					// }, 400);
+					// }
 
 				}
 			});

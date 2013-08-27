@@ -39,6 +39,9 @@ public class AccountReceivable {
 	private Person customer;
 
 	@Column
+	private double amount;
+
+	@Column
 	private double balance;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -65,11 +68,12 @@ public class AccountReceivable {
 		super();
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks,
+	public AccountReceivable(Date date, Person customer, double amount, double balance, Account issuedBy, boolean valid, String remarks,
 			Set<AccountReceivableDetail> accountReceivableDetails) {
 		super();
 		this.date = date;
 		this.customer = customer;
+		this.amount = amount;
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
@@ -77,20 +81,22 @@ public class AccountReceivable {
 		setAccountReceivableDetails(accountReceivableDetails);
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid, String remarks) {
+	public AccountReceivable(Date date, Person customer, double amount, double balance, Account issuedBy, boolean valid, String remarks) {
 		super();
 		this.date = date;
 		this.customer = customer;
+		this.amount = amount;
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
 		this.remarks = remarks;
 	}
 
-	public AccountReceivable(Date date, Person customer, double balance, Account issuedBy, boolean valid) {
+	public AccountReceivable(Date date, Person customer, double amount, double balance, Account issuedBy, boolean valid) {
 		super();
 		this.date = date;
 		this.customer = customer;
+		this.amount = amount;
 		this.balance = balance;
 		this.issuedBy = issuedBy;
 		this.valid = valid;
@@ -100,6 +106,7 @@ public class AccountReceivable {
 		super();
 		this.date = date;
 		this.customer = customer;
+		this.amount = 0d;
 		this.balance = 0d;
 		this.issuedBy = issuedBy;
 		this.valid = true;
@@ -127,6 +134,22 @@ public class AccountReceivable {
 
 	public void setCustomer(Person customer) {
 		this.customer = customer;
+	}
+
+	public double getAmount() {
+		double total = 0;
+		if (accountReceivableDetails.size() > 0) {
+			for (AccountReceivableDetail ard : accountReceivableDetails) {
+				total += ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
+			}
+		} else {
+			total += amount;
+		}
+		return total;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 	public double getBalance() {
@@ -171,17 +194,18 @@ public class AccountReceivable {
 		return accountReceivableDetails;
 	}
 
-	public double getAccountReceivablesAmount() {
-		double total = 0;
-		if (accountReceivableDetails.size() > 0) {
-			for (AccountReceivableDetail ard : accountReceivableDetails) {
-				total += ((ard.getPricePerSack() * ard.getQuantityInSack()) + (ard.getPricePerKilo() * ard.getQuantityInKilo()));
-			}
-		} else {
-			total += balance;
-		}
-		return total;
-	}
+	// public double getAccountReceivablesAmount() {
+	// double total = 0;
+	// if (accountReceivableDetails.size() > 0) {
+	// for (AccountReceivableDetail ard : accountReceivableDetails) {
+	// total += ((ard.getPricePerSack() * ard.getQuantityInSack()) +
+	// (ard.getPricePerKilo() * ard.getQuantityInKilo()));
+	// }
+	// } else {
+	// total += balance;
+	// }
+	// return total;
+	// }
 
 	// public void setAccountReceivableDetails(Set<AccountReceivableDetail>
 	// accountReceivableDetails) {
@@ -262,6 +286,15 @@ public class AccountReceivable {
 				break;
 			}
 		}
+	}
+
+	public double getARPaymentsAmount() {
+		double total = 0d;
+		Set<ARPayment> arps = getValidArPayments();
+		for (ARPayment arp : arps) {
+			total += arp.getAmount();
+		}
+		return total;
 	}
 
 	public InventorySheetData getInventorySheetData() {

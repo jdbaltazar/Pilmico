@@ -104,7 +104,7 @@ public class Manager {
 				if (acc != null && acc.isActive()) {
 					if (acc.comparePassword(input)) {
 						loggedInAccount = acc;
-						DatabaseTool.executeUpdates();
+						// DatabaseTool.executeUpdates();
 						return "true";
 					} else {
 						// System.out.println("Password is incorrect!");
