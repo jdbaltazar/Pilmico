@@ -17,13 +17,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JOptionPane;
 
 import org.hibernate.HibernateException;
 
-import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.product.Product;
 import common.manager.Manager;

@@ -12,7 +12,6 @@ import util.Values;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 
-import core.database.DatabaseTool;
 import core.persist.AccountPersistor;
 import core.persist.AccountReceivablePersistor;
 import core.persist.CashAdvancePersistor;
