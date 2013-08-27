@@ -60,7 +60,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void init() {
 		setLayout(new BorderLayout());
-		
+
 		new EditPanel();
 		new MenuPanel();
 	}
@@ -72,16 +72,15 @@ public class CenterPanel extends SoyPanel {
 		// jd -> pyAmxijgjj7EEhIrn+JgRQ==
 		// mine -> K7H4xFqWVe0bKXypGARJvQ==
 
-		
-//		  try { Manager.getInstance().login("manager", "pilmico".toCharArray());
-//		  } catch (Exception e) { // TODO Auto-generated catch block
-//		  e.printStackTrace(); } changeTable(Values.HOME);
-		 
+		// try { Manager.getInstance().login("manager", "pilmico".toCharArray());
+		// } catch (Exception e) { // TODO Auto-generated catch block
+		// e.printStackTrace(); } changeTable(Values.HOME);
+
 	}
 
 	public void changeTable(int val) {
 
-//		 if (val != Values.HOME)
+		// if (val != Values.HOME)
 		remove(getComponent(getComponentCount() - 1));
 
 		// remove(getComponent(0));
@@ -307,7 +306,7 @@ public class CenterPanel extends SoyPanel {
 
 	private void fillAR() {
 		try {
-			String[] headers = { "ID", "IS No", "Date", "Customer", "Balance/Amount", "Issued By", "Valid?" };
+			String[] headers = { "ID", "IS No", "Date", "Customer", "Balance", "Amount", "Issued By", "Valid?" };
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
@@ -322,9 +321,10 @@ public class CenterPanel extends SoyPanel {
 				entries[i][1] = ar.getInventorySheetData() == null ? "-" : ar.getInventorySheetData().getId() + "";
 				entries[i][2] = DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(ar.getDate());
 				entries[i][3] = ar.getCustomer().getFirstPlusLastName();
-				entries[i][4] = String.format("%.2f", ar.getBalance()) + "/" + String.format("%.2f", ar.getAccountReceivablesAmount());
-				entries[i][5] = ar.getIssuedBy().getFirstPlusLastName();
-				entries[i][6] = ar.isValid() ? "Yes" : "No";
+				entries[i][4] = String.format("%.2f", ar.getBalance());
+				entries[i][5] = String.format("%.2f", ar.getAmount());
+				entries[i][6] = ar.getIssuedBy().getFirstPlusLastName();
+				entries[i][7] = ar.isValid() ? "Yes" : "No";
 				// entries[i][7] = ar.getRemarks();
 
 				i++;

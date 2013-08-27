@@ -583,7 +583,7 @@ public class InventorySheet implements InventorySheetManager {
 		double total = 0d;
 		Set<AccountReceivable> ars = inventorySheetData.getAccountReceivables();
 		for (AccountReceivable ar : ars) {
-			total += ar.getAccountReceivablesAmount();
+			total += ar.getAmount();
 		}
 		return total;
 	}

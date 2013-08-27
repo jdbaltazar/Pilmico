@@ -22,6 +22,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import app.Credentials;
 
 import common.manager.Manager;
+import core.database.DatabaseTool;
 import core.persist.HibernateUtil;
 
 public class Splash extends JFrame implements PropertyChangeListener {
@@ -64,6 +65,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 
 					if (Credentials.getInstance().getPassword().equals(""))
 						new DBPassword().setVisible(true);
+					
 					
 					HibernateUtil.init();
 					
@@ -136,6 +138,8 @@ public class Splash extends JFrame implements PropertyChangeListener {
 
 				@Override
 				public void run() {
+					DatabaseTool.executeUpdates();
+					
 					Manager.getInstance();
 					new LoginPanel();
 					mainFrame = new MainFrame();
