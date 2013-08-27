@@ -183,11 +183,15 @@ public class ISRowPanel extends JPanel {
 
 	private void fillRow(Object object, String column1, String column2, String column3) {
 		// <<<<<<< HEAD
+		// // <<<<<<< HEAD
+		// //
+		// // object2 = object;
+		// //
+		// // =======
 		//
-		// object2 = object;
-		//
+		// // >>>>>>> refs/remotes/remote/master
 		// =======
-
+		//
 		// >>>>>>> refs/remotes/remote/master
 		formField.add(new ViewFormField(column1));
 		formField.get(formField.size() - 1).setBounds(0, 0, InventorySheetForm.DATE_LABEL_WIDTH, ROW_HEIGHT);
