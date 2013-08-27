@@ -1,10 +1,6 @@
 package core.persist;
 
-import gui.popup.DBPassword;
-
 import java.util.Properties;
-
-import javax.swing.JOptionPane;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.hibernate.HibernateException;
@@ -64,28 +60,10 @@ public class HibernateUtil {
 	public static final String URL = "jdbc:mysql://localhost/";
 	private static SessionFactory sessionFactory;
 
-//	static {
-//		init();
-//	}
-
 	public static void init() {
-
-		/*
-		 * <<<<<<< HEAD // mysql account credectials if
-		 * (!tryToBuildSessionFactory("root", "")) =======
-		 */
-		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-//		if (!tryToBuildSessionFactory()) {
-////			throw new RuntimeException("connection unsuccessful");
-//			JOptionPane.showMessageDialog(null, "Cannot connect to database. Please input your MySQL Password again.", "System Message", JOptionPane.WARNING_MESSAGE);
-//			new DBPassword().setVisible(true);
-//			JOptionPane.showMessageDialog(null, "Restart the application. Press OK to close the application.", "System Message", JOptionPane.INFORMATION_MESSAGE);
-//			System.exit(1);
-//		} else {
-//		}
-		
-		if(tryToBuildSessionFactory())
+		if (tryToBuildSessionFactory()) {
 			System.out.println("Connection successful");
+		}
 	}
 
 	private static boolean tryToBuildSessionFactory() throws ExceptionInInitializerError {
@@ -169,9 +147,9 @@ public class HibernateUtil {
 
 			return true;
 		} catch (Throwable ex) {
-//			ex.printStackTrace();
+			// ex.printStackTrace();
 			sessionFactory = null;
-			
+
 			return false;
 		}
 	}
