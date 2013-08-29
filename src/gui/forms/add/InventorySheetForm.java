@@ -34,6 +34,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -1079,18 +1080,27 @@ public class InventorySheetForm extends SimplePanel {
 							}
 
 							// backup database
-							// find a way to disable saving the backup in default
-							// directory but allow internal backup if not filepath is
-							// not set
+
 							try {
 
-								DatabaseTool.encryptedBackup(
-										SecurityTool.decryptString(Credentials.getInstance().getUsername()),
-										SecurityTool.decryptString(Credentials.getInstance().getPassword()),
-										Credentials.getInstance().getDatabaseName(),
-										DatabaseSettings.getInstance().getFilePath() + "/Pilmico Backup "
-												+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE,
-										null);
+								String path = DatabaseSettings.getInstance().getFilePath() + "/Pilmico Backup "
+										+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + "."
+										+ AppSettings.APP_FILE_TYPE;
+								String internalPath = DatabaseTool.INTERNAL_BACKUP_PATH + "/Pilmico Backup "
+										+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + "."
+										+ AppSettings.APP_FILE_TYPE;
+
+								if (!DatabaseSettings.getInstance().isFilePathSet()) {
+									path = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
+									path.replace('\\', '/');
+									path = path + "/Pilmico Backup "
+											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(inventorySheet.getDate()) + "."
+											+ AppSettings.APP_FILE_TYPE;
+								}
+
+								DatabaseTool.encryptedBackup(SecurityTool.decryptString(Credentials.getInstance().getUsername()),
+										SecurityTool.decryptString(Credentials.getInstance().getPassword()), Credentials.getInstance().getDatabaseName(), path,
+										internalPath, null);
 							} catch (FileNotFoundException e1) {
 								e1.printStackTrace();
 							} catch (Exception e2) {
