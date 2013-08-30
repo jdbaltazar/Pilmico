@@ -101,8 +101,11 @@ public class DatabaseToolPanel extends JPanel {
 							// DatabaseTool.backup(uP.getUsername(), uP.getPassword(),
 							// Credentials.getInstance().getDatabaseName(),
 							// file.getCanonicalPath(), uP);
+
+							String internalPath = DatabaseTool.INTERNAL_BACKUP_PATH + "/Pilmico Backup "
+									+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE;
 							DatabaseTool.encryptedBackup(uP.getUsername(), uP.getPassword(), Credentials.getInstance().getDatabaseName(),
-									file.getCanonicalPath(), uP);
+									file.getCanonicalPath(), internalPath, uP);
 
 						} catch (IOException e) {
 							// TODO Auto-generated catch block

@@ -17,13 +17,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.hibernate.HibernateException;
 
-import common.entity.accountreceivable.ARPayment;
 import common.entity.accountreceivable.AccountReceivable;
 import common.entity.product.Product;
 import common.manager.Manager;
@@ -44,11 +43,11 @@ public class DatabaseTool {
 	public static final String RESET_FILE = "data/pilmico-create.sql";
 	public static final String BACKUP_TEMP_FILE = "temp/btemp.tmp";
 	public static final String RECOVERY_TEMP_FILE = "temp/rtemp.tmp";
-	public static final String INTERNAL_BACKUP_PATH = "backup/";
+	public static final String INTERNAL_BACKUP_PATH = "backup";
 	public static Process runtimeProcess;
 	private static UtilityPopup uP;
 	private static DatabaseTool ins;
-	private static String dbUserName, dbPassword, dbName, filePath;
+	private static String dbUserName, dbPassword, dbName, filePath, internalFilePath;
 
 	public static DatabaseTool getInstance() {
 		if (ins == null)
@@ -73,12 +72,13 @@ public class DatabaseTool {
 		return DriverManager.getConnection(HibernateUtil.URL + dbName, userName, password);
 	}
 
-	public static boolean encryptedBackup(String dbUserName, String dbPassword, String dbName, String path, UtilityPopup uP) {
+	public static boolean encryptedBackup(String dbUserName, String dbPassword, String dbName, String path, String internalPath, UtilityPopup uP) {
 
 		HibernateUtil.endSession();
 		DatabaseTool.uP = uP;
 
 		filePath = path;
+		internalFilePath = internalPath;
 		String executeCmd = "mysqldump -u " + dbUserName;
 		if (!dbPassword.equals(""))
 			executeCmd = executeCmd + " -p" + dbPassword;
@@ -96,17 +96,16 @@ public class DatabaseTool {
 					boolean isRunning = true;
 
 					while (isRunning) {
+
 						try {
 							int processComplete = runtimeProcess.waitFor();
 							if (processComplete == 0) {
 								File original = new File(BACKUP_TEMP_FILE);
 								try {
-									File internalBackUp = new File(INTERNAL_BACKUP_PATH + "Pilmico Backup "
-											+ DateFormatter.getInstance().getFormat(Utility.DMYFormat).format(new Date()) + "." + AppSettings.APP_FILE_TYPE);
+									File internalBackUp = new File(internalFilePath);
 									File backUp = new File(filePath);
 									SecurityTool.encryptAndWriteFile(original, internalBackUp);
-									if (DatabaseSettings.getInstance().isFilePathSet())
-										SecurityTool.encryptAndWriteFile(original, backUp);
+									SecurityTool.encryptAndWriteFile(original, backUp);
 
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -119,18 +118,18 @@ public class DatabaseTool {
 								new SuccessPopup("Database Backup").setVisible(true);
 								Values.topPanel.closeBalloonPanel();
 								isRunning = false;
-								
+
 							} else {
 								if (DatabaseTool.uP != null)
 									DatabaseTool.uP.dispose();
 								JOptionPane.showMessageDialog(Values.mainFrame, "Could not create the backup", "Error", JOptionPane.ERROR_MESSAGE);
 								isRunning = false;
 							}
-							
+
 							Thread.currentThread().interrupt();
-							
+
 						} catch (InterruptedException e) {
-							//e.printStackTrace();
+							// e.printStackTrace();
 							System.out.println("Backup thread interrupted");
 						}
 					}
@@ -381,14 +380,13 @@ public class DatabaseTool {
 						isRunning = false;
 
 						Thread.currentThread().interrupt();
-						
+
 						HibernateUtil.startSession();
 
-					}catch (InterruptedException e) {
-						//e.printStackTrace();
+					} catch (InterruptedException e) {
+						// e.printStackTrace();
 						System.out.println("Recover thread interrupted");
-					} 
-					catch (Exception e) {
+					} catch (Exception e) {
 						System.out.println("*** Error : " + e.toString());
 						System.out.println("*** ");
 						System.out.println("*** Error : ");
