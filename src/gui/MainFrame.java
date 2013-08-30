@@ -54,6 +54,9 @@ public class MainFrame extends JFrame {
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		setVisible(true);
+		setVisible(false);
 
 		addMouseListener(new MouseAdapter() {
 
@@ -105,10 +108,6 @@ public class MainFrame extends JFrame {
 
 	public void dimScreen(boolean toggle) {
 		dbkg.setGlassPaneVisible(toggle);
-	}
-
-	public void showFrame() {
-		setVisible(true);
 	}
 
 	public void closeFrame() {

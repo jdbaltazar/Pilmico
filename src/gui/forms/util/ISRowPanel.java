@@ -377,7 +377,7 @@ public class ISRowPanel extends JPanel {
 		formField.add(new ViewFormField(DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(accountReceivable.getDate())));
 		formField.get(formField.size() - 1).setBounds(0, 0, 150, ROW_HEIGHT);
 
-		formField.add(new ViewFormField(String.format("%.2f", accountReceivable.getAmount())));
+		formField.add(new ViewFormField(String.format("%.2f", accountReceivable.getBalance())));
 		formField.get(formField.size() - 1).setBounds(150, 0, 102, ROW_HEIGHT);
 
 		for (int i = 0; i < formField.size(); i++) {
