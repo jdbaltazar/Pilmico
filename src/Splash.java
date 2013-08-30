@@ -158,11 +158,11 @@ public class Splash extends JFrame implements PropertyChangeListener {
 				} catch (InterruptedException ignore) {
 				}
 				// Make random progress.
-				progress += random.nextInt(10);
+				progress += random.nextInt(8);
 				
 				
 				setProgress(Math.min(progress, 100));
-//				System.out.println("progress: "+progress+ " getProgress: "+getProgress());
+				System.out.println("progress: "+progress+ " getProgress: "+getProgress());
 			}
 			return null;
 		}
@@ -176,7 +176,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 			setVisible(false);
 			dispose();
 
-			mainFrame.showFrame();
+			mainFrame.setVisible(true);
 		}
 	}
 
