@@ -108,7 +108,6 @@ public class DatabaseToolPanel extends JPanel {
 									file.getCanonicalPath(), internalPath, uP);
 
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 

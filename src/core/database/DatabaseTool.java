@@ -15,10 +15,8 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.hibernate.HibernateException;
@@ -31,8 +29,6 @@ import app.AppSettings;
 import app.Credentials;
 import app.DatabaseSettings;
 
-import util.DateFormatter;
-import util.Utility;
 import util.Values;
 
 import core.persist.HibernateUtil;
@@ -153,170 +149,6 @@ public class DatabaseTool {
 		return false;
 	}
 
-	// public void decryptedUpdate(String dbUserName, String dbPassword, String
-	// dbName, String path, UtilityPopup uP) throws SQLException {
-	//
-	// DatabaseTool.uP = uP;
-	// DatabaseTool.dbUserName = dbUserName;
-	// DatabaseTool.dbPassword = dbPassword;
-	// DatabaseTool.dbName = dbName;
-	// DatabaseTool.filePath = path;
-	//
-	// HibernateUtil.endSession();
-	//
-	// String executeCmd = "mysqldump -u " + dbUserName;
-	// if (!dbPassword.equals(""))
-	// executeCmd = executeCmd + " -p" + dbPassword;
-	// executeCmd = executeCmd + " --add-drop-database -B " + dbName + " -r " +
-	// BACKUP_TEMP_FILE;
-	//
-	// System.out.println(executeCmd);// this out put works in mysql shell
-	//
-	// try {
-	//
-	// // create backup file in case of failure
-	// System.out.println("Creating a backup in case of failure");
-	// runtimeProcess = Runtime.getRuntime().exec(executeCmd);
-	//
-	// Thread thread = new Thread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	//
-	// boolean isRunning = true;
-	// boolean successful = false;
-	//
-	// while (isRunning) {
-	//
-	// File backupOriginal = new File(BACKUP_TEMP_FILE);
-	// System.out.println("Backup created");
-	//
-	// // decrypt and update
-	//
-	// System.out.println("Starting decryption..");
-	// String s = new String();
-	// StringBuffer sb = new StringBuffer();
-	//
-	// try {
-	//
-	// File recoveryOriginal = new File(filePath);
-	// File recovery = new File(RECOVERY_TEMP_FILE);
-	// SecurityTool.decryptFile(recoveryOriginal, recovery);
-	//
-	// System.out.println("Done decrypting. Starting recovery..");
-	// FileReader fr = new FileReader(recovery);
-	// BufferedReader br = new BufferedReader(fr);
-	//
-	// while ((s = br.readLine()) != null) {
-	// sb.append(s + "\n");
-	// }
-	// br.close();
-	//
-	// // here is our splitter ! We use ";" as a delimiter for
-	// // each
-	// // request
-	// // then we are sure to have well formed statements
-	// String[] inst = sb.toString().split(";");
-	//
-	// Connection c = DatabaseTool.getConnection(DatabaseTool.dbUserName,
-	// DatabaseTool.dbPassword, DatabaseTool.dbName);
-	// Statement st = c.createStatement();
-	//
-	// for (int i = 0; i < inst.length; i++) {
-	// // we ensure that there is no spaces before or after the
-	// // request
-	// // string
-	// // in order to not execute empty statements
-	// if (!inst[i].trim().equals("")) {
-	// st.executeUpdate(inst[i]);
-	// // System.out.println(">>" + inst[i]);
-	// }
-	//
-	// }
-	//
-	// System.out.println("Done with recovery..");
-	// backupOriginal.delete();
-	// recovery.delete();
-	//
-	// DatabaseTool.uP.dispose();
-	// new SuccessPopup("DB Recovery").setVisible(true);
-	// Values.topPanel.closeBalloonPanel();
-	//
-	// successful = true;
-	// isRunning = false;
-	//
-	// HibernateUtil.startSession();
-	//
-	// } catch (Exception e) {
-	// System.out.println("*** Error : " + e.toString());
-	// System.out.println("*** ");
-	// System.out.println("*** Error : ");
-	// e.printStackTrace();
-	// System.out.println("################################################");
-	// System.out.println(sb.toString());
-	// } finally {
-	//
-	// if (!successful) {
-	//
-	// // show ui here to inform user that recovery was not successful
-	//
-	// // revert changes using the backup file created
-	//
-	// System.out.println("Reverting changes..");
-	// String s = new String();
-	// StringBuffer sb = new StringBuffer();
-	//
-	//
-	// File backupOriginal = new File(BACKUP_TEMP_FILE);
-	//
-	// FileReader fr = new FileReader(backupOriginal);
-	// BufferedReader br = new BufferedReader(fr);
-	//
-	// while ((s = br.readLine()) != null) {
-	// sb.append(s + "\n");
-	// }
-	// br.close();
-	//
-	// // here is our splitter ! We use ";" as a delimiter for
-	// // each
-	// // request
-	// // then we are sure to have well formed statements
-	// String[] inst = sb.toString().split(";");
-	//
-	// Connection c = DatabaseTool.getConnection(DatabaseTool.dbUserName,
-	// DatabaseTool.dbPassword, DatabaseTool.dbName);
-	// Statement st = c.createStatement();
-	//
-	// for (int i = 0; i < inst.length; i++) {
-	// // we ensure that there is no spaces before or after the
-	// // request
-	// // string
-	// // in order to not execute empty statements
-	// if (!inst[i].trim().equals("")) {
-	// st.executeUpdate(inst[i]);
-	// // System.out.println(">>" + inst[i]);
-	// }
-	//
-	// }
-	//
-	// }
-	// }
-	//
-	// }
-	//
-	// }
-	// }
-	// });
-	//
-	// thread.start();
-	// uP.showProgressBar();
-	//
-	// } catch (IOException e1) {
-	// e1.printStackTrace();
-	// }
-	//
-	// }
-
 	public void decryptedUpdate(String dbUserName, String dbPassword, String dbName, String path, UtilityPopup uP) throws SQLException {
 
 		DatabaseTool.uP = uP;
@@ -396,9 +228,9 @@ public class DatabaseTool {
 					} finally {
 						recovery.delete();
 					}
-
 				}
 			}
+			
 		});
 
 		thread.start();
