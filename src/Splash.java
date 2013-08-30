@@ -121,7 +121,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 		task.addPropertyChangeListener(this);
 		task.execute();
 
-		background = new JLabel(new ImageIcon("images/pilmico_splash.png"));
+		background = new JLabel(new ImageIcon("images/pilmico_splash_4.png"));
 		background.setBounds(0, 0, getWidth(), getHeight() - 7);
 		contentPane.add(background);
 
