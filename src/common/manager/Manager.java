@@ -85,46 +85,47 @@ public class Manager {
 
 	public String login(String username, char[] input) throws Exception {
 
-		Date date = new Date();
-		Calendar d1 = Calendar.getInstance();
-		d1.setTime(date);
-		d1.set(Calendar.YEAR, 2013);
-		d1.set(Calendar.MONTH, Calendar.AUGUST);
-		d1.set(Calendar.DATE, 31);
-		date = d1.getTime();
-		date = DateTool.getDateWithoutTime(date);
+		// Date date = new Date();
+		// Calendar d1 = Calendar.getInstance();
+		// d1.setTime(date);
+		// d1.set(Calendar.YEAR, 2013);
+		// d1.set(Calendar.MONTH, Calendar.AUGUST);
+		// d1.set(Calendar.DATE, 31);
+		// date = d1.getTime();
+		// date = DateTool.getDateWithoutTime(date);
+		//
+		// Date today = new Date();
+		// if (today.before(date)) {
 
-		Date today = new Date();
-		if (today.before(date)) {
+		try {
+			Account acc = accountManager.getAccount(username);
 
-			try {
-				Account acc = accountManager.getAccount(username);
-
-				if (acc != null && acc.isActive()) {
-					if (acc.comparePassword(input)) {
-						loggedInAccount = acc;
-						// DatabaseTool.executeUpdates();
-						return "true";
-					} else {
-						// System.out.println("Password is incorrect!");
-						return "passInc";
-						// throw new Exception("Password is incorrect!");
-					}
+			if (acc != null && acc.isActive()) {
+				if (acc.comparePassword(input)) {
+					loggedInAccount = acc;
+					// DatabaseTool.executeUpdates();
+					return "true";
 				} else {
-					// System.out.println("Account was not found!");
-					return "accNF";
-					// throw new Exception("Account was not found!");
+					// System.out.println("Password is incorrect!");
+					return "passInc";
+					// throw new Exception("Password is incorrect!");
 				}
-
-			} catch (Exception e1) {
-				e1.printStackTrace();
+			} else {
+				// System.out.println("Account was not found!");
+				return "accNF";
+				// throw new Exception("Account was not found!");
 			}
-		} else {
 
-			JOptionPane.showMessageDialog(Values.mainFrame, "Trial period ended! \nPlease contact system administrator", "Notice",
-					JOptionPane.INFORMATION_MESSAGE);
-			return "Trial period ended";
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
+		// } else {
+		//
+		// JOptionPane.showMessageDialog(Values.mainFrame,
+		// "Trial period ended! \nPlease contact system administrator", "Notice",
+		// JOptionPane.INFORMATION_MESSAGE);
+		// return "Trial period ended";
+		// }
 		return "false";
 	}
 
