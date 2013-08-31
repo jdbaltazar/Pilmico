@@ -88,7 +88,7 @@ public class ViewCAForm extends EditFormPanel {
 						cashAdvance.setRemarks(uP.getInput());
 
 						try {
-							Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
+							Manager.getInstance().getCashAdvanceManager().updateCashAdvance(cashAdvance);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

@@ -79,9 +79,9 @@ public class ViewARPaymentForm extends EditFormPanel {
 					arPayment.setRemarks(uP.getInput());
 
 					try {
-						Manager.accountReceivableManager.updateARPayment(arPayment);
+						Manager.getInstance().getAccountReceivableManager().updateARPayment(arPayment);
 						arPayment.getAccountReceivable().setBalance(arPayment.getAccountReceivable().getBalance() + arPayment.getAmount());
-						Manager.accountReceivableManager.updateAccountReceivable(arPayment.getAccountReceivable());
+						Manager.getInstance().getAccountReceivableManager().updateAccountReceivable(arPayment.getAccountReceivable());
 						// Values.viewARForm.fillEntries();
 						if (Values.viewARForm != null)
 							Values.viewARForm.fillEntries();

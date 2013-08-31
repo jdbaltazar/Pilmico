@@ -52,18 +52,18 @@ import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
 import common.manager.Manager;
 
-public class AddEntryPanel extends SoyPanel{// implements Runnable {
+public class AddEntryPanel extends SoyPanel {// implements Runnable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7293947434082230343L;
 
-//	private Thread thread;
+	// private Thread thread;
 	private int maxHeight = 475;
 	private int minHeight = 0;
 	private int currHeight = minHeight;
-//	private boolean isRunning = false;
+	// private boolean isRunning = false;
 	private AccountForm accountForm;
 	private ProductForm productForm;
 	private SupplierForm supplierForm;
@@ -282,48 +282,43 @@ public class AddEntryPanel extends SoyPanel{// implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				if (!isRunning) {
-					startAnimation();
-//				}
+				// if (!isRunning) {
+				startAnimation();
+				// }
 			}
 		});
 	}
-	
-	public void startAnimation(){
-		/*isRunning = true;
-		
-		thread = new Thread(this);
-		thread.start();*/
-		
+
+	public void startAnimation() {
+		/*
+		 * isRunning = true;
+		 * 
+		 * thread = new Thread(this); thread.start();
+		 */
+
 		if (currHeight == minHeight)
 			showPanel();
 		else
 			hidePanel();
-		
+
 	}
 
-/*	@Override
-	public void run() {
-		if (currHeight == minHeight)
-			showPanel();
-		else
-			hidePanel();
-		
-		
-		thread.interrupt();
-	}*/
+	/*
+	 * @Override public void run() { if (currHeight == minHeight) showPanel();
+	 * else hidePanel();
+	 * 
+	 * 
+	 * thread.interrupt(); }
+	 */
 
 	private void hidePanel() {
-		/*while (isRunning) {
-			currHeight--;
-			setPrefSize(getWidth(), currHeight);
-			// setPrefSize(currWidth, getHeight());
-			updateUI();
+		/*
+		 * while (isRunning) { currHeight--; setPrefSize(getWidth(), currHeight);
+		 * // setPrefSize(currWidth, getHeight()); updateUI();
+		 * 
+		 * if (currHeight == minHeight) isRunning = false; }
+		 */
 
-			if (currHeight == minHeight)
-				isRunning = false;
-		}*/
-		
 		setPrefSize(getWidth(), minHeight);
 		currHeight = minHeight;
 		updateUI();
@@ -335,16 +330,12 @@ public class AddEntryPanel extends SoyPanel{// implements Runnable {
 
 	private void showPanel() {
 
-/*		while (isRunning) {
-			currHeight++;
-			setPrefSize(getWidth(), currHeight);
-			// setPrefSize(currWidth, getHeight());
-			updateUI();
-
-			if (currHeight == maxHeight)
-				isRunning = false;
-		}
-		*/
+		/*
+		 * while (isRunning) { currHeight++; setPrefSize(getWidth(), currHeight);
+		 * // setPrefSize(currWidth, getHeight()); updateUI();
+		 * 
+		 * if (currHeight == maxHeight) isRunning = false; }
+		 */
 		setPrefSize(getWidth(), maxHeight);
 		currHeight = maxHeight;
 		// setPrefSize(currWidth, getHeight());
@@ -448,7 +439,7 @@ public class AddEntryPanel extends SoyPanel{// implements Runnable {
 				InventorySheetData inventorySheetData = null;
 				InventorySheet previousInventorySheet = null;
 
-				inventorySheetData = Manager.inventorySheetDataManager.getMostRecentInventorySheetData();
+				inventorySheetData = Manager.getInstance().getInventorySheetDataManager().getMostRecentInventorySheetData();
 				if (inventorySheetData != null) {
 					previousInventorySheet = new InventorySheet(inventorySheetData);
 				}
@@ -461,8 +452,8 @@ public class AddEntryPanel extends SoyPanel{// implements Runnable {
 
 					} else {
 
-						JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nAdd at least one (1) valid transaction.",
-								"Notice", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(Values.mainFrame, "No valid transaction found! \nAdd at least one (1) valid transaction.", "Notice",
+								JOptionPane.INFORMATION_MESSAGE);
 
 						Values.addEntryPanel.startAnimation();
 
@@ -510,9 +501,9 @@ public class AddEntryPanel extends SoyPanel{// implements Runnable {
 		}
 	}
 
-//	private void refreshDates() {
-//		sales.refreshDate();
-//	}
+	// private void refreshDates() {
+	// sales.refreshDate();
+	// }
 
 	private void showAllComponents(boolean truth) {
 		for (int i = 0; i < getComponentCount(); i++)

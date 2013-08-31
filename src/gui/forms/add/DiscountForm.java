@@ -92,7 +92,7 @@ public class DiscountForm extends SimplePanel {
 
 		fwd = new SBButton("forward.png", "forward.png", "Add new product");
 		fwd2 = new SBButton("forward.png", "forward.png", "Add new customer");
-		
+
 		fwd.addActionListener(new ActionListener() {
 
 			@Override
@@ -202,7 +202,7 @@ public class DiscountForm extends SimplePanel {
 
 						discountIssue.setRemarks(uP.getInput());
 						try {
-							Manager.discountIssueManager.addDiscountIssue(discountIssue);
+							Manager.getInstance().getDiscountIssueManager().addDiscountIssue(discountIssue);
 							Values.centerPanel.changeTable(Values.DISCOUNTS);
 							new SuccessPopup("Add").setVisible(true);
 							clearFields();
@@ -259,10 +259,10 @@ public class DiscountForm extends SimplePanel {
 
 		refreshDropdown(true);
 		error.setToolTip("");
-		
+
 		refreshDate();
 	}
-	
+
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
@@ -272,8 +272,8 @@ public class DiscountForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -294,9 +294,9 @@ public class DiscountForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -323,7 +323,7 @@ public class DiscountForm extends SimplePanel {
 		}
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getCustomersOnly().toArray());
 		} catch (Exception e3) {
 			// TODO Auto-generated catch block
 			e3.printStackTrace();
@@ -337,7 +337,7 @@ public class DiscountForm extends SimplePanel {
 		customerComboField.addKeyListener(new ComboKeyHandler(customerCombo));
 
 		try {
-			model = new DefaultComboBoxModel(Manager.productManager.getProducts().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getProductManager().getProducts().toArray());
 		} catch (Exception e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();

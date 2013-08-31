@@ -29,7 +29,7 @@ import common.entity.log.LogType;
 import common.entity.profile.Account;
 import common.manager.Manager;
 
-public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener {
+public class LoginPanel extends SoyPanel implements /* Runnable, */MouseListener {
 
 	/**
 	 
@@ -39,7 +39,7 @@ public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener 
 	private SoyField userName;
 	private JPasswordField password;
 	private SoyButton login;
-//	private Thread thread;
+	// private Thread thread;
 
 	private ErrorLabel error;
 
@@ -48,13 +48,13 @@ public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener 
 	public LoginPanel() {
 		init();
 		addComponents();
-//		thread.start();
-		
+		// thread.start();
+
 		Values.loginPanel = this;
 	}
 
 	private void init() {
-//		thread = new Thread(this);
+		// thread = new Thread(this);
 
 		error = new ErrorLabel();
 
@@ -140,40 +140,21 @@ public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener 
 
 	}
 
-	/*@Override
-	public void run() {
-		int i = 1;
-		
-		try {
-		      while(!Thread.currentThread().isInterrupted()) {
-		         // ...
-		    	  try {
-						image = (BufferedImage) ImageIO.read(new File("slideshow/" + i + ".jpg"));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-					repaint();
-					try {
-						Thread.sleep(1500);
-					} catch (InterruptedException ex) {
-					}
-
-					if (i == 6)
-						i = 1;
-					else
-						i++;
-		      }
-		   } catch (Exception consumed){
-			   
-		       Allow thread to exit 
-		   }
-
-//		while (true) {
-//
-//			
-//		}
-	}*/
+	/*
+	 * @Override public void run() { int i = 1;
+	 * 
+	 * try { while(!Thread.currentThread().isInterrupted()) { // ... try { image
+	 * = (BufferedImage) ImageIO.read(new File("slideshow/" + i + ".jpg")); }
+	 * catch (IOException e) { e.printStackTrace(); }
+	 * 
+	 * repaint(); try { Thread.sleep(1500); } catch (InterruptedException ex) { }
+	 * 
+	 * if (i == 6) i = 1; else i++; } } catch (Exception consumed){
+	 * 
+	 * Allow thread to exit }
+	 * 
+	 * // while (true) { // // // } }
+	 */
 
 	private void validateAccount() {
 		String errorComment;
@@ -194,7 +175,7 @@ public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener 
 
 				String desc = Manager.loggedInAccount.getDesignationPlusFirstPlusLastName() + " logged in";
 				Log log = new Log(new LogType(LogType.SYSTEM), desc);
-				Manager.logManager.addLog(log);
+				Manager.getInstance().getLogManager().addLog(log);
 
 				Account acc = Manager.getInstance().getLoggedInAccount();
 				Values.footerPanel.setUserName(acc.getUsername() + "!");
@@ -202,8 +183,8 @@ public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener 
 				Values.topPanel.getTools().setVisible(false);
 				Values.topPanel.showMenuButtons(true);
 				Values.footerPanel.showMenuButtons(true);
-				
-//				thread.interrupt();
+
+				// thread.interrupt();
 				Values.centerPanel.changeTable(Values.HOME);
 
 				// Manager.logManager.addLog(new

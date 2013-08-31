@@ -258,7 +258,7 @@ public class DeliveryForm extends SimplePanel {
 
 		List<Supplier> suppliers = new ArrayList<Supplier>();
 		try {
-			suppliers = Manager.supplierManager.getSuppliers();
+			suppliers = Manager.getInstance().getSupplierManager().getSuppliers();
 			for (Supplier s : suppliers) {
 				supplierCombo.addItem(s);
 			}
@@ -335,7 +335,7 @@ public class DeliveryForm extends SimplePanel {
 		priceKG.setBounds(319, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(396, LABEL_Y, 167, LABEL_HEIGHT);
 		deleteLabel.setBounds(563, LABEL_Y, 32, LABEL_HEIGHT);
-		
+
 		productFwd.setBounds(512, LABEL_Y + 5, 16, 16);
 
 		if (shownFields) {
@@ -411,7 +411,7 @@ public class DeliveryForm extends SimplePanel {
 							Date d = ((SpinnerDateModel) date.getModel()).getDate();
 							Supplier supplier = (Supplier) supplierCombo.getSelectedItem();
 							Store store;
-							store = Manager.storeManager.getStore();
+							store = Manager.getInstance().getStoreManager().getStore();
 							Delivery delivery = new Delivery(d, supplier, store, delivery_no.getText(), po_no.getText(), terms.getText(),
 									Manager.loggedInAccount);
 
@@ -422,12 +422,12 @@ public class DeliveryForm extends SimplePanel {
 							}
 
 							delivery.setRemarks(uP.getInput());
-							Manager.deliveryManager.addDelivery(delivery);
+							Manager.getInstance().getDeliveryManager().addDelivery(delivery);
 
 							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 								Product p = dd.getProduct();
 								p.incrementQuantity(dd.getQuantityInSack(), dd.getQuantityInKilo());
-								Manager.productManager.updateProduct(p);
+								Manager.getInstance().getProductManager().updateProduct(p);
 							}
 
 							Values.centerPanel.changeTable(Values.DELIVERY);
@@ -505,8 +505,8 @@ public class DeliveryForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -527,7 +527,7 @@ public class DeliveryForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
 				msg = "Date is invalid ";
 
@@ -573,7 +573,7 @@ public class DeliveryForm extends SimplePanel {
 			panel.remove(supplierCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.supplierManager.getSuppliers().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getSupplierManager().getSuppliers().toArray());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -593,7 +593,7 @@ public class DeliveryForm extends SimplePanel {
 		supplierCombo.setOpaque(false);
 
 		supplierCombo.setSelectedIndex(-1);
-		
+
 		supplierCombo.setVisible(supplierLabel.isVisible());
 
 		supplierCombo.setBounds(85, 56, 220, 20);

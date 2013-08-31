@@ -234,7 +234,7 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 
 		int size = 0;
 		try {
-			size = Manager.noteManager.getNotes().size();
+			size = Manager.getInstance().getNoteManager().getNotes().size();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -357,8 +357,8 @@ public class SalesForm extends SimplePanel {
 			// != null) {
 			// dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"),
 			// "An Inventory Sheet with this date already exists", false);
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -403,14 +403,14 @@ public class SalesForm extends SimplePanel {
 
 		addRow.setBounds(12, LABEL_Y + 5, 16, 16);
 
-//		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
-//		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
-//		kgpersack.setBounds(184, LABEL_Y, 60, LABEL_HEIGHT);
-//		priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
-//		priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
-//		productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
-//		deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
-		
+		// quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
+		// quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
+		// kgpersack.setBounds(184, LABEL_Y, 60, LABEL_HEIGHT);
+		// priceSACK.setBounds(184, LABEL_Y, 85, LABEL_HEIGHT);
+		// priceKG.setBounds(269, LABEL_Y, 77, LABEL_HEIGHT);
+		// productLabel.setBounds(346, LABEL_Y, 207, LABEL_HEIGHT);
+		// deleteLabel.setBounds(553, LABEL_Y, 42, LABEL_HEIGHT);
+
 		quantitySACKlabel.setBounds(30, LABEL_Y, 77, LABEL_HEIGHT);
 		quantityKGLabel.setBounds(107, LABEL_Y, 77, LABEL_HEIGHT);
 		kgpersack.setBounds(184, LABEL_Y, 50, LABEL_HEIGHT);
@@ -418,7 +418,6 @@ public class SalesForm extends SimplePanel {
 		priceKG.setBounds(319, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(396, LABEL_Y, 167, LABEL_HEIGHT);
 		deleteLabel.setBounds(563, LABEL_Y, 32, LABEL_HEIGHT);
-
 
 		productFwd.setBounds(510, LABEL_Y + 5, 16, 16);
 		productFwd.addActionListener(new ActionListener() {
@@ -503,13 +502,13 @@ public class SalesForm extends SimplePanel {
 
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
 
-//					boolean valid = true;
+					// boolean valid = true;
 					for (RowPanel rp : rowPanel) {
 						Product p = rp.getSelectedProduct();
 						try {
 							if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), rp.getQuantityInSack(),
 									rp.getQuantityInKilo())) {
-//								valid = false;
+								// valid = false;
 							}
 						} catch (NegativeValueException e1) {
 							e1.printStackTrace();
@@ -553,12 +552,12 @@ public class SalesForm extends SimplePanel {
 						}
 
 						try {
-							Manager.salesManager.addSales(s);
+							Manager.getInstance().getSalesManager().addSales(s);
 
 							for (SalesDetail sd : s.getSalesDetails()) {
 								Product pd = sd.getProduct();
 								pd.decrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
-								Manager.productManager.updateProduct(pd);
+								Manager.getInstance().getProductManager().updateProduct(pd);
 							}
 							Values.centerPanel.changeTable(Values.SALES);
 							new SuccessPopup("Add").setVisible(true);
@@ -634,30 +633,33 @@ public class SalesForm extends SimplePanel {
 
 		for (int i = 0; i < rowPanel.size(); i++) {
 
-			/*System.out
-					.println("i: "
-							+ i
-							+ " rowPanel.get(i).getQuantityInSack(): "
-							+ rowPanel.get(i).getQuantityInSack()
-							+ " rowPanel.get(i).getSelectedProduct().getQuantityInSack(): "
-							+ rowPanel.get(i).getSelectedProduct()
-									.getQuantityInSack());*/
-			
+			/*
+			 * System.out .println("i: " + i +
+			 * " rowPanel.get(i).getQuantityInSack(): " +
+			 * rowPanel.get(i).getQuantityInSack() +
+			 * " rowPanel.get(i).getSelectedProduct().getQuantityInSack(): " +
+			 * rowPanel.get(i).getSelectedProduct() .getQuantityInSack());
+			 */
+
 			if (rowPanel.get(i).getQuantityInSack() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack()) {
 
-				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1) + ". ";
+				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1)
+						+ ". ";
 
 				return true;
 			}
 
 			if (rowPanel.get(i).getQuantityInKilo() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
-				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1) + ". ";
+				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1)
+						+ ". ";
 
 				return true;
 			}
-			
-			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
-				msg = "Invalid qty inputs in row " + (i + 1)+". Total qty would exceed the total qty in kilos ("+rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()+") of the product. ";
+
+			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel
+					.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid qty inputs in row " + (i + 1) + ". Total qty would exceed the total qty in kilos ("
+						+ rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + ") of the product. ";
 
 				return true;
 			}
@@ -685,9 +687,9 @@ public class SalesForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -739,7 +741,7 @@ public class SalesForm extends SimplePanel {
 			panel.remove(customerCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getCustomersOnly().toArray());
 			customerCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -761,7 +763,7 @@ public class SalesForm extends SimplePanel {
 		customerCombo.setSelectedIndex(-1);
 
 		customerCombo.setBounds(85, 58, 220, 20);
-		
+
 		customerCombo.setVisible(customerLabel.isVisible());
 
 		panel.add(customerCombo);

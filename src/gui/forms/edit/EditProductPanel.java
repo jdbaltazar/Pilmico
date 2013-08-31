@@ -61,13 +61,13 @@ public class EditProductPanel extends EditFormPanel {
 	private ErrorLabel error;
 
 	private BalloonTip balloonTip;
-	
+
 	private SBButton sackConvert;
 
-	private int y1 = 35, y2 = 20, y3 = 76;//62
+	private int y1 = 35, y2 = 20, y3 = 76;// 62
 
 	private Product product;
-	
+
 	private JPanel formPanel;
 	private JScrollPane scrollPane;
 
@@ -136,15 +136,16 @@ public class EditProductPanel extends EditFormPanel {
 
 	private void addComponents() {
 
-//		sackConvert = new SBButton("transfer.png", "transfer.png", "Display one (1) sack");
+		// sackConvert = new SBButton("transfer.png", "transfer.png",
+		// "Display one (1) sack");
 		sackConvert = new SBButton("convert.png", "convert.png", "Display one (1) sack");
-		
+
 		edit = new SoyButton("Edit");
 		int fieldsCtr = 0, numFieldsCtr = 0, labelsCtr = 0;
 
 		for (int i = 0, x = 5, y = 0; i < num; i++, y += y3) {
 
-			if (i == 3) {//4
+			if (i == 3) {// 4
 				x += 230;
 				y = 0;
 			}
@@ -175,9 +176,8 @@ public class EditProductPanel extends EditFormPanel {
 
 				numFieldsCtr++;
 				labelsCtr++;
-				
-				
-				if(i == 5){
+
+				if (i == 5) {
 					sackConvert.setBounds(x + 130, y2 + y - 3, 16, 16);
 				}
 			}
@@ -203,7 +203,6 @@ public class EditProductPanel extends EditFormPanel {
 			// 3,4,8,9,11
 
 		}
-		
 
 		edit.setBounds(367, 348, 80, 30);
 
@@ -230,7 +229,8 @@ public class EditProductPanel extends EditFormPanel {
 						product.setKilosPerSack(Double.parseDouble(numfields.get(0).getText()));
 
 						product.setQuantity(Double.parseDouble(numfields.get(1).getText()), Double.parseDouble(numfields.get(2).getText()));
-//						product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()), Double.parseDouble(numfields.get(4).getText()));
+						// product.setQuantityOnDisplay(Double.parseDouble(numfields.get(3).getText()),
+						// Double.parseDouble(numfields.get(4).getText()));
 
 						double pricePerSack = Double.parseDouble(numfields.get(3).getText());
 						double pricePerKilo = Double.parseDouble(numfields.get(4).getText());
@@ -243,7 +243,7 @@ public class EditProductPanel extends EditFormPanel {
 						product.setAvailable(cbox1.isSelected());
 						product.setCategory((Category) category.getSelectedItem());
 
-						Manager.productManager.updateProduct(product);
+						Manager.getInstance().getProductManager().updateProduct(product);
 
 						update();
 					} catch (Exception e1) {
@@ -255,7 +255,7 @@ public class EditProductPanel extends EditFormPanel {
 		});
 
 		try {
-			List<Category> cats = Manager.productManager.getCategories();
+			List<Category> cats = Manager.getInstance().getProductManager().getCategories();
 
 			for (Category cat : cats) {
 				category.addItem(cat);
@@ -273,7 +273,7 @@ public class EditProductPanel extends EditFormPanel {
 		add(edit);
 		add(scrollpane);
 
-//		formPanel.add(sackConvert);
+		// formPanel.add(sackConvert);
 		formPanel.add(cbox1);
 		formPanel.add(cbox2);
 		formPanel.add(category);
@@ -346,7 +346,7 @@ public class EditProductPanel extends EditFormPanel {
 
 		cbox1.setSelected(product.isAvailable());
 		// cbox2.setSelected(product.alertUsingSack());
-//		numfields.get(7).setText("0.00");
+		// numfields.get(7).setText("0.00");
 
 		int total = category.getItemCount();
 		while (total > 0) {
@@ -373,21 +373,28 @@ public class EditProductPanel extends EditFormPanel {
 
 			return false;
 		}
-		
-		/*if (product.getQuantityInSack() < Double.parseDouble(numfields.get(3).getText())) {
 
-			msg = "sack on display already exceeds the total quantity in sack ("+product.getQuantityInSack()+") ";
-
-			return false;
-		}*/
+		/*
+		 * if (product.getQuantityInSack() <
+		 * Double.parseDouble(numfields.get(3).getText())) {
+		 * 
+		 * msg =
+		 * "sack on display already exceeds the total quantity in sack ("+product
+		 * .getQuantityInSack()+") ";
+		 * 
+		 * return false; }
+		 */
 
 		// on display in kilos
-		/*if (product.getTotalQuantityInKilo() < Double.parseDouble(numfields.get(2).getText())) {
-
-			msg = "kilos on display already exceeds the total quantity in kilos (" + product.getTotalQuantityInKilo() + ") ";
-
-			return false;
-		}*/
+		/*
+		 * if (product.getTotalQuantityInKilo() <
+		 * Double.parseDouble(numfields.get(2).getText())) {
+		 * 
+		 * msg = "kilos on display already exceeds the total quantity in kilos ("
+		 * + product.getTotalQuantityInKilo() + ") ";
+		 * 
+		 * return false; }
+		 */
 
 		return true;
 	}

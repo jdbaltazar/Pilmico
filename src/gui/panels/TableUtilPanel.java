@@ -134,7 +134,7 @@ public class TableUtilPanel extends SoyPanel {
 
 				List<InventorySheetData> isds = new ArrayList<InventorySheetData>();
 				try {
-					isds = Manager.inventorySheetDataManager.getInventorySheetsData();
+					isds = Manager.getInstance().getInventorySheetDataManager().getInventorySheetsData();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -161,38 +161,38 @@ public class TableUtilPanel extends SoyPanel {
 				Values.mainFrame.dimScreen(true);
 
 				on_display = new ProductOnDisplayPopup();
-				/*List<Product> onDisplayFirst = new ArrayList<Product>();
-				List<Product> notOnDisplay = new ArrayList<Product>();
-				
-				for (Product p : notOnDisplay) {
-					onDisplayFirst.add(p);
-				}*/
+				/*
+				 * List<Product> onDisplayFirst = new ArrayList<Product>();
+				 * List<Product> notOnDisplay = new ArrayList<Product>();
+				 * 
+				 * for (Product p : notOnDisplay) { onDisplayFirst.add(p); }
+				 */
 				List<Product> products;
 				try {
-					products = Manager.productManager.getProducts();
+					products = Manager.getInstance().getProductManager().getProducts();
 					on_display.setProducts(products);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 				Thread thread = new Thread(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						
+
 						// TODO Auto-generated method stub
-						while(!on_display.isDone()){
+						while (!on_display.isDone()) {
 							on_display.fillTable();
 						}
 					}
 				});
-				
+
 				thread.start();
 				on_display.setVisible(true);
-				
-		//		Values.productOnDisplayPopup.fillTable();
-		//		Values.productOnDisplayPopup.setVisible(true);
+
+				// Values.productOnDisplayPopup.fillTable();
+				// Values.productOnDisplayPopup.setVisible(true);
 			}
 		});
 

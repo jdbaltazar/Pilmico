@@ -39,6 +39,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 	private MainFrame mainFrame;
 	private Task task;
 	public static Splash frame;
+
 	/**
 	 * Launch the application.
 	 */
@@ -65,32 +66,28 @@ public class Splash extends JFrame implements PropertyChangeListener {
 
 					if (Credentials.getInstance().getPassword().equals(""))
 						new DBPassword().setVisible(true);
-					
-					
+
 					HibernateUtil.init();
-					
-					while(!HibernateUtil.isConnected()){
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Cannot connect to database. Please input your MySQL Password again.",
-										"System Message", JOptionPane.ERROR_MESSAGE);
+
+					while (!HibernateUtil.isConnected()) {
+						JOptionPane.showMessageDialog(null, "Cannot connect to database. Please input your MySQL Password again.", "System Message",
+								JOptionPane.ERROR_MESSAGE);
 						new DBPassword().setVisible(true);
 						HibernateUtil.init();
 					}
 
+					Manager.getInstance();
 					frame = new Splash();
-					 
-//					Manager.getInstance();
-//					new LoginPanel();
-//					MainFrame main = new MainFrame();
-//					main.showFrame();
-					
+
+					// Manager.getInstance();
+					// new LoginPanel();
+					// MainFrame main = new MainFrame();
+					// main.showFrame();
 
 				} catch (Exception e) {
-//					e.printStackTrace();
+					// e.printStackTrace();
 				}
-				
+
 			}
 		});
 	}
@@ -139,11 +136,11 @@ public class Splash extends JFrame implements PropertyChangeListener {
 				@Override
 				public void run() {
 					DatabaseTool.executeUpdates();
-					
+
 					Manager.getInstance();
 					new LoginPanel();
 					mainFrame = new MainFrame();
-//					System.out.println("haosdoadhaoos");
+					// System.out.println("haosdoadhaoos");
 				}
 			});
 
@@ -160,10 +157,10 @@ public class Splash extends JFrame implements PropertyChangeListener {
 				}
 				// Make random progress.
 				progress += random.nextInt(8);
-				
-				
+
 				setProgress(Math.min(progress, 100));
-//				System.out.println("progress: "+progress+ " getProgress: "+getProgress());
+				// System.out.println("progress: "+progress+
+				// " getProgress: "+getProgress());
 			}
 			return null;
 		}

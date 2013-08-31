@@ -45,7 +45,7 @@ public class EditAccountPanel extends EditFormPanel {
 	private SBButton deactivate, activate;
 	private ErrorLabel error;
 	private Account account;
-	private String msg="";
+	private String msg = "";
 
 	public EditAccountPanel(Account account) {
 		super("View / Edit Account");
@@ -61,7 +61,7 @@ public class EditAccountPanel extends EditFormPanel {
 			activateAccount(account.isActive());
 
 			acctType.removeAll();
-			List<AccountType> accTypes = Manager.accountManager.getAccountTypes();
+			List<AccountType> accTypes = Manager.getInstance().getAccountManager().getAccountTypes();
 			int i = 0, selected = 0;
 			for (AccountType at : accTypes) {
 				acctType.addItem(at);
@@ -187,19 +187,19 @@ public class EditAccountPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				account.setAccountType((AccountType) acctType.getSelectedItem());
-				account.setUsername(fields.get(0).getText());
-				account.setPassword(fields.get(1).getText());
-				try {
-					Manager.accountManager.updateAccount(account);
+				if (isValidated()) {
+					account.setAccountType((AccountType) acctType.getSelectedItem());
+					account.setUsername(fields.get(0).getText());
+					account.setPassword(fields.get(1).getText());
+					try {
+						Manager.getInstance().getAccountManager().updateAccount(account);
 
-					update();
+						update();
 
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				}else
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
 					error.setToolTip(msg);
 			}
 		});
@@ -239,12 +239,12 @@ public class EditAccountPanel extends EditFormPanel {
 	private boolean isValidated() {
 
 		for (int i = 0; i < fields.size(); i++)
-			
-			if(fields.get(i).getText().equals("")){
+
+			if (fields.get(i).getText().equals("")) {
 				msg = "All fields are required ";
 				return false;
 			}
-		
+
 		return true;
 	}
 

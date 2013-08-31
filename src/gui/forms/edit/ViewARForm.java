@@ -248,12 +248,13 @@ public class ViewARForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 
 				boolean valid = true;
-//				for (AccountReceivableDetail dd : accountReceivable.getAccountReceivableDetails()) {
-//					Product p = dd.getProduct();
-//					// if (!p.validQuantityResult(dd.getQuantityInSack(),
-//					// dd.getQuantityInKilo()))
-//					// valid = false;
-//				}
+				// for (AccountReceivableDetail dd :
+				// accountReceivable.getAccountReceivableDetails()) {
+				// Product p = dd.getProduct();
+				// // if (!p.validQuantityResult(dd.getQuantityInSack(),
+				// // dd.getQuantityInKilo()))
+				// // valid = false;
+				// }
 
 				if (valid) {
 
@@ -268,12 +269,12 @@ public class ViewARForm extends EditFormPanel {
 							accountReceivable.setRemarks(uP.getInput());
 
 							try {
-								Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+								Manager.getInstance().getAccountReceivableManager().updateAccountReceivable(accountReceivable);
 
 								for (AccountReceivableDetail sd : accountReceivable.getAccountReceivableDetails()) {
 									Product p = sd.getProduct();
 									p.incrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
-									Manager.productManager.updateProduct(p);
+									Manager.getInstance().getProductManager().updateProduct(p);
 								}
 
 							} catch (Exception e1) {

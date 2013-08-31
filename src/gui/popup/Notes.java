@@ -107,7 +107,7 @@ public class Notes extends SoyPanel {
 
 					if (Manager.isAuthorized() || n.getAuthor().getAccountType().getName().equals(AccountType.employee)) {
 
-						Manager.noteManager.deleteNote(n);
+						Manager.getInstance().getNoteManager().deleteNote(n);
 						Values.notesPopup.removeRow(Integer.parseInt(a.getActionCommand()));
 
 						/*

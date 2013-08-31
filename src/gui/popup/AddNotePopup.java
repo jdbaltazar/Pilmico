@@ -140,7 +140,7 @@ public class AddNotePopup extends JDialog {
 
 		List<NoteType> nTypes = new ArrayList<NoteType>();
 		try {
-			nTypes = Manager.noteManager.getNoteTypes();
+			nTypes = Manager.getInstance().getNoteManager().getNoteTypes();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -158,7 +158,7 @@ public class AddNotePopup extends JDialog {
 						Date d = ((SpinnerDateModel) date.getModel()).getDate();
 						Note note = new Note(d, Manager.loggedInAccount, description.getText(), tag.getText(), (NoteType) noteType.getSelectedItem());
 
-						Manager.noteManager.addNote(note);
+						Manager.getInstance().getNoteManager().addNote(note);
 
 						// Account acc = Manager.getInstance().getLoggedInAccount();
 						// Manager.logManager.addLog(new

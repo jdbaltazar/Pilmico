@@ -239,7 +239,7 @@ public class DepositForm extends SimplePanel {
 
 						deposit.setRemarks(uP.getInput());
 						try {
-							Manager.depositManager.addDeposit(deposit);
+							Manager.getInstance().getDepositManager().addDeposit(deposit);
 
 							Values.centerPanel.changeTable(Values.DEPOSITS);
 							new SuccessPopup("Add").setVisible(true);
@@ -295,10 +295,10 @@ public class DepositForm extends SimplePanel {
 
 		error.setToolTip("");
 		refreshDate();
-		
+
 		refreshDropdowns(true);
 	}
-	
+
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
@@ -308,8 +308,8 @@ public class DepositForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -330,9 +330,9 @@ public class DepositForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				return false;
 			}
 		} catch (Exception e) {
@@ -384,7 +384,7 @@ public class DepositForm extends SimplePanel {
 		}
 
 		try {
-			bankCombo = new JComboBox(new DefaultComboBoxModel(Manager.depositManager.getBanks().toArray()));
+			bankCombo = new JComboBox(new DefaultComboBoxModel(Manager.getInstance().getDepositManager().getBanks().toArray()));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -397,7 +397,7 @@ public class DepositForm extends SimplePanel {
 		bankComboField.addKeyListener(new ComboKeyHandler(bankCombo));
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployeesExceptManagers().toArray());
 			depositorCombo.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -412,7 +412,7 @@ public class DepositForm extends SimplePanel {
 				model = new DefaultComboBoxModel((new ArrayList<BankAccount>(b.getBankAccounts()).toArray()));
 			}
 
-			depositorCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployees().toArray()));
+			depositorCombo.setModel(new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployees().toArray()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

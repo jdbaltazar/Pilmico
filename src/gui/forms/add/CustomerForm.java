@@ -36,7 +36,7 @@ public class CustomerForm extends SimplePanel {
 
 	private ErrorLabel error;
 	private String msg;
-	
+
 	private JPanel panel;
 	private JScrollPane scrollPane;
 
@@ -53,7 +53,7 @@ public class CustomerForm extends SimplePanel {
 		// TODO Auto-generated method stub
 		clear = new SoyButton("Clear");
 		save = new SoyButton("Save");
-		
+
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setOpaque(false);
@@ -64,9 +64,9 @@ public class CustomerForm extends SimplePanel {
 
 		for (int i = 0, y = 0, x1 = 32; i < num - 1; i++, y += 54) {
 
-				fields.add(new FormField(Tables.customerFormLabel[i], 100, Color.white, Color.gray));
-				fields.get(i).setBounds(x1, 12 + y, 200, 25);
-				panel.add(fields.get(i));
+			fields.add(new FormField(Tables.customerFormLabel[i], 100, Color.white, Color.gray));
+			fields.get(i).setBounds(x1, 12 + y, 200, 25);
+			panel.add(fields.get(i));
 		}
 
 		clear.setBounds(149, 287, 80, 30);
@@ -84,26 +84,26 @@ public class CustomerForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields.get(4)
-						.getText(), true);
-				try {
-					Manager.employeePersonManager.addPerson(p);
-					Values.centerPanel.changeTable(Values.CUSTOMERS);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
-					
-					Values.salesForm.refreshCustomer(true);
-//					Values.supplierForm.refreshCustomer(true);
-					Values.accountReceivablesForm.refreshCustomer(true);
-					Values.discountForm.refreshDropdown(true);
-					Values.arPaymentForm.refreshDropdown(true);
-					Values.caPaymentForm.refreshDropdown(true);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}else
+				if (isValidated()) {
+					Person p = new Person(fields.get(1).getText(), fields.get(2).getText(), fields.get(0).getText(), fields.get(3).getText(), fields
+							.get(4).getText(), true);
+					try {
+						Manager.getInstance().getEmployeePersonManager().addPerson(p);
+						Values.centerPanel.changeTable(Values.CUSTOMERS);
+						new SuccessPopup("Add").setVisible(true);
+						clearFields();
+
+						Values.salesForm.refreshCustomer(true);
+						// Values.supplierForm.refreshCustomer(true);
+						Values.accountReceivablesForm.refreshCustomer(true);
+						Values.discountForm.refreshDropdown(true);
+						Values.arPaymentForm.refreshDropdown(true);
+						Values.caPaymentForm.refreshDropdown(true);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else
 					error.setToolTip(msg);
 			}
 		});
@@ -111,7 +111,6 @@ public class CustomerForm extends SimplePanel {
 		panel.add(clear);
 		panel.add(save);
 
-		
 		scrollPane.setViewportView(panel);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
@@ -133,17 +132,17 @@ public class CustomerForm extends SimplePanel {
 
 	private boolean isValidated() {
 
-		if(fields.get(0).getText().equals("")){
-			
+		if (fields.get(0).getText().equals("")) {
+
 			msg = "Last Name is required";
-			
+
 			return false;
 		}
-		
-		if(fields.get(1).getText().equals("")){
-			
+
+		if (fields.get(1).getText().equals("")) {
+
 			msg = "First Name is required";
-			
+
 			return false;
 		}
 

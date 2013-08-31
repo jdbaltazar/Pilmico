@@ -44,7 +44,7 @@ public class AccountForm extends SimplePanel {
 	private ErrorLabel error;
 	private DropdownLabel employee, acctT;
 	private SBButton fwd;
-	
+
 	private String msg;
 
 	private final int num = Tables.accountFormLabel.length;
@@ -56,10 +56,9 @@ public class AccountForm extends SimplePanel {
 		Values.accountForm = this;
 	}
 
-	
 	public void fillEntries() {
 		try {
-			List<AccountType> accountTypes = Manager.accountManager.getAccountTypes();
+			List<AccountType> accountTypes = Manager.getInstance().getAccountManager().getAccountTypes();
 			DefaultComboBoxModel model = new DefaultComboBoxModel(accountTypes.toArray());
 			employeeCombo.setModel(model);
 			refreshEmployee();
@@ -138,25 +137,25 @@ public class AccountForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				Account acc = new Account(fields.get(0).getText(), fields.get(1).getText(), (AccountType) acctType.getSelectedItem(),
-						(Employee) employeeCombo.getSelectedItem());
-				try {
-					Manager.accountManager.addAccount(acc);
-					Values.centerPanel.changeTable(Values.ACCOUNTS);
-					new SuccessPopup("Add").setVisible(true);
-					clearFields();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				}else
+				if (isValidated()) {
+					Account acc = new Account(fields.get(0).getText(), fields.get(1).getText(), (AccountType) acctType.getSelectedItem(),
+							(Employee) employeeCombo.getSelectedItem());
+					try {
+						Manager.getInstance().getAccountManager().addAccount(acc);
+						Values.centerPanel.changeTable(Values.ACCOUNTS);
+						new SuccessPopup("Add").setVisible(true);
+						clearFields();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
 					error.setToolTip(msg);
 			}
 		});
 
 		List<AccountType> accountTypes = new ArrayList<AccountType>();
 		try {
-			accountTypes = Manager.accountManager.getAccountTypes();
+			accountTypes = Manager.getInstance().getAccountManager().getAccountTypes();
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
@@ -183,35 +182,34 @@ public class AccountForm extends SimplePanel {
 	private void clearFields() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
-		
+
 		employeeCombo.setSelectedIndex(0);
 
 		error.setToolTip("");
 	}
 
 	private boolean isValidated() {
-		
+
 		if (employeeCombo.getModel().getSelectedItem() == null) {
 
 			msg = "Employee is required ";
 
 			return false;
 		}
-		
-		
+
 		for (int i = 0; i < fields.size(); i++)
-			
-			if(fields.get(i).getText().equals("")){
+
+			if (fields.get(i).getText().equals("")) {
 				msg = "Please fillup all fields ";
 				return false;
 			}
-		
+
 		return true;
 	}
 
 	public void refreshEmployee() {
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesWithoutAccounts().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployeesWithoutAccounts().toArray());
 			employeeCombo.setModel(model);
 		} catch (Exception e2) {
 			e2.printStackTrace();

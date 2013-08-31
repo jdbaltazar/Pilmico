@@ -49,7 +49,7 @@ import common.entity.dailyexpenses.DailyExpensesType;
 import common.entity.dailyexpenses.Expense;
 import common.manager.Manager;
 
-@SuppressWarnings({"unchecked" })
+@SuppressWarnings({ "unchecked" })
 public class ExpensesForm extends SimplePanel {
 
 	/**
@@ -183,7 +183,7 @@ public class ExpensesForm extends SimplePanel {
 		});
 
 		try {
-			List<DailyExpensesType> detypes = Manager.dailyExpenseManager.getExpenseTypes();
+			List<DailyExpensesType> detypes = Manager.getInstance().getDailyExpenseManager().getExpenseTypes();
 			for (DailyExpensesType det : detypes) {
 				type.addItem(det);
 			}
@@ -281,14 +281,14 @@ public class ExpensesForm extends SimplePanel {
 							String exp = rp.getSelectedExpense();
 							Expense expense = null;
 							try {
-								expense = Manager.dailyExpenseManager.searchExpense(exp);
+								expense = Manager.getInstance().getDailyExpenseManager().searchExpense(exp);
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
 							if (expense == null) {
 								try {
 									expense = new Expense(exp);
-									Manager.dailyExpenseManager.addExpenses(expense);
+									Manager.getInstance().getDailyExpenseManager().addExpenses(expense);
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
@@ -299,7 +299,7 @@ public class ExpensesForm extends SimplePanel {
 						de.setRemarks(uP.getInput());
 
 						try {
-							Manager.dailyExpenseManager.addDailyExpenses(de);
+							Manager.getInstance().getDailyExpenseManager().addDailyExpenses(de);
 							Values.centerPanel.changeTable(Values.EXPENSES);
 							new SuccessPopup("Add").setVisible(true);
 							clearForm();
@@ -323,8 +323,8 @@ public class ExpensesForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -345,9 +345,9 @@ public class ExpensesForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}

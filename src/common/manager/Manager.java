@@ -25,39 +25,23 @@ public class Manager {
 
 	public static Account loggedInAccount = null;
 
-	public static AccountManager accountManager = new AccountPersistor();
-
-	public static AccountReceivableManager accountReceivableManager = new AccountReceivablePersistor();
-
-	public static CashAdvanceManager cashAdvanceManager = new CashAdvancePersistor();
-
-	public static DailyExpensesManager dailyExpenseManager = new DailyExpensePersistor();
-
-	public static DeliveryManager deliveryManager = new DeliveryPersistor();
-
-	public static DepositManager depositManager = new DepositPersistor();
-
-	public static DiscountIssueManager discountIssueManager = new DiscountIssuePersistor();
-
-	public static EmployeePersonManager employeePersonManager = new EmployeePersonPersistor();
-
-	public static InventorySheetDataManager inventorySheetDataManager = new InventorySheetDataPersistor();
-
-	public static LogManager logManager = new LogPersistor();
-
-	public static NoteManager noteManager = new NotePersistor();
-
-	public static ProductManager productManager = new ProductPersistor();
-
-	public static PullOutManager pullOutManager = new PullOutPersistor();
-
-	public static SalesManager salesManager = new SalesPersistor();
-
-	public static SalaryReleaseManager salaryReleaseManager = new SalaryReleasePersistor();
-
-	public static StoreManager storeManager = new StorePersistor();
-
-	public static SupplierManager supplierManager = new SupplierPersistor();
+	private AccountManager accountManager = null;
+	private AccountReceivableManager accountReceivableManager = null;
+	private CashAdvanceManager cashAdvanceManager = null;
+	private DailyExpensesManager dailyExpenseManager = null;
+	private DeliveryManager deliveryManager = null;
+	private DepositManager depositManager = null;
+	private DiscountIssueManager discountIssueManager = null;
+	private EmployeePersonManager employeePersonManager = null;
+	private InventorySheetDataManager inventorySheetDataManager = null;
+	private LogManager logManager = null;
+	private NoteManager noteManager = null;
+	private ProductManager productManager = null;
+	private PullOutManager pullOutManager = null;
+	private SalesManager salesManager = null;
+	private SalaryReleaseManager salaryReleaseManager = null;
+	private StoreManager storeManager = null;
+	private SupplierManager supplierManager = null;
 
 	private static Manager manager = null;
 
@@ -89,6 +73,8 @@ public class Manager {
 		// if (today.before(date)) {
 
 		try {
+
+			accountManager = getAccountManager();
 			Account acc = accountManager.getAccount(username);
 
 			if (acc != null && acc.isActive()) {
@@ -134,6 +120,132 @@ public class Manager {
 
 	public void logout() throws Exception {
 		loggedInAccount = null;
+
+		accountManager = null;
+		accountReceivableManager = null;
+		cashAdvanceManager = null;
+		dailyExpenseManager = null;
+		deliveryManager = null;
+		depositManager = null;
+		discountIssueManager = null;
+		employeePersonManager = null;
+		inventorySheetDataManager = null;
+		logManager = null;
+		noteManager = null;
+		productManager = null;
+		pullOutManager = null;
+		salesManager = null;
+		salaryReleaseManager = null;
+		storeManager = null;
+		supplierManager = null;
+
+		manager = null;
+	}
+
+	public AccountManager getAccountManager() {
+		if (accountManager == null)
+			accountManager = new AccountPersistor();
+		return accountManager;
+	}
+
+	public AccountReceivableManager getAccountReceivableManager() {
+		if (accountReceivableManager == null)
+			accountReceivableManager = new AccountReceivablePersistor();
+		return accountReceivableManager;
+	}
+
+	public CashAdvanceManager getCashAdvanceManager() {
+		if (cashAdvanceManager == null)
+			cashAdvanceManager = new CashAdvancePersistor();
+		return cashAdvanceManager;
+	}
+
+	public DailyExpensesManager getDailyExpenseManager() {
+		if (dailyExpenseManager == null)
+			dailyExpenseManager = new DailyExpensePersistor();
+		return dailyExpenseManager;
+	}
+
+	public DeliveryManager getDeliveryManager() {
+		if (deliveryManager == null)
+			deliveryManager = new DeliveryPersistor();
+		return deliveryManager;
+	}
+
+	public DepositManager getDepositManager() {
+		if (depositManager == null)
+			depositManager = new DepositPersistor();
+		return depositManager;
+	}
+
+	public DiscountIssueManager getDiscountIssueManager() {
+		if (discountIssueManager == null)
+			discountIssueManager = new DiscountIssuePersistor();
+		return discountIssueManager;
+	}
+
+	public EmployeePersonManager getEmployeePersonManager() {
+		if (employeePersonManager == null)
+			employeePersonManager = new EmployeePersonPersistor();
+		return employeePersonManager;
+	}
+
+	public InventorySheetDataManager getInventorySheetDataManager() {
+		if (inventorySheetDataManager == null)
+			inventorySheetDataManager = new InventorySheetDataPersistor();
+		return inventorySheetDataManager;
+	}
+
+	public LogManager getLogManager() {
+		if (logManager == null)
+			logManager = new LogPersistor();
+		return logManager;
+	}
+
+	public NoteManager getNoteManager() {
+		if (noteManager == null)
+			noteManager = new NotePersistor();
+		return noteManager;
+	}
+
+	public ProductManager getProductManager() {
+		if (productManager == null)
+			productManager = new ProductPersistor();
+		return productManager;
+	}
+
+	public PullOutManager getPullOutManager() {
+		if (pullOutManager == null)
+			pullOutManager = new PullOutPersistor();
+		return pullOutManager;
+	}
+
+	public SalesManager getSalesManager() {
+		if (salesManager == null)
+			salesManager = new SalesPersistor();
+		return salesManager;
+	}
+
+	public SalaryReleaseManager getSalaryReleaseManager() {
+		if (salaryReleaseManager == null)
+			salaryReleaseManager = new SalaryReleasePersistor();
+		return salaryReleaseManager;
+	}
+
+	public StoreManager getStoreManager() {
+		if (storeManager == null)
+			storeManager = new StorePersistor();
+		return storeManager;
+	}
+
+	public SupplierManager getSupplierManager() {
+		if (supplierManager == null)
+			supplierManager = new SupplierPersistor();
+		return supplierManager;
+	}
+
+	public Manager getManager() {
+		return manager;
 	}
 
 }

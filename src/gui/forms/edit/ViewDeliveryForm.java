@@ -303,11 +303,11 @@ public class ViewDeliveryForm extends EditFormPanel {
 						delivery.setRemarks(uP.getInput());
 
 						try {
-							Manager.deliveryManager.updateDelivery(delivery);
+							Manager.getInstance().getDeliveryManager().updateDelivery(delivery);
 							for (DeliveryDetail dd : delivery.getDeliveryDetails()) {
 								Product p = dd.getProduct();
 								p.decrementQuantity(dd.getQuantityInSack(), dd.getQuantityInKilo());
-								Manager.productManager.updateProduct(p);
+								Manager.getInstance().getProductManager().updateProduct(p);
 							}
 
 						} catch (Exception e1) {

@@ -68,7 +68,7 @@ public class ViewSalaryForm extends EditFormPanel {
 		this.salaryRelease = salaryRelease;
 		init();
 		addComponents();
-		
+
 		colorTable();
 		fillEntries();
 	}
@@ -194,14 +194,14 @@ public class ViewSalaryForm extends EditFormPanel {
 
 	private void alternateRows() {
 
-			for (int i = 0; i < feesRowPanel.size(); i++)
-				if (i % 2 == 0)
-					feesRowPanel.get(i).getRow().setBackground(Values.row1);
-				else
-					feesRowPanel.get(i).getRow().setBackground(Values.row2);
+		for (int i = 0; i < feesRowPanel.size(); i++)
+			if (i % 2 == 0)
+				feesRowPanel.get(i).getRow().setBackground(Values.row1);
+			else
+				feesRowPanel.get(i).getRow().setBackground(Values.row2);
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (salaryRelease.getInventorySheetData() != null) {
@@ -227,30 +227,30 @@ public class ViewSalaryForm extends EditFormPanel {
 		}
 		status.setText(s);
 		status.setIcon(icon);
-		
+
 	}
 
 	public void fillEntries() {
 
 		voidBtn.setVisible(salaryRelease.getInventorySheetData() != null ? false : salaryRelease.isValid());
 
-		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(salaryRelease.getDate()));
-		issuedBy.setToolTip(issuedBy,salaryRelease.getIssuedBy().getFirstPlusLastName());
-		issuedFor.setToolTip(issuedFor,salaryRelease.getIssuedFor().getFirstPlusLastName());
-		grossPay.setToolTip(grossPay,String.format("%.2f", salaryRelease.getGrossAmount()));
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(salaryRelease.getDate()));
+		issuedBy.setToolTip(issuedBy, salaryRelease.getIssuedBy().getFirstPlusLastName());
+		issuedFor.setToolTip(issuedFor, salaryRelease.getIssuedFor().getFirstPlusLastName());
+		grossPay.setToolTip(grossPay, String.format("%.2f", salaryRelease.getGrossAmount()));
 		netPay.setToolTip(netPay, String.format("%.2f", salaryRelease.getNetAmount()));
-		remarks.setToolTip(remarks, "-"+salaryRelease.getRemarks());
+		remarks.setToolTip(remarks, "-" + salaryRelease.getRemarks());
 
 		Set<FeeDeduction> feeDeductions = salaryRelease.getFeeDeductions();
 		for (FeeDeduction fd : feeDeductions) {
-			 feesRowPanel.add(new EditRowPanel(fd, feesPanel, Values.SALARY));
-			
-			 feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
-			 alternateRows();
-			
-			 feesPanel.setPreferredSize(new Dimension(ROW_WIDTH, feesPanel.getComponentCount() * ROW_HEIGHT));
-			 feesPanel.updateUI();
-			 feesPanel.revalidate();
+			feesRowPanel.add(new EditRowPanel(fd, feesPanel, Values.SALARY));
+
+			feesPanel.add(feesRowPanel.get(feesRowPanel.size() - 1));
+			alternateRows();
+
+			feesPanel.setPreferredSize(new Dimension(ROW_WIDTH, feesPanel.getComponentCount() * ROW_HEIGHT));
+			feesPanel.updateUI();
+			feesPanel.revalidate();
 		}
 
 	}
@@ -281,14 +281,13 @@ public class ViewSalaryForm extends EditFormPanel {
 
 				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
-				
+
 				if (!uP.getInput().equals("")) {
 					salaryRelease.setValid(false);
 					salaryRelease.setRemarks(uP.getInput());
 
 					try {
-						Manager.salaryReleaseManager
-								.updateSalaryRelease(salaryRelease);
+						Manager.getInstance().getSalaryReleaseManager().updateSalaryRelease(salaryRelease);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

@@ -318,13 +318,13 @@ public class AccountReceivablesForm extends SimplePanel {
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
-//					boolean valid = true;
+					// boolean valid = true;
 					for (RowPanel rp : rowPanel) {
 						Product p = rp.getSelectedProduct();
 						try {
 							if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), rp.getQuantityInSack(),
 									rp.getQuantityInKilo())) {
-//								valid = false;
+								// valid = false;
 							}
 						} catch (NegativeValueException e1) {
 							e1.printStackTrace();
@@ -363,12 +363,12 @@ public class AccountReceivablesForm extends SimplePanel {
 						ar.setRemarks(uP.getInput());
 
 						try {
-							Manager.accountReceivableManager.addAccountReceivable(ar);
+							Manager.getInstance().getAccountReceivableManager().addAccountReceivable(ar);
 
 							for (AccountReceivableDetail ard : ar.getAccountReceivableDetails()) {
 								Product pd = ard.getProduct();
 								pd.decrementQuantity(ard.getQuantityInSack(), ard.getQuantityInKilo());
-								Manager.productManager.updateProduct(pd);
+								Manager.getInstance().getProductManager().updateProduct(pd);
 							}
 
 							Values.centerPanel.changeTable(Values.ACCOUNT_RECEIVABLES);
@@ -457,8 +457,8 @@ public class AccountReceivablesForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -510,9 +510,9 @@ public class AccountReceivablesForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -560,7 +560,7 @@ public class AccountReceivablesForm extends SimplePanel {
 			panel.remove(customerCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getCustomersOnly().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getCustomersOnly().toArray());
 			customerCombo = new JComboBox(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

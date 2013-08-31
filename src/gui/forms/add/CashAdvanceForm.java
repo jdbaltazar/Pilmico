@@ -192,7 +192,7 @@ public class CashAdvanceForm extends SimplePanel {
 
 						cashAdvance.setRemarks(uP.getInput());
 						try {
-							Manager.cashAdvanceManager.addCashAdvance(cashAdvance);
+							Manager.getInstance().getCashAdvanceManager().addCashAdvance(cashAdvance);
 
 							Values.centerPanel.changeTable(Values.CASH_ADVANCE);
 							new SuccessPopup("Add").setVisible(true);
@@ -233,7 +233,7 @@ public class CashAdvanceForm extends SimplePanel {
 		error.setToolTip("");
 		refreshDate();
 	}
-	
+
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
@@ -243,8 +243,8 @@ public class CashAdvanceForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -264,10 +264,9 @@ public class CashAdvanceForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				return false;
 			}
 		} catch (Exception e) {
@@ -294,7 +293,7 @@ public class CashAdvanceForm extends SimplePanel {
 	public void refreshEmployee() {
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployeesExceptManagers().toArray());
 			issuedFor.setModel(model);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -84,7 +84,7 @@ public class EditCustomerForm extends EditFormPanel {
 			ar_panel.revalidate();
 			i++;
 		}
-		
+
 		alternateRows(rows);
 
 	}
@@ -170,7 +170,7 @@ public class EditCustomerForm extends EditFormPanel {
 					customer.setContactNo(fields.get(4).getText());
 
 					try {
-						Manager.employeePersonManager.updatePerson(customer);
+						Manager.getInstance().getEmployeePersonManager().updatePerson(customer);
 
 						Values.editPanel.startAnimation();
 						new SuccessPopup("Edit").setVisible(true);

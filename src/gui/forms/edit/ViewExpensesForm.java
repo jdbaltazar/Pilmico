@@ -68,7 +68,7 @@ public class ViewExpensesForm extends EditFormPanel {
 		this.dailyExpenses = dailyExpenses;
 		init();
 		addComponents();
-		
+
 		colorTable();
 		fillEntries();
 
@@ -89,7 +89,7 @@ public class ViewExpensesForm extends EditFormPanel {
 		status = new JLabel("", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.green.darker());
-		
+
 		remarks = new RemarksLabel("");
 
 		issuedByLabel = new ViewFormLabel("Issued by:");
@@ -187,7 +187,7 @@ public class ViewExpensesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				Point b = a.getLocation();
-				
+
 				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
 
@@ -196,7 +196,7 @@ public class ViewExpensesForm extends EditFormPanel {
 					dailyExpenses.setRemarks(uP.getInput());
 
 					try {
-						Manager.dailyExpenseManager.updateDailyExpenses(dailyExpenses);
+						Manager.getInstance().getDailyExpenseManager().updateDailyExpenses(dailyExpenses);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -215,8 +215,8 @@ public class ViewExpensesForm extends EditFormPanel {
 
 		add(voidBtn);
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (dailyExpenses.getInventorySheetData() != null) {
@@ -242,7 +242,7 @@ public class ViewExpensesForm extends EditFormPanel {
 		}
 		status.setText(s);
 		status.setIcon(icon);
-		
+
 	}
 
 	private void fillEntries() {

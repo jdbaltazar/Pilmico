@@ -56,7 +56,7 @@ public class CenterPanel extends SoyPanel {
 		init();
 		addComponents();
 		Values.centerPanel = this;
-		
+
 		System.out.println("CenterPanel loaded.");
 	}
 
@@ -204,7 +204,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillInventories() {
 		try {
 			String[] headers = { "IS No", "Date", "Cash on Hand", "Over/Short", "Amount", "Issued by" };
-			List<InventorySheetData> isds = Manager.inventorySheetDataManager.getInventorySheetsData();
+			List<InventorySheetData> isds = Manager.getInstance().getInventorySheetDataManager().getInventorySheetsData();
 			List<InventorySheet> iss = new ArrayList<InventorySheet>();
 			String[][] entries = new String[isds.size()][headers.length];
 			int i = 0;
@@ -228,7 +228,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillExpenses() {
 		try {
 			String[] headers = { "ID", "IS No", "Date", "Amount", "Expense Type", "Issued by", "Valid?" };
-			List<DailyExpenses> dailyExpenses = Manager.dailyExpenseManager.getAllDailyExpenses();
+			List<DailyExpenses> dailyExpenses = Manager.getInstance().getDailyExpenseManager().getAllDailyExpenses();
 			String[][] entries = new String[dailyExpenses.size()][headers.length];
 			int i = 0;
 			for (DailyExpenses de : dailyExpenses) {
@@ -256,7 +256,7 @@ public class CenterPanel extends SoyPanel {
 			// "John David S. Baltazar", "More" }, { "2", "June 18, 2013",
 			// "Juan dela Cruz", "" } };
 
-			List<Sales> sales = Manager.salesManager.getAllSales();
+			List<Sales> sales = Manager.getInstance().getSalesManager().getAllSales();
 			String[][] entries = new String[sales.size()][headers.length];
 
 			int i = 0;
@@ -284,7 +284,7 @@ public class CenterPanel extends SoyPanel {
 			// String[][] entries = { { "1", "June 20, 2012",
 			// "John David S. Baltazar", "2500" }, { "2", "January 18, 2012",
 			// "Juan dela Cruz", "5000" } };
-			List<ARPayment> arPayments = Manager.accountReceivableManager.getAllARPayments();
+			List<ARPayment> arPayments = Manager.getInstance().getAccountReceivableManager().getAllARPayments();
 			String[][] entries = new String[arPayments.size()][headers.length];
 
 			int i = 0;
@@ -314,7 +314,7 @@ public class CenterPanel extends SoyPanel {
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
 			// "5000" } };
 
-			List<AccountReceivable> accountReceivables = Manager.accountReceivableManager.getAllAccountReceivables();
+			List<AccountReceivable> accountReceivables = Manager.getInstance().getAccountReceivableManager().getAllAccountReceivables();
 			String[][] entries = new String[accountReceivables.size()][headers.length];
 
 			int i = 0;
@@ -348,7 +348,7 @@ public class CenterPanel extends SoyPanel {
 			// "John David S. Baltazar", "Hog Feeds", "expired" },
 			// { "2", "April 18, 2013", "Juan dela Cruz", "Chicken Feeds", "" } };
 
-			List<PullOut> pullOuts = Manager.pullOutManager.getAllPullOuts();
+			List<PullOut> pullOuts = Manager.getInstance().getPullOutManager().getAllPullOuts();
 			String[][] entries = new String[pullOuts.size()][headers.length];
 
 			int i = 0;
@@ -373,7 +373,7 @@ public class CenterPanel extends SoyPanel {
 		try {
 
 			String[] headers = { "ID", "IS No", "Date", "Employee", "Balance/Amount", "Issued By", "Valid?" };
-			List<CashAdvance> cashAdvances = Manager.cashAdvanceManager.getAllCashAdvances();
+			List<CashAdvance> cashAdvances = Manager.getInstance().getCashAdvanceManager().getAllCashAdvances();
 			// String[][] entries = { { "1", "June 20, 2013",
 			// "John David S. Baltazar", "Juan dela Cruz", "500" },
 			// { "2", "June 18, 2013", "Juan dela Cruz", "John David S. Baltazar",
@@ -407,7 +407,7 @@ public class CenterPanel extends SoyPanel {
 			// "Juan dela Cruz", "5000" } };
 			// String[][] entries = new String[1][headers.length];
 
-			List<CAPayment> caps = Manager.cashAdvanceManager.getAllCAPayments();
+			List<CAPayment> caps = Manager.getInstance().getCashAdvanceManager().getAllCAPayments();
 			String[][] entries = new String[caps.size()][headers.length];
 
 			int i = 0;
@@ -442,7 +442,7 @@ public class CenterPanel extends SoyPanel {
 
 			// include in one of the columns: grosspay, deductions, net pay
 
-			List<SalaryRelease> salaryReleases = Manager.salaryReleaseManager.getAllSalaryReleases();
+			List<SalaryRelease> salaryReleases = Manager.getInstance().getSalaryReleaseManager().getAllSalaryReleases();
 			String[][] entries = new String[salaryReleases.size()][headers.length];
 
 			int i = 0;
@@ -477,7 +477,7 @@ public class CenterPanel extends SoyPanel {
 			// String[][] entries = { { "1", "April 18, 2013",
 			// "John David S. Baltazar", "" }, { "2", "May 11, 2012",
 			// "John David S. Baltazar", "Hoax" } };
-			List<Delivery> deliveries = Manager.deliveryManager.getAllDeliveries();
+			List<Delivery> deliveries = Manager.getInstance().getDeliveryManager().getAllDeliveries();
 			String[][] entries = new String[deliveries.size()][headers.length];
 			int i = 0;
 			for (Delivery d : deliveries) {
@@ -501,7 +501,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillSuppliers() {
 		try {
 			String[] headers = { "ID", "Name", "Address", "Contact No.", "Contact Person" };
-			List<Supplier> suppliers = Manager.supplierManager.getSuppliers();
+			List<Supplier> suppliers = Manager.getInstance().getSupplierManager().getSuppliers();
 			String[][] entries = new String[suppliers.size()][headers.length];
 			int i = 0;
 			for (Supplier s : suppliers) {
@@ -529,7 +529,7 @@ public class CenterPanel extends SoyPanel {
 		try {
 
 			String[] headers = { "ID", "IS No", "Date", "Amount", "Issued By", "Valid?" };
-			List<DiscountIssue> dis = Manager.discountIssueManager.getAllDiscountIssues();
+			List<DiscountIssue> dis = Manager.getInstance().getDiscountIssueManager().getAllDiscountIssues();
 			System.out.println("size of discount issues: " + dis.size());
 			String[][] entries = new String[dis.size()][headers.length];
 
@@ -556,7 +556,7 @@ public class CenterPanel extends SoyPanel {
 		try {
 
 			String[] headers = { "ID", "IS No", "Date", "Acct No, Bank", "Amount", "Depositor", "Issued By", "Valid?" };
-			List<Deposit> deposits = Manager.depositManager.getAllDeposits();
+			List<Deposit> deposits = Manager.getInstance().getDepositManager().getAllDeposits();
 			String[][] entries = new String[deposits.size()][headers.length];
 
 			int i = 0;
@@ -583,7 +583,7 @@ public class CenterPanel extends SoyPanel {
 	private void fillBank() {
 		try {
 			String[] headers = { "ID", "Name", "Address", "Contact No.", "Account No(s)" };
-			List<Bank> banks = Manager.depositManager.getBanks();
+			List<Bank> banks = Manager.getInstance().getDepositManager().getBanks();
 			String[][] entries = new String[banks.size()][headers.length];
 			int i = 0;
 			for (Bank p : banks) {
@@ -606,7 +606,7 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Name", "Address", "Contact No.", "Balance" };
 
-			List<Person> customers = Manager.employeePersonManager.getCustomersOnly();
+			List<Person> customers = Manager.getInstance().getEmployeePersonManager().getCustomersOnly();
 
 			// String[][] entries = { { "1", "Baltazar", "John David", "S",
 			// "09161429583" }, { "2", "dela Cruz", "Juan", "B", "09161234567" } };
@@ -631,8 +631,8 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Designation", "Name", "Contact No", "Salary", "Status" };
 
-			List<Employee> employees = Manager.isAuthorized() ? Manager.employeePersonManager.getAllEmployees() : Manager.employeePersonManager
-					.getAllEmployeesExceptManagers();
+			List<Employee> employees = Manager.isAuthorized() ? Manager.getInstance().getEmployeePersonManager().getAllEmployees() : Manager
+					.getInstance().getEmployeePersonManager().getAllEmployeesExceptManagers();
 
 			String[][] entries = new String[employees.size()][headers.length];
 			// String[][] entries = { { "1", "John David Baltazar", "Janitor",
@@ -659,8 +659,8 @@ public class CenterPanel extends SoyPanel {
 	private void fillAccounts() {
 		try {
 			String[] headers = { "ID", "Username", "Account Type", "Designation", "Name", "Status" };
-			List<Account> accounts = Manager.isAuthorized() ? Manager.accountManager.getAccounts() : Manager.accountManager
-					.getAccountThenAddToList(Manager.loggedInAccount.getId());
+			List<Account> accounts = Manager.isAuthorized() ? Manager.getInstance().getAccountManager().getAccounts() : Manager.getInstance()
+					.getAccountManager().getAccountThenAddToList(Manager.loggedInAccount.getId());
 			String[][] entries = new String[accounts.size()][headers.length];
 			int i = 0;
 			for (Account a : accounts) {
@@ -683,7 +683,7 @@ public class CenterPanel extends SoyPanel {
 
 		try {
 			String[] headers = { "ID", "Name", "Kls/SK", "SK", "Kg", "Price/SK", "Price/Kg", "Category", "Available?" };
-			List<Product> products = Manager.productManager.getProducts();
+			List<Product> products = Manager.getInstance().getProductManager().getProducts();
 			List<Product> onDisplayFirst = new ArrayList<Product>();
 			List<Product> notOnDisplay = new ArrayList<Product>();
 			String[][] entries = new String[products.size()][headers.length];
@@ -731,7 +731,7 @@ public class CenterPanel extends SoyPanel {
 
 		try {
 			String[] headers = { "Date", "Description" };
-			List<Log> logs = Manager.logManager.getAllLogs();
+			List<Log> logs = Manager.getInstance().getLogManager().getAllLogs();
 			String[][] entries = new String[logs.size()][headers.length];
 			// String[][] entries = new String[1][headers.length];
 			int i = 0;

@@ -55,13 +55,13 @@ public class EditEmployeeForm extends EditFormPanel {
 	private FormDropdown employmentStatus, designation;
 	private DefaultComboBoxModel model;
 	private JSpinner startDate, endDate;
-	
+
 	private SimpleNumericField salary;
 
 	private int initY = 35, y2 = 20;
 
 	private ErrorLabel error;
-	private String msg="";
+	private String msg = "";
 
 	private final int num = Tables.employeeFormLabel.length;
 	private JPanel panel;
@@ -84,13 +84,13 @@ public class EditEmployeeForm extends EditFormPanel {
 	private void fillEntries() {
 
 		try {
-			List<Designation> designations = Manager.isAuthorized() ? Manager.employeePersonManager.getAllDesignations() : Manager.employeePersonManager
-					.getDesignations();
+			List<Designation> designations = Manager.isAuthorized() ? Manager.getInstance().getEmployeePersonManager().getAllDesignations() : Manager
+					.getInstance().getEmployeePersonManager().getDesignations();
 			for (Designation d : designations) {
 				designation.addItem(d);
 			}
 
-			List<EmploymentStatus> employmentStatuses = Manager.employeePersonManager.getEmploymentStatuses();
+			List<EmploymentStatus> employmentStatuses = Manager.getInstance().getEmployeePersonManager().getEmploymentStatuses();
 			for (EmploymentStatus es : employmentStatuses) {
 				employmentStatus.addItem(es);
 			}
@@ -130,7 +130,7 @@ public class EditEmployeeForm extends EditFormPanel {
 				labels.get(9).setVisible(Manager.isAuthorized());
 				fields.get(5).setVisible(Manager.isAuthorized());
 			}
-			
+
 			salary.setForeground(Color.GRAY);
 
 		} catch (Exception e) {
@@ -145,7 +145,7 @@ public class EditEmployeeForm extends EditFormPanel {
 		panel.setOpaque(false);
 
 		scrollPane = new JScrollPane();
-		
+
 		salary = new SimpleNumericField(10, " ");
 
 		employmentHistory = new SBButton("employmenthistory.png", "employmenthistory2.png", "Employment History");
@@ -237,7 +237,7 @@ public class EditEmployeeForm extends EditFormPanel {
 
 				labelsCtr++;
 			}
-			
+
 			if (i == 8) {
 				salary.setBounds(x1, initY + y, 170, 25);
 				labels.add(new FormLabel(Tables.employeeFormLabel[i]));
@@ -278,17 +278,14 @@ public class EditEmployeeForm extends EditFormPanel {
 					employee.setMiddleName(fields.get(2).getText());
 					employee.setAddress(fields.get(3).getText());
 					employee.setContactNo(fields.get(4).getText());
-					employee.setDesignation((Designation) designation
-							.getSelectedItem());
-					employee.setStatus((EmploymentStatus) employmentStatus
-							.getSelectedItem());
-					employee.setStartingDate(((SpinnerDateModel) startDate
-							.getModel()).getDate());
+					employee.setDesignation((Designation) designation.getSelectedItem());
+					employee.setStatus((EmploymentStatus) employmentStatus.getSelectedItem());
+					employee.setStartingDate(((SpinnerDateModel) startDate.getModel()).getDate());
 					employee.setSalary(Double.parseDouble(salary.getText()));
 					employee.setRemarks(fields.get(5).getText());
 
 					try {
-						Manager.employeePersonManager.updateEmployee(employee);
+						Manager.getInstance().getEmployeePersonManager().updateEmployee(employee);
 
 						Values.editPanel.startAnimation();
 						new SuccessPopup("Edit").setVisible(true);

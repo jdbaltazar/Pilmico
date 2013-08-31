@@ -174,7 +174,7 @@ public class EmployeeForm extends SimplePanel {
 								(EmploymentStatus) employmentStatus.getSelectedItem(), ((SpinnerDateModel) startDate.getModel()).getDate(), Double
 										.parseDouble(salary.getText()), fields.get(5).getText(), null);
 
-						Manager.employeePersonManager.addEmployee(employee);
+						Manager.getInstance().getEmployeePersonManager().addEmployee(employee);
 
 						Values.centerPanel.changeTable(Values.EMPLOYEES);
 						new SuccessPopup("Add").setVisible(true);
@@ -231,13 +231,13 @@ public class EmployeeForm extends SimplePanel {
 	private void fillEntries() {
 
 		try {
-			List<Designation> designations = Manager.isAuthorized() ? Manager.employeePersonManager.getAllDesignations() : Manager.employeePersonManager
-					.getDesignations();
+			List<Designation> designations = Manager.isAuthorized() ? Manager.getInstance().getEmployeePersonManager().getAllDesignations() : Manager
+					.getInstance().getEmployeePersonManager().getDesignations();
 			for (Designation d : designations) {
 				designation.addItem(d);
 			}
 
-			List<EmploymentStatus> employmentStatuses = Manager.employeePersonManager.getEmploymentStatuses();
+			List<EmploymentStatus> employmentStatuses = Manager.getInstance().getEmployeePersonManager().getEmploymentStatuses();
 			for (EmploymentStatus es : employmentStatuses) {
 				employmentStatus.addItem(es);
 			}

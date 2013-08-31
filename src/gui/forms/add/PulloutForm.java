@@ -170,7 +170,7 @@ public class PulloutForm extends SimplePanel {
 		priceKG.setBounds(339, LABEL_Y, 77, LABEL_HEIGHT);
 		productLabel.setBounds(416, LABEL_Y, 167, LABEL_HEIGHT);
 		deleteLabel.setBounds(583, LABEL_Y, 32, LABEL_HEIGHT);
-	
+
 		// 136
 		fwdProduct.setBounds(532, LABEL_Y + 5, 16, 16);
 
@@ -272,13 +272,13 @@ public class PulloutForm extends SimplePanel {
 
 				if (isValidated() && !hasMultipleProduct() && !hasBlankProduct() && !hasInvalidQuantity() && !hasZeroQuantity()) {
 
-//					boolean valid = true;
+					// boolean valid = true;
 					for (RowPanel rp : rowPanel) {
 						Product p = rp.getSelectedProduct();
 						try {
 							if (!Product.validDecrement(p.getSacks(), p.getKilosOnDisplay(), p.getKilosPerSack(), rp.getQuantityInSack(),
 									rp.getQuantityInKilo())) {
-//								valid = false;
+								// valid = false;
 							}
 						} catch (NegativeValueException e1) {
 							e1.printStackTrace();
@@ -289,51 +289,54 @@ public class PulloutForm extends SimplePanel {
 						}
 					}
 
-						PointerInfo a = MouseInfo.getPointerInfo();
-						Point b = a.getLocation();
+					PointerInfo a = MouseInfo.getPointerInfo();
+					Point b = a.getLocation();
 
-						UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-						uP.setVisible(true);
+					UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
+					uP.setVisible(true);
 
-						if (!uP.isClosed()) {
-							Date d = ((SpinnerDateModel) date.getModel()).getDate();
-							PullOut pullOut = new PullOut(d, Manager.loggedInAccount);
+					if (!uP.isClosed()) {
+						Date d = ((SpinnerDateModel) date.getModel()).getDate();
+						PullOut pullOut = new PullOut(d, Manager.loggedInAccount);
+
+						for (RowPanel rp : rowPanel) {
+							Product product = rp.getSelectedProduct();
+							pullOut.addPullOutDetail(new PullOutDetail(pullOut, product, product.getCurrentPricePerKilo(), product.getCurrentPricePerSack(),
+									rp.getQuantityInKilo(), rp.getQuantityInSack()));
+						}
+
+						pullOut.setRemarks(uP.getInput());
+
+						try {
+							Manager.getInstance().getPullOutManager().addPullOut(pullOut);
 
 							for (RowPanel rp : rowPanel) {
 								Product product = rp.getSelectedProduct();
-								pullOut.addPullOutDetail(new PullOutDetail(pullOut, product, product.getCurrentPricePerKilo(), product
-										.getCurrentPricePerSack(), rp.getQuantityInKilo(), rp.getQuantityInSack()));
+								product.decrementQuantity(rp.getQuantityInSack(), rp.getQuantityInKilo());
+								Manager.getInstance().getProductManager().updateProduct(product);
 							}
 
-							pullOut.setRemarks(uP.getInput());
-
-							try {
-								Manager.pullOutManager.addPullOut(pullOut);
-
-								for (RowPanel rp : rowPanel) {
-									Product product = rp.getSelectedProduct();
-									product.decrementQuantity(rp.getQuantityInSack(), rp.getQuantityInKilo());
-									Manager.productManager.updateProduct(product);
-								}
-
-								Values.centerPanel.changeTable(Values.PULLOUT);
-								new SuccessPopup("Add").setVisible(true);
-								clearForm();
-							} catch (Exception e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							Values.centerPanel.changeTable(Values.PULLOUT);
+							new SuccessPopup("Add").setVisible(true);
+							clearForm();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
-				}
-				else
+					}
+				} else
 					error.setToolTip(msg);
-				/* else {
-
-					JOptionPane.showMessageDialog(Values.mainFrame, "This action will result to NEGATIVE QUANTITY to product/s in this form: "
-							+ "\n In order to proceed: " + "\n (1) Update the quantity of the affected product/s; or"
-							+ "\n (2) Add a delivery for affected product/s; or" + "\n (3) Invalidate a Sales and/or Account Receivables", "Not Allowed!",
-							JOptionPane.WARNING_MESSAGE);
-				}*/
+				/*
+				 * else {
+				 * 
+				 * JOptionPane.showMessageDialog(Values.mainFrame,
+				 * "This action will result to NEGATIVE QUANTITY to product/s in this form: "
+				 * + "\n In order to proceed: " +
+				 * "\n (1) Update the quantity of the affected product/s; or" +
+				 * "\n (2) Add a delivery for affected product/s; or" +
+				 * "\n (3) Invalidate a Sales and/or Account Receivables",
+				 * "Not Allowed!", JOptionPane.WARNING_MESSAGE); }
+				 */
 			}
 		});
 
@@ -398,9 +401,9 @@ public class PulloutForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -422,19 +425,23 @@ public class PulloutForm extends SimplePanel {
 
 			if (rowPanel.get(i).getQuantityInSack() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack()) {
 
-				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1) + ". ";
+				msg = "Invalid sack qty. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInSack() + " left for product in row " + (i + 1)
+						+ ". ";
 
 				return true;
 			}
 
 			if (rowPanel.get(i).getQuantityInKilo() > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
-				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1) + ". ";
+				msg = "Invalid sack kg. Only " + rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + " left for product in row " + (i + 1)
+						+ ". ";
 
 				return true;
 			}
-			
-			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
-				msg = "Invalid qty inputs in row " + (i + 1)+". Total qty would exceed the total qty in kilos ("+rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo()+") of the product. ";
+
+			if (rowPanel.get(i).getQuantityInKilo() + (rowPanel.get(i).getQuantityInSack() * rowPanel.get(i).getSelectedProduct().getKilosPerSack()) > rowPanel
+					.get(i).getSelectedProduct().getTotalQuantityInKilo()) {
+				msg = "Invalid qty inputs in row " + (i + 1) + ". Total qty would exceed the total qty in kilos ("
+						+ rowPanel.get(i).getSelectedProduct().getTotalQuantityInKilo() + ") of the product. ";
 
 				return true;
 			}
@@ -449,20 +456,20 @@ public class PulloutForm extends SimplePanel {
 			formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 			try {
-				if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-					msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+					msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 					return false;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (productsPanel.getComponentCount() == 0) {
 			msg = "Put at least one product ";
 			return false;
 		}
-		
+
 		return true;
 
 	}

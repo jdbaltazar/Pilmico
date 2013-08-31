@@ -74,7 +74,7 @@ public class EditStoreInfoPopup extends JDialog {
 	public void fillEntries() {
 
 		try {
-			Store store = Manager.storeManager.getStore();
+			Store store = Manager.getInstance().getStoreManager().getStore();
 			fields.get(0).setText(store.getName());
 
 		} catch (Exception e) {

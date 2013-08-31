@@ -61,8 +61,8 @@ public class ViewDepositForm extends EditFormPanel {
 		colorTable();
 		fillEntries();
 	}
-	
-	private void colorTable(){
+
+	private void colorTable() {
 
 		String s = "";
 		if (deposit.getInventorySheetData() != null) {
@@ -98,12 +98,12 @@ public class ViewDepositForm extends EditFormPanel {
 		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(deposit.getDate()));
 		issuedBy.setToolTip(issuedBy, deposit.getIssuedBy().getFirstPlusLastName());
 		depositor.setToolTip(depositor, deposit.getDepositor().getFirstPlusLastName());
-		bank.setToolTip(bank, deposit.getBankAccount().getBank()+"");
+		bank.setToolTip(bank, deposit.getBankAccount().getBank() + "");
 		bankAcct.setToolTip(bankAcct, deposit.getBankAccount().getAccountNo());
 		amount.setToolTip(amount, String.format("%.2f", deposit.getAmount()));
-		
-		if(deposit.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+deposit.getRemarks());
+
+		if (deposit.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + deposit.getRemarks());
 
 	}
 
@@ -114,7 +114,7 @@ public class ViewDepositForm extends EditFormPanel {
 		status = new JLabel("PENDING", icon, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
 		status.setForeground(Color.orange);
-		
+
 		remarks = new RemarksLabel("");
 
 		panel = new JPanel();
@@ -157,7 +157,7 @@ public class ViewDepositForm extends EditFormPanel {
 				depositorLabel.setBounds(x1, initY + y - 7, 60, 11);
 				depositor.setBounds(x1 + 65, initY + y - 14, 200, 20);
 			}
-			
+
 			if (i == 3) {
 				bankLabel.setBounds(x1, initY + y - 7, 60, 11);
 				bank.setBounds(x1 + 65, initY + y - 14, 200, 20);
@@ -193,14 +193,13 @@ public class ViewDepositForm extends EditFormPanel {
 				Point b = a.getLocation();
 				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
-				
+
 				if (!uP.getInput().equals("")) {
 					deposit.setValid(false);
 					deposit.setRemarks(uP.getInput());
 
 					try {
-						Manager.depositManager
-								.updateDeposit(deposit);
+						Manager.getInstance().getDepositManager().updateDeposit(deposit);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -226,7 +225,7 @@ public class ViewDepositForm extends EditFormPanel {
 
 		panel.add(bank);
 		panel.add(bankLabel);
-		
+
 		panel.add(bankAcct);
 		panel.add(bankAcctLabel);
 

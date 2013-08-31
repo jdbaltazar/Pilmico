@@ -78,22 +78,20 @@ public class NotesPopup extends JDialog {
 
 		panel = new SimplePanel("View / Remove Notes");
 		panel.setOpaque(false);
-		/*if (Manager.loggedInAccount.getAccountType().getName()
-				.equals(AccountType.manager))
-		else
-			panel = new SimplePanel("View Notes");*/
+		/*
+		 * if (Manager.loggedInAccount.getAccountType().getName()
+		 * .equals(AccountType.manager)) else panel = new
+		 * SimplePanel("View Notes");
+		 */
 
 		List<Note> ns;
 		try {
-			ns = Manager.noteManager.getNotes();
+			ns = Manager.getInstance().getNoteManager().getNotes();
 			int i = 0;
 			for (Note n : ns) {
-				notes.add(new Notes(
-						notesPanel.getComponentCount() * ROW_HEIGHT, notesPanel
-								.getComponentCount() + "", n));
+				notes.add(new Notes(notesPanel.getComponentCount() * ROW_HEIGHT, notesPanel.getComponentCount() + "", n));
 				notesPanel.add(notes.get(i));
-				notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel
-						.getComponentCount() * ROW_HEIGHT));
+				notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel.getComponentCount() * ROW_HEIGHT));
 				i++;
 			}
 		} catch (Exception e1) {
@@ -120,8 +118,7 @@ public class NotesPopup extends JDialog {
 		notesPanel.updateUI();
 		notesPanel.revalidate();
 
-		notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel
-				.getComponentCount() * ROW_HEIGHT));
+		notesPanel.setPreferredSize(new Dimension(ROW_WIDTH, notesPanel.getComponentCount() * ROW_HEIGHT));
 
 		updateList(rowNum);
 	}
@@ -129,8 +126,7 @@ public class NotesPopup extends JDialog {
 	private void updateList(int removedRow) {
 
 		for (int i = removedRow + 1; i < notes.size(); i++) {
-			notes.get(i).setBounds(0, notes.get(i).getY() - ROW_HEIGHT,
-					ROW_WIDTH, ROW_HEIGHT);
+			notes.get(i).setBounds(0, notes.get(i).getY() - ROW_HEIGHT, ROW_WIDTH, ROW_HEIGHT);
 			notes.get(i).setY(notes.get(i).getY() - ROW_HEIGHT);
 			notes.get(i).getRemove().setActionCommand((i - 1) + "");
 			notes.get(i).updateUI();

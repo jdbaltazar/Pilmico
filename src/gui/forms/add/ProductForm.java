@@ -126,7 +126,7 @@ public class ProductForm extends SimplePanel {
 
 		int ctr = 0, ctr2 = 0;
 
-		for (int i = 0, y = 0, x1 = 15; i < num; i++, y += 70) {//y+=54
+		for (int i = 0, y = 0, x1 = 15; i < num; i++, y += 70) {// y+=54
 
 			if (i == 3) {
 				x1 = 215;
@@ -177,7 +177,7 @@ public class ProductForm extends SimplePanel {
 
 				List<Category> categories = new ArrayList<Category>();
 				try {
-					categories = Manager.productManager.getCategories();
+					categories = Manager.getInstance().getProductManager().getCategories();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -225,10 +225,12 @@ public class ProductForm extends SimplePanel {
 					double quantityInKilo = Double.parseDouble(numfields.get(2).getText());
 					// double displayInSack =
 					// Double.parseDouble(numfields.get(3).getText());
-					// double displayInKilo = Double.parseDouble(numfields.get(4).getText());
+					// double displayInKilo =
+					// Double.parseDouble(numfields.get(4).getText());
 					double pricePerSack = Double.parseDouble(numfields.get(5).getText());
 					double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
-//					double alertOnQuantity = Double.parseDouble(numfields.get(7).getText());
+					// double alertOnQuantity =
+					// Double.parseDouble(numfields.get(7).getText());
 
 					// Product p = new Product(name, description, new Date(),
 					// pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(),
@@ -242,7 +244,7 @@ public class ProductForm extends SimplePanel {
 							quantityInKilo, (Category) category.getSelectedItem(), cbox2.isSelected());
 
 					try {
-						Manager.productManager.addProduct(p);
+						Manager.getInstance().getProductManager().addProduct(p);
 						Values.centerPanel.changeTable(Values.PRODUCTS);
 						new SuccessPopup("Add").setVisible(true);
 						clearFields();
@@ -276,7 +278,7 @@ public class ProductForm extends SimplePanel {
 
 						if (!uP.getInput().equals("")) {
 							// insert code here for adding category
-							Manager.productManager.addCategory(new Category(uP.getInput()));
+							Manager.getInstance().getProductManager().addCategory(new Category(uP.getInput()));
 							updateCategories();
 
 							new SuccessPopup("Add", 1).setVisible(true);
@@ -364,7 +366,7 @@ public class ProductForm extends SimplePanel {
 
 	private void updateCategories() {
 		try {
-			model = new DefaultComboBoxModel(Manager.productManager.getCategories().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getProductManager().getCategories().toArray());
 			category.setModel(model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

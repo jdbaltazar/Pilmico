@@ -98,7 +98,7 @@ public class RowPanel extends JPanel {
 		try {
 			List<Product> products = new ArrayList<Product>();
 			try {
-				products = Manager.productManager.getProducts();
+				products = Manager.getInstance().getProductManager().getProducts();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -109,7 +109,7 @@ public class RowPanel extends JPanel {
 
 			List<Fee> fees = new ArrayList<Fee>();
 			try {
-				fees = Manager.salaryReleaseManager.getFees();
+				fees = Manager.getInstance().getSalaryReleaseManager().getFees();
 				for (Fee f : fees) {
 					feesCombo.addItem(f.getName());
 				}
@@ -121,7 +121,7 @@ public class RowPanel extends JPanel {
 
 			List<Expense> expenses = new ArrayList<Expense>();
 			try {
-				expenses = Manager.dailyExpenseManager.getExpenses();
+				expenses = Manager.getInstance().getDailyExpenseManager().getExpenses();
 				for (Expense expense : expenses) {
 					expensesCombo.addItem(expense.getName());
 				}
@@ -154,9 +154,9 @@ public class RowPanel extends JPanel {
 				if (str != null && !str.equals("")) {
 					Fee fee = null;
 					try {
-						fee = Manager.salaryReleaseManager.searchFee(str);
+						fee = Manager.getInstance().getSalaryReleaseManager().searchFee(str);
 						if (fee != null) {
-							feeAmount.setText(String.format("%.2f", Manager.salaryReleaseManager.getMostRecentAmountForFee(fee.getId())));
+							feeAmount.setText(String.format("%.2f", Manager.getInstance().getSalaryReleaseManager().getMostRecentAmountForFee(fee.getId())));
 						} else {
 							feeAmount.setText("0");
 						}
@@ -184,9 +184,10 @@ public class RowPanel extends JPanel {
 				if (str != null && !str.equals("")) {
 					Expense expense = null;
 					try {
-						expense = Manager.dailyExpenseManager.searchExpense(str);
+						expense = Manager.getInstance().getDailyExpenseManager().searchExpense(str);
 						if (expense != null) {
-							amountOfExpense.setText(String.format("%.2f", Manager.dailyExpenseManager.getMostRecentAmountForExpense(expense.getId())));
+							amountOfExpense.setText(String.format("%.2f",
+									Manager.getInstance().getDailyExpenseManager().getMostRecentAmountForExpense(expense.getId())));
 						} else {
 							amountOfExpense.setText("0");
 						}
@@ -287,60 +288,59 @@ public class RowPanel extends JPanel {
 
 	private void addOnDisplayRow() {
 
-		 product = (Product) object;
-		
-		 sackConvert = new SBButton("convert.png", "convert.png", "Display one (1) sack");
-		 
-		 productOnDisplay = new ViewFormField(product.getName());
-		
-		 onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
-		 onDisplayKG.setPrecision(2);
-		 onDisplayKG.setText(product.getKilosOnDisplay()+""); 
-//				 == 0 ? "0" :
-//		 String.format("%.2f", product.getQuantityOnDisplayInKilo()));
-//		 onDisplayKG.setToolTipText(product.getQuantityDescription());
-		
-		 onDisplaySack = new ViewFormField(product.getSacks()+"");
-//		 onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" :
-//		 String.format("%.2f", product.getQuantityOnDisplayInSack()));
-//		 onDisplaySack.setToolTipText(product.getQuantityDescription());
-		 
-		 
-		 productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
-		 onDisplaySack.setBounds(209, 5, 60, 20);
-		 sackConvert.setBounds(280, 7, 16, 16);
-		 onDisplayKG.setBounds(301, 5, 60, 20); // +33//298
-//		 sackConvert.setBounds(360, 7, 16, 16);
-		
-		 row.add(productOnDisplay);
-		 row.add(onDisplaySack);
-		 row.add(sackConvert);
-		 row.add(onDisplayKG);
-		 
-		 if(product.getSacks() < 1d)
-			 sackConvert.setEnabled(false);
-		 
-		 sackConvert.addActionListener(new ActionListener() {
-			
+		product = (Product) object;
+
+		sackConvert = new SBButton("convert.png", "convert.png", "Display one (1) sack");
+
+		productOnDisplay = new ViewFormField(product.getName());
+
+		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
+		onDisplayKG.setPrecision(2);
+		onDisplayKG.setText(product.getKilosOnDisplay() + "");
+		// == 0 ? "0" :
+		// String.format("%.2f", product.getQuantityOnDisplayInKilo()));
+		// onDisplayKG.setToolTipText(product.getQuantityDescription());
+
+		onDisplaySack = new ViewFormField(product.getSacks() + "");
+		// onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" :
+		// String.format("%.2f", product.getQuantityOnDisplayInSack()));
+		// onDisplaySack.setToolTipText(product.getQuantityDescription());
+
+		productOnDisplay.setBounds(0, 0, 197, ROW_HEIGHT);
+		onDisplaySack.setBounds(209, 5, 60, 20);
+		sackConvert.setBounds(280, 7, 16, 16);
+		onDisplayKG.setBounds(301, 5, 60, 20); // +33//298
+		// sackConvert.setBounds(360, 7, 16, 16);
+
+		row.add(productOnDisplay);
+		row.add(onDisplaySack);
+		row.add(sackConvert);
+		row.add(onDisplayKG);
+
+		if (product.getSacks() < 1d)
+			sackConvert.setEnabled(false);
+
+		sackConvert.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 				double val = Double.parseDouble(onDisplaySack.getText()) - 1;
 				onDisplaySack.setToolTip(onDisplaySack, val + "");
-				
+
 				double val2 = Double.parseDouble(onDisplayKG.getText()) + product.getKilosPerSack();
-				onDisplayKG.setText(val2+"");
-				
-				if(Double.parseDouble(onDisplaySack.getText()) == 0d)
-					 sackConvert.setEnabled(false);
-				
+				onDisplayKG.setText(val2 + "");
+
+				if (Double.parseDouble(onDisplaySack.getText()) == 0d)
+					sackConvert.setEnabled(false);
+
 			}
 		});
-		
-		 // row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-		 // Color.LIGHT_GRAY));
-		
+
+		// row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+		// Color.LIGHT_GRAY));
+
 		if (product.getKilosOnDisplay() == 0d) {
 			row.setBackground(Color.decode("#E0EBEB"));
 		} else

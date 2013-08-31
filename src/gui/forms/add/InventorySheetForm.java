@@ -167,7 +167,7 @@ public class InventorySheetForm extends SimplePanel {
 	private List<DiscountIssue> discountIssues;
 	private List<Deposit> deposits;
 	// double previousAcoh =
-	// Manager.inventorySheetDataManager.getPreviousActualCashOnHand();
+	// Manager.getInstance().getInventorySheetDataManager().getPreviousActualCashOnHand();
 
 	private InventorySheet inventorySheet;
 	private InventorySheet previousInventorySheet = null;
@@ -1039,8 +1039,8 @@ public class InventorySheetForm extends SimplePanel {
 							try {
 
 								if (cashBreakdown.get(i).getCashBreakdownRowQuantity() != 0) {
-									Denomination den = Manager.inventorySheetDataManager.searchDenomination(cashBreakdown.get(i)
-											.getCashBreakdownRowDenomination(i));
+									Denomination den = Manager.getInstance().getInventorySheetDataManager()
+											.searchDenomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
 									if (den == null)
 										den = new Denomination(cashBreakdown.get(i).getCashBreakdownRowDenomination(i));
 									breakdown.addBreakdownLine(new BreakdownLine(breakdown, den, cashBreakdown.get(i).getCashBreakdownRowQuantity()));
@@ -1058,7 +1058,7 @@ public class InventorySheetForm extends SimplePanel {
 						try {
 
 							// save is
-							Manager.inventorySheetDataManager.addInventorySheetData(inventorySheet.getInventorySheetData());
+							Manager.getInstance().getInventorySheetDataManager().addInventorySheetData(inventorySheet.getInventorySheetData());
 
 							Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 							new SuccessPopup("Add").setVisible(true);
@@ -1147,17 +1147,18 @@ public class InventorySheetForm extends SimplePanel {
 	private void invalidatePendingTransactionsBetween(Date startDate, Date endDate, String reasonForInvalidation) throws Exception {
 
 		// invalidate all sandwiched transactions
-		List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBetween(startDate, endDate);
-		List<PullOut> pendingPullOuts = Manager.pullOutManager.getPendingPullOutsBetween(startDate, endDate);
-		List<Sales> pendingSales = Manager.salesManager.getPendingSalesBetween(startDate, endDate);
-		List<AccountReceivable> pendingAccountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesBetween(startDate, endDate);
-		List<ARPayment> pendingArPayments = Manager.accountReceivableManager.getPendingARPaymentsBetween(startDate, endDate);
-		List<CashAdvance> pendingCashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesBetween(startDate, endDate);
-		List<CAPayment> pendingCaPayments = Manager.cashAdvanceManager.getPendingCAPaymentsBetween(startDate, endDate);
-		List<DailyExpenses> pendingDailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesBetween(startDate, endDate);
-		List<SalaryRelease> pendingSalaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesBetween(startDate, endDate);
-		List<DiscountIssue> pendingDiscountIssues = Manager.discountIssueManager.getPendingDiscountIssuesBetween(startDate, endDate);
-		List<Deposit> pendingDeposits = Manager.depositManager.getPendingDepositsBetween(startDate, endDate);
+		List<Delivery> pendingDeliveries = Manager.getInstance().getDeliveryManager().getPendingDeliveriesBetween(startDate, endDate);
+		List<PullOut> pendingPullOuts = Manager.getInstance().getPullOutManager().getPendingPullOutsBetween(startDate, endDate);
+		List<Sales> pendingSales = Manager.getInstance().getSalesManager().getPendingSalesBetween(startDate, endDate);
+		List<AccountReceivable> pendingAccountReceivables = Manager.getInstance().getAccountReceivableManager()
+				.getPendingAccountReceivablesBetween(startDate, endDate);
+		List<ARPayment> pendingArPayments = Manager.getInstance().getAccountReceivableManager().getPendingARPaymentsBetween(startDate, endDate);
+		List<CashAdvance> pendingCashAdvances = Manager.getInstance().getCashAdvanceManager().getPendingCashAdvancesBetween(startDate, endDate);
+		List<CAPayment> pendingCaPayments = Manager.getInstance().getCashAdvanceManager().getPendingCAPaymentsBetween(startDate, endDate);
+		List<DailyExpenses> pendingDailyExpenses = Manager.getInstance().getDailyExpenseManager().getPendingDailyExpensesBetween(startDate, endDate);
+		List<SalaryRelease> pendingSalaryReleases = Manager.getInstance().getSalaryReleaseManager().getPendingSalaryReleasesBetween(startDate, endDate);
+		List<DiscountIssue> pendingDiscountIssues = Manager.getInstance().getDiscountIssueManager().getPendingDiscountIssuesBetween(startDate, endDate);
+		List<Deposit> pendingDeposits = Manager.getInstance().getDepositManager().getPendingDepositsBetween(startDate, endDate);
 
 		invalidateTransactions(pendingDeliveries, pendingPullOuts, pendingSales, pendingAccountReceivables, pendingArPayments, pendingCashAdvances,
 				pendingCaPayments, pendingDailyExpenses, pendingSalaryReleases, pendingDiscountIssues, pendingDeposits, reasonForInvalidation);
@@ -1167,17 +1168,17 @@ public class InventorySheetForm extends SimplePanel {
 	private void invalidatePendingTransactionsBefore(Date date, String reasonForInvalidation) throws Exception {
 
 		// invalidate all sandwiched transactions
-		List<Delivery> pendingDeliveries = Manager.deliveryManager.getPendingDeliveriesBefore(date);
-		List<PullOut> pendingPullOuts = Manager.pullOutManager.getPendingPullOutsBefore(date);
-		List<Sales> pendingSales = Manager.salesManager.getPendingSalesBefore(date);
-		List<AccountReceivable> pendingAccountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesBefore(date);
-		List<ARPayment> pendingArPayments = Manager.accountReceivableManager.getPendingARPaymentsBefore(date);
-		List<CashAdvance> pendingCashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesBefore(date);
-		List<CAPayment> pendingCaPayments = Manager.cashAdvanceManager.getPendingCAPaymentsBefore(date);
-		List<DailyExpenses> pendingDailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesBefore(date);
-		List<SalaryRelease> pendingSalaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesBefore(date);
-		List<DiscountIssue> pendingDiscountIssues = Manager.discountIssueManager.getPendingDiscountIssuesBefore(date);
-		List<Deposit> pendingDeposits = Manager.depositManager.getPendingDepositsBefore(date);
+		List<Delivery> pendingDeliveries = Manager.getInstance().getDeliveryManager().getPendingDeliveriesBefore(date);
+		List<PullOut> pendingPullOuts = Manager.getInstance().getPullOutManager().getPendingPullOutsBefore(date);
+		List<Sales> pendingSales = Manager.getInstance().getSalesManager().getPendingSalesBefore(date);
+		List<AccountReceivable> pendingAccountReceivables = Manager.getInstance().getAccountReceivableManager().getPendingAccountReceivablesBefore(date);
+		List<ARPayment> pendingArPayments = Manager.getInstance().getAccountReceivableManager().getPendingARPaymentsBefore(date);
+		List<CashAdvance> pendingCashAdvances = Manager.getInstance().getCashAdvanceManager().getPendingCashAdvancesBefore(date);
+		List<CAPayment> pendingCaPayments = Manager.getInstance().getCashAdvanceManager().getPendingCAPaymentsBefore(date);
+		List<DailyExpenses> pendingDailyExpenses = Manager.getInstance().getDailyExpenseManager().getPendingDailyExpensesBefore(date);
+		List<SalaryRelease> pendingSalaryReleases = Manager.getInstance().getSalaryReleaseManager().getPendingSalaryReleasesBefore(date);
+		List<DiscountIssue> pendingDiscountIssues = Manager.getInstance().getDiscountIssueManager().getPendingDiscountIssuesBefore(date);
+		List<Deposit> pendingDeposits = Manager.getInstance().getDepositManager().getPendingDepositsBefore(date);
 
 		invalidateTransactions(pendingDeliveries, pendingPullOuts, pendingSales, pendingAccountReceivables, pendingArPayments, pendingCashAdvances,
 				pendingCaPayments, pendingDailyExpenses, pendingSalaryReleases, pendingDiscountIssues, pendingDeposits, reasonForInvalidation);
@@ -1192,64 +1193,64 @@ public class InventorySheetForm extends SimplePanel {
 		for (Delivery d : pendingDeliveries) {
 			d.setValid(false);
 			d.setRemarks(remarks);
-			Manager.deliveryManager.updateDelivery(d);
+			Manager.getInstance().getDeliveryManager().updateDelivery(d);
 		}
 
 		for (PullOut po : pendingPullOuts) {
 			po.setValid(false);
 			po.setRemarks(remarks);
-			Manager.pullOutManager.updatePullOut(po);
+			Manager.getInstance().getPullOutManager().updatePullOut(po);
 		}
 
 		for (Sales s : pendingSales) {
 			s.setValid(false);
 			s.setRemarks(remarks);
-			Manager.salesManager.updateSales(s);
+			Manager.getInstance().getSalesManager().updateSales(s);
 		}
 		for (AccountReceivable ar : pendingAccountReceivables) {
 			ar.setValid(false);
 			ar.setRemarks(remarks);
-			Manager.accountReceivableManager.updateAccountReceivable(ar);
+			Manager.getInstance().getAccountReceivableManager().updateAccountReceivable(ar);
 		}
 		for (ARPayment arp : pendingArPayments) {
 			arp.setValid(false);
 			arp.setRemarks(remarks);
-			Manager.accountReceivableManager.updateARPayment(arp);
+			Manager.getInstance().getAccountReceivableManager().updateARPayment(arp);
 		}
 
 		for (CashAdvance ca : pendingCashAdvances) {
 			ca.setValid(false);
 			ca.setRemarks(remarks);
-			Manager.cashAdvanceManager.updateCashAdvance(ca);
+			Manager.getInstance().getCashAdvanceManager().updateCashAdvance(ca);
 		}
 
 		for (CAPayment cap : pendingCaPayments) {
 			cap.setValid(false);
 			cap.setRemarks(remarks);
-			Manager.cashAdvanceManager.updateCAPayment(cap);
+			Manager.getInstance().getCashAdvanceManager().updateCAPayment(cap);
 		}
 		for (DailyExpenses de : pendingDailyExpenses) {
 			de.setValid(false);
 			de.setRemarks(remarks);
-			Manager.dailyExpenseManager.updateDailyExpenses(de);
+			Manager.getInstance().getDailyExpenseManager().updateDailyExpenses(de);
 		}
 
 		for (SalaryRelease sr : pendingSalaryReleases) {
 			sr.setValid(false);
 			sr.setRemarks(remarks);
-			Manager.salaryReleaseManager.updateSalaryRelease(sr);
+			Manager.getInstance().getSalaryReleaseManager().updateSalaryRelease(sr);
 		}
 
 		for (DiscountIssue di : pendingDiscountIssues) {
 			di.setValid(false);
 			di.setRemarks(remarks);
-			Manager.discountIssueManager.updateDiscountIssue(di);
+			Manager.getInstance().getDiscountIssueManager().updateDiscountIssue(di);
 		}
 
 		for (Deposit d : pendingDeposits) {
 			d.setValid(false);
 			d.setRemarks(remarks);
-			Manager.depositManager.updateDeposit(d);
+			Manager.getInstance().getDepositManager().updateDeposit(d);
 		}
 
 	}
@@ -1301,17 +1302,17 @@ public class InventorySheetForm extends SimplePanel {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void loadDatesOfPendingTransactions() throws Exception {
 
-		List<Date> deliveriesDates = Manager.deliveryManager.getDatesOfPendingDeliveries();
-		List<Date> pullOutsDates = Manager.pullOutManager.getDatesOfPendingPullOuts();
-		List<Date> salesDates = Manager.salesManager.getDatesOfPendingSales();
-		List<Date> accountReceivablesDates = Manager.accountReceivableManager.getDatesOfPendingAccountReceivables();
-		List<Date> arPaymentsDates = Manager.accountReceivableManager.getDatesOfPendingARPayments();
-		List<Date> cashAdvancesDates = Manager.cashAdvanceManager.getDatesOfPendingCashAdvances();
-		List<Date> caPaymentsDates = Manager.cashAdvanceManager.getDatesOfPendingCAPayments();
-		List<Date> dailyExpensesDates = Manager.dailyExpenseManager.getDatesOfPendingDailyExpenses();
-		List<Date> salaryReleasesDates = Manager.salaryReleaseManager.getDatesOfPendingSalaryReleases();
-		List<Date> discountIssuesDates = Manager.discountIssueManager.getDatesOfPendingDiscountIssues();
-		List<Date> depositsDates = Manager.depositManager.getDatesOfPendingDeposits();
+		List<Date> deliveriesDates = Manager.getInstance().getDeliveryManager().getDatesOfPendingDeliveries();
+		List<Date> pullOutsDates = Manager.getInstance().getPullOutManager().getDatesOfPendingPullOuts();
+		List<Date> salesDates = Manager.getInstance().getSalesManager().getDatesOfPendingSales();
+		List<Date> accountReceivablesDates = Manager.getInstance().getAccountReceivableManager().getDatesOfPendingAccountReceivables();
+		List<Date> arPaymentsDates = Manager.getInstance().getAccountReceivableManager().getDatesOfPendingARPayments();
+		List<Date> cashAdvancesDates = Manager.getInstance().getCashAdvanceManager().getDatesOfPendingCashAdvances();
+		List<Date> caPaymentsDates = Manager.getInstance().getCashAdvanceManager().getDatesOfPendingCAPayments();
+		List<Date> dailyExpensesDates = Manager.getInstance().getDailyExpenseManager().getDatesOfPendingDailyExpenses();
+		List<Date> salaryReleasesDates = Manager.getInstance().getSalaryReleaseManager().getDatesOfPendingSalaryReleases();
+		List<Date> discountIssuesDates = Manager.getInstance().getDiscountIssueManager().getDatesOfPendingDiscountIssues();
+		List<Date> depositsDates = Manager.getInstance().getDepositManager().getDatesOfPendingDeposits();
 
 		validDates = new ArrayList<Date>();
 
@@ -1376,11 +1377,11 @@ public class InventorySheetForm extends SimplePanel {
 			// System.out.println("start: " + startDate.toString());
 			// System.out.println("end: " + endDate.toString());
 			// pendingDeliveries =
-			// Manager.deliveryManager.getPendingDeliveriesBetween(startDate,
+			// Manager.getInstance().getDeliveryManager().getPendingDeliveriesBetween(startDate,
 			// endDate);
 			// } else {
 			// pendingDeliveries =
-			// Manager.deliveryManager.getPendingDeliveriesBefore(validDates.get(dateDropdown.getSelectedIndex()));
+			// Manager.getInstance().getDeliveryManager().getPendingDeliveriesBefore(validDates.get(dateDropdown.getSelectedIndex()));
 			// }
 			// System.out.println("size of pending deliveries: " +
 			// pendingDeliveries.size());
@@ -1422,19 +1423,19 @@ public class InventorySheetForm extends SimplePanel {
 			previousAcoh = previousInventorySheet.getActualCashOnHand();
 		}
 
-		products = Manager.productManager.getProducts();
+		products = Manager.getInstance().getProductManager().getProducts();
 
-		deliveries = Manager.deliveryManager.getPendingDeliveriesOn(date);
-		pullOuts = Manager.pullOutManager.getPendingPullOutsOn(date);
-		sales = Manager.salesManager.getPendingSalesOn(date);
-		accountReceivables = Manager.accountReceivableManager.getPendingAccountReceivablesOn(date);
-		arPayments = Manager.accountReceivableManager.getPendingARPaymentsOn(date);
-		cashAdvances = Manager.cashAdvanceManager.getPendingCashAdvancesOn(date);
-		caPayments = Manager.cashAdvanceManager.getPendingCAPaymentsOn(date);
-		dailyExpenses = Manager.dailyExpenseManager.getPendingDailyExpensesOn(date);
-		salaryReleases = Manager.salaryReleaseManager.getPendingSalaryReleasesOn(date);
-		discountIssues = Manager.discountIssueManager.getPendingDiscountIssuesOn(date);
-		deposits = Manager.depositManager.getPendingDepositsOn(date);
+		deliveries = Manager.getInstance().getDeliveryManager().getPendingDeliveriesOn(date);
+		pullOuts = Manager.getInstance().getPullOutManager().getPendingPullOutsOn(date);
+		sales = Manager.getInstance().getSalesManager().getPendingSalesOn(date);
+		accountReceivables = Manager.getInstance().getAccountReceivableManager().getPendingAccountReceivablesOn(date);
+		arPayments = Manager.getInstance().getAccountReceivableManager().getPendingARPaymentsOn(date);
+		cashAdvances = Manager.getInstance().getCashAdvanceManager().getPendingCashAdvancesOn(date);
+		caPayments = Manager.getInstance().getCashAdvanceManager().getPendingCAPaymentsOn(date);
+		dailyExpenses = Manager.getInstance().getDailyExpenseManager().getPendingDailyExpensesOn(date);
+		salaryReleases = Manager.getInstance().getSalaryReleaseManager().getPendingSalaryReleasesOn(date);
+		discountIssues = Manager.getInstance().getDiscountIssueManager().getPendingDiscountIssuesOn(date);
+		deposits = Manager.getInstance().getDepositManager().getPendingDepositsOn(date);
 
 		InventorySheetData inventorySheetData = new InventorySheetData();
 		inventorySheetData = new InventorySheetData(new Date(), 0, 0, 0, Manager.loggedInAccount);

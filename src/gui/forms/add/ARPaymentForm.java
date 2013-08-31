@@ -202,9 +202,9 @@ public class ARPaymentForm extends SimplePanel {
 
 						try {
 
-							Manager.accountReceivableManager.addARPayment(arPayment);
+							Manager.getInstance().getAccountReceivableManager().addARPayment(arPayment);
 							accountReceivable.addARPayment(arPayment);
-							Manager.accountReceivableManager.updateAccountReceivable(accountReceivable);
+							Manager.getInstance().getAccountReceivableManager().updateAccountReceivable(accountReceivable);
 							if (Values.viewARForm != null)
 								Values.viewARForm.fillEntries();
 
@@ -268,7 +268,7 @@ public class ARPaymentForm extends SimplePanel {
 		error.setToolTip("");
 		refreshDate();
 	}
-	
+
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
@@ -278,8 +278,8 @@ public class ARPaymentForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -300,9 +300,9 @@ public class ARPaymentForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -327,7 +327,7 @@ public class ARPaymentForm extends SimplePanel {
 			panel.remove(customerRepCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getPersons().toArray());
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}

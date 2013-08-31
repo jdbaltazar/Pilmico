@@ -314,14 +314,14 @@ public class SalaryReleaseForm extends SimplePanel {
 							String f = rp.getSelectedFee();
 							Fee fee = null;
 							try {
-								fee = Manager.salaryReleaseManager.searchFee(f);
+								fee = Manager.getInstance().getSalaryReleaseManager().searchFee(f);
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
 							if (fee == null) {
 								try {
 									fee = new Fee(f);
-									Manager.salaryReleaseManager.addFees(fee);
+									Manager.getInstance().getSalaryReleaseManager().addFees(fee);
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
@@ -332,7 +332,7 @@ public class SalaryReleaseForm extends SimplePanel {
 						salaryRelease.setRemarks(uP.getInput());
 
 						try {
-							Manager.salaryReleaseManager.addSalaryRelease(salaryRelease);
+							Manager.getInstance().getSalaryReleaseManager().addSalaryRelease(salaryRelease);
 
 							Values.centerPanel.changeTable(Values.SALARY);
 							new SuccessPopup("Add").setVisible(true);
@@ -379,8 +379,8 @@ public class SalaryReleaseForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -401,9 +401,9 @@ public class SalaryReleaseForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -452,7 +452,7 @@ public class SalaryReleaseForm extends SimplePanel {
 	public void refreshEmployee() {
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getEmployedEmployeesExceptManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployeesExceptManagers().toArray());
 			issuedFor.setModel(model);
 
 			if (issuedFor.getItemCount() > 0) {

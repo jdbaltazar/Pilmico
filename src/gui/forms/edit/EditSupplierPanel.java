@@ -26,7 +26,7 @@ import util.ErrorLabel;
 import util.Values;
 import util.soy.SoyButton;
 
-@SuppressWarnings({ "rawtypes"})
+@SuppressWarnings({ "rawtypes" })
 public class EditSupplierPanel extends EditFormPanel {
 
 	/**
@@ -142,22 +142,22 @@ public class EditSupplierPanel extends EditFormPanel {
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if(isValidated()){
-				supplier.setName(fields.get(0).getText());
-				supplier.setAddress(fields.get(1).getText());
-				supplier.setTin(fields.get(2).getText());
-				supplier.setContactNo(fields.get(3).getText());
-				supplier.setRemarks(fields.get(4).getText());
+				if (isValidated()) {
+					supplier.setName(fields.get(0).getText());
+					supplier.setAddress(fields.get(1).getText());
+					supplier.setTin(fields.get(2).getText());
+					supplier.setContactNo(fields.get(3).getText());
+					supplier.setRemarks(fields.get(4).getText());
 
-				try {
-					Manager.supplierManager.updateSupplier(supplier);
+					try {
+						Manager.getInstance().getSupplierManager().updateSupplier(supplier);
 
-					update();
+						update();
 
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				}else
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
 					error.setToolTip(msg);
 			}
 		});

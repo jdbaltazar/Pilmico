@@ -196,9 +196,9 @@ public class CAPaymentForm extends SimplePanel {
 
 						caPayment.setRemarks(uP.getInput());
 						try {
-							Manager.cashAdvanceManager.addCAPayment(caPayment);
+							Manager.getInstance().getCashAdvanceManager().addCAPayment(caPayment);
 							cashAdvance.addCAPayment(caPayment);
-							Manager.cashAdvanceManager.updateCashAdvance(cashAdvance);
+							Manager.getInstance().getCashAdvanceManager().updateCashAdvance(cashAdvance);
 							if (Values.viewCAForm != null)
 								Values.viewCAForm.fillEntries();
 							Values.centerPanel.changeTable(Values.CA_PAYMENTS);
@@ -258,7 +258,7 @@ public class CAPaymentForm extends SimplePanel {
 		error.setToolTip("");
 		refreshDate();
 	}
-	
+
 	public void refreshDate() {
 		date.setValue(new Date());
 	}
@@ -268,8 +268,8 @@ public class CAPaymentForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
-				String str = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
+				String str = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 				dateStatus.setIconToolTip(new ImageIcon("images/invalid_date2.png"), str, false);
 				error.setToolTip(str);
 			}
@@ -290,9 +290,9 @@ public class CAPaymentForm extends SimplePanel {
 		formDate = ((SpinnerDateModel) date.getModel()).getDate();
 
 		try {
-			if (!Manager.inventorySheetDataManager.isValidFor(formDate)) {
+			if (!Manager.getInstance().getInventorySheetDataManager().isValidFor(formDate)) {
 
-				msg = Manager.inventorySheetDataManager.getValidityRemarksFor(formDate);
+				msg = Manager.getInstance().getInventorySheetDataManager().getValidityRemarksFor(formDate);
 
 				return false;
 			}
@@ -317,7 +317,7 @@ public class CAPaymentForm extends SimplePanel {
 			panel.remove(employeeRepCombo);
 
 		try {
-			model = new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getPersons().toArray());
 			// issuedBy = new FormDropdown();
 			// issuedBy.setModel(model);
 		} catch (Exception e2) {

@@ -211,22 +211,22 @@ public class EditBankForm extends EditFormPanel {
 
 		edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
-				if(isValidated()){
-				bank.setName(fields.get(0).getText());
-				bank.setAddress(fields.get(1).getText());
-				bank.setContactNo(fields.get(2).getText());
 
-				try {
-					Manager.depositManager.updateBank(bank);
-					Values.editPanel.startAnimation();
-					new SuccessPopup("Edit").setVisible(true);
-					Values.centerPanel.changeTable(Values.BANK);
+				if (isValidated()) {
+					bank.setName(fields.get(0).getText());
+					bank.setAddress(fields.get(1).getText());
+					bank.setContactNo(fields.get(2).getText());
 
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				}else
+					try {
+						Manager.getInstance().getDepositManager().updateBank(bank);
+						Values.editPanel.startAnimation();
+						new SuccessPopup("Edit").setVisible(true);
+						Values.centerPanel.changeTable(Values.BANK);
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else
 					error.setToolTip(msg);
 
 			}
@@ -239,10 +239,10 @@ public class EditBankForm extends EditFormPanel {
 
 	private boolean isValidated() {
 
-		if(fields.get(0).getText().equals("")){
-			
+		if (fields.get(0).getText().equals("")) {
+
 			msg = "Name is required ";
-			
+
 			return false;
 		}
 

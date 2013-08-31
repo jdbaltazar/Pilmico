@@ -128,7 +128,7 @@ public class SupplierForm extends SimplePanel {
 							fields.get(4).getText());
 
 					try {
-						Manager.supplierManager.addSupplier(s);
+						Manager.getInstance().getSupplierManager().addSupplier(s);
 						Values.centerPanel.changeTable(Values.SUPPLIERS);
 						new SuccessPopup("Add").setVisible(true);
 						clearFields();

@@ -230,7 +230,7 @@ public class DatabaseTool {
 					}
 				}
 			}
-			
+
 		});
 
 		thread.start();
@@ -289,7 +289,7 @@ public class DatabaseTool {
 				List<Product> products = new ArrayList<Product>();
 
 				try {
-					products = Manager.productManager.getProducts();
+					products = Manager.getInstance().getProductManager().getProducts();
 
 					for (Product p : products) {
 
@@ -309,7 +309,7 @@ public class DatabaseTool {
 						} else if (p.getId() == 26) {
 							p.setKilosPerSack(10);
 						}
-						Manager.productManager.updateProduct(p);
+						Manager.getInstance().getProductManager().updateProduct(p);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -397,12 +397,12 @@ public class DatabaseTool {
 						st.executeUpdate("alter table accountreceivable add amount decimal(10, 2) default 0.00");
 						System.out.println("Column amount in account receivalbe added successfully!");
 
-						List<AccountReceivable> ars = Manager.accountReceivableManager.getValidAccountReceivables();
+						List<AccountReceivable> ars = Manager.getInstance().getAccountReceivableManager().getValidAccountReceivables();
 						for (AccountReceivable ar : ars) {
 							double balance = ar.getBalance();
 							double totalPayments = ar.getARPaymentsAmount();
 							ar.setAmount(balance + totalPayments);
-							Manager.accountReceivableManager.updateAccountReceivable(ar);
+							Manager.getInstance().getAccountReceivableManager().updateAccountReceivable(ar);
 						}
 
 						// increment db version of database

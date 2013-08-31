@@ -178,17 +178,15 @@ public class BankForm extends SimplePanel {
 
 		save.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
+
 				if (isValidated()) {
-					Bank bank = new Bank(fields.get(0).getText(), fields.get(1)
-							.getText(), fields.get(2).getText());
+					Bank bank = new Bank(fields.get(0).getText(), fields.get(1).getText(), fields.get(2).getText());
 					for (RowPanel rp : accountRowPanel) {
-						bank.addBankAccount(new BankAccount(bank, rp
-								.getAccountNo()));
+						bank.addBankAccount(new BankAccount(bank, rp.getAccountNo()));
 					}
 
 					try {
-						Manager.depositManager.addBank(bank);
+						Manager.getInstance().getDepositManager().addBank(bank);
 
 						Values.centerPanel.changeTable(Values.BANK);
 						new SuccessPopup("Add").setVisible(true);
@@ -212,11 +210,11 @@ public class BankForm extends SimplePanel {
 	}
 
 	private boolean isValidated() {
-		
-		if(fields.get(0).getText().equals("")){
-			
+
+		if (fields.get(0).getText().equals("")) {
+
 			msg = "Name is required ";
-			
+
 			return false;
 		}
 
@@ -226,11 +224,11 @@ public class BankForm extends SimplePanel {
 
 			return false;
 		}
-		
-		for(int i = 0; i < accountRowPanel.size(); i++){
-			if(accountRowPanel.get(i).getBankAccount().getText().equals("")){
-				msg = "Blank entry found in row "+(i+1)+" ";
-				
+
+		for (int i = 0; i < accountRowPanel.size(); i++) {
+			if (accountRowPanel.get(i).getBankAccount().getText().equals("")) {
+				msg = "Blank entry found in row " + (i + 1) + " ";
+
 				return false;
 			}
 		}
@@ -242,7 +240,7 @@ public class BankForm extends SimplePanel {
 	private void clearForm() {
 		for (int i = 0; i < fields.size(); i++)
 			fields.get(i).setText("");
-		
+
 		bankAccountPanel.removeAll();
 		accountRowPanel.clear();
 

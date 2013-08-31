@@ -73,14 +73,13 @@ public class ViewDiscountForm extends EditFormPanel {
 				Point b = a.getLocation();
 				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
 				uP.setVisible(true);
-				
+
 				if (!uP.getInput().equals("")) {
 					discountIssue.setValid(false);
 					discountIssue.setRemarks(uP.getInput());
 
 					try {
-						Manager.discountIssueManager
-								.updateDiscountIssue(discountIssue);
+						Manager.getInstance().getDiscountIssueManager().updateDiscountIssue(discountIssue);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -194,7 +193,7 @@ public class ViewDiscountForm extends EditFormPanel {
 
 	}
 
-	private void colorTable(){
+	private void colorTable() {
 
 		String s = "";
 		if (discountIssue.getInventorySheetData() != null) {
@@ -222,19 +221,19 @@ public class ViewDiscountForm extends EditFormPanel {
 		status.setIcon(icon);
 
 	}
-	
+
 	private void fillEntries() {
 
 		voidBtn.setVisible(discountIssue.getInventorySheetData() != null ? false : discountIssue.isValid());
 
-		date.setToolTip(date,DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
-		issuedBy.setToolTip(issuedBy,Manager.loggedInAccount.getFirstPlusLastName());
-		product.setToolTip(product,discountIssue.getProduct() != null ? discountIssue.getProduct().getName(): "");
-		customer.setToolTip(customer,discountIssue.getCustomer() != null ? discountIssue.getCustomer().getFirstPlusLastName() : "");
-		amount.setToolTip(amount,discountIssue.getAmount() + "");
-		
-		if(discountIssue.getRemarks() != null)
-			remarks.setToolTip(remarks, "-"+discountIssue.getRemarks());
+		date.setToolTip(date, DateFormatter.getInstance().getFormat(Utility.DMYHMAFormat).format(discountIssue.getDate()));
+		issuedBy.setToolTip(issuedBy, Manager.loggedInAccount.getFirstPlusLastName());
+		product.setToolTip(product, discountIssue.getProduct() != null ? discountIssue.getProduct().getName() : "");
+		customer.setToolTip(customer, discountIssue.getCustomer() != null ? discountIssue.getCustomer().getFirstPlusLastName() : "");
+		amount.setToolTip(amount, discountIssue.getAmount() + "");
+
+		if (discountIssue.getRemarks() != null)
+			remarks.setToolTip(remarks, "-" + discountIssue.getRemarks());
 	}
 
 }

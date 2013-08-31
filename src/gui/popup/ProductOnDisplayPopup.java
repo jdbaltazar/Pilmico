@@ -105,7 +105,7 @@ public class ProductOnDisplayPopup extends JDialog {
 						try {
 							Product p = rp.getOnDisplayProduct();
 							p.setQuantity(Double.parseDouble(rp.getOnDisplayInSack()), Double.parseDouble(rp.getOnDisplayInKilo()));
-							Manager.productManager.updateProduct(p);
+							Manager.getInstance().getProductManager().updateProduct(p);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

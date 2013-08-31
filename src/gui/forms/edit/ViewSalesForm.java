@@ -276,12 +276,12 @@ public class ViewSalesForm extends EditFormPanel {
 			public void mouseClicked(MouseEvent e) {
 
 				boolean valid = true;
-//				for (SalesDetail dd : sales.getSalesDetails()) {
-//					Product p = dd.getProduct();
-//					// if (!p.validQuantityResult(dd.getQuantityInSack(),
-//					// dd.getQuantityInKilo()))
-//					//		valid = false;
-//				}
+				// for (SalesDetail dd : sales.getSalesDetails()) {
+				// Product p = dd.getProduct();
+				// // if (!p.validQuantityResult(dd.getQuantityInSack(),
+				// // dd.getQuantityInKilo()))
+				// // valid = false;
+				// }
 
 				if (valid) {
 
@@ -296,12 +296,12 @@ public class ViewSalesForm extends EditFormPanel {
 						sales.setRemarks(uP.getInput());
 
 						try {
-							Manager.salesManager.updateSales(sales);
+							Manager.getInstance().getSalesManager().updateSales(sales);
 
 							for (SalesDetail sd : sales.getSalesDetails()) {
 								Product pd = sd.getProduct();
 								pd.incrementQuantity(sd.getQuantityInSack(), sd.getQuantityInKilo());
-								Manager.productManager.updateProduct(pd);
+								Manager.getInstance().getProductManager().updateProduct(pd);
 							}
 						} catch (Exception e1) {
 							e1.printStackTrace();
