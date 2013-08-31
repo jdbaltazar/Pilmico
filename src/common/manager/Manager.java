@@ -1,13 +1,5 @@
 package common.manager;
 
-import gui.forms.util.DateTool;
-
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.swing.JOptionPane;
-
-import util.Values;
 
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;

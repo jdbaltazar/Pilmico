@@ -19,7 +19,7 @@ public class DatabaseSettings {
 		super();
 	}
 
-	public DatabaseSettings(String filePath, float dbVersion) {
+	private DatabaseSettings(String filePath, float dbVersion) {
 		super();
 		this.filePath = filePath;
 		this.dbVersion = dbVersion;
