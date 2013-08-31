@@ -1,14 +1,5 @@
 package common.manager;
 
-import gui.forms.util.DateTool;
-
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.swing.JOptionPane;
-
-import util.Values;
-
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 
@@ -21,9 +12,9 @@ import core.persist.DepositPersistor;
 import core.persist.DiscountIssuePersistor;
 import core.persist.EmployeePersonPersistor;
 import core.persist.InventorySheetDataPersistor;
-import core.persist.ProductPersistor;
 import core.persist.LogPersistor;
 import core.persist.NotePersistor;
+import core.persist.ProductPersistor;
 import core.persist.PullOutPersistor;
 import core.persist.SalaryReleasePersistor;
 import core.persist.SalesPersistor;

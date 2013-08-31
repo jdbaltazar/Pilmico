@@ -45,6 +45,7 @@ public class FooterPanel extends SoyPanel implements ActionListener {
 		addButtons();
 
 		Values.footerPanel = this;
+		System.out.println("FooterPanel loaded.");
 	}
 
 	private void init() {

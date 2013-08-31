@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
 		init();
 		addPanels();
 
+		System.out.println("MainFrame loaded.");
 		Values.mainFrame = this;
 	}
 
@@ -55,7 +56,7 @@ public class MainFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		setVisible(true);
+		showFrame();
 		setVisible(false);
 
 		addMouseListener(new MouseAdapter() {
@@ -110,6 +111,9 @@ public class MainFrame extends JFrame {
 		dbkg.setGlassPaneVisible(toggle);
 	}
 
+	public void showFrame(){
+		setVisible(true);
+	}
 	public void closeFrame() {
 		System.exit(1);
 	}

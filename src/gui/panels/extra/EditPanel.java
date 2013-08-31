@@ -53,7 +53,7 @@ import common.entity.salary.SalaryRelease;
 import common.entity.sales.Sales;
 import common.entity.supplier.Supplier;
 
-public class EditPanel extends SoyPanel implements Runnable {
+public class EditPanel extends SoyPanel{// implements Runnable {
 
 	/**
 	 * 
@@ -61,11 +61,11 @@ public class EditPanel extends SoyPanel implements Runnable {
 	private static final long serialVersionUID = -2486932009550201039L;
 	public static FormField searchField;
 
-	private Thread thread;
+//	private Thread thread;
 	private int maxWidth = Values.WIDTH - 2;
 	private int minWidth = 0;
 	private int currWidth = minWidth;
-	private boolean isRunning;
+//	private boolean isRunning;
 
 	private boolean hide = false, ISLinked = false;
 
@@ -116,21 +116,30 @@ public class EditPanel extends SoyPanel implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (!isRunning) {
+//				if (!isRunning) {
 					startAnimation();
-				}
+//				}
 			}
 		});
 	}
 
 	public void startAnimation() {
-
-		isRunning = true;
-		thread = new Thread(this);
-		thread.start();
+//
+//		isRunning = true;
+//		thread = new Thread(this);
+//		thread.start();
+		
+		if (!hide) {
+			if (currWidth == minWidth)
+				showPanel();
+			else
+				hidePanel();
+		} else {
+			hidePanel();
+		}	
 	}
 
-	@Override
+/*	@Override
 	public void run() {
 
 		if (!hide) {
@@ -143,7 +152,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		}
 		
 		thread.interrupt();
-	}
+	}*/
 
 	private void hidePanel() {
 
@@ -159,7 +168,7 @@ public class EditPanel extends SoyPanel implements Runnable {
 		if (Values.viewARForm != null)
 			Values.viewARForm.closeBalloonPanel();
 
-		if (currWidth <= minWidth)
+		/*if (currWidth <= minWidth)
 			isRunning = false;
 
 		while (isRunning) {
@@ -169,35 +178,45 @@ public class EditPanel extends SoyPanel implements Runnable {
 
 			if (currWidth <= minWidth)
 				isRunning = false;
-		}
+		}*/
+		
+		setPrefSize(minWidth, getHeight());
+		currWidth = minWidth;
+		updateUI();
 
 		
 		if (getComponentCount() != 0)
 			remove(getComponent(getComponentCount() - 1));
 
-		new Timer().schedule(new TimerTask() {
-			@Override
-			public void run() {
-				if (ISLinked) {
+		if (ISLinked) {
+			new Timer().schedule(new TimerTask() {
+				@Override
+				public void run() {
+
 					Values.centerPanel.changeTable(Values.INVENTORY_SHEET);
 					Values.addEntryPanel.startAnimation();
 					Values.addEntryPanel.showComponent();
+
+					ISLinked = false;
 				}
-				ISLinked = false;
-			}
-		}, 400);
+			}, 400);
+		}
 		
 	}
 
 	private void showPanel() {
-		while (isRunning) {
+		/*while (isRunning) {
 			currWidth++;
 			setPrefSize(currWidth, getHeight());
 			updateUI();
 
 			if (currWidth >= maxWidth)
 				isRunning = false;
-		}
+		}*/
+		
+		setPrefSize(maxWidth, getHeight());
+		currWidth = maxWidth;
+		updateUI();
 	}
 
 	public void showComponent(Object o) {

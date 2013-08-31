@@ -143,6 +143,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 					Manager.getInstance();
 					new LoginPanel();
 					mainFrame = new MainFrame();
+//					System.out.println("haosdoadhaoos");
 				}
 			});
 
@@ -162,7 +163,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 				
 				
 				setProgress(Math.min(progress, 100));
-				System.out.println("progress: "+progress+ " getProgress: "+getProgress());
+//				System.out.println("progress: "+progress+ " getProgress: "+getProgress());
 			}
 			return null;
 		}
@@ -176,7 +177,7 @@ public class Splash extends JFrame implements PropertyChangeListener {
 			setVisible(false);
 			dispose();
 
-			mainFrame.setVisible(true);
+			mainFrame.showFrame();
 		}
 	}
 

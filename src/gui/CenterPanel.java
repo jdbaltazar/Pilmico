@@ -56,6 +56,8 @@ public class CenterPanel extends SoyPanel {
 		init();
 		addComponents();
 		Values.centerPanel = this;
+		
+		System.out.println("CenterPanel loaded.");
 	}
 
 	private void init() {
