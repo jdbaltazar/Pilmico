@@ -52,18 +52,18 @@ import common.entity.inventorysheet.InventorySheet;
 import common.entity.inventorysheet.InventorySheetData;
 import common.manager.Manager;
 
-public class AddEntryPanel extends SoyPanel implements Runnable {
+public class AddEntryPanel extends SoyPanel{// implements Runnable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7293947434082230343L;
 
-	private Thread thread;
+//	private Thread thread;
 	private int maxHeight = 475;
 	private int minHeight = 0;
 	private int currHeight = minHeight;
-	private boolean isRunning = false;
+//	private boolean isRunning = false;
 	private AccountForm accountForm;
 	private ProductForm productForm;
 	private SupplierForm supplierForm;
@@ -282,22 +282,27 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (!isRunning) {
+//				if (!isRunning) {
 					startAnimation();
-				}
+//				}
 			}
 		});
 	}
 	
 	public void startAnimation(){
-		isRunning = true;
+		/*isRunning = true;
 		
 		thread = new Thread(this);
-		thread.start();
+		thread.start();*/
+		
+		if (currHeight == minHeight)
+			showPanel();
+		else
+			hidePanel();
 		
 	}
 
-	@Override
+/*	@Override
 	public void run() {
 		if (currHeight == minHeight)
 			showPanel();
@@ -306,10 +311,10 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 		
 		
 		thread.interrupt();
-	}
+	}*/
 
 	private void hidePanel() {
-		while (isRunning) {
+		/*while (isRunning) {
 			currHeight--;
 			setPrefSize(getWidth(), currHeight);
 			// setPrefSize(currWidth, getHeight());
@@ -317,7 +322,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 			if (currHeight == minHeight)
 				isRunning = false;
-		}
+		}*/
+		
+		setPrefSize(getWidth(), minHeight);
+		currHeight = minHeight;
+		updateUI();
 
 		formPanels.clear();
 		showAllComponents(false);
@@ -326,7 +335,7 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 
 	private void showPanel() {
 
-		while (isRunning) {
+/*		while (isRunning) {
 			currHeight++;
 			setPrefSize(getWidth(), currHeight);
 			// setPrefSize(currWidth, getHeight());
@@ -335,6 +344,11 @@ public class AddEntryPanel extends SoyPanel implements Runnable {
 			if (currHeight == maxHeight)
 				isRunning = false;
 		}
+		*/
+		setPrefSize(getWidth(), maxHeight);
+		currHeight = maxHeight;
+		// setPrefSize(currWidth, getHeight());
+		updateUI();
 
 		// showAllComponents(false);
 	}

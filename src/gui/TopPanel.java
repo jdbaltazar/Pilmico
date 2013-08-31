@@ -56,6 +56,8 @@ public class TopPanel extends SoyPanel {
 		addMenuButtons();
 
 		Values.topPanel = this;
+		
+		System.out.println("TopPanel loaded.");
 	}
 
 	private void init() {
@@ -231,7 +233,7 @@ public class TopPanel extends SoyPanel {
 		// add(cashINLabel);
 		// add(cashIN);
 
-		add(trialLabel);
+//		add(trialLabel);
 
 		// add(cashOUTLabel);
 		// add(cashOUT);

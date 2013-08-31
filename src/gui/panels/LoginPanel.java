@@ -29,7 +29,7 @@ import common.entity.log.LogType;
 import common.entity.profile.Account;
 import common.manager.Manager;
 
-public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
+public class LoginPanel extends SoyPanel implements /*Runnable,*/ MouseListener {
 
 	/**
 	 
@@ -39,7 +39,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 	private SoyField userName;
 	private JPasswordField password;
 	private SoyButton login;
-	private Thread thread;
+//	private Thread thread;
 
 	private ErrorLabel error;
 
@@ -48,13 +48,13 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 	public LoginPanel() {
 		init();
 		addComponents();
-		thread.start();
+//		thread.start();
 		
 		Values.loginPanel = this;
 	}
 
 	private void init() {
-		thread = new Thread(this);
+//		thread = new Thread(this);
 
 		error = new ErrorLabel();
 
@@ -140,7 +140,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 
 	}
 
-	@Override
+	/*@Override
 	public void run() {
 		int i = 1;
 		
@@ -166,14 +166,14 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 		      }
 		   } catch (Exception consumed){
 			   
-		      /* Allow thread to exit */
+		       Allow thread to exit 
 		   }
 
 //		while (true) {
 //
 //			
 //		}
-	}
+	}*/
 
 	private void validateAccount() {
 		String errorComment;
@@ -203,7 +203,7 @@ public class LoginPanel extends SoyPanel implements Runnable, MouseListener {
 				Values.topPanel.showMenuButtons(true);
 				Values.footerPanel.showMenuButtons(true);
 				
-				thread.interrupt();
+//				thread.interrupt();
 				Values.centerPanel.changeTable(Values.HOME);
 
 				// Manager.logManager.addLog(new
