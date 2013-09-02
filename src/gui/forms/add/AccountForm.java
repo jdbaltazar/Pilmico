@@ -142,6 +142,7 @@ public class AccountForm extends SimplePanel {
 							(Employee) employeeCombo.getSelectedItem());
 					try {
 						Manager.getInstance().getAccountManager().addAccount(acc);
+						
 						Values.centerPanel.changeTable(Values.ACCOUNTS);
 						new SuccessPopup("Add").setVisible(true);
 						clearFields();
@@ -191,14 +192,11 @@ public class AccountForm extends SimplePanel {
 	private boolean isValidated() {
 
 		if (employeeCombo.getModel().getSelectedItem() == null) {
-
 			msg = "Employee is required ";
-
 			return false;
 		}
 
 		for (int i = 0; i < fields.size(); i++)
-
 			if (fields.get(i).getText().equals("")) {
 				msg = "Please fillup all fields ";
 				return false;
@@ -212,6 +210,15 @@ public class AccountForm extends SimplePanel {
 		if (fields.get(1).getText().length() < 5) {
 			msg = "Password should have at least 5 characters ";
 			return false;
+		}
+
+		try {
+			if (Manager.getInstance().getAccountManager().usernameTaken(fields.get(0).getText().trim())) {
+				msg = "Username \'" + fields.get(0).getText() + "\' already taken";
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return true;

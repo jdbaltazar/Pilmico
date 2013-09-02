@@ -54,6 +54,8 @@ public interface DepositManager {
 
 	public void deleteBank(Bank bank) throws Exception;
 
+	public boolean bankExists(String name) throws Exception;
+
 	// bank accounts
 
 	public void addBankAccount(BankAccount bankAccount) throws Exception;

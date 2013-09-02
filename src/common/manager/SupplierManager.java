@@ -18,4 +18,6 @@ public interface SupplierManager {
 
 	public Supplier searchExactSupplier(String keyword) throws Exception;
 
+	public boolean supplierExists(String name) throws Exception;
+
 }

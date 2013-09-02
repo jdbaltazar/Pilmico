@@ -7,7 +7,9 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import common.entity.product.Category;
 import common.entity.product.Product;
@@ -61,6 +63,24 @@ public class ProductPersistor extends Persistor implements ProductManager {
 		return (Category) get(Category.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean categoryExists(String name) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Category.class);
+		List<Category> categories = new ArrayList<Category>();
+		try {
+			categories = criteria.add(Restrictions.like("name", name, MatchMode.EXACT)).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if (categories.size() > 0)
+			return true;
+		return false;
+	}
+
 	@Override
 	public void addProduct(Product product) throws Exception {
 		add(product);
@@ -83,13 +103,31 @@ public class ProductPersistor extends Persistor implements ProductManager {
 		Criteria criteria = session.createCriteria(Product.class);
 		List<Product> products = new ArrayList<Product>();
 		try {
-			products = criteria.addOrder(Order.desc("displayInSack")).addOrder(Order.desc("displayInKilo")).list();
+			products = criteria.addOrder(Order.desc("kilosOnDisplay")).addOrder(Order.asc("id")).list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
 			session.close();
 		}
 		return products;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean productExists(String name) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Product.class);
+		List<Product> products = new ArrayList<Product>();
+		try {
+			products = criteria.add(Restrictions.like("name", name, MatchMode.EXACT)).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if (products.size() > 0)
+			return true;
+		return false;
 	}
 
 	@Override
@@ -124,15 +162,15 @@ public class ProductPersistor extends Persistor implements ProductManager {
 	// return products;
 	// }
 
-	@Override
-	public double computeTotalCostOfProducts() throws Exception {
-		double total = 0;
-		//
-		// List<Product> products = getProducts();
-		// for (Product i : products)
-		// total += (i.getUnitSellingPrice() * i.getUnitsOnStock());
-		return total;
-	}
+	// @Override
+	// public double computeTotalCostOfProducts() throws Exception {
+	// double total = 0;
+	// //
+	// // List<Product> products = getProducts();
+	// // for (Product i : products)
+	// // total += (i.getUnitSellingPrice() * i.getUnitsOnStock());
+	// return total;
+	// }
 
 	// @SuppressWarnings("unchecked")
 	// @Override

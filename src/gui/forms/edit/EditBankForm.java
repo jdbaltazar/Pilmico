@@ -240,10 +240,20 @@ public class EditBankForm extends EditFormPanel {
 	private boolean isValidated() {
 
 		if (fields.get(0).getText().equals("")) {
-
 			msg = "Name is required ";
-
 			return false;
+		}
+
+		try {
+
+			if (!bank.getName().equals(fields.get(0).getText().trim())) {
+				if (Manager.getInstance().getDepositManager().bankExists(fields.get(0).getText().trim())) {
+					msg = "Bank \'" + fields.get(0).getText() + "\' already exists";
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return true;

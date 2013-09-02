@@ -415,6 +415,17 @@ public class EditProductPanel extends EditFormPanel {
 				return false;
 			}
 
+		try {
+			if (!product.getName().equals(fields.get(0).getText().trim())) {
+				if (Manager.getInstance().getProductManager().productExists(fields.get(0).getText().trim())) {
+					msg = "Product \'" + fields.get(0).getText() + "\' already exists";
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 

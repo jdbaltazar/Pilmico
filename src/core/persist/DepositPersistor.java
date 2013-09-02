@@ -9,9 +9,9 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
 
 import common.entity.deposit.Bank;
 import common.entity.deposit.BankAccount;
@@ -131,6 +131,24 @@ public class DepositPersistor extends Persistor implements DepositManager {
 	@Override
 	public void deleteBank(Bank bank) throws Exception {
 		remove(bank);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean bankExists(String name) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Bank.class);
+		List<Bank> banks = new ArrayList<Bank>();
+		try {
+			banks = criteria.add(Restrictions.like("name", name, MatchMode.EXACT)).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if (banks.size() > 0)
+			return true;
+		return false;
 	}
 
 	@Override
@@ -293,4 +311,5 @@ public class DepositPersistor extends Persistor implements DepositManager {
 		}
 		return deposits;
 	}
+
 }

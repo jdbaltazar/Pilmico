@@ -55,7 +55,7 @@ public class MainFrame extends JFrame {
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		showFrame();
 		setVisible(false);
 
@@ -111,9 +111,10 @@ public class MainFrame extends JFrame {
 		dbkg.setGlassPaneVisible(toggle);
 	}
 
-	public void showFrame(){
+	public void showFrame() {
 		setVisible(true);
 	}
+
 	public void closeFrame() {
 		System.exit(1);
 	}

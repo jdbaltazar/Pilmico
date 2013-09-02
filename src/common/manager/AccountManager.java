@@ -43,4 +43,6 @@ public interface AccountManager {
 
 	public List<Account> searchAccounts(String username) throws Exception;
 
+	public boolean usernameTaken(String username) throws Exception;
+
 }

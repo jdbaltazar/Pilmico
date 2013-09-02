@@ -47,12 +47,13 @@ public class SupplierForm extends SimplePanel {
 
 	public void fillEntries() {
 
-//		try {
-//			personCombo.setModel(new DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
-//			personCombo.setSelectedIndex(-1);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// personCombo.setModel(new
+		// DefaultComboBoxModel(Manager.employeePersonManager.getPersons().toArray()));
+		// personCombo.setSelectedIndex(-1);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 
 	}
 
@@ -159,13 +160,22 @@ public class SupplierForm extends SimplePanel {
 
 		name = fields.get(0).getText();
 
-		if (!name.equals("")) {
-			return true;
+		if (name.equals("")) {
+			msg = "Name is required ";
+			return false;
 		}
 
-		msg = "Name is required ";
+		try {
+			if (Manager.getInstance().getSupplierManager().supplierExists(name.trim())) {
+				msg = "Supplier \'" + name + "\' already exists";
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		return false;
+		return true;
+
 	}
 
 	private void clearFields() {

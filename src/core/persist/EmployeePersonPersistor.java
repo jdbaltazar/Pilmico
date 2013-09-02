@@ -273,6 +273,16 @@ public class EmployeePersonPersistor extends Persistor implements EmployeePerson
 	}
 
 	@Override
+	public boolean personExists(String firstName, String lastName) throws Exception {
+		List<Person> persons = getPersons();
+		for (Person p : persons) {
+			if (p.getFirstPlusLastName().equals(firstName + " " + lastName))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void addEmploymentStatus(String empStatus) throws Exception {
 		add(empStatus);
 	}

@@ -45,8 +45,6 @@ public class CustomerForm extends SimplePanel {
 	public CustomerForm() {
 		super("Add Customer");
 		addComponents();
-
-		// Values.accountForm = this;
 	}
 
 	private void addComponents() {
@@ -133,17 +131,22 @@ public class CustomerForm extends SimplePanel {
 	private boolean isValidated() {
 
 		if (fields.get(0).getText().equals("")) {
-
 			msg = "Last Name is required";
-
 			return false;
 		}
 
 		if (fields.get(1).getText().equals("")) {
-
 			msg = "First Name is required";
-
 			return false;
+		}
+
+		try {
+			if (Manager.getInstance().getEmployeePersonManager().personExists(fields.get(1).getText().trim(), fields.get(0).getText().trim())) {
+				msg = "Customer \'" + fields.get(1).getText() + " " + fields.get(0).getText() + "\' already exists";
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return true;
