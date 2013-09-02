@@ -75,12 +75,12 @@ public class CenterPanel extends SoyPanel {
 		// jd -> pyAmxijgjj7EEhIrn+JgRQ==
 		// mine -> K7H4xFqWVe0bKXypGARJvQ==
 
-		try {
+		/*try {
 			Manager.getInstance().login("manager", "pilmico".toCharArray());
 		} catch (Exception e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		changeTable(Values.HOME);
+		changeTable(Values.HOME);*/
 
 	}
 
