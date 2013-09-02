@@ -10,7 +10,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class DatabaseSettings {
 
-	// private static DatabaseSettings databaseSettings = null;
+	private static DatabaseSettings databaseSettings = null;
 	private static String databaseSettingsFileName = "dbsettings.xml";
 	private String filePath;
 	private float dbVersion;
@@ -46,24 +46,26 @@ public class DatabaseSettings {
 	}
 
 	public static DatabaseSettings getInstance() throws FileNotFoundException {
-		// if (databaseSettings == null) {
-		// load database settings
-		XStream xs = new XStream(new DomDriver());
-		xs.alias("databaseSettings", DatabaseSettings.class);
-		DatabaseSettings databaseSettings = new DatabaseSettings();
-		FileInputStream fis = new FileInputStream(databaseSettingsFileName);
-		xs.fromXML(fis, databaseSettings);
-		// }
+		if (databaseSettings == null) {
+			// load database settings
+			XStream xs = new XStream(new DomDriver());
+			xs.alias("databaseSettings", DatabaseSettings.class);
+			databaseSettings = new DatabaseSettings();
+			FileInputStream fis = new FileInputStream(databaseSettingsFileName);
+			xs.fromXML(fis, databaseSettings);
+		}
 		return databaseSettings;
 	}
 
 	public void persist() {
+
 		try {
 			XStream xs = new XStream(new DomDriver());
 			xs.alias("databaseSettings", DatabaseSettings.class);
 			File file = new File(databaseSettingsFileName);
 			FileOutputStream fs = new FileOutputStream(file);
-			xs.toXML(new DatabaseSettings(filePath, dbVersion), fs);
+			xs.toXML(databaseSettings, fs);
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

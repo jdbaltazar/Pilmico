@@ -8,11 +8,9 @@ import java.io.FileOutputStream;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import core.security.SecurityTool;
-
 public class Credentials {
 
-	// private static Credentials credentials = null;
+	private static Credentials credentials = null;
 	private static String hibernateConnectionCredentialsFileName = "credentials.xml";
 	private String username;
 	private String password;
@@ -30,35 +28,36 @@ public class Credentials {
 	}
 
 	public static Credentials getInstance() throws FileNotFoundException {
-		// if (credentials == null) {
-		// load credentials
-		XStream xs = new XStream(new DomDriver());
-		xs.alias("credentials", Credentials.class);
-		Credentials credentials = new Credentials();
-		FileInputStream fis = new FileInputStream(hibernateConnectionCredentialsFileName);
-		xs.fromXML(fis, credentials);
-		// }
+		if (credentials == null) {
+			// load credentials
+			XStream xs = new XStream(new DomDriver());
+			xs.alias("credentials", Credentials.class);
+			credentials = new Credentials();
+			FileInputStream fis = new FileInputStream(hibernateConnectionCredentialsFileName);
+			xs.fromXML(fis, credentials);
+		}
 		return credentials;
 	}
-
-	public void persist() throws Exception {
+	
+	public void persist() {
 
 		try {
+			
 			XStream xs = new XStream(new DomDriver());
 			xs.alias("credentials", Credentials.class);
 			File file = new File(hibernateConnectionCredentialsFileName);
 			FileOutputStream fs = new FileOutputStream(file);
-			xs.toXML(new Credentials(SecurityTool.encryptString(username), SecurityTool.encryptString(password), databaseName), fs);
-			// FileInputStream fis = new
-			// FileInputStream(hibernateConnectionCredentialsFileName);
-			// xs.fromXML(fis, credentials);
-
+			xs.toXML(credentials, fs);
+//			FileInputStream fis = new FileInputStream(hibernateConnectionCredentialsFileName);
+//			xs.fromXML(fis, credentials);
+			
 			/*
-			 * XStream xs = new XStream(new DomDriver());
-			 * xs.alias("databaseSettings", DatabaseSettings.class); File file =
-			 * new File(databaseSettingsFileName); FileOutputStream fs = new
-			 * FileOutputStream(file); xs.toXML(databaseSettings, fs);
-			 */
+			XStream xs = new XStream(new DomDriver());
+			xs.alias("databaseSettings", DatabaseSettings.class);
+			File file = new File(databaseSettingsFileName);
+			FileOutputStream fs = new FileOutputStream(file);
+			xs.toXML(databaseSettings, fs);
+*/
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
