@@ -10,8 +10,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 //import java.math.BigDecimal;
 //import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
 //import java.util.Calendar;
 //import java.util.Date;
 import java.util.Scanner;
@@ -27,9 +27,10 @@ import java.util.Scanner;
 //import common.entity.product.ProductQuantity;
 //import common.manager.Manager;
 
+//import app.AppSettings;
 import app.Credentials;
 import app.DatabaseSettings;
-import core.database.DatabaseTool;
+//import core.database.DatabaseTool;
 import core.security.SecurityTool;
 
 public class Test {
@@ -86,21 +87,31 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		ResultSet resultSet;
-		try {
-			resultSet = DatabaseTool.getConnection("root", "123456", "pilmico").getMetaData().getCatalogs();
-			while (resultSet.next()) {
-				String databaseName = resultSet.getString(1);
-				if (databaseName.equals("pilmico")) {
-					System.out.println("found!!!");
-				}
-			}
-			resultSet.close();
+		// try {
+		// AppSettings as = AppSettings.getInstance();
+		// as.setAppVersion(2.0f);
+		// as.persist();
+		// } catch (FileNotFoundException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		// ResultSet resultSet;
+		// try {
+		// resultSet = DatabaseTool.getConnection("root", "123456",
+		// "pilmico").getMetaData().getCatalogs();
+		// while (resultSet.next()) {
+		// String databaseName = resultSet.getString(1);
+		// if (databaseName.equals("pilmico")) {
+		// System.out.println("found!!!");
+		// }
+		// }
+		// resultSet.close();
+		//
+		// } catch (SQLException e2) {
+		// // TODO Auto-generated catch block
+		// e2.printStackTrace();
+		// }
 
 		// try {
 		// DatabaseMetaData md = DatabaseTool.getConnection("root", "123456",
