@@ -88,9 +88,10 @@ public class ProductOnDisplayPopup extends JDialog {
 				// onDisplayPanel.removeAll();
 				// onDisplayPanel.updateUI();
 				// onDisplayPanel.revalidate();
-				error.setText("");
 				Values.mainFrame.dimScreen(false);
-				setVisible(false);
+				Values.tableUtilPanel.nullifyThread();
+//				setVisible(false);
+				dispose();
 			}
 		});
 
@@ -111,6 +112,7 @@ public class ProductOnDisplayPopup extends JDialog {
 						}
 					}
 
+					Values.tableUtilPanel.nullifyThread();
 					dispose();
 					new SuccessPopup("Update").setVisible(true);
 					Values.mainFrame.dimScreen(false);

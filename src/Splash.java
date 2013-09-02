@@ -77,12 +77,12 @@ public class Splash extends JFrame implements PropertyChangeListener {
 					}
 
 //					Manager.getInstance();
-//					frame = new Splash();
+					frame = new Splash();
 
-					Manager.getInstance();
-					new LoginPanel();
-					MainFrame main = new MainFrame();
-					main.showFrame();
+//					Manager.getInstance();
+//					new LoginPanel();
+//					MainFrame main = new MainFrame();
+//					main.showFrame();
 
 				} catch (Exception e) {
 					// e.printStackTrace();

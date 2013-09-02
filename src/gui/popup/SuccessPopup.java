@@ -90,6 +90,8 @@ public class SuccessPopup extends JDialog implements Runnable{
 			
 			thread.interrupt();
 			
+			thread = null;
+			
 		} catch (InterruptedException e) {
 			//e.printStackTrace();
 			System.out.println("success popup thread interrupted");

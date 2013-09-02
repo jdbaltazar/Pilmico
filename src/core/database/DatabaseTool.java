@@ -120,6 +120,7 @@ public class DatabaseTool {
 									DatabaseTool.uP.dispose();
 								JOptionPane.showMessageDialog(Values.mainFrame, "Could not create the backup", "Error", JOptionPane.ERROR_MESSAGE);
 								isRunning = false;
+								Values.mainFrame.dimScreen(false);
 							}
 
 							Thread.currentThread().interrupt();
@@ -127,6 +128,7 @@ public class DatabaseTool {
 						} catch (InterruptedException e) {
 							// e.printStackTrace();
 							System.out.println("Backup thread interrupted");
+							Values.mainFrame.dimScreen(false);
 						}
 					}
 				}
@@ -142,6 +144,7 @@ public class DatabaseTool {
 			}
 
 		} catch (Exception ex) {
+			Values.mainFrame.dimScreen(false);
 			ex.printStackTrace();
 		}
 
@@ -226,6 +229,7 @@ public class DatabaseTool {
 						System.out.println("################################################");
 						System.out.println(sb.toString());
 					} finally {
+						Values.mainFrame.dimScreen(false);
 						recovery.delete();
 					}
 				}
