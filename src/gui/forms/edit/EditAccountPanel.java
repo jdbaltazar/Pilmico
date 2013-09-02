@@ -244,6 +244,16 @@ public class EditAccountPanel extends EditFormPanel {
 				msg = "All fields are required ";
 				return false;
 			}
+		
+		if (fields.get(0).getText().length() < 5) {
+			msg = "Username should have at least 5 characters ";
+			return false;
+		}
+
+		if (fields.get(1).getText().length() < 5) {
+			msg = "Password should have at least 5 characters ";
+			return false;
+		}
 
 		return true;
 	}

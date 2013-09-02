@@ -53,6 +53,7 @@ public class TableUtilPanel extends SoyPanel {
 			Tables.ACCOUNTS };
 	private ArrayList<TableLink> labels = new ArrayList<TableLink>();
 	private ProductOnDisplayPopup on_display;
+	private Thread thread;
 
 	public TableUtilPanel(TablePanel tablePanel, String label) {
 		this.tablePanel = tablePanel;
@@ -176,15 +177,24 @@ public class TableUtilPanel extends SoyPanel {
 					e1.printStackTrace();
 				}
 
-				Thread thread = new Thread(new Runnable() {
+				thread = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
 
 						// TODO Auto-generated method stub
 						while (!on_display.isDone()) {
-							on_display.fillTable();
+							
+							try {
+								on_display.fillTable();
+								Thread.sleep(200);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
+						
+						thread.interrupt();
 					}
 				});
 
@@ -366,6 +376,10 @@ public class TableUtilPanel extends SoyPanel {
 
 	public String getLabel() {
 		return label;
+	}
+	
+	public void nullifyThread(){
+		thread = null;
 	}
 
 }

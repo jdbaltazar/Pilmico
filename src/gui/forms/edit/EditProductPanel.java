@@ -404,14 +404,14 @@ public class EditProductPanel extends EditFormPanel {
 		for (int i = 0; i < fields.size(); i++)
 			if (fields.get(i).getText().equals("") && i != 1) {
 
-				msg = "All fields EXCEPT for Description is required ";
+				msg = "All fields EXCEPT for Description are required ";
 				return false;
 			}
 
 		for (int i = 0; i < numfields.size(); i++)
 			if (numfields.get(i).getText().equals("")) {
 
-				msg = "All fields EXCEPT for Description is required ";
+				msg = "All fields EXCEPT for Description are required ";
 				return false;
 			}
 

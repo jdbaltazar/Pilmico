@@ -30,6 +30,8 @@ import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JComponent;
+
 import util.Tables;
 import util.Values;
 import util.soy.SoyPanel;
@@ -65,6 +67,7 @@ public class EditPanel extends SoyPanel{// implements Runnable {
 	private int maxWidth = Values.WIDTH - 2;
 	private int minWidth = 0;
 	private int currWidth = minWidth;
+	private JComponent comp;
 //	private boolean isRunning;
 
 	private boolean hide = false, ISLinked = false;
@@ -184,7 +187,7 @@ public class EditPanel extends SoyPanel{// implements Runnable {
 		currWidth = minWidth;
 		updateUI();
 
-		
+		comp = null;
 		if (getComponentCount() != 0)
 			remove(getComponent(getComponentCount() - 1));
 
@@ -223,78 +226,112 @@ public class EditPanel extends SoyPanel{// implements Runnable {
 
 		if (Values.tableUtilPanel.getLabel().equals(Tables.PRODUCTS)) {
 			// add(new EditItemPanel((Item) o), BorderLayout.CENTER);
-			add(new EditProductPanel((Product) o), BorderLayout.CENTER);
+			comp = new EditProductPanel((Product) o);
+			
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNTS)) {
-			add(new EditAccountPanel((Account) o), BorderLayout.CENTER);
+			
+			comp = new EditAccountPanel((Account) o); 
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SUPPLIERS)) {
-			add(new EditSupplierPanel((Supplier) o), BorderLayout.CENTER);
+			
+			comp = new EditSupplierPanel((Supplier) o); 
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALES)) {
 			// add(new EditStockPurchase(), BorderLayout.CENTER);
-			add(new ViewSalesForm((Sales) o), BorderLayout.CENTER);
+			
+			comp = new ViewSalesForm((Sales) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EXPENSES)) {
-			add(new ViewExpensesForm((DailyExpenses) o), BorderLayout.CENTER);
+			
+			comp = new ViewExpensesForm((DailyExpenses) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DELIVERIES)) {
-			add(new ViewDeliveryForm((Delivery) o), BorderLayout.CENTER);
+			
+			comp = new ViewDeliveryForm((Delivery) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.ACCOUNT_RECEIVABLES)) {
-			add(new ViewARForm((AccountReceivable) o), BorderLayout.CENTER);
+			
+			comp = new ViewARForm((AccountReceivable) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.PULLOUTS)) {
-			add(new ViewPulloutForm((PullOut) o), BorderLayout.CENTER);
+			
+			comp = new ViewPulloutForm((PullOut) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DISCOUNTS)) {
-			add(new ViewDiscountForm((DiscountIssue) o), BorderLayout.CENTER);
+			
+			comp = new ViewDiscountForm((DiscountIssue) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.DEPOSITS)) {
-			add(new ViewDepositForm((Deposit) o), BorderLayout.CENTER);
+			
+			comp = new ViewDepositForm((Deposit) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CASH_ADVANCE)) {
-			add(new ViewCAForm((CashAdvance) o), BorderLayout.CENTER);
+			
+			comp = new ViewCAForm((CashAdvance) o); 
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CA_PAYMENTS)) {
-			add(new ViewCAPaymentForm((CAPayment) o), BorderLayout.CENTER);
+			
+			comp = new ViewCAPaymentForm((CAPayment) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.AR_PAYMENTS)) {
-			add(new ViewARPaymentForm((ARPayment) o), BorderLayout.CENTER);
+			
+			comp = new ViewARPaymentForm((ARPayment) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.EMPLOYEES)) {
-			add(new EditEmployeeForm((Employee) o), BorderLayout.CENTER);
+			
+			comp = new EditEmployeeForm((Employee) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.CUSTOMERS)) {
-			add(new EditCustomerForm((Person) o), BorderLayout.CENTER);
+			
+			comp = new EditCustomerForm((Person) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.BANK)) {
-			add(new EditBankForm((Bank) o), BorderLayout.CENTER);
+			
+			comp = new EditBankForm((Bank) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.SALARY)) {
-			add(new ViewSalaryForm((SalaryRelease) o), BorderLayout.CENTER);
+			
+			comp = new ViewSalaryForm((SalaryRelease) o);
+			add(comp, BorderLayout.CENTER);
 		}
 
 		else if (Values.tableUtilPanel.getLabel().equals(Tables.INVENTORY_SHEET)) {
-			ViewInventorySheetForm vis = new ViewInventorySheetForm((InventorySheet) o);
+			comp = new ViewInventorySheetForm((InventorySheet) o);
 			try {
-				add(vis, BorderLayout.CENTER);
+				add(comp, BorderLayout.CENTER);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
