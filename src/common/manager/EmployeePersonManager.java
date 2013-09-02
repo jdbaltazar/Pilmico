@@ -28,7 +28,7 @@ public interface EmployeePersonManager {
 	public Employee getEmployee(int id) throws Exception;
 
 	public List<Employee> getAllEmployees() throws Exception;
-	
+
 	public List<Employee> getAllEmployeesExceptManagers() throws Exception;
 
 	public List<Employee> getEmployedEmployees() throws Exception;
@@ -65,6 +65,8 @@ public interface EmployeePersonManager {
 	public void deletePerson(Person person) throws Exception;
 
 	public void deletePerson(int id) throws Exception;
+
+	public boolean personExists(String firstName, String lastName) throws Exception;
 
 	// designations
 

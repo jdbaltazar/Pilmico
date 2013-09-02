@@ -74,16 +74,19 @@ public class CenterPanel extends SoyPanel {
 		// jd -> pyAmxijgjj7EEhIrn+JgRQ==
 		// mine -> K7H4xFqWVe0bKXypGARJvQ==
 
-		// try { Manager.getInstance().login("manager", "pilmico".toCharArray());
-		// } catch (Exception e) { // TODO Auto-generated catch block
-		// e.printStackTrace(); } changeTable(Values.HOME);
+		try {
+			Manager.getInstance().login("manager", "pilmico".toCharArray());
+		} catch (Exception e) { // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		changeTable(Values.HOME);
 
 	}
 
 	public void changeTable(int val) {
 
-		// if (val != Values.HOME)
-		remove(getComponent(getComponentCount() - 1));
+		if (val != Values.HOME)
+			remove(getComponent(getComponentCount() - 1));
 
 		// remove(getComponent(0));
 
@@ -684,8 +687,6 @@ public class CenterPanel extends SoyPanel {
 		try {
 			String[] headers = { "ID", "Name", "Kls/SK", "SK", "Kg", "Price/SK", "Price/Kg", "Category", "Available?" };
 			List<Product> products = Manager.getInstance().getProductManager().getProducts();
-			List<Product> onDisplayFirst = new ArrayList<Product>();
-			List<Product> notOnDisplay = new ArrayList<Product>();
 			String[][] entries = new String[products.size()][headers.length];
 
 			int i = 0;
@@ -700,28 +701,11 @@ public class CenterPanel extends SoyPanel {
 				entries[i][7] = p.getCategory().getName();
 				entries[i][8] = p.isAvailable() ? "Yes" : "No";
 				i++;
-
-				if (p.isOnDisplay()) {
-					onDisplayFirst.add(p);
-				} else {
-					notOnDisplay.add(p);
-				}
 			}
 
 			add(new TableUtilPanel(new TablePanel(entries, headers, products, Tables.PRODUCTS), Tables.PRODUCTS), BorderLayout.CENTER);
 
-			for (Product p : notOnDisplay) {
-				onDisplayFirst.add(p);
-			}
-
-			// on displayPopup
-			// if (Values.productOnDisplayPopup == null)
-			// new ProductOnDisplayPopup();
-			//
-			// Values.productOnDisplayPopup.setProducts(onDisplayFirst);
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -731,7 +715,7 @@ public class CenterPanel extends SoyPanel {
 
 		try {
 			String[] headers = { "Date", "Description" };
-			List<Log> logs = Manager.getInstance().getLogManager().getAllLogs();
+			List<Log> logs = Manager.getInstance().getLogManager().getLogsRecentFirst();
 			String[][] entries = new String[logs.size()][headers.length];
 			// String[][] entries = new String[1][headers.length];
 			int i = 0;

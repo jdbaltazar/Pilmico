@@ -212,25 +212,29 @@ public class BankForm extends SimplePanel {
 	private boolean isValidated() {
 
 		if (fields.get(0).getText().equals("")) {
-
 			msg = "Name is required ";
-
 			return false;
 		}
 
 		if (bankAccountPanel.getComponentCount() == 0) {
-
 			msg = "Put at least one bank account ";
-
 			return false;
 		}
 
 		for (int i = 0; i < accountRowPanel.size(); i++) {
 			if (accountRowPanel.get(i).getBankAccount().getText().equals("")) {
 				msg = "Blank entry found in row " + (i + 1) + " ";
-
 				return false;
 			}
+		}
+
+		try {
+			if (Manager.getInstance().getDepositManager().bankExists(fields.get(0).getText().trim())) {
+				msg = "Bank \'" + fields.get(0).getText() + "\' already exists";
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return true;

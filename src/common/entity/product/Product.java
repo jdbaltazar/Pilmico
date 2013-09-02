@@ -50,12 +50,6 @@ public class Product {
 	@Column(name = "quantity_in_kilo")
 	private double kilosOnDisplay;
 
-	// @Column(name = "display_in_sack")
-	// private double quantityOnDisplayInSack;
-	//
-	// @Column(name = "display_in_kilo")
-	// private double quantityOnDisplayInKilo;
-
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category")
 	private Category category;
@@ -346,42 +340,8 @@ public class Product {
 		}
 	}
 
-	// public double getQuantityOnDisplayInSack() {
-	// return quantityOnDisplayInSack;
-	// }
-	//
-	// public double getQuantityOnDisplayInKilo() {
-	// return quantityOnDisplayInKilo;
-	// }
-	//
-	// public double getTotalQuantityOnDisplayInSack() {
-	// return totalSacks(quantityOnDisplayInSack, quantityOnDisplayInKilo,
-	// kilosPerSack);
-	// }
-	//
-	// public double getTotalQuantityOnDisplayInKilo() {
-	// return totalKilos(quantityOnDisplayInSack, quantityOnDisplayInKilo,
-	// kilosPerSack);
-	// }
-
-	// public void setQuantityOnDisplay(double quantityOnDisplayInSack, double
-	// quantityOnDisplayInKilo) throws Exception {
-	// if (valid(quantityOnDisplayInSack, quantityOnDisplayInKilo, kilosPerSack))
-	// {
-	// double newKilosQuantity = totalKilos(quantityOnDisplayInSack,
-	// quantityOnDisplayInKilo, kilosPerSack);
-	// if (newKilosQuantity <= getTotalQuantityInKilo()) {
-	// ProductQuantity pQuantity = simplify(newKilosQuantity, kilosPerSack);
-	// this.quantityOnDisplayInSack = pQuantity.getQuantityInSack();
-	// this.quantityOnDisplayInKilo = pQuantity.getQuantityInKilo();
-	// } else {
-	// throw new OnDisplayQuantityException();
-	// }
-	// }
-	// }
-	//
 	public boolean isOnDisplay() {
-		return (kilosOnDisplay != 0d);
+		return (kilosOnDisplay > 0d);
 	}
 
 	public Category getCategory() {
@@ -464,26 +424,6 @@ public class Product {
 		return (sacks * klsPerSk) + kilos;
 	}
 
-	// public static ProductQuantity simplify(double quantityInSack, double
-	// quantityInKilo, double kilosPerSack) throws NegativeValueException,
-	// ZeroKilosPerSackException {
-	// if (valid(quantityInSack, quantityInKilo, kilosPerSack)) {
-	// double kilosQuantity = totalKilos(quantityInSack, quantityInKilo,
-	// kilosPerSack);
-	// double rawResult = kilosQuantity / kilosPerSack;
-	// // rounded two decimal result
-	// double roundedTwodecimalResult = Math.round(rawResult * 100.0d) / 100.0d;
-	// double sacks = Math.floor(roundedTwodecimalResult);
-	// // double kilos = ((roundedTwodecimalResult -
-	// // Math.floor(roundedTwodecimalResult)) * 100.0d) / 100.0d;
-	// double kilos = kilosQuantity % kilosPerSack;
-	// ProductQuantity pq = new ProductQuantity(sacks, kilos, kilosPerSack);
-	// return pq;
-	// } else {
-	// throw new NegativeValueException();
-	// }
-	// }
-	//
 	public static ProductQuantity simplify(double totalQuantityInKilo, double kilosPerSack) throws NegativeValueException, ZeroKilosPerSackException {
 		if (valid(0d, totalQuantityInKilo, kilosPerSack)) {
 			double rawResult = totalQuantityInKilo / kilosPerSack;

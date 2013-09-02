@@ -1,5 +1,7 @@
 package common.manager;
 
+import common.entity.log.Log;
+import common.entity.log.LogType;
 import common.entity.profile.Account;
 import common.entity.profile.AccountType;
 
@@ -58,6 +60,10 @@ public class Manager {
 		return loggedInAccount;
 	}
 
+	public static boolean isLoggedIn() {
+		return loggedInAccount != null;
+	}
+
 	public String login(String username, char[] input) throws Exception {
 
 		// Date date = new Date();
@@ -80,7 +86,6 @@ public class Manager {
 			if (acc != null && acc.isActive()) {
 				if (acc.comparePassword(input)) {
 					loggedInAccount = acc;
-					// DatabaseTool.executeUpdates();
 					return "true";
 				} else {
 					// System.out.println("Password is incorrect!");
@@ -119,6 +124,11 @@ public class Manager {
 	}
 
 	public void logout() throws Exception {
+
+		String desc = Manager.loggedInAccount.getDesignationPlusFirstPlusLastName() + " logged out";
+		Log log = new Log(new LogType(LogType.SYSTEM), desc);
+		Manager.getInstance().getLogManager().addLog(log);
+
 		loggedInAccount = null;
 
 		accountManager = null;

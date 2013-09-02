@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -59,6 +60,24 @@ public class SupplierPersistor extends Persistor implements SupplierManager {
 			session.close();
 		}
 		return suppliers.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean supplierExists(String name) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Supplier.class);
+		List<Supplier> suppliers = new ArrayList<Supplier>();
+		try {
+			suppliers = criteria.add(Restrictions.like("name", name, MatchMode.EXACT)).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if (suppliers.size() > 0)
+			return true;
+		return false;
 	}
 
 }

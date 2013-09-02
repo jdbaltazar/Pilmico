@@ -26,6 +26,8 @@ import util.Values;
 import util.soy.SoyPanel;
 import app.DatabaseSettings;
 
+import common.entity.log.Log;
+import common.entity.log.LogType;
 import common.manager.Manager;
 
 public class TopPanel extends SoyPanel {
@@ -56,7 +58,7 @@ public class TopPanel extends SoyPanel {
 		addMenuButtons();
 
 		Values.topPanel = this;
-		
+
 		System.out.println("TopPanel loaded.");
 	}
 
@@ -153,23 +155,26 @@ public class TopPanel extends SoyPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 
-				
-				int option = JOptionPane.showConfirmDialog(null,
-						"Are you sure you want to exit?", "Confirm",
-						JOptionPane.YES_NO_OPTION);
+				int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirm", JOptionPane.YES_NO_OPTION);
 
 				if (option == JOptionPane.YES_OPTION) {
-
+					if (Manager.isLoggedIn()) {
+						String desc = Manager.loggedInAccount.getDesignationPlusFirstPlusLastName() + " logged out";
+						Log log = new Log(new LogType(LogType.SYSTEM), desc);
+						try {
+							Manager.getInstance().getLogManager().addLog(log);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 					Values.mainFrame.closeFrame();
 				}
 			}
 		});
 
 		minimize.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				Values.mainFrame.minimizeFrame();
 			}
 		});
@@ -202,12 +207,12 @@ public class TopPanel extends SoyPanel {
 
 		// g2.setColor(new Color(50, 50, 50));
 		g2.fillRect(0, getHeight() - 1, getWidth(), 1);
-		
+
 		g2.setColor(Color.GRAY);
 		g2.setFont(new Font("Lucida Sans", Font.ITALIC, 10));
-		
+
 		try {
-			g2.drawString(""+DatabaseSettings.getInstance().getDbVersion(), 240, 55);
+			g2.drawString("" + DatabaseSettings.getInstance().getDbVersion(), 240, 55);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -233,7 +238,7 @@ public class TopPanel extends SoyPanel {
 		// add(cashINLabel);
 		// add(cashIN);
 
-//		add(trialLabel);
+		// add(trialLabel);
 
 		// add(cashOUTLabel);
 		// add(cashOUT);

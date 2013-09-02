@@ -161,18 +161,11 @@ public class TableUtilPanel extends SoyPanel {
 				Values.mainFrame.dimScreen(true);
 
 				on_display = new ProductOnDisplayPopup();
-				/*
-				 * List<Product> onDisplayFirst = new ArrayList<Product>();
-				 * List<Product> notOnDisplay = new ArrayList<Product>();
-				 * 
-				 * for (Product p : notOnDisplay) { onDisplayFirst.add(p); }
-				 */
 				List<Product> products;
 				try {
-					products = Manager.getInstance().getProductManager().getProducts();
+					products = Manager.getInstance().getProductManager().getProductsOnDisplayFirst();
 					on_display.setProducts(products);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -180,8 +173,6 @@ public class TableUtilPanel extends SoyPanel {
 
 					@Override
 					public void run() {
-
-						// TODO Auto-generated method stub
 						while (!on_display.isDone()) {
 							on_display.fillTable();
 						}

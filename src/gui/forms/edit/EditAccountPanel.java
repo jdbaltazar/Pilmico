@@ -245,6 +245,17 @@ public class EditAccountPanel extends EditFormPanel {
 				return false;
 			}
 
+		try {
+			if (!account.getUsername().equals(fields.get(0).getText().trim())) {
+				if (Manager.getInstance().getAccountManager().usernameTaken(fields.get(0).getText().trim())) {
+					msg = "Username \'" + fields.get(0).getText() + "\' already taken";
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 

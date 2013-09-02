@@ -179,7 +179,6 @@ public class ProductForm extends SimplePanel {
 				try {
 					categories = Manager.getInstance().getProductManager().getCategories();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				for (Category c : categories) {
@@ -223,22 +222,8 @@ public class ProductForm extends SimplePanel {
 					double kilosPerSack = Double.parseDouble(numfields.get(0).getText());
 					double quantityInSack = Double.parseDouble(numfields.get(1).getText());
 					double quantityInKilo = Double.parseDouble(numfields.get(2).getText());
-					// double displayInSack =
-					// Double.parseDouble(numfields.get(3).getText());
-					// double displayInKilo =
-					// Double.parseDouble(numfields.get(4).getText());
-					double pricePerSack = Double.parseDouble(numfields.get(5).getText());
-					double pricePerKilo = Double.parseDouble(numfields.get(6).getText());
-					// double alertOnQuantity =
-					// Double.parseDouble(numfields.get(7).getText());
-
-					// Product p = new Product(name, description, new Date(),
-					// pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(),
-					// quantityInSack,
-					// quantityInKilo, displayInSack, displayInKilo, 0d, 0d,
-					// (Category)
-					// category.getSelectedItem(), true, cbox2.isSelected(),
-					// alertOnQuantity);
+					double pricePerSack = Double.parseDouble(numfields.get(3).getText());
+					double pricePerKilo = Double.parseDouble(numfields.get(4).getText());
 
 					Product p = new Product(name, description, new Date(), pricePerSack, pricePerKilo, kilosPerSack, cbox1.isSelected(), quantityInSack,
 							quantityInKilo, (Category) category.getSelectedItem(), cbox2.isSelected());
@@ -270,18 +255,25 @@ public class ProductForm extends SimplePanel {
 
 				try {
 
-					if (JOptionPane.showConfirmDialog(null, "If a new category is added, it cannot be deleted. Continue?", "Warning!",
+					if (JOptionPane.showConfirmDialog(null, "If a new category is added, it CANNOT be deleted. \nContinue?", "Warning!",
 							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 
 						UtilityPopup uP = new UtilityPopup(b, Values.CATEGORY);
 						uP.setVisible(true);
 
 						if (!uP.getInput().equals("")) {
-							// insert code here for adding category
-							Manager.getInstance().getProductManager().addCategory(new Category(uP.getInput()));
-							updateCategories();
 
-							new SuccessPopup("Add", 1).setVisible(true);
+							if (!Manager.getInstance().getProductManager().categoryExists(uP.getInput().trim())) {
+								Manager.getInstance().getProductManager().addCategory(new Category(uP.getInput()));
+								updateCategories();
+								new SuccessPopup("Add", 1).setVisible(true);
+							} else {
+								JOptionPane.showMessageDialog(null, "Category \'" + uP.getInput() + "\' already exists!", "Error!",
+										JOptionPane.WARNING_MESSAGE);
+								uP.setVisible(false);
+								Values.mainFrame.dimScreen(false);
+							}
+
 						}
 						// Category c = new Category(fwd.getText());
 						// category.addItem(c);
@@ -360,6 +352,15 @@ public class ProductForm extends SimplePanel {
 				msg = "All fields EXCEPT for Description is required";
 				return false;
 			}
+
+		try {
+			if (Manager.getInstance().getProductManager().productExists(fields.get(0).getText().trim())) {
+				msg = "Product \'" + fields.get(0).getText() + "\' already exists";
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return true;
 	}

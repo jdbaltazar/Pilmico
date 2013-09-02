@@ -194,13 +194,24 @@ public class EditSupplierPanel extends EditFormPanel {
 	private boolean isValidated() {
 		name = fields.get(0).getText();
 
-		if (!name.equals("")) {
-			return true;
+		if (name.equals("")) {
+			msg = "Name is required ";
+			return false;
 		}
 
-		msg = "Name is required ";
+		try {
 
-		return false;
+			if (!supplier.getName().equals(name)) {
+				if (Manager.getInstance().getSupplierManager().supplierExists(name.trim())) {
+					msg = "Supplier \'" + name + "\' already exists";
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return true;
 	}
 
 }

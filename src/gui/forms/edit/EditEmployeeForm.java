@@ -361,23 +361,32 @@ public class EditEmployeeForm extends EditFormPanel {
 	private boolean isValidated() {
 
 		if (fields.get(0).getText().equals("")) {
-
 			msg = "Last Name is required";
-
 			return false;
 		}
 
 		if (fields.get(1).getText().equals("")) {
-
 			msg = "First Name is required";
-
 			return false;
 		}
 
 		if (salary.getText().equals("")) {
 			msg = "Salary is required";
-
 			return false;
+		}
+
+		try {
+
+			String name1 = employee.getFirstPlusLastName();
+			String name2 = fields.get(1).getText().trim() + " " + fields.get(0).getText().trim();
+			if (!name1.equals(name2)) {
+				if (Manager.getInstance().getEmployeePersonManager().personExists(fields.get(1).getText().trim(), fields.get(0).getText().trim())) {
+					msg = "Employee \'" + fields.get(1).getText() + " " + fields.get(0).getText() + "\' already exists";
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return true;

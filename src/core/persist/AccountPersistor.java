@@ -211,4 +211,22 @@ public class AccountPersistor extends Persistor implements AccountManager {
 		return account;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean usernameTaken(String username) throws Exception {
+		Session session = HibernateUtil.startSession();
+		Criteria criteria = session.createCriteria(Account.class);
+		List<Account> accounts = new ArrayList<Account>();
+		try {
+			accounts = criteria.add(Restrictions.like("username", username, MatchMode.EXACT)).list();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			session.close();
+		}
+		if (accounts.size() > 0)
+			return true;
+		return false;
+	}
+
 }

@@ -296,12 +296,12 @@ public class RowPanel extends JPanel {
 
 		onDisplayKG = new JNumericField(10, JNumericField.DECIMAL, true);
 		onDisplayKG.setPrecision(2);
-		onDisplayKG.setText(product.getKilosOnDisplay() + "");
+		onDisplayKG.setText(product.getKilosOnDisplayDescription());
 		// == 0 ? "0" :
 		// String.format("%.2f", product.getQuantityOnDisplayInKilo()));
 		// onDisplayKG.setToolTipText(product.getQuantityDescription());
 
-		onDisplaySack = new ViewFormField(product.getSacks() + "");
+		onDisplaySack = new ViewFormField(product.getSacksDescription());
 		// onDisplaySack.setText(product.getQuantityOnDisplayInSack() == 0 ? "0" :
 		// String.format("%.2f", product.getQuantityOnDisplayInSack()));
 		// onDisplaySack.setToolTipText(product.getQuantityDescription());
