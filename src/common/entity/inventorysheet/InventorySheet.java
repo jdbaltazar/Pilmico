@@ -176,8 +176,8 @@ public class InventorySheet implements InventorySheetManager {
 		}
 	}
 
-	public void finalize() {
-		inventorySheetData.finalize();
+	public void finalizeAllTransactions() {
+		inventorySheetData.finalizeAllTransactions();
 	}
 
 	// ///////////////////////////////// methods from inventory sheet data

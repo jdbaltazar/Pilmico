@@ -293,7 +293,7 @@ public class CashAdvanceForm extends SimplePanel {
 	public void refreshEmployee() {
 
 		try {
-			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployeesExceptManagers().toArray());
+			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployees().toArray());
 			issuedFor.setModel(model);
 		} catch (Exception e) {
 			e.printStackTrace();

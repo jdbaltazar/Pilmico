@@ -63,7 +63,6 @@ public class CenterPanel extends SoyPanel {
 
 	private void init() {
 		setLayout(new BorderLayout());
-
 		new EditPanel();
 		new MenuPanel();
 	}

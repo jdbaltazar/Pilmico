@@ -258,6 +258,7 @@ public class ARPaymentForm extends SimplePanel {
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 
 		fields.get(0).setText(accountReceivable != null ? accountReceivable.getBalance() + "" : "");
+		fields.get(0).setToolTipText(accountReceivable != null ? accountReceivable.getBalance() + "" : "");
 
 	}
 
@@ -313,12 +314,17 @@ public class ARPaymentForm extends SimplePanel {
 
 		amount = fields.get(0).getText();
 
-		if (!amount.equals("")) {
-			return true;
+		if (amount.equals("")) {
+			msg = "Amount is required ";
+			return false;
 		}
 
-		msg = "Amount is required ";
-		return false;
+		if (Double.parseDouble(amount) > accountReceivable.getBalance()) {
+			msg = "Amount must be <= P" + accountReceivable.getBalance() + " (Balance)";
+			return false;
+		}
+
+		return true;
 	}
 
 	public void refreshDropdown(boolean remove) {

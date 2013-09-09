@@ -12,6 +12,8 @@ import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -395,6 +397,13 @@ public class DepositForm extends SimplePanel {
 		bankComboField.setText("");
 		bankComboField.setOpaque(false);
 		bankComboField.addKeyListener(new ComboKeyHandler(bankCombo));
+		bankCombo.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				System.out.println("aaaaaaaaaaaa");
+			}
+		});
 
 		try {
 			model = new DefaultComboBoxModel(Manager.getInstance().getEmployeePersonManager().getEmployedEmployeesExceptManagers().toArray());

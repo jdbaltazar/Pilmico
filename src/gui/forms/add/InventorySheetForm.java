@@ -1052,8 +1052,7 @@ public class InventorySheetForm extends SimplePanel {
 
 						inventorySheet.getInventorySheetData().setBreakdown(breakdown);
 						inventorySheet.getInventorySheetData().setRemarks(uP.getInput());
-
-						inventorySheet.finalize();
+						inventorySheet.finalizeAllTransactions();
 
 						try {
 
@@ -1171,7 +1170,8 @@ public class InventorySheetForm extends SimplePanel {
 		List<Delivery> pendingDeliveries = Manager.getInstance().getDeliveryManager().getPendingDeliveriesBefore(date);
 		List<PullOut> pendingPullOuts = Manager.getInstance().getPullOutManager().getPendingPullOutsBefore(date);
 		List<Sales> pendingSales = Manager.getInstance().getSalesManager().getPendingSalesBefore(date);
-		List<AccountReceivable> pendingAccountReceivables = Manager.getInstance().getAccountReceivableManager().getPendingAccountReceivablesBefore(date);
+		List<AccountReceivable> pendingAccountReceivables = Manager.getInstance().getAccountReceivableManager()
+				.getPendingAccountReceivablesBefore(date);
 		List<ARPayment> pendingArPayments = Manager.getInstance().getAccountReceivableManager().getPendingARPaymentsBefore(date);
 		List<CashAdvance> pendingCashAdvances = Manager.getInstance().getCashAdvanceManager().getPendingCashAdvancesBefore(date);
 		List<CAPayment> pendingCaPayments = Manager.getInstance().getCashAdvanceManager().getPendingCAPaymentsBefore(date);

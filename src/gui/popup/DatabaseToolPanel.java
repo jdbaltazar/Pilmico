@@ -193,6 +193,11 @@ public class DatabaseToolPanel extends JPanel {
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
 					try {
+
+						file.setExecutable(true);
+						file.setReadable(true);
+						file.setWritable(true);
+						
 						DatabaseSettings.getInstance().setFilePath(file.getCanonicalPath().replace('\\', '/'));
 						DatabaseSettings.getInstance().persist();
 
