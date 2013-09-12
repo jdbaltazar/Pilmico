@@ -127,7 +127,7 @@ public class DatabaseTool {
 							Thread.currentThread().interrupt();
 
 						} catch (InterruptedException e) {
-							// e.printStackTrace();
+							e.printStackTrace();
 							System.out.println("Backup thread interrupted");
 							Values.mainFrame.dimScreen(false);
 						}
