@@ -469,7 +469,7 @@ public class InventorySheetData {
 		this.breakdown = breakdown;
 	}
 
-	public void finalize() {
+	public void finalizeAllTransactions() {
 		finalizeDeliveries();
 		finalizePullouts();
 		finalizeSales();

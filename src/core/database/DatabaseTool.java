@@ -81,7 +81,8 @@ public class DatabaseTool {
 		executeCmd = executeCmd + " --add-drop-database -B " + dbName + " -r " + BACKUP_TEMP_FILE;
 
 		try {
-			System.out.println(executeCmd);// this out put works in mysql shell
+			// System.out.println(executeCmd);
+			// this out put works in mysql shell
 			runtimeProcess = Runtime.getRuntime().exec(executeCmd);
 
 			// int processComplete = 1;
@@ -126,7 +127,7 @@ public class DatabaseTool {
 							Thread.currentThread().interrupt();
 
 						} catch (InterruptedException e) {
-							// e.printStackTrace();
+							e.printStackTrace();
 							System.out.println("Backup thread interrupted");
 							Values.mainFrame.dimScreen(false);
 						}

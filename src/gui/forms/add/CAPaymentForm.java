@@ -249,6 +249,7 @@ public class CAPaymentForm extends SimplePanel {
 		issuedBy.setText(Manager.loggedInAccount.getFirstPlusLastName());
 
 		fields.get(0).setText(cashAdvance != null ? cashAdvance.getBalance() + "" : "");
+		fields.get(0).setToolTipText(cashAdvance != null ? cashAdvance.getBalance() + "" : "");
 	}
 
 	private void clearFields() {
@@ -303,12 +304,17 @@ public class CAPaymentForm extends SimplePanel {
 
 		amount = fields.get(0).getText();
 
-		if (!amount.equals("")) {
-			return true;
+		if (amount.equals("")) {
+			msg = "Amount is required ";
+			return false;
 		}
 
-		msg = "Amount is required ";
-		return false;
+		if (Double.parseDouble(amount) > cashAdvance.getBalance()) {
+			msg = "Amount must be <= P" + cashAdvance.getBalance() + " (Balance)";
+			return false;
+		}
+
+		return true;
 	}
 
 	public void refreshDropdown(boolean remove) {

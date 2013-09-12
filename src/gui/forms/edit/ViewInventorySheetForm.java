@@ -1002,18 +1002,27 @@ public class ViewInventorySheetForm extends EditFormPanel {
 
 		products = Manager.getInstance().getProductManager().getProducts();
 
-		fillProductInventories(products);
-		fillSales(new ArrayList<Sales>(inventorySheet.getSales()));
-		fillDeliveries(new ArrayList<Delivery>(inventorySheet.getDeliveries()));
-		fillDiscount(new ArrayList<DiscountIssue>(inventorySheet.getInventorySheetData().getDiscountIssues()));
-		fillAR(new ArrayList<AccountReceivable>(inventorySheet.getAccountReceivables()));
-		fillARPayment(new ArrayList<ARPayment>(inventorySheet.getInventorySheetData().getArPayments()));
-		fillCAPayment(new ArrayList<CAPayment>(inventorySheet.getInventorySheetData().getCaPayments()));
-		fillPullOut(new ArrayList<PullOut>(inventorySheet.getInventorySheetData().getPullouts()));
-		fillDailyExpenses(new ArrayList<DailyExpenses>(inventorySheet.getInventorySheetData().getDailyExpenses()));
-		fillCashAdvances(new ArrayList<CashAdvance>(inventorySheet.getInventorySheetData().getCashAdvances()));
-		fillSalaryRelease(new ArrayList<SalaryRelease>(inventorySheet.getInventorySheetData().getSalaryReleases()));
-		fillDeposit(new ArrayList<Deposit>(inventorySheet.getInventorySheetData().getDeposits()));
+		try {
+			fillProductInventories(products);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			fillSales(new ArrayList<Sales>(inventorySheet.getSales()));
+			fillDeliveries(new ArrayList<Delivery>(inventorySheet.getDeliveries()));
+			fillDiscount(new ArrayList<DiscountIssue>(inventorySheet.getInventorySheetData().getDiscountIssues()));
+			fillAR(new ArrayList<AccountReceivable>(inventorySheet.getAccountReceivables()));
+			fillARPayment(new ArrayList<ARPayment>(inventorySheet.getInventorySheetData().getArPayments()));
+			fillCAPayment(new ArrayList<CAPayment>(inventorySheet.getInventorySheetData().getCaPayments()));
+			fillPullOut(new ArrayList<PullOut>(inventorySheet.getInventorySheetData().getPullouts()));
+			fillDailyExpenses(new ArrayList<DailyExpenses>(inventorySheet.getInventorySheetData().getDailyExpenses()));
+			fillCashAdvances(new ArrayList<CashAdvance>(inventorySheet.getInventorySheetData().getCashAdvances()));
+			fillSalaryRelease(new ArrayList<SalaryRelease>(inventorySheet.getInventorySheetData().getSalaryReleases()));
+			fillDeposit(new ArrayList<Deposit>(inventorySheet.getInventorySheetData().getDeposits()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// breakdown
 		for (BreakdownLine bdl : inventorySheet.getInventorySheetData().getBreakdown().getBreakdownLines()) {

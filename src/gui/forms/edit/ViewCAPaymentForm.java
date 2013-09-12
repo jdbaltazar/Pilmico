@@ -4,9 +4,14 @@ import gui.forms.util.RemarksLabel;
 import gui.forms.util.ViewFormBorder;
 import gui.forms.util.ViewFormField;
 import gui.forms.util.ViewFormLabel;
+import gui.popup.SuccessPopup;
+import gui.popup.UtilityPopup;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -25,6 +30,7 @@ import util.Values;
 import util.soy.SoyButton;
 
 import common.entity.cashadvance.CAPayment;
+import common.manager.Manager;
 
 public class ViewCAPaymentForm extends EditFormPanel {
 
@@ -61,34 +67,34 @@ public class ViewCAPaymentForm extends EditFormPanel {
 
 		voidBtn = new SBButton("invalidate.png", "invalidate2.png", "Void");
 		voidBtn.setBounds(Values.WIDTH - 28, 9, 16, 16);
-//		voidBtn.addMouseListener(new MouseAdapter() {
-//			public void mouseClicked(MouseEvent e) {
-//				PointerInfo a = MouseInfo.getPointerInfo();
-//				Point b = a.getLocation();
-//				UtilityPopup uP = new UtilityPopup(b, Values.REMARKS);
-//				uP.setVisible(true);
-//
-//				if (!uP.getReason().equals("")) {
-//					caPayment.setValid(false);
-//					caPayment.setRemarks(uP.getReason());
-//
-//					try {
-//						Manager.cashAdvanceManager.updateCAPayment(caPayment);
-//						caPayment.getCashAdvance().setBalance(caPayment.getCashAdvance().getBalance() + caPayment.getAmount());
-//						Manager.cashAdvanceManager.updateCashAdvance(caPayment.getCashAdvance());
-//						if (Values.viewCAForm != null)
-//							Values.viewCAForm.fillEntries();
-//
-//					} catch (Exception e1) {
-//						e1.printStackTrace();
-//					}
-//
-//					Values.editPanel.startAnimation();
-//					new SuccessPopup("Invalidation").setVisible(true);
-//					Values.centerPanel.changeTable(Values.CA_PAYMENTS);
-//				}
-//			}
-//		});
+		voidBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				UtilityPopup uP = new UtilityPopup(b, Values.INVALIDATE);
+				uP.setVisible(true);
+
+				if (!uP.getInput().equals("")) {
+					caPayment.setValid(false);
+					caPayment.setRemarks(uP.getInput());
+
+					try {
+						Manager.getInstance().getCashAdvanceManager().updateCAPayment(caPayment);
+						caPayment.getCashAdvance().setBalance(caPayment.getCashAdvance().getBalance() + caPayment.getAmount());
+						Manager.getInstance().getCashAdvanceManager().updateCashAdvance(caPayment.getCashAdvance());
+						if (Values.viewCAForm != null)
+							Values.viewCAForm.fillEntries();
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+					Values.editPanel.startAnimation();
+					new SuccessPopup("Invalidation").setVisible(true);
+					Values.centerPanel.changeTable(Values.CA_PAYMENTS);
+				}
+			}
+		});
 
 		status = new JLabel("PENDING", null, JLabel.LEADING);
 		status.setFont(new Font("Orator STD", Font.PLAIN, 14));
@@ -188,7 +194,7 @@ public class ViewCAPaymentForm extends EditFormPanel {
 
 		status.setBounds(scrollPane.getX(), scrollPane.getY() - 20, 100, 20);
 		remarks.setBounds(scrollPane.getX(), scrollPane.getY() + scrollPane.getHeight() + 2, scrollPane.getWidth(), 20);
-		
+
 		add(voidBtn);
 
 		add(scrollPane);

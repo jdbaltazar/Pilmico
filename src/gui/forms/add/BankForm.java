@@ -237,6 +237,16 @@ public class BankForm extends SimplePanel {
 			e.printStackTrace();
 		}
 
+		for (int i = 0; i < accountRowPanel.size(); i++) {
+			String bankAcctName = accountRowPanel.get(i).getBankAccount().getText().trim();
+			for (int j = i + 1; j < accountRowPanel.size(); j++) {
+				if (accountRowPanel.get(j).getBankAccount().getText().trim().equals(bankAcctName)) {
+					msg = "Duplicate entries found in rows " + (i+1) + " and " + (j+1);
+					return false;
+				}
+			}
+		}
+
 		return true;
 
 	}

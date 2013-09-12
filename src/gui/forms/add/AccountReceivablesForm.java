@@ -350,13 +350,13 @@ public class AccountReceivablesForm extends SimplePanel {
 						// Manager.loggedInAccount);
 
 						if (rowPanel.size() > 0) {
-
 							for (RowPanel rp : rowPanel) {
 								Product p = rp.getSelectedProduct();
 								ar.addAccountReceivableDetail(new AccountReceivableDetail(ar, p, p.getCurrentPricePerKilo(), p.getCurrentPricePerSack(), rp
 										.getQuantityInKilo(), rp.getQuantityInSack()));
 							}
 						} else {
+							ar.setAmount(Double.parseDouble(amount.getText()));
 							ar.setBalance(Double.parseDouble(amount.getText()));
 						}
 

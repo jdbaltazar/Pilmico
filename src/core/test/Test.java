@@ -85,9 +85,39 @@ public class Test {
 
 	}
 
-	public static void main(String[] args) {
+	public static void comp(int... n) {
+		int sum = 0;
+		for (int i : n) {
+			sum += i;
+		}
 
-		// try {
+		System.out.println("sum: " + Integer.toBinaryString(sum));
+	}
+
+	public static void fib(int N) {
+		if (N <= 0)
+			return;
+
+		int prev1 = 1;
+		int prev2 = 1;
+		System.out.print(prev1 + "");
+		System.out.print(prev2 + "");
+		for (int i = 2; i <= N;) {
+			System.out.print("" + i);
+			prev1 = prev2;
+			prev2 = i;
+			i = prev1 + prev2;
+		}
+
+	}
+
+	public static void main(String[] args) {
+		System.out.println();
+		fib(1);
+		System.out.println();
+		fib(100);
+		System.out.println();
+
 		// AppSettings as = AppSettings.getInstance();
 		// as.setAppVersion(2.0f);
 		// as.persist();
