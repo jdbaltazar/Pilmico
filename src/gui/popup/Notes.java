@@ -84,7 +84,7 @@ public class Notes extends SoyPanel {
 		tag = new JLabel(n.getTag());
 		tag.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 
-		desc = new JTextArea(n.getDescription());
+		desc = new JTextArea(n.getNoteType().toString() + ": \n" + n.getDescription());
 		desc.setFont(new Font("Kristen ITC", Font.PLAIN, 11));
 		desc.setEditable(false);
 		desc.setLineWrap(true);

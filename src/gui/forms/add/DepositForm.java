@@ -401,7 +401,13 @@ public class DepositForm extends SimplePanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				System.out.println("aaaaaaaaaaaa");
+				if (bankCombo.getSelectedItem() instanceof Bank) {
+					Bank b = (Bank) bankCombo.getSelectedItem();
+					if (b.getBankAccounts().size() > 0) {
+						bankAcctCombo.setModel(new DefaultComboBoxModel(b.getBankAccounts().toArray()));
+						bankAcctCombo.setSelectedIndex(0);
+					}
+				}
 			}
 		});
 
