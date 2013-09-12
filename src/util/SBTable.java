@@ -116,7 +116,8 @@ public class SBTable extends JTable implements MouseListener {
 			// setToolTipText(getValueAt(convertRowIndexToModel(row),
 			// column).toString());
 
-			JOptionPane.showMessageDialog(null, getValueAt(convertRowIndexToModel(row), 1).toString(), getValueAt(convertRowIndexToModel(row), 0).toString(), JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(null, getValueAt(convertRowIndexToModel(row), 1).toString(), getValueAt(convertRowIndexToModel(row), 0).toString(), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, getValueAt(row, 1).toString(), getValueAt(row, 0).toString(), JOptionPane.INFORMATION_MESSAGE);
 
 		}
 	}
